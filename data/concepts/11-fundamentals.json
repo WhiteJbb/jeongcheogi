@@ -1,0 +1,2479 @@
+{
+  "chapter": "응용 SW 기초 기술 활용",
+  "order": 11,
+  "topics": [
+    {
+      "title": "운영체제 개요와 프로세스 상태 전이",
+      "importance": 3,
+      "summary": "OS의 목적·운용 기법과 프로세스 5상태(생성-준비-실행-대기-종료) 전이 명칭. 빈칸 출제.",
+      "points": [
+        "OS 목적(성능 평가 기준): 처리능력(Throughput) 향상, 반환시간(Turnaround Time) 단축, 사용 가능도(Availability) 향상, 신뢰도(Reliability) 향상",
+        "운용 기법 발전: 일괄처리 → 다중 프로그래밍/시분할(Time Sharing)/다중처리/실시간 → 다중모드 → 분산처리",
+        "프로세스 상태: 생성(New) → 준비(Ready) → 실행(Running) → 종료(Terminated), 실행 중 I/O 요청 시 대기(Blocked/Wait) → 완료 후 준비",
+        "전이 명칭: 준비→실행 디스패치(Dispatch), 실행→준비 타이머 런아웃(Timer Runout, 할당 시간 만료), 실행→대기 블록(Block), 대기→준비 웨이크업(Wake Up)",
+        "PCB(Process Control Block): 프로세스 고유 정보 저장. PID, 상태, PC(프로그램 카운터), 레지스터, 스케줄링 정보, 메모리 정보, 입출력 상태",
+        "문맥 교환(Context Switching): CPU를 다른 프로세스로 넘길 때 현재 상태를 PCB에 저장하고 다음 PCB 복원. 오버헤드",
+        "스레드: 프로세스 내 실행 단위. 사용자 수준 스레드 vs 커널 수준 스레드. 코드·데이터·힙 공유, 스택·레지스터 개별",
+        "커널(Kernel): 메모리 상주, 프로세스·메모리·장치 관리. 셸(Shell): 명령 해석기. 시스템 호출(System Call): 응용이 커널 기능 요청",
+        "인터럽트 종류: 외부(전원 이상, 기계 착오, 외부 신호, I/O), 내부(트랩: 0 나눗셈, 오버플로, 잘못된 명령), 소프트웨어(SVC, 시스템 호출)"
+      ],
+      "terms": [
+        {
+          "term": "디스패치 (Dispatch)",
+          "desc": "준비 → 실행. 스케줄러가 CPU를 할당"
+        },
+        {
+          "term": "타이머 런아웃 (Timer Runout)",
+          "desc": "실행 → 준비. 할당 시간(Time Slice) 만료로 선점"
+        },
+        {
+          "term": "블록 (Block)",
+          "desc": "실행 → 대기. I/O 등 이벤트 대기"
+        },
+        {
+          "term": "웨이크업 (Wake Up)",
+          "desc": "대기 → 준비. I/O 완료"
+        },
+        {
+          "term": "PCB (Process Control Block, 프로세스 제어 블록)",
+          "desc": "OS가 프로세스 관리를 위해 유지하는 자료구조"
+        },
+        {
+          "term": "문맥 교환 (Context Switching)",
+          "desc": "실행 프로세스를 바꾸면서 상태를 저장·복원하는 작업"
+        },
+        {
+          "term": "커널 (Kernel)",
+          "desc": "OS 핵심. 자원 관리, 항상 메모리 상주"
+        },
+        {
+          "term": "셸 (Shell)",
+          "desc": "사용자 명령을 해석해 커널에 전달. bash, zsh, cmd"
+        },
+        {
+          "term": "시스템 호출 (System Call)",
+          "desc": "응용 프로그램이 커널 서비스를 요청하는 인터페이스. fork, exec, open"
+        },
+        {
+          "term": "fork / exec / wait / exit",
+          "desc": "유닉스 프로세스 생성 / 새 프로그램 실행 / 자식 종료 대기 / 종료"
+        },
+        {
+          "term": "인터럽트 (Interrupt)",
+          "desc": "실행 중 예기치 않은 상황 발생 시 처리 후 복귀. 하드웨어/소프트웨어"
+        },
+        {
+          "term": "트랩 (Trap)",
+          "desc": "프로그램 내부 원인(0 나눗셈, 오버플로)으로 발생하는 내부 인터럽트"
+        },
+        {
+          "term": "스풀링 (Spooling)",
+          "desc": "저속 장치(프린터) 입출력을 디스크에 모아 처리. 다중 작업 지원"
+        },
+        {
+          "term": "버퍼링 (Buffering)",
+          "desc": "주기억장치 일부를 완충 영역으로 사용. 단일 작업"
+        },
+        {
+          "term": "임베디드 OS (Embedded OS)",
+          "desc": "임베디드 시스템용. RTOS, VxWorks, QNX, 임베디드 리눅스"
+        },
+        {
+          "term": "실시간 시스템 (Real-time System)",
+          "desc": "정해진 시간 안에 처리 보장. 경성(Hard) vs 연성(Soft)"
+        }
+      ],
+      "asked": []
+    },
+    {
+      "title": "CPU 스케줄링 알고리즘과 계산",
+      "importance": 3,
+      "summary": "비선점(FCFS/SJF/HRN) vs 선점(RR/SRT/MLQ/MLFQ). 평균 대기시간·반환시간 계산과 HRN 우선순위 공식.",
+      "points": [
+        "비선점(Non-preemptive): 할당된 CPU를 끝까지 사용. FCFS(FIFO), SJF, HRN, 우선순위(비선점형), 기한부(Deadline)",
+        "선점(Preemptive): 더 높은 우선순위가 오면 CPU 강제 회수. RR, SRT, MLQ(다단계 큐), MLFQ(다단계 피드백 큐), 선점 우선순위",
+        "FCFS: 도착 순서. 호위 효과(Convoy Effect). SJF: 실행 시간 짧은 것 먼저. 평균 대기시간 최소. 기아(Starvation) 가능",
+        "HRN 우선순위 = (대기시간 + 서비스시간) / 서비스시간. 값이 클수록 우선. SJF의 기아 현상을 완화(에이징)",
+        "RR: 시간 할당량(Time Quantum)만큼 순환. 시분할 시스템. 할당량 크면 FCFS, 작으면 문맥교환 오버헤드",
+        "SRT: 남은 실행 시간이 가장 짧은 것 먼저(선점 SJF). MLQ: 큐 간 이동 불가, MLFQ: 하위 큐로 이동(에이징으로 승격)",
+        "계산: 반환시간(Turnaround) = 종료 - 도착. 대기시간(Waiting) = 반환시간 - 실행시간 = 시작 - 도착(비선점). 응답시간 = 첫 실행 시작 - 도착",
+        "FCFS 예: P1(0,10) P2(1,5) P3(2,3) → 종료 10,15,18 / 반환 10,14,16 / 대기 0,9,13 / 평균 대기 7.33",
+        "SJF(비선점, 동시 도착) 예: 실행 6,3,8,2 → 순서 2,3,6,8 → 대기 0,2,5,11 → 평균 4.5",
+        "RR(q=4) 예: P1=5, P2=3, P3=2 → P1(0-4) P2(4-7) P3(7-9) P1(9-10). 반환 10,7,9",
+        "에이징(Aging): 대기 시간이 길어지면 우선순위를 높여 기아 방지"
+      ],
+      "terms": [
+        {
+          "term": "FCFS (First Come First Served, 선입선출)",
+          "desc": "도착 순서대로. 비선점. 구현 간단, 긴 작업이 앞에 있으면 대기 길어짐"
+        },
+        {
+          "term": "SJF (Shortest Job First, 최단 작업 우선)",
+          "desc": "실행 시간 가장 짧은 프로세스 먼저. 비선점. 평균 대기시간 최소, 기아 가능"
+        },
+        {
+          "term": "HRN (Highest Response-ratio Next)",
+          "desc": "(대기시간+서비스시간)/서비스시간 가장 큰 것 먼저. SJF 단점 보완"
+        },
+        {
+          "term": "RR (Round Robin)",
+          "desc": "시간 할당량 단위로 순환 할당. 선점. 시분할 시스템"
+        },
+        {
+          "term": "SRT (Shortest Remaining Time)",
+          "desc": "남은 실행 시간 최단 우선. 선점형 SJF"
+        },
+        {
+          "term": "MLQ (Multi-Level Queue, 다단계 큐)",
+          "desc": "우선순위별 여러 큐, 큐 간 이동 불가"
+        },
+        {
+          "term": "MLFQ (Multi-Level Feedback Queue, 다단계 피드백 큐)",
+          "desc": "할당량 소진 시 하위 큐로 이동. 마지막 큐는 RR. 큐 간 이동 가능"
+        },
+        {
+          "term": "우선순위 스케줄링 (Priority Scheduling)",
+          "desc": "우선순위 높은 것 먼저. 선점/비선점 모두 가능. 기아 → 에이징"
+        },
+        {
+          "term": "기한부 스케줄링 (Deadline Scheduling)",
+          "desc": "제한 시간 내 완료되도록. 비선점"
+        },
+        {
+          "term": "반환 시간 (Turnaround Time)",
+          "desc": "도착부터 종료까지. 종료시각 - 도착시각"
+        },
+        {
+          "term": "대기 시간 (Waiting Time)",
+          "desc": "준비 큐에서 기다린 총 시간. 반환시간 - 실행시간"
+        },
+        {
+          "term": "응답 시간 (Response Time)",
+          "desc": "요청부터 첫 응답(첫 실행)까지"
+        },
+        {
+          "term": "시간 할당량 (Time Quantum, Time Slice)",
+          "desc": "RR에서 한 번에 할당하는 CPU 시간"
+        },
+        {
+          "term": "기아 현상 (Starvation)",
+          "desc": "우선순위 낮은 프로세스가 무한히 대기"
+        },
+        {
+          "term": "에이징 (Aging)",
+          "desc": "오래 기다린 프로세스의 우선순위를 점차 높임"
+        },
+        {
+          "term": "호위 효과 (Convoy Effect)",
+          "desc": "FCFS에서 긴 작업 뒤에 짧은 작업들이 줄지어 대기"
+        },
+        {
+          "term": "장기/중기/단기 스케줄러",
+          "desc": "작업 스케줄러(디스크→메모리) / 스와핑 / CPU 스케줄러(준비→실행)"
+        }
+      ],
+      "asked": [
+        "2023-3",
+        "2024-1"
+      ]
+    },
+    {
+      "title": "교착상태 (Deadlock)와 프로세스 동기화",
+      "importance": 3,
+      "summary": "교착상태 4가지 필요조건과 4가지 해결 기법, 임계구역·세마포어·뮤텍스. 매회 빈출.",
+      "points": [
+        "교착상태 4조건(모두 성립해야 발생): 상호 배제(Mutual Exclusion), 점유와 대기(Hold and Wait), 비선점(Non-preemption), 환형 대기(Circular Wait). 암기: 상점비환",
+        "해결 기법 4가지: 예방(Prevention, 4조건 중 하나 부정), 회피(Avoidance, 은행원 알고리즘·안전 상태), 발견(Detection, 자원 할당 그래프·사이클), 회복(Recovery, 프로세스 종료·자원 선점). 암기: 예회발회",
+        "은행원 알고리즘(Banker's Algorithm, Dijkstra): 자원 요청 시 안전 상태(Safe State)를 유지할 수 있을 때만 할당",
+        "임계 구역(Critical Section): 공유 자원에 접근하는 코드 영역. 한 번에 하나의 프로세스만 진입",
+        "상호 배제 구현: 세마포어(S, P/wait/down 연산으로 감소·V/signal/up 연산으로 증가, 카운팅 가능), 뮤텍스(0/1 이진, 소유권 있음, 잠근 스레드만 해제), 모니터(고급 언어 수준, Java synchronized)",
+        "세마포어 P(S): S--; if S<0 대기. V(S): S++; 대기 프로세스 깨움. 초기값 1이면 이진 세마포어",
+        "경쟁 상태(Race Condition): 여러 프로세스가 공유 데이터에 동시 접근하여 결과가 접근 순서에 따라 달라짐",
+        "생산자-소비자, 식사하는 철학자 문제가 동기화 대표 문제"
+      ],
+      "terms": [
+        {
+          "term": "교착상태 (Deadlock)",
+          "desc": "둘 이상의 프로세스가 서로 상대의 자원을 기다리며 무한 대기"
+        },
+        {
+          "term": "상호 배제 (Mutual Exclusion)",
+          "desc": "자원을 한 번에 한 프로세스만 사용"
+        },
+        {
+          "term": "점유와 대기 (Hold and Wait)",
+          "desc": "자원을 가진 채 다른 자원을 기다림"
+        },
+        {
+          "term": "비선점 (Non-preemption)",
+          "desc": "다른 프로세스의 자원을 강제로 빼앗을 수 없음"
+        },
+        {
+          "term": "환형 대기 (Circular Wait)",
+          "desc": "프로세스들이 원형으로 서로의 자원을 기다림"
+        },
+        {
+          "term": "예방 (Prevention)",
+          "desc": "4조건 중 하나를 부정하도록 시스템 설계. 자원 낭비"
+        },
+        {
+          "term": "회피 (Avoidance)",
+          "desc": "교착상태 가능성을 미리 검사해 피함. 은행원 알고리즘"
+        },
+        {
+          "term": "발견 (Detection)",
+          "desc": "교착상태 발생 여부를 자원 할당 그래프로 점검"
+        },
+        {
+          "term": "회복 (Recovery)",
+          "desc": "교착상태 프로세스를 종료하거나 자원을 선점해 해소"
+        },
+        {
+          "term": "은행원 알고리즘 (Banker's Algorithm)",
+          "desc": "Dijkstra. 안전 상태를 유지하는 경우에만 자원 할당. 회피 기법"
+        },
+        {
+          "term": "안전 상태 (Safe State)",
+          "desc": "모든 프로세스가 교착 없이 종료될 수 있는 순서(안전 순서열)가 존재"
+        },
+        {
+          "term": "임계 구역 (Critical Section)",
+          "desc": "공유 자원을 접근하는 코드. 상호 배제 필요"
+        },
+        {
+          "term": "세마포어 (Semaphore)",
+          "desc": "Dijkstra. 정수 변수 S와 P(wait)/V(signal) 연산으로 동기화. 카운팅 가능"
+        },
+        {
+          "term": "뮤텍스 (Mutex, Mutual Exclusion Object)",
+          "desc": "0/1 잠금 객체. 소유권 개념, 잠근 스레드만 해제"
+        },
+        {
+          "term": "모니터 (Monitor)",
+          "desc": "공유 데이터와 임계구역 연산을 하나로 묶은 고급 동기화 도구. Java synchronized"
+        },
+        {
+          "term": "경쟁 상태 (Race Condition)",
+          "desc": "동시 접근 순서에 따라 결과가 달라지는 상태"
+        },
+        {
+          "term": "스핀락 (Spinlock)",
+          "desc": "락을 얻을 때까지 반복 검사(busy waiting). 짧은 대기에 유리"
+        },
+        {
+          "term": "기아 (Starvation) vs 교착 (Deadlock)",
+          "desc": "기아는 우선순위 낮아 계속 밀림, 교착은 서로 기다려 아무도 진행 못 함"
+        }
+      ],
+      "asked": [
+        "2020-4"
+      ]
+    },
+    {
+      "title": "기억장치 관리 (할당·배치·교체 전략, 단편화)",
+      "importance": 2,
+      "summary": "주기억장치 할당 기법, 배치 전략 First/Best/Worst Fit 계산, 내부·외부 단편화와 통합·압축.",
+      "points": [
+        "반입(Fetch) 전략: 요구 반입(Demand), 예상 반입(Anticipatory)",
+        "배치(Placement) 전략: 최초 적합(First Fit, 첫 번째 들어갈 공간), 최적 적합(Best Fit, 단편화 가장 작은 곳), 최악 적합(Worst Fit, 가장 큰 공간)",
+        "배치 계산 예: 빈 공간 A=16K, B=14K, C=5K, D=30K에 10K 프로그램 → First: A(16K, 단편 6K), Best: B(14K, 단편 4K), Worst: D(30K, 단편 20K)",
+        "교체(Replacement) 전략: FIFO, LRU, LFU, OPT, NUR, SCR",
+        "내부 단편화: 할당된 영역 안에 남는 공간(고정 분할, 페이징). 외부 단편화: 할당 못 하는 작은 빈 공간(가변 분할, 세그먼테이션)",
+        "통합(Coalescing): 인접한 빈 공간 합침. 압축(Compaction, 집약): 모든 빈 공간을 한쪽으로 모음(가비지 컬렉션)",
+        "연속 할당: 단일 분할(오버레이, 스와핑), 다중 분할(고정 분할, 가변 분할). 분산 할당: 페이징, 세그먼테이션",
+        "기억장치 계층: 레지스터 > 캐시 > 주기억장치(RAM) > 보조기억장치(디스크) (속도·비용 ↓, 용량 ↑)",
+        "캐시 매핑: 직접 매핑(Direct), 연관 매핑(Associative), 집합 연관 매핑(Set Associative). 적중률(Hit Ratio)",
+        "연관 기억장치(Associative Memory, CAM): 내용으로 접근. 매핑 테이블(TLB)에 사용"
+      ],
+      "terms": [
+        {
+          "term": "최초 적합 (First Fit)",
+          "desc": "들어갈 수 있는 첫 번째 빈 공간에 배치. 빠름"
+        },
+        {
+          "term": "최적 적합 (Best Fit)",
+          "desc": "들어갈 수 있는 공간 중 단편화가 가장 적은(가장 작은) 곳"
+        },
+        {
+          "term": "최악 적합 (Worst Fit)",
+          "desc": "들어갈 수 있는 공간 중 가장 큰 곳. 큰 단편 남김"
+        },
+        {
+          "term": "내부 단편화 (Internal Fragmentation)",
+          "desc": "분할 영역보다 프로그램이 작아 남는 공간. 페이징에서 발생"
+        },
+        {
+          "term": "외부 단편화 (External Fragmentation)",
+          "desc": "분할 영역이 프로그램보다 작아 사용 못 하는 공간. 세그먼테이션에서 발생"
+        },
+        {
+          "term": "통합 (Coalescing)",
+          "desc": "서로 인접한 빈 공간을 하나로 합침"
+        },
+        {
+          "term": "압축 (Compaction, 집약)",
+          "desc": "흩어진 빈 공간을 한곳으로 모아 큰 공간 생성. 비용 큼"
+        },
+        {
+          "term": "오버레이 (Overlay)",
+          "desc": "프로그램을 조각으로 나눠 필요한 부분만 적재. 단일 분할"
+        },
+        {
+          "term": "스와핑 (Swapping)",
+          "desc": "프로세스 전체를 보조기억장치로 내보내고(swap-out) 다시 들여옴(swap-in)"
+        },
+        {
+          "term": "고정 분할 (Fixed Partition, 정적)",
+          "desc": "미리 크기를 나눔. 내부 단편화"
+        },
+        {
+          "term": "가변 분할 (Variable Partition, 동적)",
+          "desc": "프로그램 크기에 맞게 분할. 외부 단편화"
+        },
+        {
+          "term": "캐시 메모리 (Cache Memory)",
+          "desc": "CPU와 주기억장치 사이 고속 메모리. 참조 지역성 활용"
+        },
+        {
+          "term": "적중률 (Hit Ratio)",
+          "desc": "캐시에서 데이터를 찾은 비율. 평균 접근시간 = h*캐시 + (1-h)*메모리"
+        },
+        {
+          "term": "연관 기억장치 (Associative Memory, CAM)",
+          "desc": "주소 대신 내용으로 검색. 매핑 테이블 고속화"
+        }
+      ],
+      "asked": []
+    },
+    {
+      "title": "가상기억장치 (페이징/세그먼테이션)와 페이지 교체 계산",
+      "importance": 3,
+      "summary": "페이지 교체 알고리즘별 페이지 부재 횟수 계산이 빈출. FIFO/LRU/LFU/OPT를 표로 그려 푼다.",
+      "points": [
+        "가상기억장치: 보조기억장치 일부를 주기억장치처럼 사용. 주기억장치보다 큰 프로그램 실행. 매핑(주소 변환) 필요",
+        "페이징: 동일 크기 페이지(논리)와 프레임(물리). 내부 단편화. 페이지 테이블(페이지 번호→프레임 번호). 페이지 크기 작으면 단편화↓ 테이블↑",
+        "세그먼테이션: 논리적 크기가 다른 세그먼트. 외부 단편화. 세그먼트 테이블(기준 주소+길이). 보호·공유 용이",
+        "페이지 교체 알고리즘: FIFO(가장 오래 있던 것), LRU(가장 오랫동안 사용 안 한 것), LFU(사용 빈도 가장 적은 것), OPT(앞으로 가장 오래 사용 안 할 것, 이론적 최적), NUR(참조비트·변형비트 00 우선), MFU(사용 빈도 많은 것), SCR(2차 기회, FIFO+참조비트)",
+        "계산법: 프레임 수만큼 칸을 그리고 참조 순서대로 채움. 빈 칸이 있으면 부재(채움). 가득 차고 없으면 부재(교체). 있으면 적중(LRU는 최근 사용 갱신)",
+        "예제 (프레임 3, 참조 1 2 3 1 2 4 1 2 5): FIFO → 1,2,3 적재(부재3) / 1,2 적중 / 4가 1 교체 / 1이 2 교체 / 2가 3 교체 / 5가 4 교체 → 부재 7. LRU → 1,2,3 적재 / 1,2 적중 / 4가 3 교체 / 1,2 적중 / 5가 4 교체 → 부재 5",
+        "FIFO 부재 계산 예: 7 0 1 2 0 3 0 4 (프레임 3) → 7,0,1 부재 / 2(7교체) / 0 적중 / 3(0교체) / 0(1교체) / 4(2교체) → 부재 7",
+        "벨레이디 모순(Belady's Anomaly): FIFO에서 프레임 수를 늘려도 부재가 늘어나는 현상. LRU/OPT는 발생 안 함",
+        "NUR 참조비트/변형비트: (0,0) → (0,1) → (1,0) → (1,1) 순으로 교체 대상",
+        "페이지 부재(Page Fault): 참조 페이지가 주기억장치에 없음 → 보조기억장치에서 적재. 부재율 높으면 성능 저하"
+      ],
+      "terms": [
+        {
+          "term": "가상기억장치 (Virtual Memory)",
+          "desc": "주기억장치 용량 한계를 보조기억장치로 확장. 블록 단위 적재"
+        },
+        {
+          "term": "페이징 (Paging)",
+          "desc": "고정 크기 블록(페이지)으로 나눠 프레임에 적재. 내부 단편화"
+        },
+        {
+          "term": "세그먼테이션 (Segmentation)",
+          "desc": "가변 크기 논리 단위(세그먼트)로 나눔. 외부 단편화"
+        },
+        {
+          "term": "페이지 테이블 (Page Table)",
+          "desc": "페이지 번호 → 프레임 번호 매핑. 주소 변환"
+        },
+        {
+          "term": "TLB (Translation Look-aside Buffer)",
+          "desc": "페이지 테이블 캐시. 연관 기억장치 사용"
+        },
+        {
+          "term": "페이지 부재 (Page Fault)",
+          "desc": "요구 페이지가 메모리에 없는 상태"
+        },
+        {
+          "term": "FIFO (First In First Out)",
+          "desc": "가장 먼저 들어온 페이지 교체. 벨레이디 모순 발생"
+        },
+        {
+          "term": "LRU (Least Recently Used)",
+          "desc": "가장 오랫동안 사용되지 않은 페이지 교체. 카운터·스택 필요"
+        },
+        {
+          "term": "LFU (Least Frequently Used)",
+          "desc": "사용 횟수 가장 적은 페이지 교체"
+        },
+        {
+          "term": "OPT (Optimal, 최적 교체)",
+          "desc": "앞으로 가장 오랫동안 사용되지 않을 페이지 교체. 실현 불가, 비교 기준"
+        },
+        {
+          "term": "NUR (Not Used Recently)",
+          "desc": "참조 비트와 변형 비트로 최근 미사용 페이지 교체. LRU 근사"
+        },
+        {
+          "term": "SCR (Second Chance Replacement, 2차 기회)",
+          "desc": "FIFO + 참조비트 1이면 0으로 바꾸고 한 번 더 기회"
+        },
+        {
+          "term": "MFU (Most Frequently Used)",
+          "desc": "사용 빈도 가장 많은 페이지 교체"
+        },
+        {
+          "term": "벨레이디 모순 (Belady's Anomaly, FIFO Anomaly)",
+          "desc": "프레임을 늘렸는데 페이지 부재가 증가. FIFO에서 발생"
+        },
+        {
+          "term": "요구 페이징 (Demand Paging)",
+          "desc": "필요한 페이지만 참조 시점에 적재"
+        },
+        {
+          "term": "프리페이징 (Prepaging)",
+          "desc": "사용될 것으로 예상되는 페이지를 미리 적재"
+        }
+      ],
+      "asked": [
+        "2022-3",
+        "2023-2"
+      ]
+    },
+    {
+      "title": "스래싱·워킹셋·구역성",
+      "importance": 3,
+      "summary": "페이지 부재가 과도해 성능이 떨어지는 스래싱과 그 해결책(워킹셋, PFF), 근거가 되는 구역성.",
+      "points": [
+        "스래싱(Thrashing): 페이지 부재가 너무 자주 일어나 프로세스 수행보다 페이지 교체에 더 많은 시간을 소모하는 현상. 다중 프로그래밍 정도가 높을 때",
+        "스래싱 방지: 다중 프로그래밍 정도 줄임, 워킹 셋 유지, 페이지 부재 빈도(PFF) 조절, 충분한 프레임 할당",
+        "워킹 셋(Working Set, Denning): 프로세스가 일정 시간 동안 자주 참조하는 페이지들의 집합. 이를 주기억장치에 상주시켜 부재 감소",
+        "구역성(Locality, 지역성): 실행 중 일부 페이지만 집중 참조하는 성질. 워킹 셋의 이론적 근거, 캐시 적중률 근거",
+        "시간 구역성(Temporal): 최근 참조한 것을 다시 참조(반복, 서브루틴, 스택, 카운터). 공간 구역성(Spatial): 인접한 기억장소를 참조(배열 순회, 순차 코드)",
+        "PFF(Page Fault Frequency): 부재율이 상한 넘으면 프레임 추가, 하한 밑이면 회수",
+        "프리페이징, 페이지 크기 조정도 성능 요소"
+      ],
+      "terms": [
+        {
+          "term": "스래싱 (Thrashing)",
+          "desc": "과도한 페이지 부재로 CPU 이용률 급감, 교체 작업만 반복"
+        },
+        {
+          "term": "워킹 셋 (Working Set)",
+          "desc": "최근 일정 시간 창(Δ) 안에 참조된 페이지 집합. 상주시켜 스래싱 방지"
+        },
+        {
+          "term": "구역성 (Locality, 지역성/국부성)",
+          "desc": "프로세스가 기억장치의 일부만 집중적으로 참조하는 특성"
+        },
+        {
+          "term": "시간 구역성 (Temporal Locality)",
+          "desc": "최근 참조 위치를 곧 다시 참조. 루프, 스택, 서브루틴"
+        },
+        {
+          "term": "공간 구역성 (Spatial Locality)",
+          "desc": "참조 위치 근처를 곧 참조. 배열, 순차 실행"
+        },
+        {
+          "term": "PFF (Page Fault Frequency, 페이지 부재 빈도)",
+          "desc": "부재율 상·하한으로 프레임 할당량 동적 조정"
+        },
+        {
+          "term": "다중 프로그래밍 정도 (Degree of Multiprogramming)",
+          "desc": "메모리에 동시에 올라간 프로세스 수. 너무 높으면 스래싱"
+        },
+        {
+          "term": "페이지 부재율 (Page Fault Rate)",
+          "desc": "페이지 참조 중 부재 비율. 스래싱 지표"
+        }
+      ],
+      "asked": []
+    },
+    {
+      "title": "디스크 스케줄링과 파일 시스템",
+      "importance": 2,
+      "summary": "디스크 헤드 이동 거리 계산(FCFS/SSTF/SCAN/C-SCAN/LOOK)과 파일 시스템·디스크 구조 용어.",
+      "points": [
+        "디스크 접근 시간 = 탐색 시간(Seek, 트랙 이동) + 회전 지연(Latency, 섹터 도달) + 전송 시간(Transfer)",
+        "FCFS: 요청 순서. SSTF: 현재 헤드에서 가장 가까운 트랙 먼저(기아 가능). SCAN(엘리베이터): 한 방향 끝까지 가며 처리 후 반대로. C-SCAN: 한 방향만 처리, 끝에서 처음으로 점프. LOOK/C-LOOK: 요청 있는 마지막 트랙까지만",
+        "N-step SCAN: 큐를 N개씩 묶어 처리. 에센바흐(Eschenbach): 부하가 큰 항공 예약 시스템용. SLTF: 회전 지연 최적화",
+        "이동 거리 계산 예 (헤드 53, 요청 98 183 37 122 14 124 65 67): FCFS = 45+85+146+85+108+110+59+2 = 640. SSTF = 65,67,37,14,98,122,124,183 → 236",
+        "SCAN 계산: 진행 방향으로 끝(0 또는 199)까지 간 뒤 반대. LOOK은 끝까지 가지 않고 마지막 요청에서 방향 전환",
+        "RAID: 0 스트라이핑(성능, 복구 불가), 1 미러링(복제), 2 해밍 코드, 3 바이트 패리티(전용 디스크), 4 블록 패리티(전용 디스크), 5 분산 패리티(디스크 1개 장애 허용, 최소 3개), 6 이중 분산 패리티(2개 장애 허용, 최소 4개), 0+1/1+0(10)",
+        "파일 시스템: FAT16/FAT32(단순, 4GB 파일 제한), NTFS(윈도우, 저널링·보안·압축), ext2/ext3/ext4(리눅스, ext3부터 저널링), XFS, HFS+/APFS(macOS), UFS(유닉스)",
+        "유닉스 파일 시스템 구조: 부트 블록, 슈퍼 블록(파일 시스템 정보), i-node 블록(파일 메타데이터: 소유자·크기·권한·시간·블록 주소), 데이터 블록",
+        "디스크 할당: 연속 할당, 연결 할당, 색인(indexed) 할당(i-node)",
+        "저널링(Journaling): 변경 사항을 로그에 먼저 기록해 장애 시 빠른 복구"
+      ],
+      "terms": [
+        {
+          "term": "FCFS (디스크)",
+          "desc": "요청 순서대로 헤드 이동. 공평하나 이동 거리 큼"
+        },
+        {
+          "term": "SSTF (Shortest Seek Time First)",
+          "desc": "현재 위치에서 탐색 시간 최소(가장 가까운) 요청 먼저. 안쪽/바깥쪽 기아"
+        },
+        {
+          "term": "SCAN (엘리베이터 알고리즘)",
+          "desc": "한 방향으로 끝까지 이동하며 처리, 끝에서 방향 전환"
+        },
+        {
+          "term": "C-SCAN (Circular SCAN)",
+          "desc": "한 방향으로만 처리, 끝에 도달하면 반대쪽 끝으로 즉시 이동(처리 없이)"
+        },
+        {
+          "term": "LOOK / C-LOOK",
+          "desc": "SCAN/C-SCAN에서 요청이 있는 마지막 트랙까지만 이동"
+        },
+        {
+          "term": "N-step SCAN",
+          "desc": "SCAN 중 들어온 요청은 다음 회차에 처리. 요청 큐 분할"
+        },
+        {
+          "term": "에션바흐 기법 (Eschenbach Scheme)",
+          "desc": "탐색시간과 회전지연 모두 최적화. 항공 예약 시스템"
+        },
+        {
+          "term": "SLTF (Shortest Latency Time First)",
+          "desc": "회전 지연 시간이 가장 짧은 요청 먼저. 섹터 큐잉"
+        },
+        {
+          "term": "탐색 시간 (Seek Time)",
+          "desc": "헤드가 원하는 트랙(실린더)까지 이동하는 시간"
+        },
+        {
+          "term": "회전 지연 시간 (Latency Time, Rotational Delay)",
+          "desc": "원하는 섹터가 헤드 아래 도달하는 시간"
+        },
+        {
+          "term": "RAID (Redundant Array of Independent Disks)",
+          "desc": "여러 디스크를 묶어 성능·안정성 향상"
+        },
+        {
+          "term": "RAID 0 (Striping)",
+          "desc": "데이터 분산 저장. 성능 최고, 장애 시 전체 손실"
+        },
+        {
+          "term": "RAID 1 (Mirroring)",
+          "desc": "동일 데이터를 두 디스크에 복제. 용량 50%"
+        },
+        {
+          "term": "RAID 5 (Distributed Parity)",
+          "desc": "패리티를 모든 디스크에 분산. 1개 디스크 장애 복구. 최소 3개"
+        },
+        {
+          "term": "RAID 6 (Dual Parity)",
+          "desc": "패리티 2개 분산. 2개 디스크 장애 복구. 최소 4개"
+        },
+        {
+          "term": "RAID 10 (1+0)",
+          "desc": "미러링 후 스트라이핑. 성능+안정성"
+        },
+        {
+          "term": "i-node (index node)",
+          "desc": "유닉스 파일 메타데이터 구조. 파일명은 디렉터리에, 나머지 정보는 i-node에"
+        },
+        {
+          "term": "슈퍼 블록 (Super Block)",
+          "desc": "파일 시스템 전체 정보(크기, 블록 수, i-node 수)"
+        },
+        {
+          "term": "FAT (File Allocation Table)",
+          "desc": "MS 초기 파일 시스템. FAT32는 4GB 파일 제한"
+        },
+        {
+          "term": "NTFS (New Technology File System)",
+          "desc": "윈도우 NT 계열. 저널링, ACL 보안, 압축, 암호화(EFS)"
+        },
+        {
+          "term": "ext4 (Fourth Extended File System)",
+          "desc": "리눅스 기본. 저널링, 대용량, 익스텐트"
+        },
+        {
+          "term": "저널링 파일 시스템 (Journaling File System)",
+          "desc": "변경 전 로그 기록으로 장애 복구 시간 단축. NTFS, ext3/4, XFS"
+        }
+      ],
+      "asked": [
+        "2022-2"
+      ]
+    },
+    {
+      "title": "리눅스/유닉스 명령어와 chmod 권한 계산",
+      "importance": 3,
+      "summary": "chmod 숫자 계산(rwx = 4 2 1), umask, 기본 명령어 역할. 계산형 단답으로 매년 나온다.",
+      "points": [
+        "권한 표기: 소유자(u) / 그룹(g) / 기타(o) 각 rwx. r=4, w=2, x=1. rwxr-xr-x = 755, rw-r--r-- = 644, rwx------ = 700, rwxr-x--x = 751",
+        "ls -l 첫 글자: - 일반 파일, d 디렉터리, l 심볼릭 링크, c 문자 장치, b 블록 장치. 예: -rwxr-x--x → chmod 751",
+        "chmod 기호 모드: chmod u+x file, chmod g-w file, chmod o=r file, chmod a+r (모두). chmod -R 재귀",
+        "umask: 기본 권한에서 뺄 비트. 파일 기본 666, 디렉터리 777. umask 022 → 파일 644, 디렉터리 755. umask 027 → 파일 640, 디렉터리 750",
+        "특수 권한: SetUID 4000(s, 실행 시 소유자 권한), SetGID 2000, Sticky bit 1000(t, /tmp, 소유자만 삭제). chmod 4755",
+        "파일/디렉터리: ls, cd, pwd, mkdir, rmdir, rm -rf, cp, mv, cat, more/less, head/tail, touch, find, grep, ln(-s 심볼릭), chown(소유자 변경), chgrp, df(디스크 여유), du(사용량)",
+        "프로세스: ps(-ef 전체), top, kill -9 PID(강제 종료), killall, jobs, fg/bg, & (백그라운드), nohup, nice(우선순위)",
+        "시스템: uname -a, who, whoami, id, su, sudo, passwd, useradd/adduser, userdel, groupadd, shutdown, reboot, date, cal, uptime, free, mount/umount, fdisk, fsck(파일시스템 검사)",
+        "네트워크: ifconfig/ip, ping, netstat, ss, traceroute, nslookup/dig, route, ssh, scp, wget/curl, arp",
+        "리다이렉션·파이프: > 덮어쓰기, >> 추가, < 입력, 2> 에러, | 파이프. ls -l | grep txt > out.txt",
+        "환경변수: $PATH, $HOME, export, env, echo $변수. 셸 스크립트 #!/bin/bash, chmod +x script.sh, ./script.sh",
+        "윈도우 명령: dir, cd, copy, move, del, type, ipconfig, tasklist, taskkill, attrib, chkdsk, netstat, tracert, nslookup, systeminfo, regedit",
+        "유닉스 특징: 다중 사용자·다중 작업, 트리 구조 파일 시스템, 대부분 C로 작성(이식성), 계층적 파일 시스템, 셸·커널 구조. 리눅스: 리누스 토발즈, GPL 오픈소스, 유닉스 호환. 안드로이드: 리눅스 커널 기반 모바일 OS, Java/Kotlin"
+      ],
+      "terms": [
+        {
+          "term": "chmod (Change Mode)",
+          "desc": "파일 권한 변경. 숫자(755) 또는 기호(u+x) 모드"
+        },
+        {
+          "term": "chown (Change Owner)",
+          "desc": "파일 소유자(및 그룹) 변경. chown user:group file"
+        },
+        {
+          "term": "chgrp (Change Group)",
+          "desc": "파일 그룹 변경"
+        },
+        {
+          "term": "umask",
+          "desc": "새 파일·디렉터리 기본 권한에서 제거할 권한 마스크. 파일 666-umask, 디렉터리 777-umask"
+        },
+        {
+          "term": "SetUID / SetGID",
+          "desc": "실행 시 파일 소유자/그룹 권한으로 실행. 권한 자리에 s 표시. passwd 명령"
+        },
+        {
+          "term": "Sticky Bit",
+          "desc": "디렉터리에 설정 시 파일 소유자만 삭제 가능. t 표시. /tmp"
+        },
+        {
+          "term": "ls -l (list)",
+          "desc": "권한, 링크 수, 소유자, 그룹, 크기, 수정일, 이름 표시. -a 숨김 파일"
+        },
+        {
+          "term": "ps (Process Status)",
+          "desc": "실행 중 프로세스 표시. ps -ef, ps aux"
+        },
+        {
+          "term": "kill",
+          "desc": "프로세스에 시그널 전송. kill -9(SIGKILL 강제), kill -15(SIGTERM 정상 종료, 기본)"
+        },
+        {
+          "term": "top",
+          "desc": "실시간 프로세스·CPU·메모리 모니터링"
+        },
+        {
+          "term": "grep (Global Regular Expression Print)",
+          "desc": "패턴 검색. -i 대소문자 무시, -r 재귀, -n 줄번호, -v 제외"
+        },
+        {
+          "term": "find",
+          "desc": "파일 검색. find / -name '*.log' -size +10M"
+        },
+        {
+          "term": "cat / head / tail / more / less",
+          "desc": "파일 전체 / 앞 10줄 / 뒤 10줄(-f 실시간) / 페이지 단위 보기"
+        },
+        {
+          "term": "ln -s (Symbolic Link)",
+          "desc": "심볼릭(소프트) 링크 생성. 하드 링크는 ln (같은 i-node)"
+        },
+        {
+          "term": "df / du (Disk Free / Disk Usage)",
+          "desc": "파일시스템 여유 공간 / 디렉터리 사용량. -h 사람이 읽기 쉽게"
+        },
+        {
+          "term": "fsck (File System Check)",
+          "desc": "파일 시스템 무결성 검사·복구"
+        },
+        {
+          "term": "mount / umount",
+          "desc": "파일 시스템을 디렉터리에 연결 / 해제"
+        },
+        {
+          "term": "uname -a",
+          "desc": "커널 이름·버전·호스트 등 시스템 정보"
+        },
+        {
+          "term": "who / w / whoami / id",
+          "desc": "로그인 사용자 / 사용자 활동 / 현재 사용자 / UID·GID"
+        },
+        {
+          "term": "su / sudo",
+          "desc": "사용자 전환(root) / 관리자 권한으로 명령 실행"
+        },
+        {
+          "term": "리다이렉션 (Redirection, >, >>, <, 2>)",
+          "desc": "표준 입출력 방향 변경. 2>&1 은 에러를 표준출력으로"
+        },
+        {
+          "term": "파이프 (Pipe, |)",
+          "desc": "앞 명령 출력을 뒤 명령 입력으로 연결"
+        },
+        {
+          "term": "nohup / & / bg / fg",
+          "desc": "로그아웃 후에도 실행 / 백그라운드 실행 / 백그라운드 전환 / 포그라운드 전환"
+        },
+        {
+          "term": "cron / crontab",
+          "desc": "주기적 작업 예약. 분 시 일 월 요일 명령"
+        },
+        {
+          "term": "tar / gzip",
+          "desc": "아카이브(tar -cvf, -xvf) / 압축(tar -zcvf *.tar.gz)"
+        },
+        {
+          "term": "vi 편집기",
+          "desc": "i 입력, Esc 명령 모드, :w 저장, :q 종료, :wq 저장 후 종료, :q! 강제 종료, dd 줄 삭제, yy 복사, p 붙이기, /검색"
+        },
+        {
+          "term": "커널 (리눅스)",
+          "desc": "리누스 토발즈 1991. 모놀리식 커널. GPL"
+        },
+        {
+          "term": "GNU / GPL",
+          "desc": "GNU 프로젝트 자유 소프트웨어 / GNU 일반 공중 사용 허가서(카피레프트)"
+        }
+      ],
+      "asked": [
+        "2020-3",
+        "2022-1",
+        "2023-1"
+      ]
+    },
+    {
+      "title": "OSI 7계층과 계층별 프로토콜·장비·PDU",
+      "importance": 3,
+      "summary": "7계층의 이름·역할·PDU·장비·프로토콜. 계층 이름을 빈칸으로 묻거나 특정 프로토콜의 계층을 단답으로 묻는다.",
+      "points": [
+        "7 응용(Application): 사용자 인터페이스. HTTP, FTP, SMTP, POP3, IMAP, DNS, Telnet, SSH, SNMP, DHCP. PDU 데이터(메시지)",
+        "6 표현(Presentation): 데이터 형식 변환, 암호화/복호화, 압축, 인코딩. JPEG, MPEG, ASCII, SSL(일부 분류)",
+        "5 세션(Session): 송수신 간 대화(세션) 설정·유지·종료, 동기화(동기점), 대화 제어. NetBIOS, RPC, SSH(일부 분류)",
+        "4 전송(Transport): 종단 간(End-to-End) 신뢰성 있는 전송, 오류 제어·흐름 제어, 포트 주소. TCP, UDP. PDU 세그먼트(TCP)/데이터그램(UDP). 장비 게이트웨이",
+        "3 네트워크(Network): 경로 설정(라우팅), 논리 주소(IP), 패킷 전달, 혼잡 제어. IP, ICMP, IGMP, ARP, RARP, 라우팅 프로토콜. PDU 패킷. 장비 라우터, L3 스위치",
+        "2 데이터링크(Data Link): 인접 노드 간 신뢰성 전송, 물리 주소(MAC), 흐름·오류 제어(CRC), 프레임 동기화. HDLC, PPP, Ethernet(IEEE 802.3), LLC/MAC, Frame Relay, ATM. PDU 프레임. 장비 스위치(L2), 브리지, NIC",
+        "1 물리(Physical): 비트 전송, 전기적·기계적 특성, 전송 매체. RS-232C, X.21, 케이블. PDU 비트. 장비 허브, 리피터, 케이블",
+        "암기(하→상): 물데네전세표응. PDU: 비트-프레임-패킷-세그먼트-데이터",
+        "TCP/IP 4계층 매핑: 네트워크 액세스(물리+데이터링크) / 인터넷(네트워크) / 전송 / 응용(세션+표현+응용)",
+        "캡슐화(Encapsulation): 상위→하위로 내려갈 때 헤더 추가. 역캡슐화는 수신 측에서 제거",
+        "프로토콜 기본 요소 3가지: 구문(Syntax, 데이터 형식·부호화), 의미(Semantics, 제어 정보·오류 처리), 시간(Timing, 순서·속도 조절)"
+      ],
+      "terms": [
+        {
+          "term": "응용 계층 (Application Layer)",
+          "desc": "7계층. 사용자에게 네트워크 서비스 제공. HTTP, FTP, SMTP, DNS"
+        },
+        {
+          "term": "표현 계층 (Presentation Layer)",
+          "desc": "6계층. 데이터 표현 형식 변환, 암호화, 압축"
+        },
+        {
+          "term": "세션 계층 (Session Layer)",
+          "desc": "5계층. 대화 설정·유지·종료, 동기화, 체크포인트"
+        },
+        {
+          "term": "전송 계층 (Transport Layer)",
+          "desc": "4계층. 종단 간 신뢰성, 포트 번호, 분할·재조립. TCP/UDP"
+        },
+        {
+          "term": "네트워크 계층 (Network Layer)",
+          "desc": "3계층. 라우팅, IP 주소 지정, 패킷 전달"
+        },
+        {
+          "term": "데이터링크 계층 (Data Link Layer)",
+          "desc": "2계층. MAC 주소, 프레임, 인접 노드 간 오류·흐름 제어"
+        },
+        {
+          "term": "물리 계층 (Physical Layer)",
+          "desc": "1계층. 비트 전송의 전기·기계·기능적 특성"
+        },
+        {
+          "term": "PDU (Protocol Data Unit)",
+          "desc": "계층별 데이터 단위. 비트, 프레임, 패킷, 세그먼트, 데이터"
+        },
+        {
+          "term": "리피터 (Repeater)",
+          "desc": "1계층. 신호 증폭·재생"
+        },
+        {
+          "term": "허브 (Hub)",
+          "desc": "1계층. 모든 포트로 신호 전달(브로드캐스트). 더미 허브, 스위칭 허브"
+        },
+        {
+          "term": "브리지 (Bridge)",
+          "desc": "2계층. 두 LAN 세그먼트 연결, MAC 기반 필터링"
+        },
+        {
+          "term": "스위치 (Switch)",
+          "desc": "2계층. MAC 주소 테이블로 해당 포트에만 전송. L3/L4/L7 스위치도 존재"
+        },
+        {
+          "term": "라우터 (Router)",
+          "desc": "3계층. IP 기반 경로 설정, 서로 다른 네트워크 연결"
+        },
+        {
+          "term": "게이트웨이 (Gateway)",
+          "desc": "서로 다른 프로토콜·네트워크 연결. 전 계층(주로 4계층 이상)"
+        },
+        {
+          "term": "NIC (Network Interface Card, LAN 카드)",
+          "desc": "MAC 주소를 가진 네트워크 인터페이스. 2계층"
+        },
+        {
+          "term": "MAC 주소 (Media Access Control Address)",
+          "desc": "48비트(6바이트) 물리 주소. 앞 24비트 제조사(OUI). 00:1A:2B:3C:4D:5E"
+        },
+        {
+          "term": "HDLC (High-level Data Link Control)",
+          "desc": "비트 지향 데이터링크 프로토콜. 플래그 01111110, 정보·감독·비번호 프레임"
+        },
+        {
+          "term": "PPP (Point-to-Point Protocol)",
+          "desc": "점대점 데이터링크 프로토콜. 전화선 인터넷, 인증(PAP/CHAP)"
+        },
+        {
+          "term": "LLC / MAC (Logical Link Control / Media Access Control)",
+          "desc": "데이터링크 상위(흐름·오류) / 하위(매체 접근 제어) 부계층"
+        },
+        {
+          "term": "CSMA/CD (Carrier Sense Multiple Access / Collision Detection)",
+          "desc": "이더넷 매체 접근 방식. 충돌 감지 후 재전송. IEEE 802.3"
+        },
+        {
+          "term": "CSMA/CA (Collision Avoidance)",
+          "desc": "무선 LAN(IEEE 802.11) 매체 접근. 충돌 회피"
+        },
+        {
+          "term": "토큰 링 / 토큰 버스 (Token Ring / Token Bus)",
+          "desc": "토큰을 가진 노드만 전송. IEEE 802.5 / 802.4"
+        },
+        {
+          "term": "IEEE 802 표준",
+          "desc": "802.3 이더넷(CSMA/CD), 802.11 무선 LAN(Wi-Fi), 802.15 WPAN(블루투스 802.15.1, 지그비 802.15.4), 802.16 WiMAX, 802.1Q VLAN"
+        },
+        {
+          "term": "캡슐화 (Encapsulation)",
+          "desc": "하위 계층으로 내려갈 때 헤더(트레일러)를 덧붙임"
+        },
+        {
+          "term": "프로토콜 기본 요소 (구문/의미/시간)",
+          "desc": "Syntax 형식, Semantics 의미·제어, Timing 순서·속도"
+        }
+      ],
+      "asked": [
+        "2020-1",
+        "2021-3",
+        "2024-2"
+      ]
+    },
+    {
+      "title": "IP 주소·서브네팅·CIDR 계산",
+      "importance": 3,
+      "summary": "클래스별 범위, 서브넷 마스크로 네트워크/브로드캐스트 주소와 호스트 수 계산, FLSM/VLSM. 계산형 단답 빈출.",
+      "points": [
+        "IPv4 32비트, 8비트씩 4옥텟. 클래스: A 0~127(/8, 0xxx, 호스트 2^24-2), B 128~191(/16, 10xx), C 192~223(/24, 110x, 호스트 254), D 224~239(멀티캐스트), E 240~255(실험용)",
+        "특수 주소: 0.0.0.0(기본), 127.0.0.1(루프백), 사설 IP A 10.0.0.0/8, B 172.16.0.0~172.31.255.255(/12), C 192.168.0.0/16. 255.255.255.255 제한 브로드캐스트. 169.254.x.x APIPA",
+        "서브넷 마스크: 네트워크 부분 1, 호스트 부분 0. /24 = 255.255.255.0, /25 = .128, /26 = .192, /27 = .224, /28 = .240, /29 = .248, /30 = .252",
+        "호스트 수 = 2^(호스트 비트) - 2 (네트워크 주소·브로드캐스트 제외). /26 → 2^6-2 = 62대. /27 → 30, /28 → 14, /29 → 6, /30 → 2",
+        "서브넷 개수 = 2^(빌려온 비트). /24를 /26으로 → 4개 서브넷, 각 64개 주소(0~63, 64~127, 128~191, 192~255)",
+        "네트워크 주소 = IP AND 마스크. 브로드캐스트 = 네트워크 주소 + 블록크기 - 1 (호스트 비트 모두 1). 예: 192.168.1.132/27 → 블록 32, 132/32=4.x → 네트워크 192.168.1.128, 브로드캐스트 .159, 사용 가능 .129~.158",
+        "FLSM(고정 길이): 모든 서브넷 같은 크기. 예: 200.1.1.0/24를 10개 서브넷으로 → 2^4=16 ≥ 10이므로 4비트 → /28, 블록 16. 10번째 서브넷 = 200.1.1.144~.159, 브로드캐스트 200.1.1.159",
+        "VLSM(가변 길이): 서브넷마다 다른 크기. 큰 요구부터 할당",
+        "CIDR(Classless Inter-Domain Routing): 클래스 무시, /프리픽스 표기. 슈퍼네팅(여러 네트워크를 하나로 집약). 192.168.0.0/22 = 192.168.0.0~192.168.3.255",
+        "IP 헤더 주요 필드: 버전, 헤더 길이, TTL(라우터 거칠 때마다 -1, 0이면 폐기), 프로토콜(TCP 6, UDP 17, ICMP 1), 출발지/목적지 주소, 식별자·플래그·단편 오프셋(단편화), 체크섬(헤더만). 기본 헤더 20바이트, 최대 60"
+      ],
+      "terms": [
+        {
+          "term": "IPv4 (Internet Protocol version 4)",
+          "desc": "32비트 주소, 약 43억 개. 점-10진 표기. 비연결형, 비신뢰성"
+        },
+        {
+          "term": "A 클래스 (Class A)",
+          "desc": "첫 옥텟 0~127, 기본 마스크 /8(255.0.0.0). 대규모 네트워크"
+        },
+        {
+          "term": "B 클래스 (Class B)",
+          "desc": "128~191, /16(255.255.0.0). 중규모"
+        },
+        {
+          "term": "C 클래스 (Class C)",
+          "desc": "192~223, /24(255.255.255.0). 소규모, 호스트 254대"
+        },
+        {
+          "term": "D 클래스 (Class D)",
+          "desc": "224~239. 멀티캐스트 전용"
+        },
+        {
+          "term": "E 클래스 (Class E)",
+          "desc": "240~255. 실험·예약"
+        },
+        {
+          "term": "서브넷 마스크 (Subnet Mask)",
+          "desc": "IP에서 네트워크 부분을 구분하는 32비트 값"
+        },
+        {
+          "term": "서브네팅 (Subnetting)",
+          "desc": "하나의 네트워크를 여러 작은 서브넷으로 분할. 호스트 비트를 빌림"
+        },
+        {
+          "term": "슈퍼네팅 (Supernetting)",
+          "desc": "여러 네트워크를 하나로 집약(라우팅 테이블 축소). CIDR"
+        },
+        {
+          "term": "CIDR (Classless Inter-Domain Routing)",
+          "desc": "클래스 없이 프리픽스 길이(/n)로 네트워크 표기"
+        },
+        {
+          "term": "FLSM (Fixed Length Subnet Mask)",
+          "desc": "모든 서브넷이 동일한 마스크 길이"
+        },
+        {
+          "term": "VLSM (Variable Length Subnet Mask)",
+          "desc": "서브넷별로 다른 마스크 길이. 주소 낭비 감소"
+        },
+        {
+          "term": "네트워크 주소 (Network Address)",
+          "desc": "호스트 비트가 모두 0. 서브넷 식별, 할당 불가"
+        },
+        {
+          "term": "브로드캐스트 주소 (Broadcast Address)",
+          "desc": "호스트 비트가 모두 1. 서브넷 전체에 전송, 할당 불가"
+        },
+        {
+          "term": "사설 IP (Private IP)",
+          "desc": "10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. 인터넷에서 라우팅 안 됨. NAT로 변환"
+        },
+        {
+          "term": "공인 IP (Public IP)",
+          "desc": "인터넷에서 유일한 주소. ISP·IANA 할당"
+        },
+        {
+          "term": "루프백 주소 (Loopback)",
+          "desc": "127.0.0.1 (IPv4), ::1 (IPv6). 자기 자신"
+        },
+        {
+          "term": "TTL (Time To Live)",
+          "desc": "IP 헤더 필드. 라우터 통과 시 1 감소, 0이면 폐기. 무한 순환 방지"
+        },
+        {
+          "term": "단편화 (Fragmentation)",
+          "desc": "MTU보다 큰 패킷을 나눔. 식별자·플래그(DF/MF)·오프셋 필드"
+        },
+        {
+          "term": "MTU (Maximum Transmission Unit)",
+          "desc": "한 번에 전송 가능한 최대 데이터 크기. 이더넷 1500바이트"
+        },
+        {
+          "term": "유니캐스트 / 브로드캐스트 / 멀티캐스트 / 애니캐스트",
+          "desc": "1:1 / 1:전체 / 1:그룹 / 1:가장 가까운 하나(IPv6)"
+        }
+      ],
+      "asked": [
+        "2020-3",
+        "2022-1",
+        "2023-2",
+        "2024-3"
+      ]
+    },
+    {
+      "title": "IPv6와 IPv4→IPv6 전환 기술",
+      "importance": 3,
+      "summary": "IPv6 주소 체계·특징과 IPv4 비교, 전환 기술 3가지(듀얼 스택/터널링/주소 변환). 빈칸 빈출.",
+      "points": [
+        "IPv6: 128비트, 16비트씩 8개 필드를 콜론(:)으로 구분, 16진수 표기. 2001:0db8:0000:0000:0000:ff00:0042:8329. 앞의 0 생략, 연속된 0 필드는 :: 로 한 번만 축약",
+        "IPv6 특징: 주소 공간 확대(2^128), 헤더 단순화(기본 40바이트 고정, 확장 헤더), 인증·보안(IPSec 기본 내장), QoS(플로우 레이블), 자동 주소 설정(Plug & Play, SLAAC), 체크섬 제거, 단편화는 송신자만, 브로드캐스트 없음",
+        "IPv6 주소 유형 3가지: 유니캐스트(1:1), 멀티캐스트(1:그룹, FF00::/8), 애니캐스트(1:가장 가까운 하나). 브로드캐스트 없음(멀티캐스트로 대체)",
+        "IPv4 vs IPv6: 32비트 vs 128비트 / 점-10진 vs 콜론-16진 / 클래스 vs 클래스 없음 / 헤더 가변 20~60 vs 고정 40 / 브로드캐스트 있음 vs 애니캐스트 / 보안 선택(IPSec) vs 기본 / 수동·DHCP vs 자동 설정 / 체크섬 있음 vs 없음 / TTL vs Hop Limit",
+        "전환 기술: 듀얼 스택(Dual Stack, 호스트에 IPv4·IPv6 모두 탑재), 터널링(Tunneling, IPv6 패킷을 IPv4 패킷으로 캡슐화해 IPv4망 통과. 6to4, ISATAP, Teredo), 주소 변환(Header Translation, NAT-PT/NAT64로 헤더 변환)",
+        "IPv6 헤더 필드: 버전, 트래픽 클래스, 플로우 레이블, 페이로드 길이, 다음 헤더, 홉 제한(Hop Limit), 출발지/목적지 주소",
+        "IPv6 유니캐스트 종류: 글로벌(2000::/3), 링크 로컬(FE80::/10), 고유 로컬(FC00::/7), 루프백 ::1"
+      ],
+      "terms": [
+        {
+          "term": "IPv6 (Internet Protocol version 6)",
+          "desc": "128비트 주소 체계. IPv4 주소 고갈 해결"
+        },
+        {
+          "term": "듀얼 스택 (Dual Stack)",
+          "desc": "장비가 IPv4와 IPv6 프로토콜을 동시에 지원. 상대에 따라 선택"
+        },
+        {
+          "term": "터널링 (Tunneling)",
+          "desc": "IPv6 패킷을 IPv4 패킷 안에 캡슐화해 IPv4 네트워크 통과. 6to4, ISATAP, Teredo"
+        },
+        {
+          "term": "주소 변환 (Address/Header Translation)",
+          "desc": "IPv4 ↔ IPv6 헤더를 변환하는 장비(NAT-PT, NAT64) 경유"
+        },
+        {
+          "term": "6to4",
+          "desc": "IPv4 주소를 포함한 2002::/16 IPv6 주소를 사용하는 자동 터널링"
+        },
+        {
+          "term": "ISATAP (Intra-Site Automatic Tunnel Addressing Protocol)",
+          "desc": "사이트 내부에서 IPv4 망을 통한 IPv6 자동 터널링"
+        },
+        {
+          "term": "Teredo",
+          "desc": "NAT 뒤에서 UDP로 IPv6 터널링. MS"
+        },
+        {
+          "term": "유니캐스트 (Unicast)",
+          "desc": "단일 송신자 → 단일 수신자"
+        },
+        {
+          "term": "멀티캐스트 (Multicast)",
+          "desc": "단일 송신자 → 그룹 수신자. IPv6 FF00::/8"
+        },
+        {
+          "term": "애니캐스트 (Anycast)",
+          "desc": "단일 송신자 → 가장 가까운(토폴로지상) 수신자 하나. IPv6 신설"
+        },
+        {
+          "term": "홉 제한 (Hop Limit)",
+          "desc": "IPv6에서 IPv4의 TTL에 해당"
+        },
+        {
+          "term": "플로우 레이블 (Flow Label)",
+          "desc": "IPv6 QoS를 위한 흐름 식별 필드"
+        },
+        {
+          "term": "SLAAC (Stateless Address Autoconfiguration)",
+          "desc": "IPv6 호스트가 라우터 광고로 주소를 스스로 생성"
+        },
+        {
+          "term": "링크 로컬 주소 (Link-Local, FE80::/10)",
+          "desc": "같은 링크 안에서만 유효한 IPv6 주소. 자동 생성"
+        },
+        {
+          "term": "EUI-64",
+          "desc": "48비트 MAC을 64비트 인터페이스 ID로 확장. FFFE 삽입"
+        },
+        {
+          "term": "NAT64 / NAT-PT",
+          "desc": "IPv6 전용 호스트와 IPv4 서버 간 주소·프로토콜 변환"
+        }
+      ],
+      "asked": [
+        "2020-2",
+        "2021-1"
+      ]
+    },
+    {
+      "title": "TCP vs UDP·전송 계층 제어",
+      "importance": 3,
+      "summary": "TCP·UDP 특징 비교와 헤더 필드, 3-way handshake, 흐름·오류·혼잡 제어 기법.",
+      "points": [
+        "TCP: 연결형(3-way handshake), 신뢰성(순서 보장, 재전송, ACK), 흐름 제어(슬라이딩 윈도우), 혼잡 제어, 전이중, 헤더 20~60바이트, 세그먼트. HTTP, FTP, SMTP, Telnet, SSH",
+        "UDP: 비연결형, 비신뢰성(순서·재전송 없음), 헤더 8바이트(출발지 포트, 목적지 포트, 길이, 체크섬), 빠름, 실시간·브로드캐스트. DNS, DHCP, SNMP, TFTP, RTP, 스트리밍, VoIP",
+        "TCP 헤더 필드: 출발지/목적지 포트(16비트씩), 순서 번호(Sequence Number), 확인 응답 번호(Acknowledgment Number), 헤더 길이, 플래그(URG, ACK, PSH, RST, SYN, FIN), 윈도우 크기, 체크섬, 긴급 포인터",
+        "3-way handshake: SYN → SYN+ACK → ACK (연결). 4-way handshake: FIN → ACK → FIN → ACK (종료)",
+        "흐름 제어(Flow Control): 수신 측 처리 속도에 맞춤. 정지-대기(Stop-and-Wait, 1개씩), 슬라이딩 윈도우(윈도우 크기만큼 연속 전송, ACK 없이)",
+        "오류 제어(Error Control): 검출 - 패리티, CRC(순환 중복 검사, 다항식), 체크섬, 해밍 코드(검출+정정). ARQ 재전송 - Stop-and-Wait ARQ, Go-Back-N ARQ(오류 프레임 이후 전부 재전송), Selective Repeat ARQ(오류 프레임만), Adaptive ARQ(길이 동적 변경)",
+        "혼잡 제어(Congestion Control): 네트워크 혼잡 방지. 슬로우 스타트(Slow Start, 지수 증가), 혼잡 회피(Congestion Avoidance, 선형 증가), 빠른 재전송(Fast Retransmit, 중복 ACK 3개), 빠른 회복(Fast Recovery). AIMD",
+        "포트 번호: 0~1023 Well-known, 1024~49151 Registered, 49152~65535 Dynamic/Private",
+        "소켓(Socket) = IP 주소 + 포트 번호. 종단점 식별"
+      ],
+      "terms": [
+        {
+          "term": "TCP (Transmission Control Protocol)",
+          "desc": "연결형, 신뢰성, 순서 보장, 흐름·혼잡 제어. 세그먼트"
+        },
+        {
+          "term": "UDP (User Datagram Protocol)",
+          "desc": "비연결형, 비신뢰성, 빠름, 헤더 8바이트. 데이터그램"
+        },
+        {
+          "term": "3-way Handshake",
+          "desc": "TCP 연결 설정. SYN → SYN+ACK → ACK"
+        },
+        {
+          "term": "4-way Handshake",
+          "desc": "TCP 연결 종료. FIN → ACK → FIN → ACK"
+        },
+        {
+          "term": "순서 번호 (Sequence Number)",
+          "desc": "세그먼트 데이터의 바이트 순서. 재조립·중복 검출"
+        },
+        {
+          "term": "확인 응답 (ACK, Acknowledgment)",
+          "desc": "수신 확인. 다음에 받을 바이트 번호"
+        },
+        {
+          "term": "윈도우 크기 (Window Size)",
+          "desc": "수신 측이 받을 수 있는 버퍼 크기. 흐름 제어"
+        },
+        {
+          "term": "흐름 제어 (Flow Control)",
+          "desc": "송신 속도를 수신 처리 능력에 맞춤. 정지-대기, 슬라이딩 윈도우"
+        },
+        {
+          "term": "슬라이딩 윈도우 (Sliding Window)",
+          "desc": "ACK 없이 윈도우 크기만큼 연속 전송, ACK 받으면 윈도우 이동"
+        },
+        {
+          "term": "정지-대기 (Stop-and-Wait)",
+          "desc": "프레임 하나 보내고 ACK 기다림. 단순, 비효율"
+        },
+        {
+          "term": "혼잡 제어 (Congestion Control)",
+          "desc": "네트워크 혼잡을 감지해 송신량 조절. 슬로우 스타트, 혼잡 회피"
+        },
+        {
+          "term": "슬로우 스타트 (Slow Start)",
+          "desc": "윈도우 1부터 ACK마다 2배(지수) 증가, 임계값 도달 시 선형"
+        },
+        {
+          "term": "오류 제어 (Error Control)",
+          "desc": "오류 검출·정정. 전진 오류 수정(FEC, 해밍) vs 후진 오류 수정(BEC, ARQ)"
+        },
+        {
+          "term": "ARQ (Automatic Repeat reQuest, 자동 재전송 요구)",
+          "desc": "오류 검출 시 재전송 요청. Stop-and-Wait, Go-Back-N, Selective Repeat, Adaptive"
+        },
+        {
+          "term": "Go-Back-N ARQ",
+          "desc": "오류 발생 프레임부터 그 이후 모두 재전송"
+        },
+        {
+          "term": "Selective Repeat ARQ (선택적 재전송)",
+          "desc": "오류 발생 프레임만 재전송. 버퍼 필요"
+        },
+        {
+          "term": "CRC (Cyclic Redundancy Check, 순환 중복 검사)",
+          "desc": "생성 다항식으로 나눈 나머지를 붙여 오류 검출. 집단 오류 검출 강력"
+        },
+        {
+          "term": "패리티 검사 (Parity Check)",
+          "desc": "1의 개수를 짝수/홀수로 맞춤. 1비트 오류만 검출"
+        },
+        {
+          "term": "해밍 코드 (Hamming Code)",
+          "desc": "오류 검출 + 1비트 정정. 전진 오류 수정(FEC)"
+        },
+        {
+          "term": "체크섬 (Checksum)",
+          "desc": "데이터 합을 보수로 전송해 검증. TCP/UDP/IP 헤더"
+        },
+        {
+          "term": "포트 번호 (Port Number)",
+          "desc": "16비트(0~65535). 프로세스 식별. Well-known 0~1023"
+        },
+        {
+          "term": "소켓 (Socket)",
+          "desc": "IP + 포트. 통신 종단점"
+        },
+        {
+          "term": "MSS (Maximum Segment Size)",
+          "desc": "TCP 세그먼트 최대 데이터 크기. MTU - 40"
+        }
+      ],
+      "asked": [
+        "2021-2",
+        "2024-1"
+      ]
+    },
+    {
+      "title": "네트워크 계층 프로토콜 (ARP/RARP/ICMP/IGMP/NAT/DHCP/DNS)",
+      "importance": 3,
+      "summary": "IP 보조 프로토콜의 역할. 특히 ARP↔RARP 방향, ICMP 용도, NAT·DHCP·DNS 동작이 단답으로 나온다.",
+      "points": [
+        "ARP: IP 주소 → MAC 주소. 브로드캐스트 요청, 유니캐스트 응답. ARP 캐시(arp -a). RARP: MAC → IP (디스크 없는 워크스테이션)",
+        "ICMP: IP 패킷 전송 중 오류·제어 메시지 보고. ping(Echo Request/Reply, type 8/0), traceroute(TTL 초과, type 11), Destination Unreachable(type 3), Redirect(type 5). IP 위에서 동작, 3계층",
+        "IGMP: 멀티캐스트 그룹 가입·탈퇴 관리. 호스트 ↔ 라우터",
+        "NAT: 사설 IP ↔ 공인 IP 변환. 주소 절약·내부 은닉. 정적 NAT(1:1), 동적 NAT(풀), PAT/NAPT(포트까지 변환, 1개 공인 IP를 다수가 공유)",
+        "DHCP: IP 주소·마스크·게이트웨이·DNS 자동 할당. UDP 67(서버)/68(클라이언트). DORA: Discover → Offer → Request → Acknowledge. 임대(Lease) 기간",
+        "DNS: 도메인 이름 ↔ IP. UDP 53(조회), TCP 53(존 전송). 계층: 루트 → TLD(.com, .kr) → 2차 도메인. 레코드: A(IPv4), AAAA(IPv6), CNAME(별칭), MX(메일), NS(네임서버), PTR(역방향), SOA, TXT. 재귀적 vs 반복적 질의",
+        "응용 포트: FTP 20(데이터)/21(제어), SSH 22, Telnet 23, SMTP 25, DNS 53, DHCP 67/68, TFTP 69, HTTP 80, POP3 110, NTP 123, IMAP 143, SNMP 161/162, LDAP 389, HTTPS 443, SMTPS 465, IMAPS 993, POP3S 995, MySQL 3306, RDP 3389, Oracle 1521, MSSQL 1433, PostgreSQL 5432",
+        "SNMP: 네트워크 장비 관리(MIB, 에이전트·매니저), UDP 161. NTP: 시간 동기화. TFTP: UDP 기반 간단 파일 전송. Telnet 평문 vs SSH 암호화",
+        "FTP 능동(Active) 모드: 서버가 20번으로 클라이언트에 접속. 수동(Passive) 모드: 클라이언트가 서버의 임의 포트로 접속(방화벽 친화)",
+        "메일: SMTP 전송(발신), POP3 수신 후 서버 삭제, IMAP 서버에 보관·동기화, MIME 멀티미디어 첨부"
+      ],
+      "terms": [
+        {
+          "term": "ARP (Address Resolution Protocol)",
+          "desc": "IP 주소로 MAC 주소를 알아냄. 브로드캐스트 질의"
+        },
+        {
+          "term": "RARP (Reverse ARP)",
+          "desc": "MAC 주소로 IP 주소를 알아냄. 디스크 없는 호스트 부팅"
+        },
+        {
+          "term": "ICMP (Internet Control Message Protocol)",
+          "desc": "IP 오류 보고·진단 메시지. ping, traceroute"
+        },
+        {
+          "term": "IGMP (Internet Group Management Protocol)",
+          "desc": "멀티캐스트 그룹 멤버십 관리"
+        },
+        {
+          "term": "NAT (Network Address Translation)",
+          "desc": "사설 IP와 공인 IP 변환. IPv4 주소 절약, 내부망 보호"
+        },
+        {
+          "term": "PAT / NAPT (Port Address Translation)",
+          "desc": "포트 번호까지 변환해 하나의 공인 IP를 여러 호스트가 공유"
+        },
+        {
+          "term": "DHCP (Dynamic Host Configuration Protocol)",
+          "desc": "IP 등 네트워크 설정 자동 할당. UDP 67/68, DORA"
+        },
+        {
+          "term": "DNS (Domain Name System)",
+          "desc": "도메인 이름을 IP 주소로 변환하는 분산 DB. UDP 53"
+        },
+        {
+          "term": "A 레코드 / AAAA 레코드",
+          "desc": "도메인 → IPv4 / IPv6 주소"
+        },
+        {
+          "term": "CNAME (Canonical Name)",
+          "desc": "도메인 별칭. www → 실제 호스트명"
+        },
+        {
+          "term": "MX (Mail Exchanger)",
+          "desc": "도메인의 메일 서버 지정"
+        },
+        {
+          "term": "PTR (Pointer)",
+          "desc": "IP → 도메인 역방향 조회"
+        },
+        {
+          "term": "FTP (File Transfer Protocol)",
+          "desc": "파일 전송. TCP 21 제어, 20 데이터. 능동/수동 모드"
+        },
+        {
+          "term": "TFTP (Trivial FTP)",
+          "desc": "UDP 69 기반 단순 파일 전송. 인증 없음"
+        },
+        {
+          "term": "SMTP (Simple Mail Transfer Protocol)",
+          "desc": "메일 송신·전달. TCP 25"
+        },
+        {
+          "term": "POP3 (Post Office Protocol 3)",
+          "desc": "메일 수신 후 서버에서 삭제(기본). TCP 110"
+        },
+        {
+          "term": "IMAP (Internet Message Access Protocol)",
+          "desc": "서버에 메일 보관, 여러 기기 동기화. TCP 143"
+        },
+        {
+          "term": "MIME (Multipurpose Internet Mail Extensions)",
+          "desc": "이메일에 멀티미디어·비ASCII 첨부 표준"
+        },
+        {
+          "term": "Telnet",
+          "desc": "원격 접속. TCP 23. 평문 → SSH로 대체"
+        },
+        {
+          "term": "SNMP (Simple Network Management Protocol)",
+          "desc": "네트워크 장비 모니터링·관리. UDP 161/162(Trap). MIB"
+        },
+        {
+          "term": "NTP (Network Time Protocol)",
+          "desc": "시간 동기화. UDP 123"
+        },
+        {
+          "term": "HTTP (HyperText Transfer Protocol)",
+          "desc": "웹 요청/응답. TCP 80. 메서드 GET/POST/PUT/DELETE, 상태 코드 200/301/404/500. 비연결·무상태"
+        },
+        {
+          "term": "HTTPS",
+          "desc": "HTTP + SSL/TLS. TCP 443"
+        },
+        {
+          "term": "URL / URI",
+          "desc": "자원의 위치(프로토콜://호스트:포트/경로?쿼리) / 자원 식별자(URL 포함 상위 개념)"
+        },
+        {
+          "term": "쿠키 / 세션 (Cookie / Session)",
+          "desc": "클라이언트 저장 상태 정보 / 서버 저장 상태 정보(세션 ID로 식별)"
+        },
+        {
+          "term": "게이트웨이 주소 (Default Gateway)",
+          "desc": "다른 네트워크로 나가는 라우터 주소"
+        },
+        {
+          "term": "ping / traceroute(tracert)",
+          "desc": "ICMP로 도달성·RTT 확인 / 경로의 라우터 추적(TTL 증가)"
+        },
+        {
+          "term": "netstat",
+          "desc": "네트워크 연결·포트·라우팅 테이블 상태 확인"
+        },
+        {
+          "term": "nslookup / dig",
+          "desc": "DNS 질의 도구"
+        }
+      ],
+      "asked": [
+        "2021-1",
+        "2021-2",
+        "2024-3"
+      ]
+    },
+    {
+      "title": "라우팅 프로토콜 (RIP/OSPF/BGP/EIGRP)",
+      "importance": 3,
+      "summary": "IGP vs EGP, 거리 벡터 vs 링크 상태 알고리즘. RIP 홉 수 15, OSPF 다익스트라 등 숫자·알고리즘 단답.",
+      "points": [
+        "정적 라우팅(관리자가 수동 설정, 소규모) vs 동적 라우팅(프로토콜이 자동 갱신)",
+        "IGP(내부, AS 내): RIP, OSPF, IGRP, EIGRP, IS-IS. EGP(외부, AS 간): BGP, EGP",
+        "거리 벡터(Distance Vector): 벨만-포드 알고리즘, 인접 라우터와 라우팅 테이블 전체를 주기적 교환, 홉 수 기준. RIP, IGRP. 느린 수렴, 라우팅 루프(Count to Infinity) → 스플릿 호라이즌, 홀드 다운, 포이즌 리버스",
+        "링크 상태(Link State): 다익스트라(Dijkstra, SPF) 알고리즘, 전체 토폴로지 DB(LSA 교환), 변화 시에만 전송, 빠른 수렴. OSPF, IS-IS",
+        "RIP: 거리 벡터, 최대 홉 15(16은 도달 불가), 30초마다 갱신, UDP 520, 소규모. RIPv2는 서브넷·멀티캐스트 지원",
+        "OSPF: 링크 상태, 대규모, 영역(Area) 계층 구조(백본 Area 0), 비용(대역폭) 메트릭, 멀티캐스트(224.0.0.5/6), 홉 제한 없음, VLSM·인증 지원, 수렴 빠름. IP 프로토콜 89",
+        "BGP: AS 간 경로 벡터(Path Vector) 프로토콜, TCP 179, 인터넷 백본, 정책 기반. eBGP/iBGP",
+        "EIGRP: 시스코 전용 하이브리드(고급 거리 벡터), DUAL 알고리즘, 대역폭·지연 복합 메트릭. IGRP의 후속",
+        "AS(Autonomous System): 하나의 관리 주체가 운영하는 라우터 집합. AS 번호",
+        "메트릭(Metric): 경로 비용 척도. 홉 수, 대역폭, 지연, 신뢰성, 부하, MTU"
+      ],
+      "terms": [
+        {
+          "term": "RIP (Routing Information Protocol)",
+          "desc": "거리 벡터 IGP. 홉 수 메트릭, 최대 15홉, 30초 주기 갱신. 소규모"
+        },
+        {
+          "term": "OSPF (Open Shortest Path First)",
+          "desc": "링크 상태 IGP. 다익스트라, Area 구조, 대규모, 빠른 수렴"
+        },
+        {
+          "term": "BGP (Border Gateway Protocol)",
+          "desc": "AS 간 EGP. 경로 벡터, TCP 179, 인터넷 핵심 라우팅"
+        },
+        {
+          "term": "EIGRP (Enhanced Interior Gateway Routing Protocol)",
+          "desc": "시스코 하이브리드 IGP. DUAL 알고리즘, 빠른 수렴"
+        },
+        {
+          "term": "IGRP (Interior Gateway Routing Protocol)",
+          "desc": "시스코 거리 벡터. 대역폭·지연 메트릭. EIGRP로 대체"
+        },
+        {
+          "term": "IS-IS (Intermediate System to Intermediate System)",
+          "desc": "OSI 기반 링크 상태 IGP. 대형 ISP"
+        },
+        {
+          "term": "IGP (Interior Gateway Protocol)",
+          "desc": "같은 AS 내부 라우팅. RIP, OSPF, EIGRP"
+        },
+        {
+          "term": "EGP (Exterior Gateway Protocol)",
+          "desc": "AS 간 라우팅. BGP"
+        },
+        {
+          "term": "AS (Autonomous System, 자율 시스템)",
+          "desc": "단일 관리 정책의 네트워크 집합. 고유 AS 번호"
+        },
+        {
+          "term": "거리 벡터 알고리즘 (Distance Vector)",
+          "desc": "벨만-포드. 인접 라우터와 거리(홉)·방향 정보 교환"
+        },
+        {
+          "term": "링크 상태 알고리즘 (Link State)",
+          "desc": "다익스트라. 전체 토폴로지 파악 후 최단 경로 계산"
+        },
+        {
+          "term": "벨만-포드 알고리즘 (Bellman-Ford)",
+          "desc": "거리 벡터 라우팅의 최단 경로 알고리즘. 음수 가중치 가능"
+        },
+        {
+          "term": "다익스트라 알고리즘 (Dijkstra)",
+          "desc": "링크 상태 라우팅의 최단 경로 알고리즘(SPF). 음수 불가"
+        },
+        {
+          "term": "홉 수 (Hop Count)",
+          "desc": "거치는 라우터 수. RIP 메트릭"
+        },
+        {
+          "term": "수렴 (Convergence)",
+          "desc": "모든 라우터의 라우팅 테이블이 일관된 상태가 되는 과정"
+        },
+        {
+          "term": "스플릿 호라이즌 (Split Horizon)",
+          "desc": "경로를 배운 인터페이스로 그 경로를 다시 광고하지 않음. 루프 방지"
+        },
+        {
+          "term": "홀드 다운 타이머 (Hold-down Timer)",
+          "desc": "경로 다운 후 일정 시간 새 정보 무시. 루프 방지"
+        },
+        {
+          "term": "포이즌 리버스 (Poison Reverse)",
+          "desc": "다운된 경로를 메트릭 16(무한)으로 광고"
+        },
+        {
+          "term": "LSA (Link State Advertisement)",
+          "desc": "OSPF 라우터가 링크 상태를 알리는 메시지"
+        },
+        {
+          "term": "Area 0 (Backbone Area)",
+          "desc": "OSPF 백본 영역. 모든 영역이 연결되는 중심"
+        },
+        {
+          "term": "라우팅 테이블 (Routing Table)",
+          "desc": "목적지 네트워크, 다음 홉, 인터페이스, 메트릭 정보"
+        },
+        {
+          "term": "기본 경로 (Default Route, 0.0.0.0/0)",
+          "desc": "테이블에 없는 목적지로 보내는 경로"
+        },
+        {
+          "term": "최장 접두사 일치 (Longest Prefix Match)",
+          "desc": "여러 경로 일치 시 가장 긴 프리픽스(구체적) 선택"
+        }
+      ],
+      "asked": [
+        "2020-3",
+        "2022-1",
+        "2023-1"
+      ]
+    },
+    {
+      "title": "교환 방식·전송 매체·토폴로지·네트워크 분류",
+      "importance": 2,
+      "summary": "회선 교환 vs 패킷 교환(데이터그램/가상회선), 유무선 전송 매체, 망 구성 형태, LAN/MAN/WAN 분류.",
+      "points": [
+        "회선 교환(Circuit Switching): 통신 전 물리적 경로 설정, 전용 대역폭, 고정 지연, 전화망. 연결 시간 길고 유휴 시 낭비",
+        "패킷 교환(Packet Switching): 데이터를 패킷으로 나눠 저장-전달(Store and Forward). 회선 효율 높음, 가변 지연, 인터넷",
+        "데이터그램(Datagram): 비연결형, 패킷마다 독립 경로, 순서 뒤바뀜 가능, 짧은 메시지. IP",
+        "가상 회선(Virtual Circuit): 연결형, 경로 미리 설정 후 같은 경로로 순서대로 전송, 긴 메시지. X.25, Frame Relay, ATM",
+        "메시지 교환(Message Switching): 메시지 전체를 저장-전달. 지연 큼",
+        "유선 매체: 트위스티드 페어(UTP/STP, RJ-45, 카테고리 5e/6), 동축 케이블(BNC), 광섬유(단일/다중 모드, 전반사, 고속·장거리·EMI 무영향·도청 어려움)",
+        "무선 매체: 라디오파, 마이크로파(지상·위성), 적외선",
+        "토폴로지: 버스(Bus, 하나의 선, 충돌, 저렴), 스타(Star, 중앙 허브, 허브 장애 시 전체 마비, 가장 일반적), 링(Ring, 토큰, 단방향, 한 노드 장애 전체 영향), 메시(Mesh, 모든 노드 연결, 신뢰성 최고, 비용 n(n-1)/2 링크), 트리(Tree, 계층), 하이브리드",
+        "거리별: PAN(개인, 블루투스) < LAN(건물) < MAN(도시) < WAN(국가·대륙)",
+        "전송 방식: 단방향(Simplex, 라디오) / 반이중(Half Duplex, 무전기) / 전이중(Full Duplex, 전화). 직렬 vs 병렬. 동기 vs 비동기(start/stop 비트)",
+        "다중화(Multiplexing): 하나의 회선에 여러 신호. FDM(주파수), TDM(시간, 동기식/비동기식·통계적), WDM(파장, 광), CDM(코드)",
+        "대역폭(Bandwidth, bps), 처리율(Throughput), 지연(Latency), 지터(Jitter, 지연 변동), BER(비트 오류율), 보(Baud, 초당 신호 변화 횟수. bps = baud × 비트/신호)"
+      ],
+      "terms": [
+        {
+          "term": "회선 교환 (Circuit Switching)",
+          "desc": "통신 전 전용 경로 설정. 실시간, 전화망"
+        },
+        {
+          "term": "패킷 교환 (Packet Switching)",
+          "desc": "패킷 단위 저장-전달. 회선 공유, 인터넷"
+        },
+        {
+          "term": "데이터그램 방식 (Datagram)",
+          "desc": "비연결형 패킷 교환. 각 패킷 독립 라우팅"
+        },
+        {
+          "term": "가상 회선 방식 (Virtual Circuit)",
+          "desc": "연결형 패킷 교환. 논리적 경로 설정 후 순서 보장"
+        },
+        {
+          "term": "메시지 교환 (Message Switching)",
+          "desc": "메시지 전체를 노드에 저장 후 전달"
+        },
+        {
+          "term": "X.25",
+          "desc": "패킷 교환망 표준 프로토콜(ITU-T). 가상 회선, 3계층"
+        },
+        {
+          "term": "프레임 릴레이 (Frame Relay)",
+          "desc": "X.25를 단순화한 고속 패킷 교환. 2계층"
+        },
+        {
+          "term": "ATM (Asynchronous Transfer Mode)",
+          "desc": "53바이트 고정 셀 교환. B-ISDN"
+        },
+        {
+          "term": "UTP (Unshielded Twisted Pair)",
+          "desc": "비차폐 꼬임쌍선. 이더넷 LAN, RJ-45, 100m"
+        },
+        {
+          "term": "광섬유 (Optical Fiber)",
+          "desc": "빛의 전반사로 전송. 고속·장거리·전자파 간섭 없음. 코어-클래딩"
+        },
+        {
+          "term": "동축 케이블 (Coaxial Cable)",
+          "desc": "중심 도체 + 절연 + 외부 도체. 케이블 TV, 초기 LAN"
+        },
+        {
+          "term": "버스형 (Bus Topology)",
+          "desc": "하나의 중심 케이블에 모든 노드. 설치 쉬움, 충돌·장애 확인 어려움"
+        },
+        {
+          "term": "스타형 (Star Topology)",
+          "desc": "중앙 장치(허브/스위치)에 모든 노드 연결. 확장 쉬움, 중앙 장애 시 전체 마비"
+        },
+        {
+          "term": "링형 (Ring Topology)",
+          "desc": "노드가 원형으로 연결. 토큰 패싱. 한 노드 장애 시 전체 영향"
+        },
+        {
+          "term": "메시형 (Mesh Topology)",
+          "desc": "모든 노드 상호 연결. 신뢰성 높음, 비용 큼. 완전 메시 링크 수 n(n-1)/2"
+        },
+        {
+          "term": "트리형 (Tree Topology)",
+          "desc": "계층적 스타. 분산 처리"
+        },
+        {
+          "term": "LAN (Local Area Network)",
+          "desc": "건물·캠퍼스 등 근거리. 이더넷, Wi-Fi"
+        },
+        {
+          "term": "MAN (Metropolitan Area Network)",
+          "desc": "도시 규모"
+        },
+        {
+          "term": "WAN (Wide Area Network)",
+          "desc": "국가·대륙 간 광역. 통신 사업자 망"
+        },
+        {
+          "term": "PAN (Personal Area Network)",
+          "desc": "개인 주변 10m 내. 블루투스, NFC"
+        },
+        {
+          "term": "VLAN (Virtual LAN)",
+          "desc": "물리 위치와 무관하게 논리적으로 LAN 분할. IEEE 802.1Q 태그"
+        },
+        {
+          "term": "단방향 / 반이중 / 전이중 (Simplex / Half Duplex / Full Duplex)",
+          "desc": "한 방향만 / 양방향 교대 / 양방향 동시"
+        },
+        {
+          "term": "다중화 (Multiplexing)",
+          "desc": "여러 신호를 하나의 회선으로. FDM, TDM, WDM, CDM"
+        },
+        {
+          "term": "TDM (Time Division Multiplexing)",
+          "desc": "시간 슬롯 분할. 동기식(고정) vs 통계적(비동기, 필요 시 할당)"
+        },
+        {
+          "term": "FDM (Frequency Division Multiplexing)",
+          "desc": "주파수 대역 분할. 아날로그, 가드 밴드"
+        },
+        {
+          "term": "지터 (Jitter)",
+          "desc": "패킷 지연 시간의 변동. 실시간 음성·영상 품질 저하"
+        },
+        {
+          "term": "보 (Baud)",
+          "desc": "초당 신호(심볼) 변화 횟수. bps = baud × 심볼당 비트 수"
+        },
+        {
+          "term": "QoS (Quality of Service)",
+          "desc": "대역폭·지연·지터·손실을 보장하는 서비스 품질 제어"
+        }
+      ],
+      "asked": []
+    },
+    {
+      "title": "네트워크 신기술·근거리 무선·IoT 용어",
+      "importance": 3,
+      "summary": "SDN/NFV/메시 네트워크/애드혹/피코넷/지그비/UWB 등 신기술 용어 단답. 정의를 보고 영문 명칭을 정확히 쓴다.",
+      "points": [
+        "SDN: 네트워크 제어부(Control Plane)와 데이터 전송부(Data Plane)를 분리, 소프트웨어(컨트롤러)로 중앙 제어. OpenFlow 프로토콜",
+        "NFV: 라우터·방화벽 등 네트워크 기능을 전용 하드웨어 대신 범용 서버의 가상 머신(소프트웨어)으로 구현",
+        "SDDC: 모든 데이터센터 자원(컴퓨팅·네트워크·스토리지)을 가상화하고 소프트웨어로 제어. SDS(Software Defined Storage)",
+        "메시 네트워크: 노드들이 그물망처럼 서로 연결, 특정 노드 장애 시 우회 경로. 대규모 재난·군사·스마트시티 무선망",
+        "애드혹 네트워크: 고정 인프라(AP·기지국) 없이 단말끼리 자율적으로 구성하는 임시 네트워크. 라우팅 기능을 노드가 수행. 군사·재난",
+        "피코넷: 블루투스나 UWB 기기들이 독립된 통신 장치로 10m 이내 임시 소규모 네트워크 구성. 마스터 1 + 슬레이브 최대 7. 스캐터넷은 피코넷 여러 개 연결",
+        "WPAN: 블루투스(IEEE 802.15.1, 2.4GHz, 10m), 지그비(IEEE 802.15.4, 저전력·저속·저비용 센서망, 홈 오토메이션), UWB(초광대역, 500MHz 이상 대역, 짧은 거리 고속·정밀 측위), NFC(13.56MHz, 10cm, RFID 기반, 결제), 비콘(BLE 기반 위치 신호), RFID(전파로 태그 식별)",
+        "무선: Wi-Fi(802.11 a/b/g/n/ac/ax=Wi-Fi 6), WiMAX(802.16), LTE/5G(초고속·초저지연·초연결, eMBB/URLLC/mMTC), 와이브로, 스몰셀/펨토셀, 네트워크 슬라이싱(5G 가상망 분할)",
+        "IoT 프로토콜: MQTT(발행-구독 메시지 프로토콜, 경량, 브로커, TCP), CoAP(제약 환경용 REST, UDP), AMQP, XMPP. LPWAN: LoRa, NB-IoT, Sigfox",
+        "클라우드 서비스: IaaS(인프라: 서버·스토리지·네트워크, AWS EC2), PaaS(플랫폼: 개발·실행 환경, Heroku), SaaS(소프트웨어: 완성 앱, Gmail, Office 365). 배포: 퍼블릭/프라이빗/하이브리드/커뮤니티. 인터클라우드(클라우드 간 연동). 멀티클라우드",
+        "컴퓨팅 패러다임: 그리드(지리적 분산 자원을 묶어 고성능), 클라우드(가상화 자원을 서비스로), 엣지(데이터 발생 지점 근처에서 처리, 지연 감소), 포그(엣지와 클라우드 사이), 유비쿼터스(언제 어디서나), 서버리스(FaaS, AWS Lambda), 모바일 컴퓨팅, 양자 컴퓨팅(큐비트)",
+        "가상화: 하이퍼바이저(Type 1 베어메탈: VMware ESXi, Xen, KVM / Type 2 호스트형: VirtualBox), 컨테이너(도커, OS 커널 공유, 경량·빠른 배포), 쿠버네티스(컨테이너 오케스트레이션: 배포·확장·관리 자동화), 마이크로서비스 아키텍처(MSA)",
+        "기타 신기술: 디지털 트윈(물리 객체를 가상에 복제해 시뮬레이션), 메타버스(3D 가상 세계), 블록체인, 양자 암호 통신(QKD), 메시 Wi-Fi, 소프트웨어 정의 경계(SDP), 제로 트러스트(아무도 신뢰하지 않고 항상 검증), 지능형 초연결망, 스마트 그리드(전력망+ICT), ITS(지능형 교통), 텔레매틱스(차량 통신), V2X, C-ITS, USN(유비쿼터스 센서 네트워크), M2M(사물 간 통신), WBAN(인체 주변 네트워크), 파장 분할 다중화, 멤리스터, N-Screen, Wi-SUN, 포스퀘어, 그린 IT, 매시업(여러 웹 서비스 결합), 시맨틱 웹, 온톨로지, 증강/가상/혼합 현실(AR/VR/MR), 디지털 포렌식, 핀테크, 비트코인·이더리움, RPA(업무 자동화), 챗봇, 생성형 AI, 하이퍼오토메이션, 데이터 레이크, 데이터 패브릭, 데이터 센터(IDC), CDN(콘텐츠 분산 전송), 파스타(PaaS-TA, 국산 개방형 클라우드 플랫폼), VDI(데스크톱 가상화), DaaS, 망 분리, 폐쇄망"
+      ],
+      "terms": [
+        {
+          "term": "SDN (Software Defined Networking, 소프트웨어 정의 네트워킹)",
+          "desc": "제어부와 데이터부 분리, 중앙 컨트롤러가 소프트웨어로 네트워크 제어. OpenFlow"
+        },
+        {
+          "term": "NFV (Network Function Virtualization, 네트워크 기능 가상화)",
+          "desc": "방화벽·라우터 등 네트워크 장비 기능을 범용 서버 위 소프트웨어(VM)로 구현"
+        },
+        {
+          "term": "SDDC (Software Defined Data Center)",
+          "desc": "데이터센터의 모든 자원을 가상화하고 소프트웨어로 자동 제어"
+        },
+        {
+          "term": "SDS (Software Defined Storage)",
+          "desc": "스토리지 하드웨어와 제어 소프트웨어 분리, 가상화된 스토리지 풀"
+        },
+        {
+          "term": "OpenFlow",
+          "desc": "SDN 컨트롤러와 스위치 간 표준 통신 프로토콜"
+        },
+        {
+          "term": "메시 네트워크 (Mesh Network)",
+          "desc": "노드 간 그물망 연결, 장애 시 우회. 대규모 디바이스 무선망"
+        },
+        {
+          "term": "애드혹 네트워크 (Ad-hoc Network)",
+          "desc": "기반 시설 없이 단말 간 자율 구성 임시망. 노드가 라우터 역할"
+        },
+        {
+          "term": "피코넷 (Piconet)",
+          "desc": "블루투스·UWB로 10m 내 임시 소규모 네트워크. 마스터 1 + 슬레이브 7"
+        },
+        {
+          "term": "스캐터넷 (Scatternet)",
+          "desc": "여러 피코넷이 연결된 블루투스 네트워크"
+        },
+        {
+          "term": "WPAN (Wireless Personal Area Network)",
+          "desc": "개인 주변 10m 무선망. IEEE 802.15. 블루투스, 지그비, UWB"
+        },
+        {
+          "term": "블루투스 (Bluetooth, IEEE 802.15.1)",
+          "desc": "2.4GHz ISM 대역 근거리 무선. BLE(저전력)"
+        },
+        {
+          "term": "지그비 (Zigbee, IEEE 802.15.4)",
+          "desc": "저전력·저속·저비용 근거리 무선. 센서 네트워크, 홈 오토메이션"
+        },
+        {
+          "term": "UWB (Ultra Wide Band, 초광대역)",
+          "desc": "500MHz 이상 넓은 대역에 낮은 전력으로 고속·정밀 거리 측정. 무선 디지털 펄스"
+        },
+        {
+          "term": "NFC (Near Field Communication)",
+          "desc": "13.56MHz, 10cm 이내 양방향 근접 통신. RFID 확장, 모바일 결제"
+        },
+        {
+          "term": "RFID (Radio Frequency Identification)",
+          "desc": "전파로 태그 정보를 비접촉 인식. 태그·리더·안테나"
+        },
+        {
+          "term": "비콘 (Beacon)",
+          "desc": "BLE로 주기적 신호를 보내 근접 위치 기반 서비스 제공. 50~70m"
+        },
+        {
+          "term": "WiMAX (IEEE 802.16)",
+          "desc": "광대역 무선 도시권 통신. 고정·이동 WiMAX"
+        },
+        {
+          "term": "Wi-Fi (IEEE 802.11)",
+          "desc": "무선 LAN. a/b/g/n/ac/ax. Wi-Fi 6 = 802.11ax"
+        },
+        {
+          "term": "5G (IMT-2020)",
+          "desc": "초고속(eMBB)·초저지연(URLLC)·초연결(mMTC). 네트워크 슬라이싱, 밀리미터파"
+        },
+        {
+          "term": "네트워크 슬라이싱 (Network Slicing)",
+          "desc": "하나의 물리 5G망을 용도별 가상 네트워크로 분할"
+        },
+        {
+          "term": "MQTT (Message Queuing Telemetry Transport)",
+          "desc": "IoT용 경량 발행-구독(Publish/Subscribe) 메시지 프로토콜. 브로커 경유, TCP"
+        },
+        {
+          "term": "CoAP (Constrained Application Protocol)",
+          "desc": "저사양 IoT 기기용 REST 기반 경량 프로토콜. UDP"
+        },
+        {
+          "term": "LPWAN (Low Power Wide Area Network)",
+          "desc": "저전력 장거리 IoT 통신. LoRa, NB-IoT, Sigfox"
+        },
+        {
+          "term": "IoT (Internet of Things, 사물인터넷)",
+          "desc": "사물에 센서·통신을 부여해 인터넷으로 연결·제어"
+        },
+        {
+          "term": "M2M (Machine to Machine)",
+          "desc": "사람 개입 없는 기계 간 통신"
+        },
+        {
+          "term": "USN (Ubiquitous Sensor Network)",
+          "desc": "센서 노드로 환경 정보를 수집·전달하는 네트워크"
+        },
+        {
+          "term": "WBAN (Wireless Body Area Network)",
+          "desc": "인체 주변·내부 웨어러블 센서 네트워크. IEEE 802.15.6"
+        },
+        {
+          "term": "IaaS (Infrastructure as a Service)",
+          "desc": "서버·스토리지·네트워크 인프라 제공. AWS EC2, 가상 머신"
+        },
+        {
+          "term": "PaaS (Platform as a Service)",
+          "desc": "개발·실행 플랫폼 제공. 인프라 관리 불필요. Heroku, Google App Engine"
+        },
+        {
+          "term": "SaaS (Software as a Service)",
+          "desc": "완성된 소프트웨어를 인터넷으로 제공. Gmail, Office 365, Salesforce"
+        },
+        {
+          "term": "퍼블릭/프라이빗/하이브리드 클라우드",
+          "desc": "공개 공유 / 단일 조직 전용 / 둘의 결합"
+        },
+        {
+          "term": "인터클라우드 (Intercloud)",
+          "desc": "서로 다른 클라우드 서비스 간 연동·상호운용"
+        },
+        {
+          "term": "엣지 컴퓨팅 (Edge Computing)",
+          "desc": "데이터 발생 지점(단말·근처)에서 처리해 지연·대역폭 감소"
+        },
+        {
+          "term": "포그 컴퓨팅 (Fog Computing)",
+          "desc": "클라우드와 엣지 사이 중간 계층에서 분산 처리"
+        },
+        {
+          "term": "그리드 컴퓨팅 (Grid Computing)",
+          "desc": "분산된 컴퓨팅 자원을 네트워크로 묶어 고성능 컴퓨팅"
+        },
+        {
+          "term": "서버리스 (Serverless, FaaS)",
+          "desc": "서버 관리 없이 함수 단위 실행·과금. AWS Lambda"
+        },
+        {
+          "term": "하이퍼바이저 (Hypervisor, VMM)",
+          "desc": "가상 머신 생성·관리 소프트웨어. Type 1(베어메탈) / Type 2(호스트형)"
+        },
+        {
+          "term": "도커 (Docker)",
+          "desc": "컨테이너 기반 가상화 플랫폼. 이미지로 애플리케이션 패키징, OS 커널 공유"
+        },
+        {
+          "term": "쿠버네티스 (Kubernetes, K8s)",
+          "desc": "컨테이너 오케스트레이션. 배포·확장·복구 자동화. 구글"
+        },
+        {
+          "term": "컨테이너 (Container)",
+          "desc": "OS 수준 가상화. VM보다 경량, 빠른 시작"
+        },
+        {
+          "term": "MSA (Microservice Architecture)",
+          "desc": "작은 독립 서비스들의 조합으로 애플리케이션 구성. API 통신"
+        },
+        {
+          "term": "디지털 트윈 (Digital Twin)",
+          "desc": "현실 객체·공정을 가상 공간에 동일하게 구현해 시뮬레이션·예측"
+        },
+        {
+          "term": "메타버스 (Metaverse)",
+          "desc": "현실과 연결된 3차원 가상 세계. 아바타로 사회·경제 활동"
+        },
+        {
+          "term": "제로 트러스트 (Zero Trust)",
+          "desc": "내부·외부 모두 신뢰하지 않고 모든 접근을 검증하는 보안 모델"
+        },
+        {
+          "term": "양자 암호 통신 (Quantum Cryptography, QKD)",
+          "desc": "양자 키 분배. 도청 시 상태 변화로 감지"
+        },
+        {
+          "term": "양자 컴퓨팅 (Quantum Computing)",
+          "desc": "큐비트의 중첩·얽힘으로 병렬 연산"
+        },
+        {
+          "term": "스마트 그리드 (Smart Grid)",
+          "desc": "전력망에 ICT를 결합해 양방향 실시간 정보 교환"
+        },
+        {
+          "term": "텔레매틱스 (Telematics)",
+          "desc": "자동차 + 통신. 차량 내 위치·정보 서비스"
+        },
+        {
+          "term": "V2X (Vehicle to Everything)",
+          "desc": "차량과 차량·인프라·보행자·네트워크 간 통신"
+        },
+        {
+          "term": "CDN (Content Delivery Network)",
+          "desc": "콘텐츠를 지리적으로 분산된 캐시 서버에서 전송. 지연 감소"
+        },
+        {
+          "term": "VDI (Virtual Desktop Infrastructure)",
+          "desc": "데스크톱 환경을 서버에서 가상화해 원격 제공"
+        },
+        {
+          "term": "매시업 (Mashup)",
+          "desc": "여러 웹 서비스·API를 조합해 새 서비스 생성"
+        },
+        {
+          "term": "N-Screen",
+          "desc": "하나의 콘텐츠를 여러 기기(TV·PC·폰)에서 이어 보기"
+        },
+        {
+          "term": "멤리스터 (Memristor)",
+          "desc": "메모리 + 레지스터. 전원 끊겨도 저항 상태 기억"
+        },
+        {
+          "term": "RPA (Robotic Process Automation)",
+          "desc": "반복 업무를 소프트웨어 로봇으로 자동화"
+        },
+        {
+          "term": "온톨로지 (Ontology)",
+          "desc": "개념과 관계를 기계가 이해할 수 있게 명시적으로 정의. 시맨틱 웹 기반"
+        },
+        {
+          "term": "시맨틱 웹 (Semantic Web)",
+          "desc": "컴퓨터가 정보의 의미를 이해·처리하는 지능형 웹"
+        },
+        {
+          "term": "증강 현실 (AR) / 가상 현실 (VR) / 혼합 현실 (MR)",
+          "desc": "현실에 가상 정보 중첩 / 완전 가상 / AR+VR 상호작용"
+        },
+        {
+          "term": "PaaS-TA (파스타)",
+          "desc": "한국 정부 주도 개방형 클라우드 플랫폼(PaaS)"
+        },
+        {
+          "term": "Wi-SUN (Wireless Smart Utility Network)",
+          "desc": "스마트 그리드용 IEEE 802.15.4g 무선 통신"
+        },
+        {
+          "term": "지능형 초연결망",
+          "desc": "SDN/NFV 기반 5G·IoT를 수용하는 차세대 네트워크 인프라"
+        },
+        {
+          "term": "C-V2X / 자율주행 (Autonomous Driving)",
+          "desc": "셀룰러 기반 차량 통신 / 센서·AI로 운전자 개입 없는 주행"
+        },
+        {
+          "term": "SSO / IAM (Identity and Access Management)",
+          "desc": "통합 인증 / 계정·권한 통합 관리"
+        }
+      ],
+      "asked": [
+        "2022-1"
+      ]
+    },
+    {
+      "title": "DBMS 개요·스키마 3단계·데이터 독립성",
+      "importance": 2,
+      "summary": "DBMS의 필수 기능·장단점, 외부/개념/내부 스키마, 논리적·물리적 데이터 독립성.",
+      "points": [
+        "DB 정의: 통합(Integrated), 저장(Stored), 운영(Operational), 공용(Shared) 데이터",
+        "DB 특징: 실시간 접근, 계속적 변화, 동시 공유, 내용에 의한 참조",
+        "DBMS 필수 기능 3가지: 정의(Definition, DDL), 조작(Manipulation, DML), 제어(Control, DCL - 무결성·보안·병행제어·회복)",
+        "DBMS 장점: 중복 최소화, 일관성·무결성, 보안, 표준화, 데이터 독립성. 단점: 비용, 복잡, 백업·회복 어려움, 시스템 취약(집중)",
+        "스키마 3단계: 외부 스키마(사용자 뷰, 서브 스키마) / 개념 스키마(전체 논리 구조, 조직 전체 관점, 하나만 존재) / 내부 스키마(물리적 저장 구조)",
+        "데이터 독립성: 논리적 독립성(개념 스키마 변경이 외부 스키마·응용에 영향 없음), 물리적 독립성(내부 스키마 변경이 개념·외부 스키마에 영향 없음)",
+        "DBA 역할: 스키마 정의, 저장 구조·접근 방법 결정, 보안·무결성 정책, 백업·회복, 성능 감시",
+        "데이터 사전(Data Dictionary, 시스템 카탈로그): 메타데이터 저장. 사용자는 조회만, DBMS가 자동 갱신. 데이터 디렉터리는 시스템 전용",
+        "DB 언어: DDL(CREATE, ALTER, DROP), DML(SELECT, INSERT, UPDATE, DELETE), DCL(GRANT, REVOKE, COMMIT, ROLLBACK)"
+      ],
+      "terms": [
+        {
+          "term": "DBMS (Database Management System)",
+          "desc": "데이터베이스를 생성·관리하고 응용과 데이터 사이를 중재하는 소프트웨어"
+        },
+        {
+          "term": "외부 스키마 (External Schema, 서브 스키마)",
+          "desc": "개별 사용자·응용 관점의 논리 구조. 뷰. 여러 개"
+        },
+        {
+          "term": "개념 스키마 (Conceptual Schema)",
+          "desc": "조직 전체 관점의 논리 구조. 하나만 존재. 접근 권한·무결성 규칙 포함"
+        },
+        {
+          "term": "내부 스키마 (Internal Schema)",
+          "desc": "물리적 저장 장치 관점. 레코드 형식·인덱스·저장 구조"
+        },
+        {
+          "term": "논리적 데이터 독립성 (Logical Data Independence)",
+          "desc": "개념 스키마를 바꿔도 외부 스키마·응용 프로그램 불변"
+        },
+        {
+          "term": "물리적 데이터 독립성 (Physical Data Independence)",
+          "desc": "내부 스키마를 바꿔도 개념·외부 스키마 불변"
+        },
+        {
+          "term": "데이터 사전 (Data Dictionary, System Catalog)",
+          "desc": "DB 객체 정보(메타데이터) 저장. 시스템 카탈로그"
+        },
+        {
+          "term": "메타데이터 (Metadata)",
+          "desc": "데이터에 대한 데이터. 구조·속성·정의 정보"
+        },
+        {
+          "term": "DBA (Database Administrator)",
+          "desc": "DB 설계·운영·보안·성능을 총괄하는 관리자"
+        },
+        {
+          "term": "DDL / DML / DCL",
+          "desc": "정의어(CREATE/ALTER/DROP) / 조작어(SELECT/INSERT/UPDATE/DELETE) / 제어어(GRANT/REVOKE/COMMIT/ROLLBACK)"
+        },
+        {
+          "term": "매핑 (Mapping, 사상)",
+          "desc": "스키마 간 대응 관계. 외부/개념 사상, 개념/내부 사상"
+        },
+        {
+          "term": "데이터 모델 구성 요소",
+          "desc": "구조(Structure), 연산(Operation), 제약 조건(Constraint)"
+        },
+        {
+          "term": "데이터 모델 종류",
+          "desc": "개념적(E-R), 논리적(관계·계층·네트워크), 물리적"
+        }
+      ],
+      "asked": []
+    },
+    {
+      "title": "트랜잭션과 회복 기법",
+      "importance": 3,
+      "summary": "트랜잭션 ACID, 상태 전이, 연산(COMMIT/ROLLBACK), 로그 기반·체크포인트·그림자 페이징 회복 기법. 빈출.",
+      "points": [
+        "트랜잭션: 하나의 논리적 작업 단위. 전부 수행되거나 전부 취소(All or Nothing)",
+        "ACID: 원자성(Atomicity, 전부 또는 전무), 일관성(Consistency, 수행 전후 DB 일관 상태), 독립성/격리성(Isolation, 수행 중 다른 트랜잭션 간섭 불가), 영속성/지속성(Durability, 완료 결과 영구 반영)",
+        "트랜잭션 상태: 활동(Active) → 부분 완료(Partially Committed) → 완료(Committed) / 실패(Failed) → 철회(Aborted)",
+        "연산: COMMIT(완료·영구 반영), ROLLBACK(취소·이전 상태 복구), SAVEPOINT(부분 롤백 지점)",
+        "회복(Recovery): 장애 발생 시 DB를 이전 일관된 상태로 복구. 장애 유형: 트랜잭션 장애, 시스템 장애, 미디어(디스크) 장애",
+        "로그 기반 회복: 지연 갱신(Deferred Update, COMMIT 전까지 DB 미반영 → 장애 시 REDO만), 즉시 갱신(Immediate Update, 즉시 DB 반영 + 로그 → UNDO와 REDO 모두)",
+        "REDO: 완료된 트랜잭션을 로그로 재실행(장애 전 COMMIT). UNDO: 미완료 트랜잭션을 로그로 취소(장애 전 COMMIT 안 됨)",
+        "체크포인트(Checkpoint, 검사점): 일정 주기로 로그와 DB를 동기화해 기록. 회복 시 마지막 검사점 이후만 처리 → 회복 시간 단축",
+        "그림자 페이징(Shadow Paging): 갱신 전 페이지 사본(그림자 페이지 테이블)을 보관, 장애 시 사본으로 교체. 로그 불필요",
+        "미디어 회복: 덤프(백업) + 로그로 REDO",
+        "ARIES: Analysis-Redo-Undo 3단계 회복 알고리즘(WAL, Write-Ahead Logging: DB 쓰기 전 로그 먼저)"
+      ],
+      "terms": [
+        {
+          "term": "트랜잭션 (Transaction)",
+          "desc": "DB 상태를 변환하는 논리적 작업 단위. 하나 이상의 연산"
+        },
+        {
+          "term": "원자성 (Atomicity)",
+          "desc": "트랜잭션 연산은 모두 반영되거나 전혀 반영되지 않음"
+        },
+        {
+          "term": "일관성 (Consistency)",
+          "desc": "실행 전후 DB가 일관된(무결성 제약 만족) 상태 유지"
+        },
+        {
+          "term": "독립성 / 격리성 (Isolation)",
+          "desc": "실행 중인 트랜잭션의 중간 결과를 다른 트랜잭션이 참조 불가"
+        },
+        {
+          "term": "영속성 / 지속성 (Durability)",
+          "desc": "완료된 트랜잭션 결과는 장애가 나도 영구 보존"
+        },
+        {
+          "term": "COMMIT",
+          "desc": "트랜잭션 정상 완료, 변경 영구 반영"
+        },
+        {
+          "term": "ROLLBACK",
+          "desc": "트랜잭션 취소, 변경 전 상태로 복구"
+        },
+        {
+          "term": "SAVEPOINT",
+          "desc": "트랜잭션 내 저장점. 해당 지점까지 부분 롤백"
+        },
+        {
+          "term": "부분 완료 (Partially Committed)",
+          "desc": "마지막 연산 실행 후 COMMIT 직전 상태"
+        },
+        {
+          "term": "철회 (Aborted)",
+          "desc": "실패 후 ROLLBACK까지 수행된 상태"
+        },
+        {
+          "term": "REDO (재실행)",
+          "desc": "로그의 변경 후 값(After Image)으로 완료 트랜잭션 재반영"
+        },
+        {
+          "term": "UNDO (취소)",
+          "desc": "로그의 변경 전 값(Before Image)으로 미완료 트랜잭션 되돌림"
+        },
+        {
+          "term": "지연 갱신 (Deferred Update)",
+          "desc": "COMMIT까지 DB에 쓰지 않고 로그만. 장애 시 REDO만 필요, UNDO 불필요"
+        },
+        {
+          "term": "즉시 갱신 (Immediate Update)",
+          "desc": "변경 즉시 DB 반영 + 로그 기록. 장애 시 UNDO·REDO 모두 필요"
+        },
+        {
+          "term": "체크포인트 (Checkpoint, 검사점)",
+          "desc": "로그에 검사점을 기록해 회복 범위를 그 이후로 한정"
+        },
+        {
+          "term": "그림자 페이징 (Shadow Paging)",
+          "desc": "갱신 전 페이지 테이블 사본을 보관하고 장애 시 사본으로 복구. 로그 없음"
+        },
+        {
+          "term": "로그 (Log, 저널)",
+          "desc": "트랜잭션의 모든 변경 기록. <T, X, 이전값, 이후값>"
+        },
+        {
+          "term": "WAL (Write-Ahead Logging)",
+          "desc": "DB 데이터 쓰기 전에 로그를 먼저 기록하는 규칙"
+        },
+        {
+          "term": "덤프 (Dump)",
+          "desc": "DB 전체를 주기적으로 백업 복사. 미디어 장애 회복"
+        },
+        {
+          "term": "ARIES",
+          "desc": "Analysis → Redo → Undo 3단계 회복 알고리즘"
+        },
+        {
+          "term": "장애 유형 (트랜잭션/시스템/미디어)",
+          "desc": "논리 오류·교착 / 전원·H/W·S/W 오류 / 디스크 손상"
+        }
+      ],
+      "asked": []
+    },
+    {
+      "title": "병행 제어 (로킹/2PL/타임스탬프/낙관적/MVCC)와 격리 수준",
+      "importance": 3,
+      "summary": "병행 수행 문제 4가지와 제어 기법, 로킹 단위 크기 효과, 트랜잭션 격리 수준 4단계와 현상. 빈출.",
+      "points": [
+        "병행 제어 목적: DB 공유·일관성 유지, 시스템 활용도·응답 시간 최대화",
+        "병행 수행 문제: 갱신 분실(Lost Update, 두 트랜잭션이 같은 데이터 갱신 → 하나 덮어씀), 모순성(Inconsistency, 다른 트랜잭션 갱신 중 읽어 불일치), 연쇄 복귀(Cascading Rollback, 하나의 롤백이 다른 트랜잭션도 롤백), 비완료 의존성(Uncommitted Dependency, 실패한 트랜잭션 결과 참조)",
+        "로킹(Locking): 데이터에 lock 설정 후 접근, unlock. 공유 락(S-lock, 읽기, 여러 트랜잭션 가능) vs 배타 락(X-lock, 쓰기, 하나만)",
+        "로킹 단위(Granularity): DB > 테이블 > 레코드 > 필드. 단위 클수록 → 로크 수 적음, 관리 쉬움, 병행성(동시성) 낮음. 단위 작을수록 → 로크 수 많음, 오버헤드 큼, 병행성 높음",
+        "2단계 로킹(2PL, Two-Phase Locking): 확장 단계(Growing, lock만 가능) → 축소 단계(Shrinking, unlock만 가능). 직렬 가능성 보장, 교착상태 발생 가능. Strict 2PL은 COMMIT 시 unlock",
+        "타임스탬프(Time Stamp): 트랜잭션 시작 시 고유 시간값 부여, 순서대로 처리. 교착상태 없음, 연쇄 복귀 가능",
+        "낙관적 검증(Optimistic Validation): 충돌이 적다고 가정, 검증 없이 실행 후 COMMIT 전 검증. 판독 → 검증 → 기록 3단계",
+        "다중 버전 병행제어(MVCC, Multi-Version Concurrency Control): 데이터 버전을 여러 개 유지해 읽기와 쓰기가 서로 차단하지 않음. PostgreSQL, Oracle, MySQL InnoDB",
+        "격리 수준(낮→높): READ UNCOMMITTED(Dirty Read 허용) < READ COMMITTED(Dirty Read 방지, Non-Repeatable Read 발생) < REPEATABLE READ(Phantom Read만 발생) < SERIALIZABLE(완전 직렬, 모두 방지). 높을수록 동시성↓ 일관성↑",
+        "격리 현상: Dirty Read(미완료 데이터 읽기), Non-Repeatable Read(같은 행을 두 번 읽을 때 값이 다름), Phantom Read(같은 조건을 두 번 조회할 때 행 수가 다름, 삽입/삭제)",
+        "직렬 가능성(Serializability): 병행 수행 결과가 어떤 순서의 직렬 수행 결과와 동일"
+      ],
+      "terms": [
+        {
+          "term": "병행 제어 (Concurrency Control)",
+          "desc": "다중 사용자 환경에서 트랜잭션 동시 수행 시 일관성 유지"
+        },
+        {
+          "term": "갱신 분실 (Lost Update)",
+          "desc": "동시 갱신 중 하나의 결과가 덮어써져 사라짐"
+        },
+        {
+          "term": "모순성 (Inconsistency)",
+          "desc": "갱신 중인 데이터를 읽어 DB가 불일치 상태"
+        },
+        {
+          "term": "연쇄 복귀 (Cascading Rollback)",
+          "desc": "한 트랜잭션 롤백이 그 데이터를 읽은 다른 트랜잭션까지 롤백"
+        },
+        {
+          "term": "비완료 의존성 (Uncommitted Dependency)",
+          "desc": "실패한 트랜잭션의 중간 결과를 다른 트랜잭션이 참조"
+        },
+        {
+          "term": "로킹 (Locking)",
+          "desc": "데이터 사용 전 lock 걸고 사용 후 unlock. 상호 배제"
+        },
+        {
+          "term": "공유 락 (Shared Lock, S-lock)",
+          "desc": "읽기 전용. 여러 트랜잭션 동시 가능"
+        },
+        {
+          "term": "배타 락 (Exclusive Lock, X-lock)",
+          "desc": "읽기·쓰기. 한 트랜잭션만. 다른 락 불허"
+        },
+        {
+          "term": "로킹 단위 (Locking Granularity)",
+          "desc": "lock 대상 크기. 클수록 병행성↓ 오버헤드↓, 작을수록 병행성↑ 오버헤드↑"
+        },
+        {
+          "term": "2단계 로킹 (2PL, Two-Phase Locking)",
+          "desc": "확장 단계(lock)와 축소 단계(unlock) 분리. 직렬성 보장, 교착 가능"
+        },
+        {
+          "term": "타임스탬프 순서 (Timestamp Ordering)",
+          "desc": "트랜잭션 시작 시각 순서로 직렬화. 교착 없음"
+        },
+        {
+          "term": "낙관적 검증 (Optimistic Validation)",
+          "desc": "충돌 가정 없이 수행 후 COMMIT 직전 검증. 읽기 많은 환경"
+        },
+        {
+          "term": "MVCC (Multi-Version Concurrency Control, 다중 버전 병행 제어)",
+          "desc": "데이터 버전을 여러 개 유지해 읽기-쓰기 충돌 없이 동시 처리"
+        },
+        {
+          "term": "격리 수준 (Isolation Level)",
+          "desc": "트랜잭션 간 간섭 허용 정도. 4단계"
+        },
+        {
+          "term": "READ UNCOMMITTED",
+          "desc": "가장 낮은 수준. 커밋 안 된 데이터 읽기(Dirty Read) 가능"
+        },
+        {
+          "term": "READ COMMITTED",
+          "desc": "커밋된 데이터만 읽음. Non-Repeatable Read 가능. Oracle·PostgreSQL 기본"
+        },
+        {
+          "term": "REPEATABLE READ",
+          "desc": "트랜잭션 내 같은 행 반복 읽기 보장. Phantom Read 가능. MySQL InnoDB 기본"
+        },
+        {
+          "term": "SERIALIZABLE",
+          "desc": "완전 직렬 수행과 동일. 모든 현상 방지, 동시성 최저"
+        },
+        {
+          "term": "Dirty Read (오손 읽기)",
+          "desc": "커밋되지 않은 다른 트랜잭션의 변경을 읽음"
+        },
+        {
+          "term": "Non-Repeatable Read (반복 불가능 읽기)",
+          "desc": "같은 행을 두 번 읽었는데 사이에 다른 트랜잭션이 갱신·커밋해 값이 다름"
+        },
+        {
+          "term": "Phantom Read (유령 읽기)",
+          "desc": "같은 조건 조회 시 사이에 삽입·삭제로 행 수가 달라짐"
+        },
+        {
+          "term": "직렬 가능성 (Serializability)",
+          "desc": "병행 실행 결과가 어떤 직렬 실행 결과와 동일하면 정당"
+        },
+        {
+          "term": "데드락 (Deadlock, DB)",
+          "desc": "두 트랜잭션이 서로의 락을 기다림. 대기 그래프로 탐지, 하나를 희생"
+        }
+      ],
+      "asked": [
+        "2020-2",
+        "2022-2"
+      ]
+    },
+    {
+      "title": "분산 데이터베이스와 투명성 4가지",
+      "importance": 3,
+      "summary": "분산 DB 목표인 투명성 4가지(위치/중복/병행/장애)의 이름과 정의. 빈칸 빈출.",
+      "points": [
+        "분산 DB: 논리적으로 하나, 물리적으로 네트워크에 분산된 DB. 지역 자치성, 신뢰성·가용성↑, 확장 용이. 단점: 설계 복잡, 개발 비용, 오류 가능성, 처리 비용",
+        "투명성 4가지: 위치 투명성(Location, 데이터의 물리적 위치를 몰라도 접근), 중복 투명성(Replication, 데이터 복제본 존재를 몰라도 하나처럼 사용), 병행 투명성(Concurrency, 여러 트랜잭션이 동시 수행되어도 일관성), 장애 투명성(Failure, 노드·통신 장애에도 트랜잭션 원자성 유지). 암기: 위중병장",
+        "추가 투명성: 분할 투명성(Fragmentation, 테이블이 여러 조각으로 나뉜 것을 모름), 지역 사상 투명성(Local Mapping, 지역 DBMS와 물리 이름 매핑)",
+        "분산 DB 구성: 분산 처리기, 분산 데이터베이스, 통신 네트워크",
+        "분산 설계 전략: 테이블 위치 분산, 분할(Fragmentation: 수평/수직), 할당(Allocation: 중복/비중복)",
+        "2단계 커밋(2PC, Two-Phase Commit): 분산 트랜잭션 원자성. 1단계 준비(Prepare/Vote) → 2단계 커밋/중단(Commit/Abort). 조정자(Coordinator)와 참여자(Participant)",
+        "CAP 정리: 분산 시스템은 일관성(Consistency), 가용성(Availability), 분할 내성(Partition Tolerance) 중 둘만 보장 가능. RDB = CA, NoSQL = CP 또는 AP",
+        "BASE: Basically Available, Soft state, Eventually consistent. NoSQL의 느슨한 일관성 모델(ACID 대비)"
+      ],
+      "terms": [
+        {
+          "term": "분산 데이터베이스 (Distributed Database)",
+          "desc": "네트워크로 연결된 여러 사이트에 물리적으로 분산, 논리적으로 하나"
+        },
+        {
+          "term": "위치 투명성 (Location Transparency)",
+          "desc": "데이터가 어느 사이트에 있는지 몰라도 논리적 이름으로 접근"
+        },
+        {
+          "term": "중복 투명성 (Replication Transparency)",
+          "desc": "데이터가 여러 곳에 복제되어 있어도 하나의 데이터처럼 사용"
+        },
+        {
+          "term": "병행 투명성 (Concurrency Transparency)",
+          "desc": "여러 트랜잭션이 동시에 실행돼도 결과 일관성 유지"
+        },
+        {
+          "term": "장애 투명성 (Failure Transparency)",
+          "desc": "사이트·통신 장애가 있어도 트랜잭션이 정확히 처리됨"
+        },
+        {
+          "term": "분할 투명성 (Fragmentation Transparency)",
+          "desc": "하나의 테이블이 여러 단편으로 나뉘어 저장돼도 사용자는 모름"
+        },
+        {
+          "term": "지역 사상 투명성 (Local Mapping Transparency)",
+          "desc": "지역 시스템 이름과 무관하게 접근"
+        },
+        {
+          "term": "수평 분할 / 수직 분할 (Horizontal / Vertical Fragmentation)",
+          "desc": "행(튜플) 기준 분할 / 열(속성) 기준 분할"
+        },
+        {
+          "term": "2단계 커밋 (2PC, Two-Phase Commit)",
+          "desc": "준비 단계 투표 후 모두 OK면 커밋, 하나라도 NO면 전체 중단"
+        },
+        {
+          "term": "조정자 (Coordinator)",
+          "desc": "2PC에서 커밋/중단을 결정하는 사이트"
+        },
+        {
+          "term": "CAP 정리 (CAP Theorem)",
+          "desc": "일관성·가용성·분할 내성 중 최대 2개만 동시 만족(Brewer)"
+        },
+        {
+          "term": "BASE",
+          "desc": "기본적 가용성, 소프트 상태, 최종적 일관성. NoSQL 특성"
+        },
+        {
+          "term": "최종적 일관성 (Eventual Consistency)",
+          "desc": "갱신 후 시간이 지나면 모든 복제본이 일치"
+        },
+        {
+          "term": "데이터 복제 (Replication)",
+          "desc": "가용성·성능 위해 여러 노드에 복사. 마스터-슬레이브, 다중 마스터"
+        },
+        {
+          "term": "샤딩 (Sharding)",
+          "desc": "데이터를 키 기준으로 여러 DB 서버에 수평 분할"
+        }
+      ],
+      "asked": [
+        "2022-2"
+      ]
+    },
+    {
+      "title": "데이터웨어하우스·OLAP·데이터마이닝",
+      "importance": 3,
+      "summary": "DW/DM/OLAP 개념과 OLAP 연산 5가지(roll-up/drill-down/slice/dice/pivot), 데이터마이닝 기법 용어.",
+      "points": [
+        "데이터웨어하우스(DW): 의사결정 지원을 위해 여러 운영 DB에서 추출·통합한 주제 지향적(Subject-oriented), 통합적(Integrated), 시간성(Time-variant), 비휘발성(Non-volatile) 데이터 저장소",
+        "데이터마트(DM): 특정 부서·주제용 소규모 DW. ETL(Extract 추출, Transform 변환, Load 적재)로 구축",
+        "OLAP(On-Line Analytical Processing): 다차원 데이터를 대화식으로 분석. OLTP(On-Line Transaction Processing)는 실시간 거래 처리",
+        "OLAP 연산: Roll-up(상위 수준으로 집계, 요약: 일→월→년), Drill-down(하위 수준으로 상세: 년→월→일), Slice(한 차원의 특정 값 선택 → 2차원 단면), Dice(여러 차원 조건으로 부분 큐브), Pivot(Rotate, 차원 축 회전·교환)",
+        "OLAP 종류: MOLAP(다차원 큐브), ROLAP(관계형 DB 기반, 스타 스키마), HOLAP(혼합)",
+        "스타 스키마: 중앙 사실(Fact) 테이블 + 주변 차원(Dimension) 테이블. 스노우플레이크: 차원 테이블을 정규화",
+        "데이터마이닝: 대량 데이터에서 숨겨진 패턴·규칙·관계를 발견. 기법: 연관 규칙(Association, 장바구니: 지지도·신뢰도·향상도), 분류(Classification, 의사결정트리·SVM), 군집화(Clustering, k-means), 회귀(Regression), 순차 패턴(Sequence), 이상치 탐지, 신경망",
+        "연관 규칙 측도: 지지도 Support = P(A∩B), 신뢰도 Confidence = P(B|A) = P(A∩B)/P(A), 향상도 Lift = P(B|A)/P(B) (1보다 크면 양의 상관)",
+        "KDD(Knowledge Discovery in Databases): 선택 → 전처리 → 변환 → 마이닝 → 해석·평가",
+        "데이터 전처리: 결측값 처리, 이상치 제거, 정규화, 데이터 클렌징"
+      ],
+      "terms": [
+        {
+          "term": "데이터웨어하우스 (Data Warehouse, DW)",
+          "desc": "의사결정 지원용 통합·시계열·비휘발성 주제 지향 데이터 저장소"
+        },
+        {
+          "term": "데이터마트 (Data Mart)",
+          "desc": "특정 부서·사용자 그룹 대상의 소규모 데이터웨어하우스"
+        },
+        {
+          "term": "ETL (Extract, Transform, Load)",
+          "desc": "운영 DB에서 추출·변환·적재해 DW 구축"
+        },
+        {
+          "term": "OLAP (On-Line Analytical Processing)",
+          "desc": "다차원 정보를 대화식으로 분석. 의사결정 지원"
+        },
+        {
+          "term": "OLTP (On-Line Transaction Processing)",
+          "desc": "실시간 거래(트랜잭션) 처리. 운영 DB"
+        },
+        {
+          "term": "Roll-up (롤업)",
+          "desc": "차원 계층을 올려 요약·집계. 상세 → 요약"
+        },
+        {
+          "term": "Drill-down (드릴다운)",
+          "desc": "차원 계층을 내려 상세 데이터 조회. 요약 → 상세"
+        },
+        {
+          "term": "Slice (슬라이스)",
+          "desc": "한 차원의 특정 값을 고정해 부분집합(단면) 추출"
+        },
+        {
+          "term": "Dice (다이스)",
+          "desc": "두 개 이상 차원에 조건을 걸어 부분 큐브 추출"
+        },
+        {
+          "term": "Pivot (피벗, Rotate)",
+          "desc": "차원 축을 회전·교환해 다른 관점으로 조회"
+        },
+        {
+          "term": "Drill-through / Drill-across",
+          "desc": "큐브에서 원천 상세 데이터로 / 다른 큐브와 연결 조회"
+        },
+        {
+          "term": "MOLAP / ROLAP / HOLAP",
+          "desc": "다차원 큐브 저장 / 관계형 DB 기반 / 혼합"
+        },
+        {
+          "term": "스타 스키마 (Star Schema)",
+          "desc": "사실 테이블 중심에 차원 테이블 연결. DW 모델링"
+        },
+        {
+          "term": "사실 테이블 / 차원 테이블 (Fact / Dimension Table)",
+          "desc": "측정값(매출액 등) / 분석 관점(시간·지역·상품)"
+        },
+        {
+          "term": "데이터마이닝 (Data Mining)",
+          "desc": "대규모 데이터에서 유용한 패턴·지식을 자동 발견"
+        },
+        {
+          "term": "연관 규칙 (Association Rule)",
+          "desc": "항목 간 동시 발생 관계. 장바구니 분석. Apriori"
+        },
+        {
+          "term": "지지도 / 신뢰도 / 향상도 (Support / Confidence / Lift)",
+          "desc": "A,B 동시 발생 비율 / A 샀을 때 B 산 비율 / 신뢰도÷B 구매율"
+        },
+        {
+          "term": "분류 (Classification)",
+          "desc": "미리 정의된 범주로 할당. 의사결정트리, SVM, 나이브 베이즈. 지도 학습"
+        },
+        {
+          "term": "군집화 (Clustering)",
+          "desc": "유사한 데이터를 그룹으로 묶음. k-means. 비지도 학습"
+        },
+        {
+          "term": "회귀 (Regression)",
+          "desc": "연속 값 예측. 선형 회귀"
+        },
+        {
+          "term": "의사결정 트리 (Decision Tree)",
+          "desc": "속성 조건으로 분기하는 트리 형태 분류 모델"
+        },
+        {
+          "term": "KDD (Knowledge Discovery in Databases)",
+          "desc": "데이터에서 지식을 발견하는 전체 과정"
+        },
+        {
+          "term": "데이터 클렌징 (Data Cleansing)",
+          "desc": "오류·중복·결측 데이터를 정제"
+        },
+        {
+          "term": "데이터 레이크 (Data Lake)",
+          "desc": "원시 형태(정형·비정형) 그대로 저장하는 대규모 저장소"
+        },
+        {
+          "term": "메타데이터 레지스트리 (MDR)",
+          "desc": "메타데이터를 등록·관리하는 저장소. ISO/IEC 11179"
+        }
+      ],
+      "asked": [
+        "2020-1"
+      ]
+    },
+    {
+      "title": "빅데이터·하둡·NoSQL",
+      "importance": 3,
+      "summary": "빅데이터 3V/5V, 하둡 HDFS·맵리듀스, NoSQL 유형과 CAP. 용어 단답 빈출.",
+      "points": [
+        "빅데이터 3V: 규모(Volume), 다양성(Variety, 정형·반정형·비정형), 속도(Velocity). 5V = + 정확성(Veracity), 가치(Value)",
+        "하둡(Hadoop): 아파치 오픈소스 분산 처리 프레임워크. 대용량 데이터를 범용 서버 클러스터에 분산 저장·처리. 자바 기반",
+        "HDFS(Hadoop Distributed File System): 분산 파일 시스템. 네임노드(메타데이터 관리, 마스터) + 데이터노드(실제 블록 저장, 슬레이브). 블록 128MB, 기본 3중 복제",
+        "맵리듀스(MapReduce): 분산 병렬 처리 모델. Map(입력을 키-값 쌍으로 변환·필터) → Shuffle/Sort(같은 키 모음) → Reduce(키별 집계)",
+        "하둡 에코시스템: YARN(자원 관리), Hive(SQL 유사 질의 HiveQL), Pig(데이터 흐름 스크립트), HBase(컬럼 기반 NoSQL), Sqoop(RDB↔하둡 전송), Flume(로그 수집), Kafka(분산 메시지 큐·스트리밍), Zookeeper(분산 코디네이션), Spark(인메모리 분산 처리, 하둡보다 빠름), Oozie(워크플로), Mahout(머신러닝), Tajo(국산 SQL-on-Hadoop)",
+        "NoSQL(Not Only SQL): 스키마 없음(유연), 수평 확장(Scale-out), 고가용성, 비관계형, BASE. 유형 4가지: Key-Value(Redis, DynamoDB, Riak), Document(MongoDB, CouchDB), Column-family(HBase, Cassandra), Graph(Neo4j)",
+        "RDB vs NoSQL: 스키마 고정/유연, 수직 확장/수평 확장, ACID/BASE, JOIN/비정규화, SQL/API",
+        "데이터 종류: 정형(RDB 테이블), 반정형(XML, JSON, 로그), 비정형(텍스트, 이미지, 영상)",
+        "스토리지: DAS(서버에 직접 연결, 확장·공유 제한), NAS(네트워크로 파일 단위 공유, 파일 서버, NFS/SMB), SAN(전용 고속 네트워크(파이버 채널)로 블록 단위 접근, 대규모·고성능). 암기: DAS 직접, NAS 파일, SAN 블록",
+        "데이터 거버넌스: 데이터 품질·보안·표준 관리 체계. 데이터 품질 요소: 정확성, 완전성, 일관성, 유효성, 적시성",
+        "데이터 사이언스 / 머신러닝: 지도 학습(분류·회귀), 비지도(군집·차원축소), 강화 학습. 딥러닝(심층 신경망)"
+      ],
+      "terms": [
+        {
+          "term": "빅데이터 (Big Data)",
+          "desc": "기존 DB로 처리 어려운 대규모·다양·고속 데이터와 그 분석 기술"
+        },
+        {
+          "term": "3V (Volume, Variety, Velocity)",
+          "desc": "규모, 다양성, 속도. 5V는 Veracity(정확성), Value(가치) 추가"
+        },
+        {
+          "term": "하둡 (Hadoop)",
+          "desc": "아파치 분산 저장(HDFS)·처리(MapReduce) 오픈소스 프레임워크"
+        },
+        {
+          "term": "HDFS (Hadoop Distributed File System)",
+          "desc": "대용량 파일을 블록으로 나눠 여러 노드에 복제 저장"
+        },
+        {
+          "term": "네임노드 / 데이터노드 (NameNode / DataNode)",
+          "desc": "메타데이터·블록 위치 관리 마스터 / 실제 데이터 블록 저장 슬레이브"
+        },
+        {
+          "term": "맵리듀스 (MapReduce)",
+          "desc": "Map(분산 변환) + Reduce(집계) 단계로 대용량 병렬 처리. 구글 논문"
+        },
+        {
+          "term": "YARN (Yet Another Resource Negotiator)",
+          "desc": "하둡 2.0 클러스터 자원 관리·스케줄링"
+        },
+        {
+          "term": "Hive",
+          "desc": "하둡 위 SQL 유사 질의(HiveQL) 데이터웨어하우스"
+        },
+        {
+          "term": "HBase",
+          "desc": "HDFS 기반 컬럼 지향 분산 NoSQL. 구글 BigTable 모델"
+        },
+        {
+          "term": "Spark",
+          "desc": "인메모리 분산 처리 엔진. 맵리듀스보다 빠름. RDD"
+        },
+        {
+          "term": "Kafka",
+          "desc": "분산 메시지 스트리밍 플랫폼. 발행-구독, 고처리량"
+        },
+        {
+          "term": "Sqoop / Flume",
+          "desc": "RDB ↔ 하둡 데이터 이동 / 로그·이벤트 수집"
+        },
+        {
+          "term": "Zookeeper",
+          "desc": "분산 애플리케이션 코디네이션(설정·동기화·네이밍)"
+        },
+        {
+          "term": "Tajo (타조)",
+          "desc": "국내 개발 하둡 기반 분산 DW(SQL-on-Hadoop)"
+        },
+        {
+          "term": "NoSQL (Not Only SQL)",
+          "desc": "비관계형 DB. 스키마 유연, 수평 확장, 대용량 분산"
+        },
+        {
+          "term": "Key-Value 스토어",
+          "desc": "키로 값 조회. Redis, Amazon DynamoDB, Riak"
+        },
+        {
+          "term": "Document 스토어",
+          "desc": "JSON/BSON 문서 저장. MongoDB, CouchDB"
+        },
+        {
+          "term": "Column-family 스토어",
+          "desc": "컬럼 묶음 단위 저장. HBase, Cassandra"
+        },
+        {
+          "term": "Graph DB",
+          "desc": "노드·관계(엣지) 저장. Neo4j. 소셜 네트워크·추천"
+        },
+        {
+          "term": "Redis",
+          "desc": "인메모리 키-값 저장소. 캐시·세션 저장"
+        },
+        {
+          "term": "MongoDB",
+          "desc": "대표 문서형 NoSQL. 컬렉션·도큐먼트"
+        },
+        {
+          "term": "Cassandra",
+          "desc": "페이스북 개발 분산 컬럼형 NoSQL. 고가용성, AP"
+        },
+        {
+          "term": "Scale-out / Scale-up (수평 / 수직 확장)",
+          "desc": "서버 수 증가 / 서버 성능 증가"
+        },
+        {
+          "term": "정형 / 반정형 / 비정형 데이터",
+          "desc": "고정 스키마 / 구조 있지만 유연(JSON, XML) / 구조 없음(텍스트, 영상)"
+        },
+        {
+          "term": "DAS (Direct Attached Storage)",
+          "desc": "서버에 직접 연결된 저장장치. 저렴, 공유·확장 제한"
+        },
+        {
+          "term": "NAS (Network Attached Storage)",
+          "desc": "LAN을 통해 파일 단위로 공유하는 저장장치. NFS, SMB/CIFS"
+        },
+        {
+          "term": "SAN (Storage Area Network)",
+          "desc": "파이버 채널 전용망으로 블록 단위 고속 접근. 대규모 서버 환경"
+        },
+        {
+          "term": "데이터 거버넌스 (Data Governance)",
+          "desc": "데이터 품질·보안·표준·생명주기를 관리하는 체계"
+        },
+        {
+          "term": "지도 학습 / 비지도 학습 / 강화 학습",
+          "desc": "정답 레이블 있음(분류·회귀) / 없음(군집) / 보상 기반 학습"
+        },
+        {
+          "term": "딥러닝 (Deep Learning)",
+          "desc": "다층 인공 신경망 기반 머신러닝. CNN, RNN, 트랜스포머"
+        },
+        {
+          "term": "데이터 레이크 (Data Lake)",
+          "desc": "가공 전 원시 데이터를 형식 무관하게 저장하는 저장소"
+        },
+        {
+          "term": "텐서플로 / 파이토치 (TensorFlow / PyTorch)",
+          "desc": "구글 / 메타의 딥러닝 프레임워크"
+        }
+      ],
+      "asked": [
+        "2020-1",
+        "2021-3"
+      ]
+    }
+  ]
+}
