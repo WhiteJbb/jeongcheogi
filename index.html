@@ -57,7 +57,7 @@ details summary{cursor:pointer;color:var(--accent)}
 const D=window.DATA||{exams:[],concepts:[]};
 const Q=[];D.exams.forEach(e=>e.questions.forEach(q=>Q.push({...q,id:`${e.year}-${e.round}-${q.no}`,year:e.year,round:e.round,exam:`${e.year}-${e.round}`})));
 const SUBJECTS=[...new Set(Q.map(q=>q.subject))].sort();
-const ls=(k,v)=>v===undefined?JSON.parse(localStorage.getItem(k)||'{}'):localStorage.setItem(k,JSON.stringify(v));
+const ls=(k,v)=>{try{if(v!==undefined)return localStorage.setItem(k,JSON.stringify(v));const o=JSON.parse(localStorage.getItem(k)||'{}');return o&&typeof o==='object'?o:{}}catch{return {}}};
 let P=ls('jcg.progress'); let CARDS=ls('jcg.cards');
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const norm=s=>String(s).normalize('NFKC').toLowerCase().replace(/[\s　]+/g,'').replace(/["'`“”‘’]/g,'').replace(/\.$/,'');
@@ -67,6 +67,8 @@ const $=s=>document.querySelector(s);const app=$('#app');
 function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function shuffle(arr,seed){const r=rng(seed),a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const go=h=>location.hash=h;
+const ix=v=>(Math.floor(+v)||1)-1;const dec=v=>{try{return decodeURIComponent(v)}catch{return v}};
+let WRONG=null;
 
 /* ---------- 라우터 ---------- */
 function route(){
@@ -74,13 +76,13 @@ function route(){
   document.querySelectorAll('nav a[data-nav]').forEach(a=>a.classList.toggle('on',path===a.dataset.nav||(a.dataset.nav!=='/'&&path.startsWith(a.dataset.nav))));
   window.scrollTo(0,0);document.onkeydown=null;
   if(p[0]==='exams')return home(true);
-  if(p[0]==='exam'){const e=examOf(p[1]);if(!e)return home();return quiz(Q.filter(q=>q.exam===p[1]),+(p[2]||1)-1,roundName(e),`/exam/${p[1]}`)}
-  if(p[0]==='subject'){const s=decodeURIComponent(p[1]);return quiz(Q.filter(q=>q.subject===s),+(p[2]||1)-1,s,`/subject/${p[1]}`)}
-  if(p[0]==='random'){const seed=+p[1]||Date.now()%1e9;if(!p[1])return go(`/random/${seed}/1`);return quiz(shuffle(Q,seed).slice(0,20),+(p[2]||1)-1,`랜덤 모의고사 #${seed}`,`/random/${seed}`)}
-  if(p[0]==='wrong'){const l=Q.filter(q=>P[q.id]&&P[q.id].ok===false);if(!l.length)return app.innerHTML='<h1>오답노트</h1><div class="card">틀린 문제가 없습니다. 기출을 풀면 틀린 문제가 여기에 모입니다.</div>';return quiz(l,+(p[1]||1)-1,`오답노트 (${l.length}문항)`,'/wrong')}
+  if(p[0]==='exam'){const e=examOf(p[1]);if(!e)return home();return quiz(Q.filter(q=>q.exam===p[1]),ix(p[2]),roundName(e),`/exam/${p[1]}`)}
+  if(p[0]==='subject'){const s=dec(p[1]);return quiz(Q.filter(q=>q.subject===s),ix(p[2]),s,`/subject/${p[1]}`)}
+  if(p[0]==='random'){const seed=+p[1]||Date.now()%1e9;if(!p[1])return go(`/random/${seed}/1`);return quiz(shuffle(Q,seed).slice(0,20),ix(p[2]),`랜덤 모의고사 #${seed}`,`/random/${seed}`)}
+  if(p[0]==='wrong'){if(!WRONG||ix(p[1])===0)WRONG=Q.filter(q=>P[q.id]&&P[q.id].ok===false);const l=WRONG;if(!l.length)return app.innerHTML='<h1>오답노트</h1><div class="card">틀린 문제가 없습니다. 기출을 풀면 틀린 문제가 여기에 모입니다.</div>';return quiz(l,ix(p[1]),`오답노트 (${l.length}문항)`,'/wrong')}
   if(p[0]==='concepts')return concepts(p[1]);
   if(p[0]==='cards')return cards(p[1]);
-  if(p[0]==='search')return search(decodeURIComponent((qs||'').replace(/^q=/,'')));
+  if(p[0]==='search')return search(dec((qs||'').replace(/^q=/,'')));
   home();
 }
 
@@ -103,11 +105,12 @@ function home(onlyExams){
 
 /* ---------- 문제 풀이 ---------- */
 let cur=null;
+function blankLabels(q){const m=(q.answer[0]||'').match(/[①-⑳]/g)||[];return (q.blanks||[]).map((_,i)=>m.length===q.blanks.length?m[i]:'①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮'[i]||i+1)}
 function quiz(list,idx,title,base){
   if(!list.length)return app.innerHTML=`<h1>${esc(title)}</h1><div class="card">문제가 없습니다.</div>`;
   idx=Math.max(0,Math.min(idx,list.length-1));const q=list[idx];cur={list,idx,base,q};
-  const st=P[q.id];const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;
-  const inputs=blanks?blanks.map((_,i)=>`<div class="row"><span style="min-width:2em">${'①②③④⑤⑥⑦⑧⑨⑩'[i]||i+1}</span><input class="ans" data-i="${i}" autocomplete="off"></div>`).join('')
+  const st=P[q.id];const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;const lab=blankLabels(q);
+  const inputs=blanks?blanks.map((_,i)=>`<div class="row"><span style="min-width:2em">${lab[i]}</span><input class="ans" data-i="${i}" autocomplete="off"></div>`).join('')
     :`<textarea id="ans" placeholder="${q.type==='서술'?'서술형: 답을 작성 후 정답과 비교해 스스로 채점하세요':'답 입력 후 Enter'}"></textarea>`;
   app.innerHTML=`<div class="muted"><a href="#${base.startsWith('/exam')?'/exams':'/'}">← 목록</a> · ${esc(title)}</div>
   <h1>${idx+1} / ${list.length} <span class="muted" style="font-size:.9rem;font-weight:400">${q.exam} ${q.no}번</span></h1>
@@ -126,12 +129,12 @@ function quiz(list,idx,title,base){
 }
 function check(skip){
   const {q,idx,list}=cur;if($('#out').innerHTML)return;
-  const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;let ok,detail='';
+  const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;const lab=blankLabels(q);let ok,detail='';
   if(blanks){
     const got=[...app.querySelectorAll('input.ans')].map(i=>i.value);
     const each=blanks.map((b,i)=>b.split('|').some(alt=>norm(alt)===norm(got[i])));
     ok=!skip&&each.every(Boolean);
-    detail=blanks.map((b,i)=>`<div>${'①②③④⑤⑥⑦⑧⑨⑩'[i]} <b>${esc(b.split('|')[0])}</b> ${skip?'':each[i]?'✅':`❌ <s>${esc(got[i])}</s>`}</div>`).join('');
+    detail=blanks.map((b,i)=>`<div>${lab[i]} <b>${esc(b.split('|')[0])}</b> ${skip?'':each[i]?'✅':`❌ <s>${esc(got[i])}</s>`}</div>`).join('');
   }else{
     const got=$('#ans').value;ok=!skip&&q.type!=='서술'&&q.answer.some(a=>norm(a)===norm(got));
     if(q.type==='서술'&&!skip)ok=null;
@@ -191,9 +194,9 @@ function cards(ord){
     $('#fc').onclick=()=>{flip=true;draw()};
     const next=()=>{i=(i+1)%deck.length;flip=false;draw()};
     $('#nx').onclick=next;
-    $('#yes').onclick=()=>{CARDS[x.key]=true;ls('jcg.cards',CARDS);next()};
+    $('#yes').onclick=()=>{CARDS[x.key]=true;ls('jcg.cards',CARDS);if(onlyUnknown){deck.splice(i,1);i=deck.length?i%deck.length:0;flip=false;draw()}else next()};
     $('#no').onclick=()=>{CARDS[x.key]=false;ls('jcg.cards',CARDS);next()};
-    document.onkeydown=e=>{if(e.key===' '){e.preventDefault();flip?next():(flip=true,draw())}else if(e.key==='1'&&flip)$('#no').click();else if(e.key==='2'&&flip)$('#yes').click()};
+    document.onkeydown=e=>{if(/INPUT|TEXTAREA/.test(e.target.tagName))return;if(e.key===' '){e.preventDefault();flip?next():(flip=true,draw())}else if(e.key==='1'&&flip)$('#no').click();else if(e.key==='2'&&flip)$('#yes').click()};
   };
   build();
 }
