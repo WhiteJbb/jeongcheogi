@@ -1,0 +1,597 @@
+{
+  "chapter": "소프트웨어 개발 보안 구축",
+  "order": 9,
+  "topics": [
+    {
+      "title": "정보보안 3요소 (CIA)",
+      "importance": 3,
+      "summary": "기밀성·무결성·가용성. 서술형으로 각 요소의 정의를 그대로 써야 한다.",
+      "points": [
+        "기밀성(Confidentiality): 인가된 사용자만 정보에 접근할 수 있다",
+        "무결성(Integrity): 인가된 사용자만 정보를 수정할 수 있고, 변조되지 않음을 보장한다",
+        "가용성(Availability): 인가된 사용자가 필요할 때 언제든지 정보에 접근·사용할 수 있다",
+        "확장 요소: 인증(Authentication), 부인방지(Non-repudiation), 책임추적성(Accountability)",
+        "암기: 기무가(CIA)"
+      ],
+      "terms": [
+        {"term": "기밀성 (Confidentiality)", "desc": "인가되지 않은 접근·노출 방지. 암호화로 보장"},
+        {"term": "무결성 (Integrity)", "desc": "인가되지 않은 변경 방지. 해시·전자서명으로 보장"},
+        {"term": "가용성 (Availability)", "desc": "필요할 때 서비스 사용 가능. DoS 공격의 대상"},
+        {"term": "부인방지 (Non-repudiation)", "desc": "송·수신 사실을 사후에 부인하지 못하게 함. 전자서명"},
+        {"term": "책임추적성 (Accountability)", "desc": "행위 주체를 추적 가능. 로그·감사"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "시큐어 코딩 가이드 7항목",
+      "importance": 3,
+      "summary": "행안부 SW 개발보안 가이드의 보안 약점 7개 분류. 분류명과 대표 약점을 단답으로 묻는다.",
+      "points": [
+        "① 입력데이터 검증 및 표현: SQL 삽입, XSS, 경로 조작 및 자원 삽입, 운영체제 명령어 삽입, 크로스사이트 요청 위조(CSRF), 포맷 스트링 삽입, 메모리 버퍼 오버플로",
+        "② 보안 기능: 부적절한 인가, 취약한 암호화 알고리즘 사용, 하드코드된 비밀번호·암호키, 중요 정보 평문 저장/전송, 충분하지 않은 키 길이",
+        "③ 시간 및 상태: 경쟁 조건(Race Condition, TOCTOU), 종료되지 않는 반복문·재귀",
+        "④ 에러 처리: 오류 메시지를 통한 정보 노출, 오류 상황 대응 부재, 부적절한 예외 처리",
+        "⑤ 코드 오류: 널 포인터 역참조, 부적절한 자원 해제, 해제된 자원 사용(Use After Free), 정수 오버플로",
+        "⑥ 캡슐화: 잘못된 세션에 의한 데이터 정보 노출, 제거되지 않은 디버그 코드, Private 배열에 Public 데이터 할당",
+        "⑦ API 오용: DNS lookup에 의존한 보안 결정, 취약한 API 사용(strcpy, gets 등)",
+        "암기: 입보시에코캡API"
+      ],
+      "terms": [
+        {"term": "입력데이터 검증 및 표현 (Input Validation and Representation)", "desc": "입력값 미검증으로 생기는 약점. SQL Injection·XSS 등"},
+        {"term": "보안 기능 (Security Features)", "desc": "인증·접근제어·암호화·권한관리를 부적절하게 구현"},
+        {"term": "시간 및 상태 (Time and State)", "desc": "동시 수행 시 시간·상태 관리 오류. 경쟁 조건"},
+        {"term": "에러 처리 (Error Handling)", "desc": "에러 미처리·과도한 정보 노출"},
+        {"term": "코드 오류 (Code Quality)", "desc": "형변환 오류, 자원 반환, 널 포인터 등 개발자 실수"},
+        {"term": "캡슐화 (Encapsulation)", "desc": "중요 데이터·기능의 불충분한 캡슐화로 정보 노출"},
+        {"term": "API 오용 (API Abuse)", "desc": "의도된 사용에 반하는 API 사용"},
+        {"term": "경쟁 조건 (Race Condition)", "desc": "검사 시점과 사용 시점(TOCTOU)의 차이를 악용"},
+        {"term": "버퍼 오버플로 (Buffer Overflow)", "desc": "할당된 메모리 범위를 넘어 쓰는 것. 스택/힙 오버플로. 대응: 카나리, ASLR, strncpy"},
+        {"term": "포맷 스트링 (Format String)", "desc": "printf 등 서식 문자열에 사용자 입력을 직접 넣어 메모리 읽기/쓰기"},
+        {"term": "하드코딩 (Hard-coded Password)", "desc": "소스코드에 비밀번호·키를 상수로 저장"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "암호 알고리즘 분류 (대칭/비대칭/해시)",
+      "importance": 3,
+      "summary": "알고리즘 이름을 주면 분류를, 설명을 주면 이름을 쓰는 단답 문제가 매회 출제된다.",
+      "points": [
+        "대칭키(비밀키) 암호: 암·복호화 키가 같음. 속도 빠름, 키 분배 문제. n명 통신 시 키 n(n-1)/2개",
+        "비대칭키(공개키) 암호: 공개키로 암호화, 개인키로 복호화. 속도 느림, 키 분배 쉬움. n명 통신 시 키 2n개",
+        "해시: 일방향(단방향), 고정길이 출력, 키 없음. 무결성 검증·비밀번호 저장",
+        "대칭키 = 블록 암호(DES, 3DES, AES, SEED, ARIA, IDEA, LEA, Blowfish, Skipjack) + 스트림 암호(RC4, LFSR, A5/1)",
+        "비대칭키: RSA, ECC, DSA, ElGamal, Diffie-Hellman(키 교환), Rabin",
+        "해시: MD5, SHA-1, SHA-2(SHA-256/512), SHA-3, HAVAL, N-NASH, SNEFRU",
+        "블록 암호 운영 모드: ECB, CBC, CFB, OFB, CTR"
+      ],
+      "terms": [
+        {"term": "DES (Data Encryption Standard)", "desc": "미국 NBS. 64비트 블록, 56비트 키, 16라운드 페이스텔 구조"},
+        {"term": "3DES (Triple DES)", "desc": "DES를 3번 적용. 168비트 키"},
+        {"term": "AES (Advanced Encryption Standard)", "desc": "미국 NIST, Rijndael. 128비트 블록, 키 128/192/256비트, SPN 구조. DES 대체"},
+        {"term": "SEED", "desc": "한국 KISA(1999). 128비트 블록, 128/256비트 키"},
+        {"term": "ARIA (Academy, Research Institute, Agency)", "desc": "한국 국가보안기술연구소. 128비트 블록, 키 128/192/256비트"},
+        {"term": "LEA (Lightweight Encryption Algorithm)", "desc": "한국 경량 블록 암호. 128비트 블록, IoT용"},
+        {"term": "IDEA (International Data Encryption Algorithm)", "desc": "스위스. 64비트 블록, 128비트 키. PGP에 사용"},
+        {"term": "RC4", "desc": "스트림 암호. SSL, WEP에 사용. 현재 취약"},
+        {"term": "RSA (Rivest-Shamir-Adleman)", "desc": "큰 수의 소인수분해 어려움에 기반한 공개키 암호. 1977 MIT"},
+        {"term": "ECC (Elliptic Curve Cryptography, 타원곡선 암호)", "desc": "타원곡선 이산대수 문제 기반. RSA보다 짧은 키로 동일 보안강도"},
+        {"term": "DSA (Digital Signature Algorithm)", "desc": "미국 NIST 전자서명 표준. 이산대수 기반"},
+        {"term": "ElGamal", "desc": "이산대수 문제 기반 공개키 암호. 전자서명에도 사용"},
+        {"term": "Diffie-Hellman (디피-헬만)", "desc": "최초의 공개키 알고리즘(1976). 키 교환 전용. 중간자 공격에 취약"},
+        {"term": "MD5 (Message Digest 5)", "desc": "128비트 해시. 충돌 발견으로 취약"},
+        {"term": "SHA (Secure Hash Algorithm)", "desc": "미국 NSA. SHA-1 160비트, SHA-256 256비트, SHA-512 512비트"},
+        {"term": "HAVAL", "desc": "MD5 변형. 가변 길이(128~256비트) 해시"},
+        {"term": "블록 암호 (Block Cipher)", "desc": "고정 길이 블록 단위로 암호화. DES/AES/SEED/ARIA"},
+        {"term": "스트림 암호 (Stream Cipher)", "desc": "비트/바이트 단위로 키 스트림과 XOR. RC4, LFSR"},
+        {"term": "페이스텔 구조 (Feistel)", "desc": "DES의 구조. 블록을 좌우로 나눠 라운드 반복"},
+        {"term": "SPN (Substitution-Permutation Network)", "desc": "AES의 구조. 치환과 순열 반복"},
+        {"term": "양자 암호 (Quantum Cryptography)", "desc": "양자역학 원리(불확정성)로 키 분배. QKD"},
+        {"term": "동형 암호 (Homomorphic Encryption)", "desc": "암호화된 상태로 연산 가능한 암호"},
+        {"term": "경량 암호 (Lightweight Cryptography)", "desc": "IoT 등 저사양 환경용 암호. LEA, PRESENT, HIGHT"}
+      ],
+      "asked": ["2021-2", "2023-1"]
+    },
+    {
+      "title": "전자서명·해시·솔트·PKI",
+      "importance": 3,
+      "summary": "해시의 특성과 비밀번호 저장 시 솔트·레인보우 테이블, 공개키 기반구조 개념.",
+      "points": [
+        "해시 함수 특성: 일방향성(역상 저항성), 두 번째 역상 저항성, 충돌 저항성, 고정 길이 출력",
+        "솔트: 비밀번호에 랜덤 값을 붙여 해시 → 동일 비밀번호도 다른 해시, 레인보우 테이블 공격 무력화",
+        "전자서명: 송신자 개인키로 서명 → 수신자가 송신자 공개키로 검증. 무결성·인증·부인방지",
+        "공개키 암호화: 수신자 공개키로 암호화 → 수신자 개인키로 복호화 (기밀성)",
+        "PKI 구성: CA(인증기관), RA(등록기관), 디렉터리, 인증서(X.509), CRL(인증서 폐기 목록)"
+      ],
+      "terms": [
+        {"term": "솔트 (Salt)", "desc": "해시 전 비밀번호에 추가하는 임의의 값. 레인보우 테이블·사전 공격 방어"},
+        {"term": "레인보우 테이블 (Rainbow Table)", "desc": "해시값과 원문을 미리 계산해 둔 표. 비밀번호 역추적에 사용"},
+        {"term": "키 스트레칭 (Key Stretching)", "desc": "해시를 수천 번 반복해 무차별 대입 시간을 늘림. PBKDF2, bcrypt, scrypt"},
+        {"term": "전자서명 (Digital Signature)", "desc": "개인키로 서명, 공개키로 검증. 부인방지 제공"},
+        {"term": "PKI (Public Key Infrastructure, 공개키 기반구조)", "desc": "공개키 인증서를 발급·관리하는 체계"},
+        {"term": "CA (Certificate Authority, 인증기관)", "desc": "공개키 인증서 발급·폐기 기관"},
+        {"term": "X.509", "desc": "공개키 인증서 표준 형식"},
+        {"term": "MAC (Message Authentication Code, 메시지 인증 코드)", "desc": "비밀키 + 해시로 메시지 무결성·인증. HMAC"},
+        {"term": "블록체인 (Blockchain)", "desc": "거래 기록을 해시로 연결한 분산 원장. 이전 블록 해시를 포함해 위변조 방지"},
+        {"term": "머클 트리 (Merkle Tree)", "desc": "거래 해시를 트리로 묶어 루트 해시로 전체 무결성 검증"},
+        {"term": "스마트 컨트랙트 (Smart Contract)", "desc": "블록체인 위에서 조건 충족 시 자동 실행되는 계약 코드"},
+        {"term": "작업 증명 (PoW, Proof of Work)", "desc": "해시 퍼즐 연산으로 블록 생성 권한 획득. 비트코인"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "접근 통제 (DAC/MAC/RBAC)",
+      "importance": 3,
+      "summary": "접근통제 3가지 정책의 이름과 특징. 빈칸·단답으로 자주 출제.",
+      "points": [
+        "DAC(임의적): 데이터 소유자가 접근 권한 부여. ACL 사용. 신분 기반",
+        "MAC(강제적): 시스템이 보안 등급(레이블)에 따라 강제 통제. 규칙 기반. 군사용. BLP/Biba",
+        "RBAC(역할기반): 사용자의 역할(직무)에 권한 부여. 관리 편리. 기업 환경",
+        "벨-라파듈라(BLP): 기밀성 모델. No Read Up, No Write Down",
+        "비바(Biba): 무결성 모델. No Read Down, No Write Up",
+        "클락-윌슨: 무결성, 상업용. 만리장성(Chinese Wall): 이해충돌 방지"
+      ],
+      "terms": [
+        {"term": "DAC (Discretionary Access Control, 임의적 접근통제)", "desc": "소유자가 임의로 권한 부여. 신분(ID) 기반, ACL"},
+        {"term": "MAC (Mandatory Access Control, 강제적 접근통제)", "desc": "보안 등급과 규칙으로 시스템이 강제. 군사용"},
+        {"term": "RBAC (Role Based Access Control, 역할기반 접근통제)", "desc": "역할에 권한 할당 후 사용자에게 역할 부여"},
+        {"term": "ACL (Access Control List, 접근제어 목록)", "desc": "객체별로 접근 가능한 주체와 권한 목록"},
+        {"term": "CL (Capability List, 권한 목록)", "desc": "주체별로 접근 가능한 객체 목록"},
+        {"term": "벨-라파듈라 모델 (Bell-LaPadula)", "desc": "기밀성. 상위 등급 읽기 금지, 하위 등급 쓰기 금지"},
+        {"term": "비바 모델 (Biba)", "desc": "무결성. 하위 등급 읽기 금지, 상위 등급 쓰기 금지"},
+        {"term": "클락-윌슨 모델 (Clark-Wilson)", "desc": "무결성 중심의 상업용 모델. 직무 분리"},
+        {"term": "최소 권한 원칙 (Least Privilege)", "desc": "업무 수행에 필요한 최소한의 권한만 부여"},
+        {"term": "직무 분리 (Separation of Duty)", "desc": "한 사람이 중요한 업무 전체를 처리하지 못하게 분리"}
+      ],
+      "asked": ["2021-1"]
+    },
+    {
+      "title": "인증 (Authentication) 유형과 AAA",
+      "importance": 3,
+      "summary": "인증 4가지 유형(지식/소유/생체/행위)과 AAA 3요소. 단답·빈칸 출제.",
+      "points": [
+        "지식 기반(Something you know): 비밀번호, PIN, i-PIN",
+        "소유 기반(Something you have): OTP, 스마트카드, 공인인증서, 보안카드",
+        "생체 기반(Something you are): 지문, 홍채, 정맥, 얼굴, 음성",
+        "행위 기반(Something you do): 서명, 걸음걸이, 키 입력 패턴",
+        "위치 기반(Somewhere you are): GPS, IP 주소",
+        "2팩터 인증: 서로 다른 유형 2개 조합",
+        "AAA: Authentication(인증) → Authorization(인가/권한부여) → Accounting(계정관리/과금)"
+      ],
+      "terms": [
+        {"term": "AAA (Authentication, Authorization, Accounting)", "desc": "인증·권한부여·계정관리(과금). RADIUS, Diameter, TACACS+가 구현 프로토콜"},
+        {"term": "인증 (Authentication)", "desc": "사용자가 본인임을 확인. 자격 검증"},
+        {"term": "인가 (Authorization, 권한부여)", "desc": "인증된 사용자에게 자원 접근 권한 부여"},
+        {"term": "계정관리 (Accounting)", "desc": "사용자 자원 사용 기록·과금·감사"},
+        {"term": "RADIUS (Remote Authentication Dial-In User Service)", "desc": "AAA 프로토콜. UDP 사용, 중앙 인증 서버"},
+        {"term": "OTP (One Time Password)", "desc": "1회용 비밀번호. 소유 기반 인증"},
+        {"term": "SSO (Single Sign-On)", "desc": "한 번의 로그인으로 여러 시스템 접근. Kerberos가 대표"},
+        {"term": "i-PIN (Internet Personal Identification Number)", "desc": "주민번호 대체 인터넷 개인식별 번호"},
+        {"term": "다요소 인증 (MFA, Multi-Factor Authentication)", "desc": "서로 다른 인증 유형 2개 이상 결합"},
+        {"term": "커버로스 (Kerberos)", "desc": "MIT 개발 티켓 기반 인증 프로토콜. KDC(AS+TGS), 대칭키, SSO"},
+        {"term": "FIDO (Fast IDentity Online)", "desc": "비밀번호 없는 생체·공개키 기반 인증 표준"}
+      ],
+      "asked": ["2021-3"]
+    },
+    {
+      "title": "서비스 거부 공격 (DoS/DDoS/DRDoS)",
+      "importance": 3,
+      "summary": "DoS 계열 공격 이름을 설명으로부터 쓰는 단답 문제. 각 공격의 핵심 메커니즘 한 줄을 외운다.",
+      "points": [
+        "DoS: 한 대의 공격자가 대상 시스템 자원 고갈. DDoS: 다수의 좀비 PC(봇넷)로 분산 공격. DRDoS: 출발지 IP를 피해자로 위조해 반사 서버의 응답을 피해자에게 집중",
+        "SYN Flooding: TCP 3-way handshake의 SYN만 대량 전송, ACK 미응답 → 백로그 큐 고갈",
+        "Smurf: 출발지 IP를 피해자로 위조한 ICMP Echo Request를 브로드캐스트 → 다수의 응답이 피해자에게",
+        "Ping of Death: 규정 크기(65,535바이트) 이상의 ICMP 패킷 → 재조립 과정에서 시스템 마비",
+        "Land Attack: 출발지 IP = 목적지 IP로 조작 → 자기 자신에게 응답 무한 반복",
+        "Teardrop: IP 단편화 오프셋(Fragment Offset)을 중복·조작 → 재조립 불가",
+        "UDP Flooding: 대량의 UDP 패킷 → ICMP Unreachable 응답으로 자원 고갈",
+        "Ping Flooding: ICMP Echo Request 대량 전송",
+        "HTTP GET Flooding: 정상적인 HTTP 요청을 대량 반복. 7계층 공격. Slowloris, RUDY도 7계층",
+        "DDoS 공격 도구: Trinoo, TFN, TFN2K, Stacheldraht"
+      ],
+      "terms": [
+        {"term": "DoS (Denial of Service, 서비스 거부 공격)", "desc": "대량 데이터로 시스템 자원 고갈, 정상 서비스 방해"},
+        {"term": "DDoS (Distributed DoS, 분산 서비스 거부 공격)", "desc": "여러 좀비 PC(봇넷)가 동시 공격. 공격자-마스터(C&C)-에이전트(좀비) 구조"},
+        {"term": "DRDoS (Distributed Reflection DoS, 분산 반사 서비스 거부 공격)", "desc": "출발지 IP를 피해자로 위조해 정상 서버(반사체)의 응답을 피해자에게 집중. DNS/NTP 증폭"},
+        {"term": "SYN 플러딩 (SYN Flooding)", "desc": "SYN만 보내고 ACK를 보내지 않아 Half-open 연결로 백로그 큐 고갈"},
+        {"term": "스머프 (Smurf)", "desc": "ICMP Echo + 브로드캐스트 + IP 스푸핑. 라우터에서 Directed Broadcast 차단으로 방어"},
+        {"term": "죽음의 핑 (Ping of Death)", "desc": "크기가 매우 큰 ICMP 패킷으로 재조립 오류 유발"},
+        {"term": "랜드 어택 (Land Attack)", "desc": "출발지와 목적지 IP를 피해자로 동일하게 설정"},
+        {"term": "티어드롭 (Teardrop)", "desc": "단편화 오프셋 값을 조작해 재조립 시 오류"},
+        {"term": "본크/보잉크 (Bonk/Boink)", "desc": "단편화 순서번호를 조작. Bonk는 모두 1번, Boink는 중간 순서 변경"},
+        {"term": "슬로우로리스 (Slowloris)", "desc": "HTTP 헤더를 불완전하게 조금씩 보내 연결 점유. Slow HTTP Header DoS"},
+        {"term": "RUDY (R-U-Dead-Yet)", "desc": "Content-Length를 크게 설정하고 본문을 매우 천천히 전송. Slow HTTP POST DoS"},
+        {"term": "봇넷 (Botnet)", "desc": "악성코드에 감염되어 공격자가 원격 조종하는 좀비 PC 네트워크"},
+        {"term": "C&C 서버 (Command and Control)", "desc": "봇넷에 명령을 내리는 제어 서버"},
+        {"term": "트리누 (Trinoo)", "desc": "최초의 DDoS 도구. UDP Flooding"},
+        {"term": "TFN (Tribe Flood Network)", "desc": "DDoS 도구. UDP·TCP SYN·ICMP·Smurf 공격 지원"},
+        {"term": "Stacheldraht (슈타첼드라트)", "desc": "TFN + Trinoo 특성, 암호화 통신 DDoS 도구"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "스니핑·스푸핑·세션 하이재킹",
+      "importance": 3,
+      "summary": "네트워크 도청·위장 공격 계열. 각 용어의 영문 명칭과 메커니즘.",
+      "points": [
+        "스니핑(Sniffing): 네트워크 패킷을 몰래 도청하는 수동적 공격. Promiscuous 모드",
+        "스푸핑(Spoofing): 자신을 다른 대상으로 위장. IP/ARP/DNS/이메일 스푸핑",
+        "ARP 스푸핑: 위조된 ARP Reply로 피해자의 ARP 캐시에 공격자 MAC을 게이트웨이 MAC으로 등록 → 중간자 공격",
+        "세션 하이재킹: TCP 시퀀스 넘버를 예측해 인증된 세션을 가로챔. 비동기화 상태 이용. 대응: 암호화, 지속적 인증, 재전송·ACK 스톰 탐지",
+        "스위치 재밍(MAC Flooding): 스위치 MAC 테이블을 넘치게 해 허브처럼 동작시킴 → 스니핑",
+        "중간자 공격(MITM): 송·수신자 사이에 끼어 통신 가로채기·변조"
+      ],
+      "terms": [
+        {"term": "스니핑 (Sniffing)", "desc": "네트워크상의 패킷을 도청. 수동적 공격. 암호화로 대응"},
+        {"term": "스니퍼 (Sniffer)", "desc": "스니핑 도구. Wireshark, tcpdump"},
+        {"term": "스푸핑 (Spoofing)", "desc": "IP·MAC·DNS 등을 위조해 다른 사용자로 위장"},
+        {"term": "IP 스푸핑 (IP Spoofing)", "desc": "출발지 IP 주소 위조. 신뢰 관계 악용"},
+        {"term": "ARP 스푸핑 (ARP Spoofing)", "desc": "위조 ARP 응답으로 MAC 주소를 속여 트래픽 가로채기. 정적 ARP 테이블로 방어"},
+        {"term": "DNS 스푸핑 (DNS Spoofing)", "desc": "DNS 응답을 위조해 가짜 사이트로 유도. DNS 캐시 포이즈닝"},
+        {"term": "세션 하이재킹 (Session Hijacking)", "desc": "인증된 TCP 세션을 가로채 정상 사용자처럼 행동. TCP 시퀀스 넘버 예측"},
+        {"term": "중간자 공격 (MITM, Man In The Middle)", "desc": "통신 당사자 사이에서 메시지를 가로채고 변조"},
+        {"term": "스위치 재밍 (Switch Jamming)", "desc": "스위치 MAC 테이블을 넘치게 해 모든 포트로 패킷 전달(허브화). MAC Flooding"},
+        {"term": "ICMP 리다이렉트 (ICMP Redirect)", "desc": "위조 ICMP Redirect로 라우팅 경로를 공격자로 변경"},
+        {"term": "리플레이 공격 (Replay Attack)", "desc": "가로챈 인증 데이터를 재전송. 타임스탬프·난수(nonce)로 대응"},
+        {"term": "ACK 스톰 (ACK Storm)", "desc": "세션 하이재킹 시 양측이 ACK를 계속 주고받는 현상. 탐지 지표"}
+      ],
+      "asked": ["2021-3"]
+    },
+    {
+      "title": "웹 애플리케이션 공격 (SQL Injection/XSS/CSRF)",
+      "importance": 3,
+      "summary": "웹 취약점 3대장. 공격 원리와 대응 방법을 서술할 수 있어야 한다.",
+      "points": [
+        "SQL Injection: 입력값에 SQL 구문을 삽입해 DB 조작·정보 유출. 대응: Prepared Statement(바인딩), 입력값 검증, 최소 권한 DB 계정, 에러 메시지 숨김",
+        "XSS: 게시판 등에 악성 스크립트 삽입 → 다른 사용자 브라우저에서 실행, 쿠키/세션 탈취. 유형: Stored(저장형), Reflected(반사형), DOM 기반. 대응: 입력값 필터링, HTML 이스케이프(<, >, &, \", ')",
+        "CSRF: 인증된 사용자가 자신의 의지와 무관하게 공격자가 의도한 요청을 전송하도록 함. 대응: CSRF 토큰, Referer 검증, 재인증",
+        "XSS는 사용자 브라우저를 공격, CSRF는 사용자 권한으로 서버에 요청",
+        "디렉터리 트래버설: ../ 로 상위 경로 접근. 명령어 삽입: ; | && 로 OS 명령 실행"
+      ],
+      "terms": [
+        {"term": "SQL 삽입 (SQL Injection)", "desc": "입력 폼에 SQL문 삽입. ' OR 1=1 -- 등. 대응은 Prepared Statement"},
+        {"term": "블라인드 SQL 인젝션 (Blind SQL Injection)", "desc": "에러 메시지 없이 참/거짓 응답 차이로 정보 추출"},
+        {"term": "XSS (Cross Site Scripting, 크로스 사이트 스크립팅)", "desc": "웹 페이지에 악성 스크립트 삽입, 열람자 브라우저에서 실행"},
+        {"term": "저장형 XSS (Stored XSS)", "desc": "게시판 등 서버에 스크립트를 저장해 다수에게 전파"},
+        {"term": "반사형 XSS (Reflected XSS)", "desc": "URL 파라미터에 스크립트를 담아 링크 클릭 시 실행"},
+        {"term": "CSRF (Cross Site Request Forgery, 크로스 사이트 요청 위조)", "desc": "로그인 사용자의 권한으로 공격자가 의도한 요청을 서버에 보내게 함"},
+        {"term": "디렉터리 트래버설 (Directory Traversal)", "desc": "../ 등 경로 조작으로 비인가 파일 접근. 경로 조작 및 자원 삽입"},
+        {"term": "운영체제 명령어 삽입 (OS Command Injection)", "desc": "입력값에 OS 명령을 삽입해 서버에서 실행"},
+        {"term": "LDAP 인젝션 (LDAP Injection)", "desc": "LDAP 질의문 조작"},
+        {"term": "XML 인젝션 (XML/XPath Injection)", "desc": "XML 질의·구조 조작. XXE(외부 엔티티) 공격"},
+        {"term": "드라이브 바이 다운로드 (Drive-by Download)", "desc": "웹사이트 방문만으로 악성코드가 자동 다운로드·설치"},
+        {"term": "웹셸 (Web Shell)", "desc": "웹 서버에 업로드된 스크립트로 원격 명령 실행"},
+        {"term": "OWASP (Open Web Application Security Project)", "desc": "웹 취약점 Top 10을 발표하는 오픈소스 프로젝트"},
+        {"term": "Prepared Statement (준비된 문장)", "desc": "SQL 구조와 입력값을 분리해 바인딩. SQL Injection 대응"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "악성코드 유형 (바이러스/웜/트로이목마/랜섬웨어 등)",
+      "importance": 3,
+      "summary": "악성 프로그램 종류별 특징. 자기복제 여부·숙주 필요 여부로 구분.",
+      "points": [
+        "바이러스: 다른 파일에 기생(숙주 필요), 자기복제, 사용자 실행 필요",
+        "웜: 숙주 없이 스스로 네트워크 전파·자기복제. 네트워크 과부하",
+        "트로이목마: 정상 프로그램으로 위장, 자기복제 안 함. 백도어 설치",
+        "랜섬웨어: 파일 암호화 후 금전 요구 (Ransom + Software). WannaCry, Petya",
+        "스파이웨어·애드웨어: 정보 수집·광고 노출. 키로거: 키보드 입력 탈취",
+        "루트킷: 공격자 흔적·악성코드를 숨기는 도구 모음. 관리자(root) 권한 은닉",
+        "백도어: 인증 우회해 시스템에 접근하는 비밀 통로. 트랩도어",
+        "논리 폭탄: 특정 조건(날짜 등) 충족 시 실행",
+        "크립토재킹: 피해자 컴퓨터로 암호화폐 채굴"
+      ],
+      "terms": [
+        {"term": "바이러스 (Virus)", "desc": "다른 프로그램에 기생해 자기복제. 숙주 필요"},
+        {"term": "웜 (Worm)", "desc": "스스로 복제·전파. 숙주 불필요. 네트워크 대역폭 소모"},
+        {"term": "트로이 목마 (Trojan Horse)", "desc": "정상 프로그램으로 위장한 악성코드. 자기복제 없음"},
+        {"term": "랜섬웨어 (Ransomware)", "desc": "파일을 암호화하고 복호화 대가로 금전 요구"},
+        {"term": "스파이웨어 (Spyware)", "desc": "사용자 동의 없이 정보를 수집·전송"},
+        {"term": "애드웨어 (Adware)", "desc": "광고를 강제 표시하는 프로그램"},
+        {"term": "키로거 (Key Logger)", "desc": "키보드 입력을 기록해 비밀번호 등 탈취"},
+        {"term": "루트킷 (Rootkit)", "desc": "시스템 침입 후 흔적 삭제·권한 유지를 위해 설치하는 은닉 도구 모음"},
+        {"term": "백도어 (Backdoor, Trap Door)", "desc": "정상 인증을 우회하는 비밀 접근 경로. 개발 편의로 만든 것이 남아 악용"},
+        {"term": "논리 폭탄 (Logic Bomb)", "desc": "특정 조건이 충족되면 실행되는 악성코드"},
+        {"term": "봇 (Bot)", "desc": "원격 조종되는 악성 프로그램. 감염 PC는 좀비"},
+        {"term": "크립토재킹 (Cryptojacking)", "desc": "타인의 컴퓨터 자원을 몰래 사용해 암호화폐 채굴"},
+        {"term": "매크로 바이러스 (Macro Virus)", "desc": "문서 파일(Word, Excel) 매크로에 숨은 바이러스"},
+        {"term": "다형성 바이러스 (Polymorphic Virus)", "desc": "탐지를 피하려고 코드를 매번 변형"},
+        {"term": "익스플로잇 (Exploit)", "desc": "취약점을 이용해 공격하는 코드·기법"},
+        {"term": "셸코드 (Shell Code)", "desc": "취약점 공격 성공 후 셸을 띄우는 작은 기계어 코드"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "사회공학·피싱 계열 공격",
+      "importance": 3,
+      "summary": "사람을 속이는 공격 용어. 피싱/파밍/스미싱/큐싱 등 발음 비슷한 용어를 구분해 단답으로 쓴다.",
+      "points": [
+        "피싱(Phishing): 가짜 이메일·사이트로 개인정보 입력 유도 (Private data + Fishing)",
+        "스피어 피싱(Spear Phishing): 특정 개인·조직을 표적으로 한 피싱",
+        "파밍(Pharming): DNS나 hosts 파일을 조작해 정상 URL 입력에도 가짜 사이트로 연결",
+        "스미싱(Smishing): SMS로 악성 링크·앱 설치 유도 (SMS + Phishing)",
+        "큐싱(Qshing): QR 코드를 이용한 피싱. 비싱(Vishing): 음성 전화(VoIP) 피싱",
+        "사회공학: 기술이 아닌 사람의 심리·신뢰를 이용해 정보 획득",
+        "타이포스쿼팅: URL 오타를 노린 유사 도메인 등록 (URL 하이재킹)",
+        "워터링 홀: 표적이 자주 방문하는 사이트에 악성코드를 심어 기다림",
+        "이블 트윈: 정상 Wi-Fi AP로 위장한 가짜 AP"
+      ],
+      "terms": [
+        {"term": "사회공학 (Social Engineering)", "desc": "사람의 심리적 취약점을 이용해 비밀 정보를 획득하는 비기술적 공격"},
+        {"term": "피싱 (Phishing)", "desc": "위장 이메일·웹사이트로 개인정보·금융정보 탈취"},
+        {"term": "스피어 피싱 (Spear Phishing)", "desc": "특정 대상을 겨냥해 맞춤형으로 보내는 피싱"},
+        {"term": "파밍 (Pharming)", "desc": "DNS·hosts 변조로 정상 주소 입력에도 가짜 사이트 접속"},
+        {"term": "스미싱 (Smishing)", "desc": "문자메시지(SMS)로 악성 앱 설치·정보 입력 유도"},
+        {"term": "큐싱 (Qshing)", "desc": "QR코드를 통한 악성 링크 유도"},
+        {"term": "비싱 (Vishing)", "desc": "음성 통화(VoIP)로 속여 정보 탈취"},
+        {"term": "타이포스쿼팅 (Typosquatting)", "desc": "유명 사이트 URL과 비슷한 오타 도메인을 등록해 유도. URL 하이재킹"},
+        {"term": "워터링 홀 (Watering Hole)", "desc": "표적 집단이 자주 가는 웹사이트를 감염시켜 접속 시 공격"},
+        {"term": "이블 트윈 (Evil Twin)", "desc": "정상 무선 AP와 같은 SSID의 가짜 AP를 설치해 트래픽 가로채기"},
+        {"term": "스케어웨어 (Scareware)", "desc": "가짜 경고로 공포를 조성해 악성 프로그램 구매·설치 유도"},
+        {"term": "덤스터 다이빙 (Dumpster Diving)", "desc": "버려진 문서·저장매체에서 정보 수집"},
+        {"term": "숄더 서핑 (Shoulder Surfing)", "desc": "어깨 너머로 비밀번호 입력을 훔쳐보기"},
+        {"term": "테일게이팅 (Tailgating, Piggybacking)", "desc": "인가자 뒤에 붙어 출입통제 구역에 침입"},
+        {"term": "프리텍스팅 (Pretexting)", "desc": "그럴듯한 상황을 꾸며 정보를 요구"},
+        {"term": "비즈니스 스캠 (Business Scam, BEC)", "desc": "거래처·경영진을 사칭한 이메일로 송금 유도"},
+        {"term": "사이버 킬체인 (Cyber Kill Chain)", "desc": "록히드마틴의 공격 7단계 모델: 정찰-무기화-전달-익스플로잇-설치-C&C-목표달성"}
+      ],
+      "asked": ["2023-2"]
+    },
+    {
+      "title": "기타 공격 기법·보안 용어 (APT/제로데이/무차별대입 등)",
+      "importance": 3,
+      "summary": "단답 용어로 자주 나오는 공격·위협 용어 모음.",
+      "points": [
+        "APT: 특정 조직을 장기간 지속적으로 공격. 사회공학 → 침투 → 잠복 → 유출",
+        "제로데이: 취약점이 공개(패치)되기 전에 이루어지는 공격",
+        "무차별 대입(Brute Force): 모든 조합을 대입. 사전 공격(Dictionary): 사전 단어 대입. 크리덴셜 스터핑: 유출된 ID/PW 조합 대입",
+        "레이스 컨디션: 두 프로세스가 공유 자원에 동시 접근해 발생하는 타이밍 문제",
+        "트러스트존: ARM의 하드웨어 보안 영역 분리 기술 (Normal World / Secure World)",
+        "다크 데이터: 수집 후 분석·활용되지 않고 저장만 된 데이터",
+        "포맷 스트링 공격: printf(입력값) 처럼 서식 문자열을 지정하지 않은 취약점"
+      ],
+      "terms": [
+        {"term": "APT (Advanced Persistent Threat, 지능형 지속 위협)", "desc": "특정 표적을 장기간 은밀하게 공격. 다양한 기술 결합"},
+        {"term": "제로데이 공격 (Zero Day Attack)", "desc": "취약점 패치가 나오기 전 공격"},
+        {"term": "무차별 대입 공격 (Brute Force Attack)", "desc": "가능한 모든 키·비밀번호를 대입"},
+        {"term": "사전 공격 (Dictionary Attack)", "desc": "자주 쓰는 단어 목록을 대입"},
+        {"term": "크리덴셜 스터핑 (Credential Stuffing)", "desc": "유출된 계정 정보를 여러 사이트에 대입"},
+        {"term": "트러스트존 (TrustZone)", "desc": "ARM 프로세서의 하드웨어 기반 보안 영역 분리 기술"},
+        {"term": "다크 데이터 (Dark Data)", "desc": "수집·저장되었으나 분석·활용되지 않는 데이터"},
+        {"term": "사이버 스쿼팅 (Cyber Squatting)", "desc": "유명 상표의 도메인을 선점해 되파는 행위"},
+        {"term": "스턱스넷 (Stuxnet)", "desc": "산업 제어 시스템(SCADA)을 공격한 웜. 이란 원전"},
+        {"term": "허니팟 (Honeypot)", "desc": "공격자를 유인하기 위해 의도적으로 취약하게 만든 시스템. 공격 분석"},
+        {"term": "좀비 PC (Zombie PC)", "desc": "악성코드에 감염되어 공격자가 조종하는 PC"},
+        {"term": "메모리 해킹 (Memory Hacking)", "desc": "PC 메모리에 있는 데이터를 위변조. 금융거래 금액 변조"},
+        {"term": "포맷 스트링 공격 (Format String Attack)", "desc": "서식 문자열에 사용자 입력을 그대로 넣어 메모리 접근"},
+        {"term": "스택 가드 (Stack Guard)", "desc": "카나리 값으로 버퍼 오버플로 탐지"},
+        {"term": "ASLR (Address Space Layout Randomization)", "desc": "메모리 주소를 무작위 배치해 익스플로잇 어렵게"},
+        {"term": "사이버 위협 인텔리전스 (CTI, Cyber Threat Intelligence)", "desc": "위협 정보를 수집·분석해 선제 대응"},
+        {"term": "킬 스위치 (Kill Switch)", "desc": "분실 단말기의 원격 잠금·데이터 삭제 기능"},
+        {"term": "CC 인증 (Common Criteria)", "desc": "정보보호 제품 평가 국제 표준 ISO/IEC 15408. EAL 등급"},
+        {"term": "TCB (Trusted Computing Base)", "desc": "보안 정책을 강제하는 하드웨어·소프트웨어의 신뢰 집합"},
+        {"term": "Secure OS (보안 운영체제)", "desc": "커널에 보안 기능을 추가한 운영체제. 참조 모니터"}
+      ],
+      "asked": ["2023-2"]
+    },
+    {
+      "title": "블루투스·무선 네트워크 공격",
+      "importance": 2,
+      "summary": "블루 접두어 공격 4종과 Wi-Fi 보안 프로토콜. 이름 혼동이 함정.",
+      "points": [
+        "블루버그(BlueBug): 블루투스 취약점으로 장비 간 연결을 조작해 통화·메시지 등 장비 제어",
+        "블루스나프(BlueSnarf): OPP(Object Push Profile)를 이용해 파일·연락처 등 정보 무단 접근(탈취)",
+        "블루재킹(BlueJacking): 블루투스로 스팸 메시지·명함을 익명 전송",
+        "블루프린팅(BluePrinting): 공격 대상 블루투스 장비를 검색·식별",
+        "Wi-Fi 보안: WEP(RC4, 취약) → WPA(TKIP) → WPA2(AES-CCMP) → WPA3"
+      ],
+      "terms": [
+        {"term": "블루버그 (BlueBug)", "desc": "블루투스 장비 제어권 획득. 통화·SMS 전송 조작"},
+        {"term": "블루스나프 (BlueSnarf)", "desc": "블루투스 OPP 취약점으로 정보(연락처·일정) 무단 열람"},
+        {"term": "블루재킹 (BlueJacking)", "desc": "블루투스로 원치 않는 메시지·명함 전송(스팸)"},
+        {"term": "블루프린팅 (BluePrinting)", "desc": "블루투스 장비 탐색·식별(지문 수집)"},
+        {"term": "WEP (Wired Equivalent Privacy)", "desc": "초기 무선 LAN 보안. RC4, 40비트 키. 취약"},
+        {"term": "WPA2 (Wi-Fi Protected Access 2)", "desc": "IEEE 802.11i. AES-CCMP 사용"},
+        {"term": "워 드라이빙 (War Driving)", "desc": "차량으로 이동하며 보안 취약 무선 AP 탐색"},
+        {"term": "비컨 (Beacon)", "desc": "BLE로 주기적 신호를 보내 위치 기반 서비스 제공"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "보안 솔루션 (방화벽/IDS/IPS/WAF/UTM/DMZ)",
+      "importance": 3,
+      "summary": "네트워크 경계 보안 장비의 이름·역할·차이. IDS vs IPS, 오탐/미탐 구분.",
+      "points": [
+        "방화벽: 미리 정의된 규칙(ACL)으로 트래픽 허용/차단. 내부→외부는 느슨, 외부→내부는 엄격. 내부 공격 방어 불가",
+        "방화벽 유형: 패킷 필터링(3~4계층), 상태 검사(Stateful Inspection), 애플리케이션 게이트웨이(프록시), 서킷 게이트웨이",
+        "IDS: 침입 탐지 후 경고(수동). IPS: 탐지 + 차단(능동, 인라인)",
+        "IDS 탐지 방식: 오용 탐지(Misuse, 시그니처 기반, 알려진 공격, 오탐 낮음) vs 이상 탐지(Anomaly, 행위/통계 기반, 알려지지 않은 공격, 오탐 높음)",
+        "IDS 위치: NIDS(네트워크), HIDS(호스트)",
+        "오탐(False Positive): 정상을 공격으로 판단. 미탐(False Negative): 공격을 정상으로 놓침",
+        "DMZ: 내부망과 외부망 사이의 완충 지대. 웹·메일·DNS 서버 배치",
+        "WAF: 웹 공격(SQLi, XSS) 전용 7계층 방화벽"
+      ],
+      "terms": [
+        {"term": "방화벽 (Firewall)", "desc": "네트워크 경계에서 접근 정책에 따라 트래픽 통제"},
+        {"term": "패킷 필터링 방화벽 (Packet Filtering)", "desc": "IP·포트 헤더 정보로 필터링. 네트워크·전송 계층"},
+        {"term": "상태 검사 방화벽 (Stateful Inspection)", "desc": "세션 상태 테이블을 유지해 연결 흐름 기반으로 검사"},
+        {"term": "응용 게이트웨이 (Application Gateway, Proxy)", "desc": "응용 계층에서 서비스별 프록시로 검사. 느리지만 강력"},
+        {"term": "IDS (Intrusion Detection System, 침입 탐지 시스템)", "desc": "비인가 침입을 실시간 탐지·경고. 미러링 방식"},
+        {"term": "IPS (Intrusion Prevention System, 침입 방지 시스템)", "desc": "탐지 즉시 차단. 인라인 배치. 방화벽+IDS"},
+        {"term": "오용 탐지 (Misuse Detection, Signature-based)", "desc": "알려진 공격 패턴(시그니처) 비교. 새로운 공격 탐지 불가"},
+        {"term": "이상 탐지 (Anomaly Detection, Behavior-based)", "desc": "정상 행위 프로파일과 비교해 벗어나면 탐지. 제로데이 대응"},
+        {"term": "오탐 (False Positive)", "desc": "정상 행위를 공격으로 잘못 탐지"},
+        {"term": "미탐 (False Negative)", "desc": "실제 공격을 탐지하지 못함"},
+        {"term": "DMZ (Demilitarized Zone, 비무장지대)", "desc": "외부에 공개하는 서버를 두는 내·외부망 사이의 네트워크 영역"},
+        {"term": "WAF (Web Application Firewall, 웹 방화벽)", "desc": "HTTP 트래픽을 분석해 웹 공격 차단"},
+        {"term": "UTM (Unified Threat Management, 통합 위협 관리)", "desc": "방화벽·IDS/IPS·VPN·안티바이러스 등을 한 장비에 통합"},
+        {"term": "NAC (Network Access Control, 네트워크 접근 제어)", "desc": "단말기가 내부망에 접속 시 MAC·보안 상태를 검사해 접근 통제"},
+        {"term": "DLP (Data Loss Prevention, 데이터 유출 방지)", "desc": "내부 정보의 외부 유출을 모니터링·차단"},
+        {"term": "DRM (Digital Rights Management, 디지털 저작권 관리)", "desc": "디지털 콘텐츠의 사용 권한을 암호화로 통제"},
+        {"term": "허니팟 (Honeypot)", "desc": "공격자를 유인하는 가짜 시스템. 공격 기법 수집, 실제 시스템 보호"},
+        {"term": "샌드박스 (Sandbox)", "desc": "격리된 환경에서 의심 파일을 실행해 행위 분석"},
+        {"term": "안티바이러스 (Anti-Virus, 백신)", "desc": "악성코드 탐지·제거"},
+        {"term": "Bastion Host (베스천 호스트)", "desc": "내·외부망 사이에서 외부 공격에 노출되도록 설계된 보안 강화 호스트"},
+        {"term": "스크린드 서브넷 (Screened Subnet)", "desc": "두 개의 라우터 사이에 DMZ를 두는 방화벽 구조"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "보안 관제·로그 분석 (ESM/SIEM/SOAR/EDR)",
+      "importance": 2,
+      "summary": "통합 보안 관제 솔루션 세대별 용어와 로그 분석 기초.",
+      "points": [
+        "ESM(1세대): 이기종 보안 장비 로그를 통합 수집·관리",
+        "SIEM(2세대): 로그 수집 + 빅데이터 기반 상관분석(Correlation) + 실시간 이벤트 관리",
+        "SOAR: 보안 운영 자동화·오케스트레이션 + 대응(playbook). 분석가 부담 경감",
+        "EDR: 엔드포인트(PC/서버) 행위를 지속 모니터링·탐지·대응. XDR은 네트워크·클라우드까지 확장",
+        "리눅스 로그: /var/log/ (wtmp 로그인 기록, btmp 실패 로그인, lastlog, secure, messages, utmp 현재 로그인). 윈도우: 이벤트 뷰어(응용/보안/시스템)",
+        "웹 로그: Apache access.log(요청), error.log. 침입 흔적은 상태코드 4xx/5xx, 비정상 URL 패턴"
+      ],
+      "terms": [
+        {"term": "ESM (Enterprise Security Management, 통합 보안 관리)", "desc": "방화벽·IDS·VPN 등 이기종 보안 장비를 통합 관리"},
+        {"term": "SIEM (Security Information and Event Management)", "desc": "로그·이벤트를 빅데이터로 수집·상관분석해 위협 탐지"},
+        {"term": "SOAR (Security Orchestration, Automation and Response)", "desc": "보안 대응 절차를 플레이북으로 자동화"},
+        {"term": "EDR (Endpoint Detection and Response)", "desc": "엔드포인트에서 악성 행위를 지속 감시·탐지·대응"},
+        {"term": "XDR (Extended Detection and Response)", "desc": "엔드포인트·네트워크·클라우드 데이터를 통합한 확장 탐지·대응"},
+        {"term": "SOC (Security Operation Center, 보안 관제 센터)", "desc": "24시간 보안 이벤트 모니터링·대응 조직"},
+        {"term": "TMS (Threat Management System, 위협 관리 시스템)", "desc": "네트워크 위협을 종합 분석·조기 경보"},
+        {"term": "wtmp", "desc": "리눅스 로그인·로그아웃·재부팅 기록. last 명령으로 조회"},
+        {"term": "btmp", "desc": "리눅스 로그인 실패 기록. lastb 명령으로 조회"},
+        {"term": "utmp", "desc": "현재 로그인 사용자 정보. who, w 명령"},
+        {"term": "syslog", "desc": "유닉스 시스템 로그 표준. 우선순위(facility.level)"},
+        {"term": "포렌식 (Digital Forensics)", "desc": "디지털 증거를 수집·분석·보존. 무결성(해시)·연계 보관성 유지"},
+        {"term": "CERT (Computer Emergency Response Team, 침해사고 대응팀)", "desc": "보안 사고 대응·복구 전담 조직"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "네트워크 보안 프로토콜 (IPSec/SSL·TLS/SSH/VPN)",
+      "importance": 3,
+      "summary": "계층별 보안 프로토콜과 IPSec의 AH/ESP, 모드 구분. 빈칸·단답 빈출.",
+      "points": [
+        "IPSec(3계층): AH(인증·무결성, 암호화 없음) + ESP(인증·무결성·기밀성), 키 교환 IKE. 모드: 전송 모드(페이로드만 보호) vs 터널 모드(IP 헤더까지 보호, 새 헤더 추가)",
+        "SSL/TLS(4~7계층 사이, 전송 계층 위): HTTPS(443). 핸드셰이크로 세션 키 협상. 공개키(키 교환)+대칭키(데이터)+해시(무결성) 혼합",
+        "SSH(22): 텔넷(23)·rlogin 대체. 원격 접속·파일 전송(SCP, SFTP) 암호화",
+        "S-HTTP: HTTP 메시지 단위 암호화(SSL은 연결 단위)",
+        "이메일 보안: PGP(개인용, IDEA/RSA), S/MIME(MIME 표준 확장, X.509 인증서), PEM",
+        "VPN: 공중망을 전용선처럼 사용하는 가상 사설망. 터널링 프로토콜 PPTP(2계층), L2TP(2계층), IPSec(3계층), SSL VPN(응용)"
+      ],
+      "terms": [
+        {"term": "IPSec (IP Security)", "desc": "IP 계층(3계층)에서 패킷을 인증·암호화하는 프로토콜 집합. VPN에 사용"},
+        {"term": "AH (Authentication Header, 인증 헤더)", "desc": "IPSec. 무결성·송신자 인증 제공, 기밀성(암호화) 없음"},
+        {"term": "ESP (Encapsulating Security Payload)", "desc": "IPSec. 기밀성(암호화) + 무결성 + 인증 제공"},
+        {"term": "IKE (Internet Key Exchange)", "desc": "IPSec의 키 교환·SA 협상 프로토콜. UDP 500"},
+        {"term": "SA (Security Association, 보안 연관)", "desc": "IPSec 통신 양측의 보안 파라미터 합의(알고리즘·키). SPI로 식별"},
+        {"term": "전송 모드 (Transport Mode)", "desc": "IP 페이로드만 보호. 호스트 간 통신"},
+        {"term": "터널 모드 (Tunnel Mode)", "desc": "원본 IP 패킷 전체를 캡슐화하고 새 IP 헤더 추가. 게이트웨이 간 VPN"},
+        {"term": "SSL (Secure Sockets Layer)", "desc": "넷스케이프 개발. 전송 계층과 응용 계층 사이에서 암호화. 443포트"},
+        {"term": "TLS (Transport Layer Security)", "desc": "SSL의 IETF 표준 후속. TLS 1.2/1.3"},
+        {"term": "HTTPS (HTTP over SSL/TLS)", "desc": "SSL/TLS로 암호화된 HTTP. 포트 443"},
+        {"term": "S-HTTP (Secure HTTP)", "desc": "HTTP 메시지 단위로 암호화·서명"},
+        {"term": "SSH (Secure Shell)", "desc": "암호화된 원격 로그인·명령 실행·파일 전송. 포트 22. 텔넷 대체"},
+        {"term": "PGP (Pretty Good Privacy)", "desc": "필 짐머만 개발 이메일 암호화. 공개키+대칭키 혼합, 전자서명"},
+        {"term": "S/MIME (Secure Multipurpose Internet Mail Extension)", "desc": "MIME 이메일 암호화·전자서명 표준. X.509 인증서 사용"},
+        {"term": "PEM (Privacy Enhanced Mail)", "desc": "IETF 이메일 보안 표준. 중앙집중식 인증"},
+        {"term": "VPN (Virtual Private Network, 가상 사설망)", "desc": "공중망에 터널링·암호화로 전용망처럼 안전한 통신"},
+        {"term": "PPTP (Point-to-Point Tunneling Protocol)", "desc": "MS 개발 2계층 터널링. PPP 기반"},
+        {"term": "L2TP (Layer 2 Tunneling Protocol)", "desc": "PPTP + L2F 결합 2계층 터널링. 자체 암호화 없어 IPSec과 결합"},
+        {"term": "SSL VPN", "desc": "웹 브라우저만으로 접속 가능한 응용 계층 VPN"},
+        {"term": "SET (Secure Electronic Transaction)", "desc": "VISA·MasterCard의 신용카드 전자결제 보안 프로토콜. 이중 서명"},
+        {"term": "커버로스 (Kerberos)", "desc": "티켓 기반 중앙 인증. KDC = AS(인증서버) + TGS(티켓발급서버). 대칭키, 재생 공격 방지에 타임스탬프"}
+      ],
+      "asked": ["2022-1"]
+    },
+    {
+      "title": "개인정보 보호·비식별화",
+      "importance": 2,
+      "summary": "개인정보 비식별 조치 5가지 기법과 프라이버시 모델. 단답 출제.",
+      "points": [
+        "비식별화 기법 5가지: 가명처리, 총계처리, 데이터 삭제, 데이터 범주화, 데이터 마스킹",
+        "가명처리(휴리스틱, 암호화, 교환) / 총계처리(총합·평균) / 삭제(식별자 제거) / 범주화(30세→30대) / 마스킹(홍*동)",
+        "프라이버시 보호 모델: k-익명성(동일 속성 레코드 k개 이상), l-다양성(민감 정보 l개 이상 다양), t-근접성(민감정보 분포 차이 t 이하)",
+        "개인정보 생명주기: 수집 → 저장·이용 → 제공 → 파기",
+        "GDPR: EU 일반 개인정보보호법. 잊혀질 권리, 데이터 이동권"
+      ],
+      "terms": [
+        {"term": "비식별화 (De-identification)", "desc": "개인을 알아볼 수 없도록 데이터 일부·전부를 변환"},
+        {"term": "가명처리 (Pseudonymization)", "desc": "식별자를 다른 값으로 대체. 홍길동→임꺽정"},
+        {"term": "총계처리 (Aggregation)", "desc": "개별 값을 합계·평균 등 통계값으로 대체"},
+        {"term": "데이터 삭제 (Data Reduction)", "desc": "식별 가능한 속성 자체를 삭제"},
+        {"term": "데이터 범주화 (Data Suppression)", "desc": "구체적 값을 범주·구간으로 변환. 35세→30대"},
+        {"term": "데이터 마스킹 (Data Masking)", "desc": "식별 가능 값의 일부를 *, _ 등으로 대체"},
+        {"term": "k-익명성 (k-anonymity)", "desc": "준식별자가 같은 레코드가 최소 k개 존재해 개인 식별 어렵게"},
+        {"term": "l-다양성 (l-diversity)", "desc": "동질 집합 안에 민감 속성 값이 l개 이상 다양하게"},
+        {"term": "t-근접성 (t-closeness)", "desc": "동질 집합의 민감 속성 분포와 전체 분포 차이를 t 이하로"},
+        {"term": "익명화 (Anonymization)", "desc": "복원 불가능하게 식별 정보를 제거"},
+        {"term": "GDPR (General Data Protection Regulation)", "desc": "EU 개인정보보호 규정(2018). 위반 시 최대 매출 4% 과징금"},
+        {"term": "개인정보 영향평가 (PIA, Privacy Impact Assessment)", "desc": "개인정보 처리 시스템 구축 전 침해 위험 분석"},
+        {"term": "마이데이터 (MyData)", "desc": "정보 주체가 본인 데이터를 통제·활용하는 개인정보 자기결정권 서비스"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "정보보호 거버넌스·ISMS·보안 개발 방법론",
+      "importance": 2,
+      "summary": "보안 관리체계 인증과 보안 개발 생명주기 방법론. 약어 단답.",
+      "points": [
+        "ISMS-P: 정보보호 및 개인정보보호 관리체계 인증(KISA). ISMS + PIMS 통합(2018)",
+        "ISO/IEC 27001: 정보보호 관리체계 국제 표준. PDCA(Plan-Do-Check-Act)",
+        "보안 개발 방법론: MS-SDL(MS), Seven Touchpoints(소프트웨어 보안 모범사례 7개 접점), CLASP(OWASP, 활동 중심), CWE(취약점 분류)",
+        "위험 관리: 자산 식별 → 위협·취약점 분석 → 위험 평가 → 대응(수용/회피/전가/감소)",
+        "BCP/DRP: 업무 연속성 계획/재해 복구 계획. RTO(복구 목표 시간), RPO(복구 목표 시점)",
+        "DRS 복구 센터 유형: 미러 사이트(즉시) > 핫 사이트(수시간) > 웜 사이트(수일~주) > 콜드 사이트(수주~월)"
+      ],
+      "terms": [
+        {"term": "ISMS (Information Security Management System, 정보보호 관리체계)", "desc": "조직의 정보보호 활동을 체계적으로 관리·인증"},
+        {"term": "ISMS-P", "desc": "정보보호 및 개인정보보호 관리체계 인증. 과기부·개인정보위, KISA 운영"},
+        {"term": "ISO/IEC 27001", "desc": "정보보호 관리체계 국제 표준. 14개 통제 영역"},
+        {"term": "PIMS (Personal Information Management System)", "desc": "개인정보보호 관리체계 인증. ISMS-P로 통합"},
+        {"term": "MS-SDL (Microsoft Security Development Lifecycle)", "desc": "MS의 보안 개발 생명주기 방법론"},
+        {"term": "Seven Touchpoints", "desc": "SW 개발 생명주기 7단계에 보안 활동을 통합한 방법론"},
+        {"term": "CLASP (Comprehensive Lightweight Application Security Process)", "desc": "OWASP. 이미 운영 중인 시스템에 적용하기 좋은 활동 중심 보안 방법론"},
+        {"term": "CWE (Common Weakness Enumeration)", "desc": "MITRE의 소프트웨어 보안 약점 목록"},
+        {"term": "CVE (Common Vulnerabilities and Exposures)", "desc": "공개된 보안 취약점에 부여하는 식별 번호. CVE-연도-번호"},
+        {"term": "CVSS (Common Vulnerability Scoring System)", "desc": "취약점 심각도 점수(0~10) 표준"},
+        {"term": "BCP (Business Continuity Planning, 업무 연속성 계획)", "desc": "재해 시에도 핵심 업무를 지속하기 위한 계획"},
+        {"term": "DRP (Disaster Recovery Planning, 재해 복구 계획)", "desc": "재해 후 IT 시스템 복구 절차"},
+        {"term": "RTO (Recovery Time Objective, 복구 목표 시간)", "desc": "장애 발생 후 복구까지 허용되는 최대 시간"},
+        {"term": "RPO (Recovery Point Objective, 복구 목표 시점)", "desc": "허용 가능한 데이터 손실 시점(백업 시점)"},
+        {"term": "BIA (Business Impact Analysis, 업무 영향 분석)", "desc": "장애가 업무에 미치는 영향 분석. BCP 수립 기초"},
+        {"term": "미러 사이트 (Mirror Site)", "desc": "주 센터와 동일하게 실시간 동기 운영. 즉시 복구"},
+        {"term": "핫 사이트 (Hot Site)", "desc": "장비·데이터 준비, 수 시간 내 복구"},
+        {"term": "웜 사이트 (Warm Site)", "desc": "중요 장비만 준비, 수일~수주 복구"},
+        {"term": "콜드 사이트 (Cold Site)", "desc": "장소·전원만 준비, 수주~수개월 복구"},
+        {"term": "위험 수용/회피/전가/감소", "desc": "위험 대응 전략 4가지. 전가는 보험·아웃소싱"},
+        {"term": "DRM (Digital Rights Management)", "desc": "콘텐츠 저작권 보호 기술. 클리어링하우스, 패키저, 컨트롤러"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "암호화 응용·보안 기능 구현",
+      "importance": 2,
+      "summary": "비밀번호 저장, 세션·쿠키 관리, 중요 정보 보호 등 시큐어 코딩의 보안 기능 항목 실무.",
+      "points": [
+        "비밀번호: 평문 저장 금지, 솔트 + 해시(SHA-256 이상, bcrypt), 전송 시 TLS",
+        "세션: 세션 ID 예측 불가하게 생성, 로그인 후 재발급, 타임아웃, HttpOnly·Secure 쿠키 플래그",
+        "취약 알고리즘 사용 금지: DES, RC4, MD5, SHA-1 → AES, SHA-256",
+        "충분한 키 길이: 대칭 128비트 이상, RSA 2048비트 이상",
+        "하드코드된 키·비밀번호 금지, 설정 파일 암호화, 중요 정보 로그 출력 금지",
+        "난수: Math.random()/rand() 대신 SecureRandom 등 암호학적 난수 사용"
+      ],
+      "terms": [
+        {"term": "부적절한 인가 (Improper Authorization)", "desc": "접근 권한 검사 없이 중요 기능 수행 허용"},
+        {"term": "중요 정보 평문 저장/전송", "desc": "비밀번호·개인정보를 암호화하지 않고 저장·전송"},
+        {"term": "취약한 암호화 알고리즘 사용", "desc": "DES, RC4, MD5 등 깨진 알고리즘 사용"},
+        {"term": "충분하지 않은 키 길이 사용", "desc": "RSA 1024비트 이하 등 짧은 키"},
+        {"term": "적절하지 않은 난수 값 사용", "desc": "예측 가능한 난수(시간 시드)를 보안 용도에 사용"},
+        {"term": "HttpOnly 쿠키", "desc": "자바스크립트에서 쿠키 접근 차단. XSS로 세션 탈취 방지"},
+        {"term": "Secure 쿠키", "desc": "HTTPS 연결에서만 쿠키 전송"},
+        {"term": "세션 고정 (Session Fixation)", "desc": "공격자가 정한 세션 ID로 로그인하게 만들어 세션 탈취. 로그인 후 세션 재발급으로 방어"},
+        {"term": "SecureRandom", "desc": "Java 암호학적으로 안전한 난수 생성기"},
+        {"term": "bcrypt / PBKDF2 / scrypt", "desc": "비밀번호 전용 느린 해시(키 스트레칭) 알고리즘"},
+        {"term": "인코딩 vs 암호화 vs 해싱", "desc": "인코딩(Base64)은 키 없이 복원 가능, 암호화는 키로 복원, 해싱은 복원 불가"}
+      ],
+      "asked": []
+    }
+  ]
+}

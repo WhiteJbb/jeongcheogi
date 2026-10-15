@@ -1,0 +1,410 @@
+{
+  "year": 2021,
+  "round": 1,
+  "date": "2021-04-24",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "물리 네트워크(MAC) 주소에 해당하는 IP 주소를 알려주는 프로토콜로, 역순 주소 결정 프로토콜을 무엇이라고 하는지 쓰시오.",
+      "answer": [
+        "RARP",
+        "Reverse Address Resolution Protocol",
+        "역순 주소 결정 프로토콜"
+      ],
+      "explanation": "ARP는 IP 주소로 MAC 주소를 찾고, RARP는 반대로 MAC 주소로 IP 주소를 얻는다.\n디스크 없는 워크스테이션이 부팅 시 자신의 IP를 알아낼 때 사용한다.\n'역순(Reverse)'이라는 표현이 핵심 힌트.",
+      "keywords": [
+        "RARP",
+        "ARP",
+        "MAC 주소"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 2,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "다음은 DB 설계 절차에 관한 설명이다. 빈칸에 들어갈 알맞은 용어를 보기에서 골라 쓰시오.\n\n( A )은/는 특정 DBMS의 특성 및 성능을 고려하여 데이터베이스 저장 구조로 변환하는 과정으로, 결과로 나오는 명세서는 테이블 정의서 등이 있다.\n( B )은/는 현실 세계에 대한 인식을 추상적, 개념적으로 표현하여 개념적 구조를 도출하는 과정으로, 주요 산출물에는 E-R 다이어그램이 있다.\n( C )은/는 목표 DBMS에 맞는 스키마 설계, 트랜잭션 인터페이스를 설계하는 정규화 과정을 수행한다.\n\n[보기] 구현 / 개념적 설계 / 논리적 설계 / 요구사항 분석 / 물리적 설계",
+      "answer": [
+        "① 물리적 설계, ② 개념적 설계, ③ 논리적 설계"
+      ],
+      "blanks": [
+        "물리적 설계",
+        "개념적 설계",
+        "논리적 설계"
+      ],
+      "explanation": "DB 설계 절차: 요구사항 분석 → 개념적 설계(E-R 다이어그램) → 논리적 설계(정규화, 목표 DBMS 스키마) → 물리적 설계(저장 구조, 테이블 정의서) → 구현.\n'저장 구조·DBMS 성능'은 물리적, 'E-R'은 개념적, '정규화·트랜잭션 인터페이스'는 논리적 설계의 키워드.",
+      "keywords": [
+        "데이터베이스 설계",
+        "개념적 설계",
+        "논리적 설계",
+        "물리적 설계"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 3,
+      "subject": "요구사항 확인",
+      "type": "빈칸",
+      "question": "다음은 요구사항의 분류에 대한 설명이다. 괄호 안에 들어갈 요구사항의 유형을 쓰시오.\n\n( A ) 요구사항은 시스템이 제공하는 기능, 서비스에 대한 요구사항이다.\n( B ) 요구사항은 시스템이 수행하는 기능 이외의 사항, 시스템 구축에 대한 제약사항에 관한 요구사항이다.",
+      "answer": [
+        "① 기능적, ② 비기능적",
+        "① 기능적 요구사항, ② 비기능적 요구사항",
+        "① 기능, ② 비기능"
+      ],
+      "blanks": [
+        "기능적",
+        "비기능적"
+      ],
+      "explanation": "기능적 요구사항: 시스템이 '무엇을' 해야 하는지(기능, 서비스, 입출력).\n비기능적 요구사항: 성능, 보안, 품질, 제약조건 등 기능 외의 요구.",
+      "keywords": [
+        "기능적 요구사항",
+        "비기능적 요구사항"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 4,
+      "subject": "인터페이스 구현",
+      "type": "단답",
+      "question": "웹 서비스명, 제공 위치, 메시지 포맷, 프로토콜 정보 등 웹 서비스에 대한 상세 정보가 기술된 XML 형식으로 구성된 언어를 무엇이라고 하는지 쓰시오.",
+      "answer": [
+        "WSDL",
+        "Web Services Description Language"
+      ],
+      "explanation": "WSDL은 웹 서비스의 인터페이스(서비스명, 위치, 메시지 포맷, 프로토콜)를 XML로 기술한다.\nSOAP(메시지 프로토콜), UDDI(등록·검색)와 함께 웹 서비스 3요소를 이룬다.",
+      "keywords": [
+        "WSDL",
+        "SOAP",
+        "UDDI",
+        "웹 서비스"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 5,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "class good:\n    li = [\"seoul\", \"kyeonggi\", \"inchon\", \"daejeon\", \"daegu\", \"pusan\"]\n\ng = good()\nstr01 = ''\nfor i in g.li:\n    str01 = str01 + i[0]\nprint(str01)",
+      "answer": [
+        "skiddp"
+      ],
+      "explanation": "클래스 변수 li의 각 문자열에서 첫 글자 i[0]를 꺼내 str01에 이어 붙인다.\nseoul→s, kyeonggi→k, inchon→i, daejeon→d, daegu→d, pusan→p 순으로 연결되어 skiddp.",
+      "keywords": [
+        "Python",
+        "클래스 변수",
+        "문자열 인덱싱",
+        "for"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 6,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 [급여] 테이블에 대해 SQL문을 실행한 결과를 숫자만 쓰시오.\n\n[급여]\nEMPNO | SAL\n100 | 1000\n200 | 3000\n300 | 1500",
+      "code": "SELECT COUNT(*) FROM 급여\nWHERE EMPNO > 100 AND SAL >= 3000 OR EMPNO = 200;",
+      "answer": [
+        "1"
+      ],
+      "explanation": "AND가 OR보다 먼저 평가된다. (EMPNO > 100 AND SAL >= 3000) OR EMPNO = 200.\n200번 행만 두 조건을 모두 만족(SAL 3000, EMPNO 200)하고, 100·300번은 해당 없음.\n따라서 COUNT(*) = 1. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "SQL",
+        "연산자 우선순위",
+        "COUNT"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 7,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 프로그램의 실행 결과를 쓰시오.",
+      "code": "public class QfranTest {\n    public static void main(String[] args) {\n        int a[][] = {{45, 50, 75}, {89}};\n        System.out.println(a[0].length);\n        System.out.println(a[1].length);\n        System.out.println(a[0][0]);\n        System.out.println(a[0][1]);\n        System.out.println(a[1][0]);\n    }\n}",
+      "answer": [
+        "3\n1\n45\n50\n89",
+        "3 1 45 50 89"
+      ],
+      "explanation": "a는 가변 길이 2차원 배열. a[0]={45,50,75}이므로 length 3, a[1]={89}이므로 length 1.\n이어서 a[0][0]=45, a[0][1]=50, a[1][0]=89를 한 줄씩 출력한다.",
+      "keywords": [
+        "Java",
+        "2차원 배열",
+        "가변 배열",
+        "length"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 8,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "정규화된 엔티티, 속성, 관계에 대해 성능 향상과 개발 운영의 단순화를 위해 중복, 통합, 분리 등을 수행하는 데이터 모델링 기법을 무엇이라고 하는지 쓰시오.",
+      "answer": [
+        "반정규화",
+        "역정규화",
+        "비정규화",
+        "De-normalization",
+        "Denormalization"
+      ],
+      "explanation": "정규화로 분해된 테이블은 조인 비용이 커질 수 있어, 성능을 위해 의도적으로 중복·통합·분리하는 것이 반정규화.\n'성능 향상', '중복 허용'이 핵심 키워드.",
+      "keywords": [
+        "반정규화",
+        "정규화",
+        "성능"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 9,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "다음은 블랙박스 테스트 기법에 대한 예제이다. 각각에 해당하는 블랙박스 기법을 쓰시오.\n\n1. 0 ≤ x ≤ 10이면 -1, 0, 10, 11을 검사\n2. 입력 데이터의 영역을 유사한 도메인별로 유효값과 무효값을 그룹핑하여 나누어서 검사",
+      "answer": [
+        "① 경계값 분석, ② 동치 분할 테스트",
+        "① 경계값 분석, ② 동등 분할",
+        "① Boundary Value Analysis, ② Equivalence Partitioning",
+        "① 한계값 분석, ② 동치 클래스 분해"
+      ],
+      "blanks": [
+        "경계값 분석",
+        "동치 분할 테스트"
+      ],
+      "explanation": "경계값 분석: 입력 범위의 경계(-1, 0, 10, 11)에서 오류가 잦다는 점을 이용.\n동치 분할: 입력을 유효/무효 클래스로 나눠 대표값만 테스트.",
+      "keywords": [
+        "블랙박스 테스트",
+        "경계값 분석",
+        "동치 분할"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 10,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "question": "다음은 테스트 종류에 대한 설명이다. 빈칸에 들어갈 알맞은 용어를 보기에서 찾아 쓰시오.\n\n( A )은/는 개별 모듈, 서브루틴이 정상적으로 실행되는지 확인하는 테스트\n( B )은/는 인터페이스 간 시스템이 정상적으로 실행되는지 확인하는 테스트\n\n[보기] 시스템 테스트 / 인수 테스트 / 알파 테스트 / 단위 테스트 / 통합 테스트 / 회귀 테스트",
+      "answer": [
+        "① 단위 테스트, ② 통합 테스트"
+      ],
+      "blanks": [
+        "단위 테스트",
+        "통합 테스트"
+      ],
+      "explanation": "V모델 순서: 단위 → 통합 → 시스템 → 인수.\n개별 모듈 검증은 단위 테스트, 모듈 간 인터페이스 검증은 통합 테스트.",
+      "keywords": [
+        "단위 테스트",
+        "통합 테스트",
+        "V모델"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 11,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "다음 빈칸에 들어갈 알맞은 숫자를 쓰시오.\n\nIPv6는 ( A ) 비트 길이를 가진다.\nIPv4는 길이 32비트이며, ( B ) 비트씩 네 부분으로 나눈다.",
+      "answer": [
+        "① 128, ② 8"
+      ],
+      "blanks": [
+        "128",
+        "8"
+      ],
+      "explanation": "IPv4는 32비트를 8비트(옥텟) 4개로 나눠 10진수로 표기(예: 192.168.0.1).\nIPv6는 128비트를 16비트 8개로 나눠 16진수로 표기.",
+      "keywords": [
+        "IPv4",
+        "IPv6",
+        "옥텟"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 12,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 용어를 쓰시오.\n\n모듈 간 통신 방식을 구현하기 위해 사용되는 대표적인 프로그래밍 인터페이스 집합으로, 복수의 프로세스를 수행하며 이뤄지는 프로세스 간 통신까지 구현이 가능하다. 대표적인 메소드에는 공유 메모리(Shared Memory), 소켓(Socket), 세마포어(Semaphores), 파이프와 네임드 파이프(Pipes & named Pipes), 메시지 큐잉(Message Queueing)이 있다.",
+      "answer": [
+        "IPC",
+        "Inter Process Communication",
+        "프로세스 간 통신",
+        "Inter-Process Communication"
+      ],
+      "explanation": "IPC는 프로세스 간 데이터를 주고받는 메커니즘 집합.\n공유 메모리·소켓·세마포어·파이프·메시지 큐가 대표 기법이라는 열거가 힌트.",
+      "keywords": [
+        "IPC",
+        "프로세스 간 통신",
+        "공유 메모리",
+        "소켓"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 13,
+      "subject": "통합 구현",
+      "type": "단답",
+      "question": "시스템 통합에 사용되는 솔루션으로 구축 유형에는 Point to Point, Hub & Spoke, Message Bus가 있다. 기업에서 운영되는 서로 다른 플랫폼 및 애플리케이션 간의 정보를 전달, 연계, 통합이 가능하도록 해주는 솔루션을 무엇이라고 하는지 쓰시오.",
+      "answer": [
+        "EAI",
+        "Enterprise Application Integration",
+        "기업 애플리케이션 통합"
+      ],
+      "explanation": "EAI는 기업 내 이기종 애플리케이션을 연계·통합하는 솔루션.\n구축 유형 Point-to-Point / Hub & Spoke / Message Bus / Hybrid 열거가 결정적 힌트.",
+      "keywords": [
+        "EAI",
+        "Hub & Spoke",
+        "Message Bus",
+        "ESB"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 14,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "주어진 테이블의 Cardinality와 Degree를 구하시오.\n\n[학생]\n학번 | 이름 | 학년 | 학과\n20210000 | 홍길동 | 2 | 전자과\n20210001 | 임꺽정 | 3 | 전기과\n20210002 | 유관순 | 1 | 화학과\n20210003 | 신사임당 | 4 | 기계과\n20210004 | 장길산 | 2 | 컴퓨터과",
+      "answer": [
+        "Cardinality: 5, Degree: 4",
+        "카디널리티 5, 디그리 4",
+        "5, 4"
+      ],
+      "blanks": [
+        "5",
+        "4"
+      ],
+      "explanation": "Cardinality(카디널리티)는 튜플(행)의 수 = 5.\nDegree(차수)는 속성(열)의 수 = 4.\n테이블 내용은 복원본마다 다르나 5행 4열 구조는 동일. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "카디널리티",
+        "차수",
+        "Degree",
+        "릴레이션"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 15,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 언어 프로그램의 실행 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n\nstruct good {\n    char name[10];\n    int age;\n};\n\nvoid main() {\n    struct good s[] = {\"Kim\", 28, \"Lee\", 38, \"Seo\", 50, \"Park\", 35};\n    struct good *p;\n    p = s;\n    p++;\n    printf(\"%s\\n\", p->name);\n    printf(\"%d\\n\", p->age);\n}",
+      "answer": [
+        "Lee\n38",
+        "Lee 38"
+      ],
+      "explanation": "구조체 배열 s에 Kim/28, Lee/38, Seo/50, Park/35 순으로 초기화. p = s 후 p++ 하면 p는 s[1]을 가리킨다.\n따라서 p->name = \"Lee\", p->age = 38 출력.\n(복원본에 printf 서식이 %s로 적힌 것은 오류로, 의도된 출력은 Lee와 38.) (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "C",
+        "구조체",
+        "포인터",
+        "구조체 배열"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 16,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "데이터 모델의 구성 요소에 대한 설명이다. 빈칸에 알맞은 용어를 쓰시오.\n\n개체 데이터 모델에서는 ( A )을/를 이용하여 실제 데이터를 처리하는 작업에 대한 명세를 나타내는데, 논리 데이터 모델에서는 ( B )을/를 어떻게 나타낼 것인지 표현한다.\n( C )은/는 데이터 무결성 유지를 위한 데이터베이스의 보편적 방법으로, 릴레이션의 특정 칼럼에 설정하는 제약을 의미하며 개체 무결성과 참조 무결성 등이 있다.",
+      "answer": [
+        "① 연산, ② 구조, ③ 제약조건",
+        "① Operation, ② Structure, ③ Constraint"
+      ],
+      "blanks": [
+        "연산",
+        "구조",
+        "제약조건"
+      ],
+      "explanation": "데이터 모델 3요소: 구조(Structure, 개체 간 관계), 연산(Operation, 처리 작업 명세), 제약조건(Constraint, 무결성 제약).\n'처리 작업 명세'→연산, '어떻게 나타낼 것인지'→구조, '무결성'→제약조건.",
+      "keywords": [
+        "데이터 모델",
+        "구조",
+        "연산",
+        "제약조건"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 프로그램의 실행 결과를 쓰시오.",
+      "code": "public class good {\n    public static void main(String[] args) {\n        int i, j;\n        for (j = 0, i = 0; i <= 5; i++) {\n            j += i;\n            System.out.print(i);\n            if (i == 5) {\n                System.out.print(\"=\");\n                System.out.print(j);\n            } else {\n                System.out.print(\"+\");\n            }\n        }\n    }\n}",
+      "answer": [
+        "0+1+2+3+4+5=15"
+      ],
+      "explanation": "i가 0~5까지 반복하며 j에 누적(0+1+2+3+4+5=15). 매 반복 i를 출력하고, i<5면 '+'를, i==5면 '='와 j를 출력.\n모두 print이므로 한 줄에 0+1+2+3+4+5=15.",
+      "keywords": [
+        "Java",
+        "for",
+        "누적합"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 18,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "시스템 객체의 접근을 개인 또는 그룹의 식별자에 기반을 둔 방법으로, 어떤 종류의 접근 권한을 가진 사용자가 다른 사용자에게 자신의 판단에 따라 권한을 허용하는 접근 제어 방식을 쓰시오.",
+      "answer": [
+        "DAC",
+        "임의적 접근 통제",
+        "임의 접근 통제",
+        "Discretionary Access Control",
+        "임의적 접근 제어"
+      ],
+      "explanation": "DAC: 자원 소유자가 자신의 판단(재량)으로 다른 사용자에게 접근 권한을 부여. 신분(식별자) 기반.\nMAC은 보안 등급 기반, RBAC은 역할 기반이라는 점과 구분.",
+      "keywords": [
+        "DAC",
+        "MAC",
+        "RBAC",
+        "접근 통제"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 19,
+      "subject": "서버 프로그램 구현",
+      "type": "빈칸",
+      "question": "다음은 결합도에 대한 설명이다. 빈칸에 들어갈 알맞은 용어를 보기에서 찾아 쓰시오.\n\n( A )은/는 다른 모듈 내부에 있는 변수나 기능을 다른 모듈에서 사용하는 경우의 결합도\n( B )은/는 모듈 간의 인터페이스로 배열이나 객체, 구조 등이 전달되는 경우의 결합도\n( C )은/는 파라미터가 아닌 모듈 밖에 선언된 전역 변수를 참조하고 전역 변수를 갱신하는 식으로 상호작용하는 경우의 결합도\n\n[보기] 자료 결합도 / 스탬프 결합도 / 제어 결합도 / 공통 결합도 / 내용 결합도 / 외부 결합도",
+      "answer": [
+        "① 내용 결합도, ② 스탬프 결합도, ③ 공통 결합도"
+      ],
+      "blanks": [
+        "내용 결합도",
+        "스탬프 결합도",
+        "공통 결합도"
+      ],
+      "explanation": "결합도 약→강: 자료 < 스탬프 < 제어 < 외부 < 공통 < 내용.\n다른 모듈 내부 직접 참조=내용, 배열·구조체 전달=스탬프, 전역 변수 공유=공통.",
+      "keywords": [
+        "결합도",
+        "내용 결합도",
+        "스탬프 결합도",
+        "공통 결합도"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    },
+    {
+      "no": 20,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "괄호 안에 공통으로 들어갈 공격 기법을 쓰시오.\n\n( )은/는 세션 관리 취약점을 이용한 공격 기법으로, '세션을 가로채다'라는 의미이다. 이 공격은 정상적 연결을 RST 패킷을 통해 종료시킨 후 재연결 시 희생자가 아닌 공격자에게 연결한다.",
+      "answer": [
+        "세션 하이재킹",
+        "Session Hijacking",
+        "세션 가로채기"
+      ],
+      "explanation": "세션 하이재킹: 인증된 세션(시퀀스 번호, 세션 ID 등)을 탈취해 공격자가 정상 사용자로 위장.\nRST로 연결을 끊고 재연결을 가로채는 TCP 세션 하이재킹 설명.",
+      "keywords": [
+        "세션 하이재킹",
+        "RST",
+        "TCP"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 1회"
+    }
+  ]
+}

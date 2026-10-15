@@ -1,0 +1,417 @@
+{
+  "year": 2025,
+  "round": 1,
+  "date": "2025-04-19",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음은 네트워크 보안과 관련된 설명이다. 괄호 안에 알맞은 용어를 쓰시오.\n\n(   )은/는 '세션을 가로채다'라는 의미로, 다른 사람의 세션 상태를 훔치거나 도용하여 액세스하는 해킹 기법이다.\nTCP (   )은/는 TCP의 3-way 핸드셰이크가 완료된 후 공격자가 시퀀스 번호 등을 조작하여 정상적인 세션을 가로채고 인증 없이 통신을 탈취하는 공격이다.",
+      "answer": [
+        "세션 하이재킹",
+        "세션 하이재킹(Session Hijacking)",
+        "Session Hijacking",
+        "세션하이재킹"
+      ],
+      "explanation": "세션 하이재킹은 인증이 끝난 정상 사용자의 세션(세션 ID, TCP 시퀀스 번호 등)을 탈취해 인증 절차 없이 서버와 통신하는 공격이다.\nTCP 세션 하이재킹은 3-way 핸드셰이크 완료 후 시퀀스 번호를 예측·조작하고 RST 패킷 등으로 피해자 연결을 끊은 뒤 공격자가 그 연결을 이어받는 방식이다.\n대응: 비동기화 상태 탐지, 암호화된 세션(SSL/TLS), 세션 ID 재발급.",
+      "keywords": [
+        "세션 하이재킹",
+        "TCP",
+        "시퀀스 번호",
+        "3-way 핸드셰이크"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 2,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "다음은 데이터베이스 무결성 제약조건에 대한 설명이다. 각 설명에 해당하는 용어를 보기에서 골라 쓰시오. (원문 설명문은 이미지로 복원되지 않아 표준 정의로 대체함)\n\nㄱ. 속성 값이 정의된 도메인(값의 유형·범위)에 속한 값이어야 한다는 제약\nㄴ. 기본 키는 NULL 값이나 중복 값을 가질 수 없다는 제약\nㄷ. 외래 키 값은 참조하는 릴레이션의 기본 키 값이거나 NULL이어야 한다는 제약\n\n[보기] 개체, 참조, 도메인",
+      "answer": [
+        "ㄱ 도메인, ㄴ 개체, ㄷ 참조"
+      ],
+      "blanks": [
+        "도메인",
+        "개체",
+        "참조"
+      ],
+      "explanation": "도메인 무결성: 속성 값은 지정된 도메인(데이터 타입·범위·형식)을 만족해야 한다.\n개체 무결성: 기본 키는 NULL이 될 수 없고 중복될 수 없다.\n참조 무결성: 외래 키는 참조 릴레이션의 기본 키에 존재하는 값이거나 NULL이어야 한다.\n세 설명이 각각 도메인·개체·참조 순서로 출제되었다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "무결성",
+        "도메인 무결성",
+        "개체 무결성",
+        "참조 무결성"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 3,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "아래 설명의 괄호 안에 공통으로 들어갈 용어를 영문 약자로 쓰시오.\n\n(   )은/는 3글자 영어 약자로 이루어진 오류 검출 기법으로, 데이터를 전송하거나 저장할 때 데이터의 오류를 감지하는 데 사용되는 오류 검출 코드이다.\n(   )은/는 데이터에 체크값을 추가하여 전송·저장한 후, 수신 또는 읽을 때 이 값을 다시 계산하여 데이터가 변경되었는지 확인하는 기법이다.\n데이터는 이진수(0과 1)로 표현되며, 정해진 다항식(x³ + x + 1)을 기반으로 데이터를 2진수 나눗셈하고 그 나머지를 (   ) 값으로 삼는다.",
+      "answer": [
+        "CRC",
+        "순환 중복 검사",
+        "Cyclic Redundancy Check"
+      ],
+      "explanation": "CRC(Cyclic Redundancy Check, 순환 중복 검사)는 송신 데이터를 생성 다항식으로 모듈로-2 나눗셈하여 나온 나머지를 검사 코드로 덧붙여 보내는 오류 검출 방식이다.\n수신 측은 같은 다항식으로 다시 나눠 나머지가 0이면 오류 없음으로 판단한다.\n집단 오류(burst error) 검출에 강해 이더넷 프레임, 저장 장치 등에 널리 쓰인다.",
+      "keywords": [
+        "CRC",
+        "오류 검출",
+        "생성 다항식",
+        "모듈로-2 나눗셈"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 4,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음은 악성코드에 대한 설명이다. 설명에 해당하는 것을 보기에서 골라 쓰시오.\n\n사용자가 원치 않는 소프트웨어를 구매하도록 조작하기 위해 사회 공학을 사용하여 충격, 불안 또는 위협에 대한 인식을 유발하는 악성 소프트웨어의 한 형태이다.\n'겁을 주다'라는 영어 단어에서 유래한 것으로, 공포를 이용하여 피해자를 속여 대가를 지불하거나 특정 행동을 유도한다.\n가짜 바이러스 경고나 시스템 문제를 표시하여 사용자가 돈을 지불하거나 특정 소프트웨어를 설치하도록 속이는 방식으로 작동한다.\n\n[보기]\nㄱ. 컴포넌트웨어  ㄴ. 유즈웨어  ㄷ. 셔블웨어  ㄹ. 스캐어웨어  ㅁ. 안티스파이웨어  ㅂ. 네트웨어  ㅅ. 그룹웨어  ㅇ. 애드웨어",
+      "answer": [
+        "ㄹ",
+        "스캐어웨어",
+        "스케어웨어",
+        "Scareware",
+        "ㄹ. 스캐어웨어"
+      ],
+      "explanation": "스캐어웨어(Scareware)는 'scare(겁을 주다)'에서 유래한 악성 소프트웨어로, 가짜 바이러스 감염 경고·시스템 오류 메시지로 공포를 조성해 가짜 백신 구매나 특정 프로그램 설치를 유도한다.\n애드웨어(광고 노출), 셔블웨어(끼워 팔기 번들 소프트웨어), 그룹웨어(협업 도구) 등과 구별해야 한다.\n지문의 '겁을 주다', '가짜 바이러스 경고' 키워드가 결정적 단서이다.",
+      "keywords": [
+        "스캐어웨어",
+        "Scareware",
+        "악성코드",
+        "사회공학"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 5,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static void main(String[] args) {\n        int a = 5, b = 0;\n        try {\n            System.out.print(a / b);\n        } catch (ArithmeticException e) {\n            System.out.print(\"출력1\");\n        } catch (ArrayIndexOutOfBoundsException e) {\n            System.out.print(\"출력2\");\n        } catch (NumberFormatException e) {\n            System.out.print(\"출력3\");\n        } catch (Exception e) {\n            System.out.print(\"출력4\");\n        } finally {\n            System.out.print(\"출력5\");\n        }\n    }\n}",
+      "answer": [
+        "출력1출력5",
+        "출력1 출력5"
+      ],
+      "explanation": "a/b는 5/0이므로 정수 나눗셈에서 ArithmeticException이 발생한다.\n예외는 위에서부터 catch 블록을 순서대로 검사하며, 첫 번째 catch(ArithmeticException)가 일치해 \"출력1\"을 출력하고 나머지 catch는 건너뛴다.\nfinally는 예외 발생 여부와 무관하게 항상 실행되므로 \"출력5\"가 이어서 출력된다. print이므로 줄바꿈 없이 출력1출력5.",
+      "keywords": [
+        "예외 처리",
+        "try-catch-finally",
+        "ArithmeticException"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 6,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "다음은 ARP/RARP에 대한 설명이다. 각 괄호에 해당하는 프로토콜을 쓰시오.\n\n( ① )은/는 네트워크상에서 IP 주소를 MAC 주소로 변환하는 프로토콜이고,\n( ② )은/는 MAC 주소를 IP 주소로 변환하는 프로토콜이다.",
+      "answer": [
+        "① ARP, ② RARP"
+      ],
+      "blanks": [
+        "ARP",
+        "RARP"
+      ],
+      "explanation": "ARP(Address Resolution Protocol)는 논리 주소인 IP 주소를 물리 주소인 MAC 주소로 변환한다(브로드캐스트 질의 → 해당 호스트가 MAC 응답).\nRARP(Reverse ARP)는 반대로 MAC 주소로 자신의 IP 주소를 알아내는 프로토콜로, 디스크 없는 워크스테이션 부팅 등에 사용되었다.\n둘 다 네트워크 계층(TCP/IP 인터넷 계층)에서 동작한다.",
+      "keywords": [
+        "ARP",
+        "RARP",
+        "IP 주소",
+        "MAC 주소"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 7,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 두 테이블 emp(id, name, ...)와 sal(id, incentive, ...)을 참고하여 아래 SQL의 실행 결과를 쓰시오. (테이블 데이터는 복원되지 않음. 두 테이블을 id로 조인했을 때 incentive가 500 이상인 사원은 이순신(1000) 한 명이었다.)",
+      "code": "SELECT name, incentive\nFROM emp, sal\nWHERE emp.id = sal.id AND incentive >= 500;",
+      "answer": [
+        "이순신 1000",
+        "name incentive 이순신 1000",
+        "이순신 | 1000"
+      ],
+      "explanation": "FROM emp, sal은 두 테이블의 카티션 곱이며, WHERE emp.id = sal.id가 동등 조인 조건 역할을 한다.\n조인된 행 중 incentive >= 500인 행만 남기고 name, incentive 두 컬럼을 출력한다.\n조건을 만족하는 행은 이순신 / 1000 한 건이다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "SQL",
+        "조인",
+        "WHERE",
+        "카티션 곱"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 8,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "아래는 관계 데이터베이스에 관련된 설명이다. 알맞은 용어를 보기에서 골라 기호를 쓰시오.\n\n① 릴레이션에서 속성의 개수를 의미\n② 릴레이션에서 튜플의 개수를 의미\n③ 한 릴레이션의 속성이 다른 릴레이션의 기본 키를 참조할 때, 참조하는 속성을 의미\n④ 특정 속성에 대해 입력될 수 있는 값의 유형이나 범위를 의미하고 무결성을 보장하는 기준\n\n[보기]\nㄱ. domain  ㄴ. primary  ㄷ. degree  ㄹ. candidate  ㅁ. cardinality  ㅂ. attribute  ㅅ. foreign",
+      "answer": [
+        "① ㄷ, ② ㅁ, ③ ㅅ, ④ ㄱ",
+        "① degree, ② cardinality, ③ foreign, ④ domain"
+      ],
+      "blanks": [
+        "ㄷ",
+        "ㅁ",
+        "ㅅ",
+        "ㄱ"
+      ],
+      "explanation": "차수(degree)는 릴레이션의 속성(열) 개수, 카디널리티(cardinality)는 튜플(행) 개수이다.\n외래 키(foreign key)는 다른 릴레이션의 기본 키를 참조하는 속성이다.\n도메인(domain)은 한 속성이 가질 수 있는 원자값의 집합(유형·범위)으로, 도메인 무결성의 기준이 된다.",
+      "keywords": [
+        "차수",
+        "카디널리티",
+        "외래 키",
+        "도메인"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 9,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "IP 주소가 192.168.35.10, 서브넷 마스크가 255.255.252.0인 PC에서 브로드캐스트로 정보를 전달한다고 할 때, 이를 수신할 수 있는 IP를 보기에서 모두 골라 쓰시오.\n\n[보기]\nㄱ. 192.168.34.1\nㄴ. 192.168.32.19\nㄷ. 192.168.35.200\nㄹ. 192.168.33.138\nㅁ. 192.168.35.50",
+      "answer": [
+        "ㄱ, ㄴ, ㄷ, ㄹ, ㅁ",
+        "ㄱㄴㄷㄹㅁ"
+      ],
+      "explanation": "255.255.252.0은 /22이므로 3번째 옥텟의 하위 2비트가 호스트 부분이다. 35 = 00100011 → 상위 6비트로 네트워크 주소는 192.168.32.0, 범위는 192.168.32.0 ~ 192.168.35.255이다.\n브로드캐스트 주소 192.168.35.255는 이 범위의 모든 호스트에 전달된다.\n보기 다섯 개(34.1, 32.19, 35.200, 33.138, 35.50)는 모두 32~35 범위에 있으므로 전부 수신 가능하다.",
+      "keywords": [
+        "서브넷 마스크",
+        "브로드캐스트",
+        "CIDR",
+        "네트워크 주소"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 10,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nchar Data[5] = {'B', 'A', 'D', 'E'};\nchar c;\nint main() {\n    int i, temp, temp2;\n    c = 'C';\n    printf(\"%d\\n\", Data[3] - Data[1]);\n    for (i = 0; i < 5; ++i) {\n        if (Data[i] > c)\n            break;\n    }\n    temp = Data[i];\n    Data[i] = c;\n    i++;\n    for (; i < 5; ++i) {\n        temp2 = Data[i];\n        Data[i] = temp;\n        temp = temp2;\n    }\n    for (i = 0; i < 5; i++) {\n        printf(\"%c\", Data[i]);\n    }\n}",
+      "answer": [
+        "4\nBACDE",
+        "4 BACDE"
+      ],
+      "explanation": "Data[3]-Data[1] = 'E'(69) - 'A'(65) = 4를 먼저 출력한다. 배열 크기 5에 4개만 초기화되어 Data[4]는 '\\0'이다.\n첫 반복문은 c='C'보다 큰 첫 원소를 찾아 i=2('D')에서 멈춘다. temp='D', Data[2]='C', i=3.\n둘째 반복문은 뒤 원소를 한 칸씩 밀어 Data[3]='D', Data[4]='E'가 되어 삽입 정렬처럼 'C'가 끼워진다.\n최종 배열 B A C D E → BACDE.",
+      "keywords": [
+        "배열",
+        "삽입",
+        "문자 비교",
+        "ASCII"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 11,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n#include <stdlib.h>\nvoid set(int** arr, int* data, int rows, int cols) {\n    for (int i = 0; i < rows * cols; ++i) {\n        arr[((i + 1) / rows) % rows][(i + 1) % cols] = data[i];\n    }\n}\nint main() {\n    int rows = 3, cols = 3, sum = 0;\n    int data[] = {5, 2, 7, 4, 1, 8, 3, 6, 9};\n    int** arr;\n    arr = (int**) malloc(sizeof(int*) * rows);\n    for (int i = 0; i < cols; i++) {\n        arr[i] = (int*) malloc(sizeof(int) * cols);\n    }\n    set(arr, data, rows, cols);\n    for (int i = 0; i < rows * cols; i++) {\n        sum += arr[i / rows][i % cols] * (i % 2 == 0 ? 1 : -1);\n    }\n    for (int i = 0; i < rows; i++) {\n        free(arr[i]);\n    }\n    free(arr);\n    printf(\"%d\", sum);\n}",
+      "answer": [
+        "13"
+      ],
+      "explanation": "set()은 data[i]를 arr[((i+1)/3)%3][(i+1)%3]에 넣는다. i=0~8 순으로 [0][1]=5, [0][2]=2, [1][0]=7, [1][1]=4, [1][2]=1, [2][0]=8, [2][1]=3, [2][2]=6, [0][0]=9.\n결과 arr = {9,5,2}, {7,4,1}, {8,3,6}.\n합산은 arr[i/3][i%3]을 행 우선으로 순회하며 짝수 인덱스는 +, 홀수 인덱스는 -: 9-5+2-7+4-1+8-3+6 = 13.",
+      "keywords": [
+        "malloc",
+        "이중 포인터",
+        "2차원 배열",
+        "삼항 연산자"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 12,
+      "subject": "서버 프로그램 구현",
+      "type": "빈칸",
+      "question": "다음은 결합도와 관련된 설명이다. 각 설명에 해당하는 결합도를 보기에서 골라 기호를 쓰시오.\n\n① 다른 모듈 내부에 있는 변수나 기능을 다른 모듈에서 직접 사용하는 경우의 결합도\n② 모듈 간의 인터페이스로 배열이나 오브젝트, 자료구조 등이 전달되는 경우의 결합도\n③ 파라미터가 아닌 모듈 밖에 선언되어 있는 전역 변수를 참조하고 갱신하는 식으로 상호작용하는 경우의 결합도\n\n[보기]\nㄱ. 자료 결합도  ㄴ. 스탬프 결합도  ㄷ. 제어 결합도  ㄹ. 공통 결합도  ㅁ. 내용 결합도  ㅂ. 외부 결합도",
+      "answer": [
+        "① ㅁ, ② ㄴ, ③ ㄹ",
+        "① 내용 결합도, ② 스탬프 결합도, ③ 공통 결합도"
+      ],
+      "blanks": [
+        "ㅁ",
+        "ㄴ",
+        "ㄹ"
+      ],
+      "explanation": "내용 결합도: 한 모듈이 다른 모듈의 내부 변수·코드를 직접 참조·수정하는 가장 강한 결합.\n스탬프 결합도: 배열, 구조체, 객체 같은 자료구조 전체를 매개변수로 전달.\n공통 결합도: 여러 모듈이 전역 변수(공통 데이터 영역)를 공유·갱신하며 상호작용.\n결합도 강→약: 내용 > 공통 > 외부 > 제어 > 스탬프 > 자료.",
+      "keywords": [
+        "결합도",
+        "내용 결합도",
+        "스탬프 결합도",
+        "공통 결합도"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 13,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static void main(String[] args) {\n        new Child();\n        System.out.println(Parent.total);\n    }\n}\nclass Parent {\n    static int total = 0;\n    int v = 1;\n    public Parent() {\n        total += (++v);\n        show();\n    }\n    public void show() {\n        total += total;\n    }\n}\nclass Child extends Parent {\n    int v = 10;\n    public Child() {\n        v += 2;\n        total += v++;\n        show();\n    }\n    @Override\n    public void show() {\n        total += total * 2;\n    }\n}",
+      "answer": [
+        "54"
+      ],
+      "explanation": "new Child()는 먼저 묵시적 super()로 Parent()를 호출한다. total += ++v → v=2, total=2. 이어서 show()는 동적 바인딩으로 Child의 show()가 실행되어 total = 2 + 2*2 = 6.\nChild() 본문: Child의 v(10) += 2 → 12. total += v++ → total = 6 + 12 = 18 (후위 증가라 12가 더해지고 v는 13).\nshow() → total = 18 + 18*2 = 54. static 변수 total은 클래스 하나에 공유되므로 Parent.total = 54.",
+      "keywords": [
+        "상속",
+        "생성자 호출 순서",
+        "오버라이딩",
+        "static",
+        "전위/후위 증가"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 14,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "아래는 디자인 패턴에 대한 설명이다. 해당하는 패턴을 쓰시오.\n\n서로 다른 인터페이스를 가진 클래스들을 연결해 함께 사용할 수 있게 한다.\n기존 클래스(Adaptee)를 원하는 인터페이스(Target)에 맞게 변환하는 중간 객체를 만든다.\n기존 클래스를 감싸서(wrapper) 인터페이스를 변환해 주는 역할을 한다.",
+      "answer": [
+        "어댑터",
+        "어댑터 패턴",
+        "Adapter",
+        "Adapter Pattern",
+        "래퍼",
+        "Wrapper"
+      ],
+      "explanation": "어댑터(Adapter) 패턴은 구조 패턴의 하나로, 호환되지 않는 인터페이스를 가진 기존 클래스(Adaptee)를 클라이언트가 기대하는 인터페이스(Target)로 변환하는 어댑터 클래스를 두어 재사용을 가능하게 한다.\n기존 객체를 감싼다는 점에서 래퍼(Wrapper) 패턴이라고도 부른다.\n비슷한 구조 패턴인 프록시(접근 제어), 데코레이터(기능 추가), 브리지(구현 분리)와 목적이 다르다.",
+      "keywords": [
+        "디자인 패턴",
+        "어댑터",
+        "구조 패턴",
+        "래퍼"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 15,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "lang": "C",
+      "question": "문장(Statement) 커버리지 테스트를 수행하려고 한다. 아래 코드를 제어 흐름도의 각 노드 ①~⑥에 해당하는 문장으로 채우고, 문장 커버리지를 만족하는 실행 순서 ⑦을 쓰시오.\n\n[흐름도]\n1. ( ① )  2. ( ② )  3. ( ③ )  4. ( ④ )  5. ( ⑤ )  6. ( ⑥ )\n문장 커버리지 순서: 1 → 2 → ( ⑦ )",
+      "code": "int Main(int b[], int m, int x) {\n    int a = 0;\n    while (a < m || b[a] < x) {\n        if (b[a] < 0)\n            b[a] = -b[a];\n        a++;\n    }\n    return 1;\n}",
+      "answer": [
+        "① int a = 0, ② a < m || b[a] < x, ③ b[a] < 0, ④ b[a] = -b[a], ⑤ a++, ⑥ return 1, ⑦ 3 → 4 → 5 → 2 → 6"
+      ],
+      "blanks": [
+        "int a = 0",
+        "a < m || b[a] < x",
+        "b[a] < 0",
+        "b[a] = -b[a]",
+        "a++",
+        "return 1",
+        "3 → 4 → 5 → 2 → 6"
+      ],
+      "explanation": "제어 흐름도 노드는 코드의 문장 순서대로 ① 초기화(int a = 0), ② while 조건, ③ if 조건, ④ 부호 반전 문장, ⑤ a++, ⑥ return 1이다.\n문장 커버리지는 모든 문장을 최소 한 번 실행하면 되므로, while 조건 참 → if 조건 참 → b[a] = -b[a] → a++ → while 조건 재검사(거짓) → return 순서인 1→2→3→4→5→2→6 한 경로로 충족된다.\n(복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "문장 커버리지",
+        "제어 흐름도",
+        "화이트박스 테스트"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 16,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static void main(String[] args) {\n        int[] data = {3, 5, 8, 12, 17};\n        System.out.println(func(data, 0, data.length - 1));\n    }\n    static int func(int[] a, int st, int end) {\n        if (st >= end) return 0;\n        int mid = (st + end) / 2;\n        return a[mid] + Math.max(func(a, st, mid), func(a, mid + 1, end));\n    }\n}",
+      "answer": [
+        "20"
+      ],
+      "explanation": "func(st, end)는 st >= end면 0, 아니면 a[mid] + max(왼쪽 구간, 오른쪽 구간)이다. 왼쪽은 mid를 포함(st~mid), 오른쪽은 mid+1~end.\nfunc(0,4): mid=2, a[2]=8 + max(func(0,2), func(3,4)).\nfunc(0,2): mid=1, 5 + max(func(0,1)=3+max(0,0)=3, func(2,2)=0) = 8. func(3,4): mid=3, 12 + max(0,0) = 12.\n따라서 8 + max(8, 12) = 20.",
+      "keywords": [
+        "재귀",
+        "분할 정복",
+        "Math.max"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "class Node:\n    def __init__(self, value):\n        self.value = value\n        self.children = []\n\ndef tree(li):\n    nodes = [Node(i) for i in li]\n    for i in range(1, len(li)):\n        nodes[(i - 1) // 2].children.append(nodes[i])\n    return nodes[0]\n\ndef calc(node, level=0):\n    if node is None:\n        return 0\n    return (node.value if level % 2 == 1 else 0) + sum(calc(n, level + 1) for n in node.children)\n\nli = [3, 5, 8, 12, 15, 18, 21]\nroot = tree(li)\nprint(calc(root))",
+      "answer": [
+        "13"
+      ],
+      "explanation": "tree()는 리스트를 완전 이진 트리처럼 연결한다: nodes[i]의 부모는 nodes[(i-1)//2]. 루트 3(level 0), 자식 5, 8(level 1), 그 아래 12, 15 / 18, 21(level 2).\ncalc()는 level이 홀수인 노드의 value만 더하고 자식들을 level+1로 재귀한다.\n홀수 레벨은 level 1의 5와 8뿐이므로 5 + 8 = 13.",
+      "keywords": [
+        "트리",
+        "재귀",
+        "클래스",
+        "리스트 컴프리헨션"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 18,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n#include <stdlib.h>\ntypedef struct Data {\n    int value;\n    struct Data *next;\n} Data;\nData* insert(Data* head, int value) {\n    Data* new_node = (Data*)malloc(sizeof(Data));\n    new_node->value = value;\n    new_node->next = head;\n    return new_node;\n}\nData* reconnect(Data* head, int value) {\n    if (head == NULL || head->value == value) return head;\n    Data *prev = NULL, *curr = head;\n    while (curr != NULL && curr->value != value) {\n        prev = curr;\n        curr = curr->next;\n    }\n    if (curr != NULL && prev != NULL) {\n        prev->next = curr->next;\n        curr->next = head;\n        head = curr;\n    }\n    return head;\n}\nint main() {\n    Data *head = NULL, *curr;\n    for (int i = 1; i <= 5; i++)\n        head = insert(head, i);\n    head = reconnect(head, 3);\n    for (curr = head; curr != NULL; curr = curr->next)\n        printf(\"%d\", curr->value);\n    return 0;\n}",
+      "answer": [
+        "35421"
+      ],
+      "explanation": "insert()는 새 노드를 항상 리스트 맨 앞에 붙이므로 1~5를 순서대로 넣으면 head → 5 → 4 → 3 → 2 → 1이 된다.\nreconnect(head, 3)은 값 3인 노드를 찾아 앞뒤를 이어주고(prev->next = curr->next) 그 노드를 맨 앞으로 옮긴다(curr->next = head; head = curr).\n결과 3 → 5 → 4 → 2 → 1이므로 35421이 출력된다.",
+      "keywords": [
+        "연결 리스트",
+        "구조체",
+        "포인터",
+        "malloc"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 19,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\ntypedef struct student {\n    char* name;\n    int score[3];\n} Student;\nint dec(int enc) {\n    return enc & 0xA5;\n}\nint sum(Student* p) {\n    return dec(p->score[0]) + dec(p->score[1]) + dec(p->score[2]);\n}\nint main() {\n    Student s[2] = { \"Kim\", {0xA0, 0xA5, 0xDB}, \"Lee\", {0xA0, 0xED, 0x81} };\n    Student* p = s;\n    int result = 0;\n    for (int i = 0; i < 2; i++) {\n        result += sum(&s[i]);\n    }\n    printf(\"%d\", result);\n    return 0;\n}",
+      "answer": [
+        "908"
+      ],
+      "explanation": "dec()는 enc & 0xA5(1010 0101) 비트 AND이다.\nKim: 0xA0&0xA5=0xA0(160), 0xA5&0xA5=0xA5(165), 0xDB(1101 1011)&0xA5=0x81(129) → 454.\nLee: 0xA0→160, 0xED(1110 1101)&0xA5=0xA5(165), 0x81(1000 0001)&0xA5=0x81(129) → 454.\n합계 454 + 454 = 908.",
+      "keywords": [
+        "비트 연산",
+        "16진수",
+        "구조체 배열",
+        "AND"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    },
+    {
+      "no": 20,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(calc(\"5\"));\n    }\n    static int calc(int value) {\n        if (value <= 1) return value;\n        return calc(value - 1) + calc(value - 2);\n    }\n    static int calc(String str) {\n        int value = Integer.valueOf(str);\n        if (value <= 1) return value;\n        return calc(value - 1) + calc(value - 3);\n    }\n}",
+      "answer": [
+        "4"
+      ],
+      "explanation": "calc(\"5\")는 String 버전이 호출되어 value=5, calc(4) + calc(2)를 반환한다. 인자가 int이므로 이후는 모두 int 버전(피보나치형)으로 오버로딩된다.\ncalc(2)=calc(1)+calc(0)=1, calc(3)=calc(2)+calc(1)=2, calc(4)=calc(3)+calc(2)=3.\n따라서 calc(4) + calc(2) = 3 + 1 = 4. String 버전의 value-3은 첫 호출 한 번만 적용된다.",
+      "keywords": [
+        "오버로딩",
+        "재귀",
+        "Integer.valueOf",
+        "피보나치"
+      ],
+      "source": "https://chobopark.tistory.com/540"
+    }
+  ]
+}

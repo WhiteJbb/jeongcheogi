@@ -1,0 +1,400 @@
+{
+  "year": 2021,
+  "round": 3,
+  "date": "2021-10-16",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "class Connection {\n    private static Connection _inst = null;\n    private int count = 0;\n\n    static public Connection get() {\n        if (_inst == null) {\n            _inst = new Connection();\n            return _inst;\n        }\n        return _inst;\n    }\n\n    public void count() { count++; }\n    public int getCount() { return count; }\n}\n\npublic class testcon {\n    public static void main(String[] args) {\n        Connection conn1 = Connection.get();\n        conn1.count();\n        Connection conn2 = Connection.get();\n        conn2.count();\n        Connection conn3 = Connection.get();\n        conn3.count();\n        System.out.print(conn1.getCount());\n    }\n}",
+      "answer": [
+        "3"
+      ],
+      "explanation": "Connection.get()은 _inst가 null일 때만 객체를 생성하는 싱글톤. conn1, conn2, conn3은 모두 같은 인스턴스.\ncount()가 세 번 호출되어 하나의 count가 3이 되고, conn1.getCount()도 3.",
+      "keywords": [
+        "Java",
+        "싱글톤",
+        "static",
+        "디자인 패턴"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 2,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음은 정보 보호 기술인 AAA에 대한 설명이다. 각 설명에 맞는 용어를 쓰시오.\n\n(1) 시스템에 접근하기 전에 접근을 시도하는 사용자의 신원을 검증\n(2) 검증된 사용자에게 어떤 수준의 권한과 서비스를 허용\n(3) 사용자의 자원(시간, 정보, 위치 등)에 대한 사용 정보를 수집",
+      "answer": [
+        "① Authentication, ② Authorization, ③ Accounting",
+        "① 인증, ② 인가, ③ 계정 관리",
+        "① 인증, ② 권한 부여, ③ 과금"
+      ],
+      "blanks": [
+        "Authentication",
+        "Authorization",
+        "Accounting"
+      ],
+      "explanation": "AAA: Authentication(인증, 누구인가) → Authorization(인가, 무엇을 할 수 있는가) → Accounting(계정 관리/과금, 무엇을 했는가).",
+      "keywords": [
+        "AAA",
+        "인증",
+        "인가",
+        "Accounting"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 3,
+      "subject": "SQL 응용",
+      "type": "서술",
+      "question": "데이터 제어어(DCL) 중 GRANT에 대하여 설명하시오.",
+      "answer": [
+        "데이터베이스 사용자에게 사용 권한을 부여하는 명령어",
+        "사용자에게 권한을 부여하는 명령어",
+        "데이터베이스 관리자가 사용자에게 데이터베이스에 대한 권한을 부여하는 명령어"
+      ],
+      "explanation": "DCL은 GRANT(권한 부여), REVOKE(권한 회수), COMMIT, ROLLBACK 등.\nGRANT 권한 ON 객체 TO 사용자 [WITH GRANT OPTION] 형식으로 사용자에게 권한을 부여한다.",
+      "keywords": [
+        "DCL",
+        "GRANT",
+        "REVOKE",
+        "권한"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 4,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음은 스푸핑 공격에 대한 설명이다. 괄호 안에 공통으로 들어갈 알맞은 답을 쓰시오.\n\n( ) 스푸핑은 근거리 통신망 하에서 ( ) 메시지를 이용하여 상대방의 데이터 패킷을 중간에서 가로채는 중간자 공격 기법이다. 이 공격은 데이터 링크 상의 프로토콜인 ( )를 이용하기 때문에 근거리상의 통신에서만 사용할 수 있는 공격이다.",
+      "answer": [
+        "ARP",
+        "Address Resolution Protocol"
+      ],
+      "explanation": "ARP 스푸핑: 위조된 ARP 응답으로 공격자 MAC을 게이트웨이/상대방 IP에 매핑시켜 트래픽을 가로채는 중간자 공격.\nARP가 2계층(데이터 링크) 프로토콜이라 같은 LAN 안에서만 가능.",
+      "keywords": [
+        "ARP 스푸핑",
+        "중간자 공격",
+        "MAC"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 5,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "다음은 결합도(Coupling)에 대한 설명이다. 설명에 해당하는 결합도 종류를 영문으로 쓰시오.\n\n어떤 모듈이 다른 모듈의 내부 논리 조직을 제어하기 위한 목적으로 제어 신호를 이용하여 통신하는 경우의 결합도이다. 하위 모듈에서 상위 모듈로 제어 신호가 이동하여 상위 모듈에게 처리 명령을 부여하는 권리 전도 현상이 발생할 수 있다.",
+      "answer": [
+        "Control Coupling",
+        "Control",
+        "제어 결합도"
+      ],
+      "explanation": "제어 결합도: 플래그 등 제어 요소를 전달해 다른 모듈의 처리 흐름을 바꾸는 결합.\n'제어 신호', '권리 전도 현상'이 키워드. 영문 요구이므로 Control Coupling.",
+      "keywords": [
+        "결합도",
+        "제어 결합도",
+        "Control Coupling"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 6,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "OSI 7 계층에 대한 설명이다. 다음 각 설명에 해당되는 계층을 쓰시오.\n\n(1) 물리 계층을 통해 송수신되는 정보의 오류와 흐름을 관리하여 안전한 정보의 전달을 수행할 수 있도록 도와주는 역할\n(2) 데이터를 목적지까지 가장 안전하고 빠르게 전달하는 기능\n(3) 수신자에서 데이터의 압축을 풀 수 있는 방식으로 된 데이터 압축",
+      "answer": [
+        "① 데이터 링크 계층, ② 네트워크 계층, ③ 표현 계층",
+        "① 데이터링크, ② 네트워크, ③ 표현",
+        "① Data Link, ② Network, ③ Presentation"
+      ],
+      "blanks": [
+        "데이터 링크 계층",
+        "네트워크 계층",
+        "표현 계층"
+      ],
+      "explanation": "데이터 링크(2계층): 인접 노드 간 오류·흐름 제어, 프레임.\n네트워크(3계층): 라우팅으로 목적지까지 최적 경로 전달, 패킷.\n표현(6계층): 데이터 형식 변환, 압축, 암호화.",
+      "keywords": [
+        "OSI 7계층",
+        "데이터 링크",
+        "네트워크",
+        "표현 계층"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 7,
+      "subject": "요구사항 확인",
+      "type": "빈칸",
+      "question": "다음 객체지향 관계에 대한 설명 중 괄호 안에 들어갈 알맞은 용어를 보기에서 골라 쓰시오.\n\n( A )은/는 클래스들 사이의 전체 또는 부분 같은 관계를 나타내는 것이고, ( B )은/는 한 클래스가 다른 클래스를 포함하는 상위 개념일 때 IS-A 관계라 하며, 일반화 관계로 모델링한다.\n\n[보기] Association, Aggregation, Realization, Composition, Generalization, Dependency",
+      "answer": [
+        "① Aggregation, ② Generalization",
+        "① 집합 관계, ② 일반화 관계",
+        "① 집단화, ② 일반화"
+      ],
+      "blanks": [
+        "Aggregation",
+        "Generalization"
+      ],
+      "explanation": "Aggregation(집합/집단화): 전체-부분(has-a) 관계, 빈 마름모.\nGeneralization(일반화): 상위-하위(is-a) 상속 관계, 빈 삼각형 화살표.\nComposition은 부분이 전체에 생명주기가 종속되는 강한 집합.",
+      "keywords": [
+        "UML",
+        "Aggregation",
+        "Generalization",
+        "객체지향"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 8,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "question": "다음은 테스트 케이스의 구성 요소에 대한 설명이다. 괄호 안에 들어갈 알맞은 용어를 보기에서 골라 쓰시오.\n\n(1) 테스트 간 종속성 및 테스트 수행 전 만족되어야 하는 사전 조건\n(2) 테스트 실행 시 입력하는 값, 선택값, 체크리스트 값 등\n(3) 테스트 실행 후 나와야 하는 출력 데이터, 결과 화면, 기대 동작\n\n[보기] 테스트 데이터, 테스트 시나리오, 예상 결과, 테스트 조건, 테스트 베드, 테스트 시스템",
+      "answer": [
+        "① 테스트 조건, ② 테스트 데이터, ③ 예상 결과"
+      ],
+      "blanks": [
+        "테스트 조건",
+        "테스트 데이터",
+        "예상 결과"
+      ],
+      "explanation": "테스트 케이스 = 테스트 조건(사전 조건) + 테스트 데이터(입력) + 예상 결과(기대 출력).\nISO/IEC/IEEE 29119-3 기준 구성 요소.",
+      "keywords": [
+        "테스트 케이스",
+        "테스트 조건",
+        "테스트 데이터",
+        "예상 결과"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 9,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "테스트 기법 중 그래프를 활용하여 입력 데이터 간의 관계와 출력에 영향을 미치는 상황을 체계적으로 분석한 다음, 효용성이 높은 테스트 케이스를 선정하여 검사하는 기법을 보기에서 골라 쓰시오.\n\n[보기] Equivalence Partition, Boundary Value Analysis, Condition Test, Cause-Effect Graph, Error Guess, Comparison Test, Base Path Test, Loop Test, Data Flow Test",
+      "answer": [
+        "Cause-Effect Graph",
+        "Cause Effect Graph",
+        "원인-결과 그래프",
+        "원인 효과 그래프"
+      ],
+      "explanation": "원인-결과 그래프(Cause-Effect Graph): 입력(원인)과 출력(결과)의 관계를 그래프로 분석해 효용성 높은 테스트 케이스를 도출하는 블랙박스 기법.\n'그래프', '입력-출력 관계'가 힌트.",
+      "keywords": [
+        "블랙박스 테스트",
+        "원인-결과 그래프",
+        "Cause-Effect Graph"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 10,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음에서 설명하는 블록 암호 알고리즘을 쓰시오.\n\n미국 NBS(National Bureau of Standards, 현재 NIST)에서 국가 표준으로 정한 암호 알고리즘으로, 64비트 평문을 64비트 암호문으로 암호화하는 대칭키 암호 알고리즘이다. 키는 7비트마다 오류 검출을 위한 정보가 1비트씩 들어가기 때문에 실질적으로는 56비트이다. 현재는 취약하여 사용되지 않는다.",
+      "answer": [
+        "DES",
+        "Data Encryption Standard"
+      ],
+      "explanation": "DES: IBM 개발, 1977년 NBS 표준. 64비트 블록, 64비트 키 중 패리티 8비트를 제외한 56비트 유효 키, 16라운드 Feistel 구조.\n키 길이가 짧아 취약해져 AES로 대체.",
+      "keywords": [
+        "DES",
+        "블록 암호",
+        "대칭키",
+        "NIST"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 11,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class testco {\n    public static void main(String[] args) {\n        int a = 3, b = 4, c = 3, d = 5;\n        if ((a == 2 | a == c) & !(c > d) & (1 == b ^ c != d)) {\n            a = b + c;\n            if (7 == b ^ c != a) {\n                System.out.println(a);\n            } else {\n                System.out.println(b);\n            }\n        } else {\n            a = c + d;\n            if (7 == c ^ d != a) {\n                System.out.println(a);\n            } else {\n                System.out.println(d);\n            }\n        }\n    }\n}",
+      "answer": [
+        "7"
+      ],
+      "explanation": "a=3,b=4,c=3,d=5. 첫 조건: (a==2 | a==c)=true, !(c>d)=true, (1==b ^ c!=d)=(false ^ true)=true → 전체 true, a=b+c=7.\n내부 조건: (7==b ^ c!=a) = (false ^ true) = true → a 출력 → 7.\n|, &는 비단락 논리 연산, ^는 XOR.",
+      "keywords": [
+        "Java",
+        "비트 연산자",
+        "XOR",
+        "조건문"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 12,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n\nint main() {\n    int *arr[3];\n    int a = 12, b = 24, c = 36;\n    arr[0] = &a;\n    arr[1] = &b;\n    arr[2] = &c;\n\n    printf(\"%d\\n\", *arr[1] + **arr + 1);\n}",
+      "answer": [
+        "37"
+      ],
+      "explanation": "arr는 int 포인터 배열. *arr[1]은 b의 값 24, **arr은 *arr[0] 즉 a의 값 12.\n24 + 12 + 1 = 37.",
+      "keywords": [
+        "C",
+        "포인터 배열",
+        "역참조"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 13,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 두 테이블에 대해 SQL문을 실행한 결과를 쓰시오.\n\n[A]\nNAME\nSmith\nAllen\nScott\n\n[B]\nRULE\nS%\n%T%",
+      "code": "SELECT COUNT(*) CNT\nFROM A CROSS JOIN B\nWHERE A.NAME LIKE B.RULE;",
+      "answer": [
+        "4"
+      ],
+      "explanation": "CROSS JOIN은 A(3행)×B(2행)=6개 조합을 만들고, WHERE로 NAME이 RULE 패턴에 맞는 행만 남긴다.\n'S%': Smith, Scott 일치(2). '%T%': Smith, Scott 일치(2, 대소문자 미구분 기준). Allen은 둘 다 불일치.\n따라서 COUNT = 4. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "SQL",
+        "CROSS JOIN",
+        "LIKE",
+        "COUNT"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 14,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "a, b = 100, 200\nprint(a == b)",
+      "answer": [
+        "False"
+      ],
+      "explanation": "a=100, b=200으로 다중 할당. a==b는 비교 결과인 bool 값 False를 출력.\nPython은 첫 글자가 대문자인 False/True로 출력됨에 주의.",
+      "keywords": [
+        "Python",
+        "비교 연산자",
+        "bool"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 15,
+      "subject": "요구사항 확인",
+      "type": "단답",
+      "question": "다음은 UML 다이어그램에 대한 설명이다. 어떤 다이어그램에 대한 설명인지 쓰시오.\n\n이 다이어그램은 문제 해결을 위한 도메인 구조를 나타내어, 보이지 않는 도메인 안의 개념과 같은 추상적인 개념을 기술하기 위해 나타낸 것이다. 또한 소프트웨어의 설계 혹은 완성된 소프트웨어의 구현 설명을 목적으로 사용할 수 있다. 이 다이어그램은 속성(attribute)과 메서드(method)를 포함한다.",
+      "answer": [
+        "클래스 다이어그램",
+        "Class Diagram",
+        "클래스"
+      ],
+      "explanation": "클래스 다이어그램: 클래스의 속성·메서드와 클래스 간 관계(연관, 일반화, 집합 등)를 표현하는 정적 구조 다이어그램.\n'속성과 메서드를 포함'이 결정적 힌트.",
+      "keywords": [
+        "UML",
+        "클래스 다이어그램",
+        "구조 다이어그램"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 16,
+      "subject": "통합 구현",
+      "type": "단답",
+      "question": "다음에서 설명하는 객체지향 디자인 패턴을 쓰시오.\n\n부모(상위) 클래스에 알려지지 않은 구체 클래스를 생성하는 패턴이며, 자식(하위) 클래스가 어떤 객체를 생성할지를 결정하도록 하는 패턴이기도 하다. 부모(상위) 클래스 코드에 구체 클래스 이름을 감추기 위한 방법으로도 사용한다.",
+      "answer": [
+        "Factory Method",
+        "팩토리 메소드",
+        "팩토리 메서드",
+        "Factory",
+        "팩토리"
+      ],
+      "explanation": "Factory Method: 객체 생성 인터페이스는 상위 클래스가 정의하고, 실제 어떤 클래스를 생성할지는 하위 클래스가 결정하는 생성 패턴.\n상위 클래스 코드가 구체 클래스에 의존하지 않게 한다.",
+      "keywords": [
+        "디자인 패턴",
+        "Factory Method",
+        "생성 패턴"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n\nstruct jsu {\n    char nae[12];\n    int os, db, hab, hhab;\n};\n\nint main() {\n    struct jsu st[3] = {{\"데이터1\", 95, 88},\n                        {\"데이터2\", 84, 91},\n                        {\"데이터3\", 86, 75}};\n    struct jsu* p;\n\n    p = &st[0];\n\n    (p + 1)->hab = (p + 1)->os + (p + 2)->db;\n    (p + 1)->hhab = (p + 1)->hab + p->os + p->db;\n\n    printf(\"%d\\n\", (p + 1)->hab + (p + 1)->hhab);\n}",
+      "answer": [
+        "501"
+      ],
+      "explanation": "p=&st[0]. (p+1)->hab = st[1].os + st[2].db = 84 + 75 = 159.\n(p+1)->hhab = 159 + st[0].os + st[0].db = 159 + 95 + 88 = 342.\n출력 = 159 + 342 = 501.",
+      "keywords": [
+        "C",
+        "구조체",
+        "포인터 연산"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 18,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "다음은 파일 구조(File Structures)에 대한 설명이다. 괄호 안에 공통으로 들어갈 알맞은 답을 쓰시오.\n\n파일 구조는 파일을 구성하는 레코드들이 보조기억장치에 편성되는 방식으로, 접근 방식에 따라 방식이 달라진다. 접근 방법 중 레코드들을 키-값 순으로 정렬하여 기록하고, 레코드의 키 항목만을 모은 ( )을 구성하여 편성하는 방식이 있으며, 레코드를 참조할 때는 ( )이 가리키는 주소를 사용하여 직접 참조할 수 있다. 파일 구조에는 순차 접근, ( ) 접근, 해싱 접근이 있다.",
+      "answer": [
+        "인덱스",
+        "색인",
+        "Index"
+      ],
+      "explanation": "파일 구조 3종: 순차(Sequential), 인덱스(Indexed), 해싱(Hashing).\n키 항목만 모은 인덱스가 레코드 주소를 가리켜 직접 접근을 가능하게 한다.",
+      "keywords": [
+        "파일 구조",
+        "인덱스",
+        "색인 순차 파일",
+        "해싱"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 19,
+      "subject": "화면 설계",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 용어를 영문 약어로 쓰시오.\n\n( )는 사용자가 그래픽을 통해 컴퓨터와 정보를 교환하는 환경을 말한다. 이전까지 사용자 인터페이스는 키보드를 통해 명령어로 작업을 수행시켰지만, ( )에서는 키보드뿐만 아니라 마우스 등을 이용하여 화면의 메뉴 중 하나를 선택하여 작업을 수행한다. 화면에 아이콘을 띄워 마우스로 클릭하여 작업을 수행하는 방식으로, 대표적으로 마이크로소프트의 Windows, 애플의 Mac 운영체제 등이 있다.",
+      "answer": [
+        "GUI",
+        "Graphical User Interface"
+      ],
+      "explanation": "UI 유형: CLI(명령줄), GUI(그래픽·마우스·아이콘), NUI(터치·음성 등 자연어), OUI(유기적).\n아이콘·마우스·Windows/Mac 설명은 GUI.",
+      "keywords": [
+        "GUI",
+        "CLI",
+        "NUI",
+        "사용자 인터페이스"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    },
+    {
+      "no": 20,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "question": "다음은 소프트웨어 통합 테스트에 대한 설명이다. 괄호 안에 들어갈 알맞은 답을 쓰시오.\n\n( A ) 방식은 하위 모듈부터 시작하여 상위 모듈로 테스트를 진행하는 방식이며, 이 방식을 사용하기 위해서는 ( B )가 필요하다. ( B )는 이미 존재하는 하위 모듈과 존재하지 않는 상위 모듈에 대한 인터페이스 역할을 한다.",
+      "answer": [
+        "① 상향식, ② 테스트 드라이버",
+        "① 상향식 통합 테스트, ② 드라이버",
+        "① Bottom-up, ② Test Driver"
+      ],
+      "blanks": [
+        "상향식",
+        "테스트 드라이버"
+      ],
+      "explanation": "상향식(Bottom-up) 통합: 하위 모듈부터 결합. 아직 없는 상위 모듈을 대신 호출해 주는 테스트 드라이버가 필요.\n하향식은 반대로 하위 모듈을 대신하는 스텁이 필요. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "통합 테스트",
+        "상향식",
+        "테스트 드라이버",
+        "스텁"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2021년 3회"
+    }
+  ]
+}

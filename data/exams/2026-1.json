@@ -1,0 +1,430 @@
+{
+  "year": 2026,
+  "round": 1,
+  "date": "2026-04-18",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n\ndouble arrav(int p[], int len) {\n    double av = 0;\n    int i;\n    for (i = 0; i < len; i++) {\n        av += (double)p[i];\n    }\n    return av / len;\n}\n\ndouble arrp(int *p, int len) {\n    double av = 0;\n    int i;\n    for (i = 0; i < len; i++) {\n        av += (double)(*(p + i));\n    }\n    return av / len;\n}\n\nint main() {\n    int arr[10] = {80, 20, 50, 55, 45, 95, 55, 10, 40, 80};\n    int len = 10;\n    printf(\"%.2f\", arrav(arr, 10) + arrp(arr, 10));\n    return 0;\n}",
+      "answer": [
+        "106.00"
+      ],
+      "explanation": "p[i]와 *(p+i)는 같은 원소 접근. 배열 합 530, 평균 53.0.\n두 함수 모두 53.0을 반환하므로 합은 106.0.\n%.2f는 소수점 둘째 자리까지 출력 → 106.00. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "배열",
+        "포인터",
+        "평균",
+        "%.2f"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 2,
+      "subject": "요구사항 확인",
+      "type": "단답",
+      "question": "다음은 디자인 패턴에 대한 설명이다. 각 설명에 해당하는 패턴을 쓰시오.\n① 구현부에서 추상층을 분리하여 서로 독립적으로 확장할 수 있게 하는 구조 패턴\n② 객체의 상태가 변하면 그 객체에 의존하는 다른 객체들에게 자동으로 통지되는 행위 패턴",
+      "answer": [
+        "① Bridge, ② Observer",
+        "① 브리지, ② 옵저버"
+      ],
+      "blanks": [
+        "Bridge",
+        "Observer"
+      ],
+      "explanation": "Bridge: 추상부와 구현부를 분리해 독립적 확장(구조 패턴).\nObserver: 일대다 의존 관계, 상태 변경 시 자동 통지(행위 패턴). (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "디자인 패턴",
+        "Bridge",
+        "Observer"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 3,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "다음은 데이터베이스 설계 절차를 나타낸 그림이다. ①~⑤에 들어갈 단계를 [보기]에서 골라 쓰시오.\n[보기] ㉠ 구현, ㉡ 물리적 설계, ㉢ 논리적 설계, ㉣ 개념적 설계, ㉤ 요구사항 분석",
+      "answer": [
+        "① 요구사항 분석, ② 개념적 설계, ③ 논리적 설계, ④ 물리적 설계, ⑤ 구현",
+        "① ㉤, ② ㉣, ③ ㉢, ④ ㉡, ⑤ ㉠"
+      ],
+      "blanks": [
+        "요구사항 분석",
+        "개념적 설계",
+        "논리적 설계",
+        "물리적 설계",
+        "구현"
+      ],
+      "explanation": "DB 설계 순서: 요구사항 분석 → 개념적 설계(E-R) → 논리적 설계(스키마/정규화) → 물리적 설계(저장 구조) → 구현.\n암기: 요개논물구. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "데이터베이스 설계",
+        "개념적 설계",
+        "논리적 설계",
+        "물리적 설계"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 4,
+      "subject": "요구사항 확인",
+      "type": "단답",
+      "question": "다음 비기능적 요구사항 설명에 해당하는 유형을 [보기](품질, 성능, 자원, 운영 등)에서 골라 쓰시오.\n① Windows, Linux, macOS 등 여러 OS에서 동작해야 한다.\n② 메모리를 적게 사용해야 하며 터치 스크린을 제공해야 한다.\n③ 데이터베이스 응답은 1초 이내여야 한다.",
+      "answer": [
+        "① 운영, ② 자원, ③ 성능"
+      ],
+      "blanks": [
+        "운영",
+        "자원",
+        "성능"
+      ],
+      "explanation": "운영 요구사항: 운영 환경(OS, 플랫폼) 제약.\n자원 요구사항: 메모리·하드웨어 등 사용 자원 제약.\n성능 요구사항: 응답 시간·처리량.\n(복원 자료에서 ①을 품질(이식성)로 본 의견도 있었으나 다수설은 운영) (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "비기능적 요구사항",
+        "운영",
+        "자원",
+        "성능"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 5,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "다음은 HDLC(High-level Data Link Control) 프로토콜에 대한 설명이다. 괄호에 알맞은 용어를 [보기]에서 골라 쓰시오.\n( ① ) 프레임은 사용자 데이터 전달에 사용된다.\n( ② ) 프레임은 흐름 제어와 오류 제어에 사용된다.\n( ③ ) 프레임은 순서 번호가 없는 프레임으로 링크 설정·해제 등 관리에 사용된다.\n( ④ )은/는 두 호스트가 모두 혼합국으로 동작하며 양쪽에서 명령과 응답을 전송할 수 있다.\n( ⑤ )은/는 불균형 모드이며 주국의 허락 없이 종국에서 데이터를 전송할 수 있다.",
+      "answer": [
+        "① 정보, ② 감독, ③ 비번호, ④ 비동기 균형 모드, ⑤ 비동기 응답 모드",
+        "① I, ② S, ③ U, ④ ABM, ⑤ ARM",
+        "① 정보 프레임, ② 감독 프레임, ③ 비번호 프레임, ④ ABM, ⑤ ARM"
+      ],
+      "blanks": [
+        "정보(I)",
+        "감독(S)",
+        "비번호(U)",
+        "비동기 균형 모드(ABM)",
+        "비동기 응답 모드(ARM)"
+      ],
+      "explanation": "HDLC 프레임: I(정보), S(감독: 흐름·오류 제어), U(비번호: 링크 관리).\n전송 모드: NRM(정규 응답: 주국 허락 필요), ARM(비동기 응답: 종국이 허락 없이 전송), ABM(비동기 균형: 모두 혼합국).\n보기에서 골라 쓰는 형태였음. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "HDLC",
+        "I 프레임",
+        "S 프레임",
+        "U 프레임",
+        "ABM",
+        "ARM",
+        "NRM"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 6,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "정부에서 정한 인증기관이, 기업이 주요 정보자산을 보호하기 위해 수립·관리·운영하는 정보보호 관리체계가 인증 기준에 적합한지 심사하여 인증을 부여하는 제도를 영문 약자로 쓰시오.",
+      "answer": [
+        "ISMS",
+        "정보보호 관리체계"
+      ],
+      "explanation": "ISMS(Information Security Management System): 정보보호 관리체계 인증.\nKISA 등 인증기관이 기준 적합성을 심사해 인증 부여.\n2022년 1회 이후 재출제. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "ISMS",
+        "정보보호 관리체계"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 7,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "class A {\n    String f(Object x) {\n        return \"1\";\n    }\n    String g() {\n        return f(\"a\");\n    }\n}\n\nclass B extends A {\n    String f(Object x) {\n        return \"2\";\n    }\n    String f(String x) {\n        return \"3\";\n    }\n}\n\npublic class Test {\n    public static void main(String[] args) {\n        A x = new B();\n        System.out.println(x.g());\n    }\n}",
+      "answer": [
+        "2"
+      ],
+      "explanation": "g()는 A에 정의되어 있고 그 안의 f(\"a\")는 컴파일 시점에 A의 f(Object)로 결정됨(오버로딩은 컴파일 타임 바인딩).\n실행 시점에는 실제 객체 B의 오버라이딩된 f(Object)가 호출 → \"2\".\nB.f(String)은 A에 없으므로 선택 대상이 아님(3이 아님). (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "상속",
+        "오버라이딩",
+        "오버로딩",
+        "동적 바인딩"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 8,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드에 입력값으로 HumanDev를 주었을 때 출력 결과를 쓰시오.",
+      "code": "s = input(\"입력 :\")  # 입력: HumanDev\n\nx = []\nfor i in s.split():\n    x.append(i[::-1])\ny = ' '.join(x)\nz = ''.join([c for c in y if c not in 'ong'])\nprint(z)",
+      "answer": [
+        "veDamuH"
+      ],
+      "explanation": "split()으로 ['HumanDev'], [::-1]로 뒤집어 'veDnamuH'.\n' '.join은 요소가 하나라 그대로 'veDnamuH'.\n'o','n','g'에 해당하는 n을 제거 → veDamuH. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "슬라이싱",
+        "join",
+        "split",
+        "문자열 반전"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 9,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "STUDENT 테이블에 컴퓨터학과 50명, 전산과 100명, 전기과 50명의 튜플이 있다. 다음 SQL문의 실행 결과를 각각 쓰시오.\n① SELECT COUNT(DEPT) FROM STUDENT;\n② SELECT COUNT(DISTINCT DEPT) FROM STUDENT;\n③ SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT = '전기과';",
+      "code": "SELECT COUNT(DEPT) FROM STUDENT;\nSELECT COUNT(DISTINCT DEPT) FROM STUDENT;\nSELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT = '전기과';",
+      "answer": [
+        "① 200, ② 3, ③ 1"
+      ],
+      "blanks": [
+        "200",
+        "3",
+        "1"
+      ],
+      "explanation": "① COUNT(DEPT): NULL 아닌 모든 행 → 50+100+50 = 200.\n② DISTINCT로 중복 제거 → 학과 3개.\n③ 전기과만 남기고 DISTINCT → 1.\n2022년 3회 기출과 동일. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "COUNT",
+        "DISTINCT",
+        "WHERE"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 10,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "서브넷 마스크가 255.255.254.0일 때, 다음 IP 주소가 속한 네트워크 주소를 CIDR 표기법으로 쓰시오.\n① 192.168.11.20\n② 192.168.12.200",
+      "answer": [
+        "① 192.168.10.0/23, ② 192.168.12.0/23"
+      ],
+      "blanks": [
+        "192.168.10.0/23",
+        "192.168.12.0/23"
+      ],
+      "explanation": "255.255.254.0 = 1이 23개 → /23. 3번째 옥텟은 2 단위로 묶임(짝수 시작).\n192.168.11.x → 10~11 블록 → 192.168.10.0/23.\n192.168.12.x → 12~13 블록 → 192.168.12.0/23. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "서브넷 마스크",
+        "CIDR",
+        "네트워크 주소"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 11,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 두 테이블에 대해 SQL문을 실행했을 때 출력되는 값을 쓰시오.\n[EMPLOYEE] (name, dept_id): 3개 행, dept_id = 10, 20, 20\n[DEPT] (dept_id, budget): (10, 100), (20, 300), (30, 200)",
+      "code": "SELECT COUNT(*) FROM EMPLOYEE E JOIN DEPT D\n    ON E.dept_id = D.dept_id\nWHERE D.budget > (SELECT AVG(budget) FROM DEPT);",
+      "answer": [
+        "2"
+      ],
+      "explanation": "DEPT 평균 budget = (100+300+200)/3 = 200.\nbudget > 200인 부서는 20 하나.\nEMPLOYEE에서 dept_id=20인 행이 2개이므로 조인 결과 2행 → 2.\n(복원 자료에서 테이블명 표기 오류 논란이 있었음) (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "JOIN",
+        "서브쿼리",
+        "AVG",
+        "COUNT"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 12,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n\nstruct fnc {\n    int *(*fn)(int*);\n};\n\nint *dummy(int *d) {\n    return d + 1;\n}\n\nint main() {\n    int n[] = {16, 32};\n    struct fnc mine;\n    mine.fn = dummy;\n    printf(\"%x\", *mine.fn(n));\n    return 0;\n}",
+      "answer": [
+        "20"
+      ],
+      "explanation": "fn은 int* 를 받아 int* 를 반환하는 함수 포인터 멤버.\nmine.fn(n)은 dummy(n) → n+1, 즉 32의 주소를 반환.\n*로 역참조하면 32, %x는 16진수 출력 → 20. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "구조체",
+        "함수 포인터",
+        "%x",
+        "16진수"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 13,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "a = list(range(10))\n\nfor i in a[::-2]:\n    print(i, end='A')\n\nprint()",
+      "answer": [
+        "9A7A5A3A1A"
+      ],
+      "explanation": "a는 0~9. a[::-2]는 끝(9)에서 시작해 2씩 감소 → 9,7,5,3,1.\n각 값 뒤에 end='A'가 붙어 한 줄에 출력.\n결과: 9A7A5A3A1A (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "슬라이싱",
+        "range",
+        "end"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 14,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "def f(a):\n    m = [[x] for x in a]\n    b = m[:]\n    for i in range(len(b) - 1):\n        b[1 + i] += b[i]\n    result = sum([len(x) for x in m])\n    return result\n\nprint(f([1, 2, 3, 4]))",
+      "answer": [
+        "10"
+      ],
+      "explanation": "m = [[1],[2],[3],[4]], b = m[:]는 얕은 복사라 내부 리스트는 m과 공유.\n+= 는 리스트를 in-place 확장하므로 m의 내부 리스트가 [1],[2,1],[3,2,1],[4,3,2,1]로 변함.\n길이 합 1+2+3+4 = 10. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "얕은 복사",
+        "shallow copy",
+        "리스트 컴프리헨션",
+        "+="
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 15,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "통합 테스트에서 사용하는 더미 모듈에 대한 설명이다. 괄호에 알맞은 용어를 쓰시오.\n① 하향식 통합 테스트에서 아직 구현되지 않은 하위 모듈을 대체하는 모듈\n② 상향식 통합 테스트에서 상위 모듈 역할을 대신하여 하위 모듈을 호출·테스트하는 모듈",
+      "answer": [
+        "① 스텁, ② 드라이버",
+        "① 테스트 스텁, ② 테스트 드라이버",
+        "① Stub, ② Driver",
+        "① Test Stub, ② Test Driver"
+      ],
+      "blanks": [
+        "스텁",
+        "드라이버"
+      ],
+      "explanation": "하향식: 상위부터 통합, 하위 모듈 대신 스텁(Stub) 사용.\n상향식: 하위부터 통합, 상위 모듈 대신 드라이버(Driver) 사용. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "통합 테스트",
+        "스텁",
+        "드라이버",
+        "하향식",
+        "상향식"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 16,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 공격 기법을 [보기]에서 골라 쓰시오.\n특정 집단이 자주 방문하는 웹사이트를 미리 감염시켜 놓고, 해당 사이트에 접속한 사용자가 악성코드에 감염되도록 하는 공격. 제로데이 취약점을 함께 이용하기도 한다.\n[보기] Kill Chain, Ransomware, Watering Hole, Spyware, Pharming 등",
+      "answer": [
+        "Watering Hole",
+        "워터링 홀",
+        "워터링홀",
+        "Watering Hole 공격"
+      ],
+      "explanation": "워터링 홀: 사자가 물웅덩이에서 먹잇감을 기다리듯, 표적 집단이 자주 가는 사이트를 감염시켜 기다리는 표적 공격.\nAPT 공격의 한 단계로 자주 사용됨. 2022년 1회 이후 재출제. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "워터링 홀",
+        "Watering Hole",
+        "표적 공격",
+        "APT"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오. (메서드 오버로딩 복원 코드로 실제 표현과 차이가 있을 수 있음)",
+      "code": "class Calc {\n    static int cc(int a, int b) {\n        return a + b;\n    }\n    static int cc(char a, char b) {\n        return a - b;\n    }\n    static char cc(char a) {\n        return a;\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        int r1 = Calc.cc(5, 4);\n        int r2 = Calc.cc('C', 'A');\n        char r3 = Calc.cc('3');\n        System.out.println(r1 + r2 + \"2\" + r3);\n    }\n}",
+      "answer": [
+        "1123"
+      ],
+      "explanation": "r1 = 5+4 = 9, r2 = 'C'-'A' = 2, r3 = '3'.\n왼쪽부터 r1+r2 = 11(정수 연산), 이후 \"2\"와 만나 문자열 결합 → \"112\".\n마지막 char '3'도 문자열로 결합 → 1123. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "오버로딩",
+        "문자열 결합",
+        "형변환"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 18,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음은 테이블을 생성하면서 외래키 제약조건을 정의하는 SQL문이다. 괄호에 알맞은 용어를 쓰시오. (TEAM_TF는 제약조건 이름, TEAM_ID는 외래키 컬럼, 참조 테이블의 기본키는 TEAM_ID2이다.)",
+      "code": "CREATE TABLE PLAYER (\n    ...\n    ( ① ) TEAM_TF ( ② ) KEY ( ③ ) ( ④ ) TEAM( ⑤ )\n);",
+      "answer": [
+        "① CONSTRAINT, ② FOREIGN, ③ TEAM_ID, ④ REFERENCES, ⑤ TEAM_ID2"
+      ],
+      "blanks": [
+        "CONSTRAINT",
+        "FOREIGN",
+        "TEAM_ID",
+        "REFERENCES",
+        "TEAM_ID2"
+      ],
+      "explanation": "제약조건 이름 지정: CONSTRAINT 이름.\n외래키 선언: FOREIGN KEY(컬럼) REFERENCES 참조테이블(참조컬럼).\n→ CONSTRAINT TEAM_TF FOREIGN KEY (TEAM_ID) REFERENCES TEAM(TEAM_ID2) (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "CREATE TABLE",
+        "CONSTRAINT",
+        "FOREIGN KEY",
+        "REFERENCES"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 19,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 용어를 [보기]에서 골라 쓰시오.\n원본 데이터 파일은 따로 존재하고, 이 파일은 원본 파일의 경로를 가리키기만 한다. 레이스 컨디션 공격에서 프로그램이 사용하는 임시 파일을 공격자가 만든 이 링크로 바꿔 놓아 원본 파일을 조작하는 데 악용된다.\n[보기] 하이퍼링크, 가상 패스 링크, 스태커 링크, 심볼릭 링크, 하드 링크",
+      "answer": [
+        "심볼릭 링크",
+        "심볼릭링크",
+        "Symbolic Link",
+        "Symlink",
+        "소프트 링크"
+      ],
+      "explanation": "심볼릭 링크(소프트 링크): 원본 파일의 경로를 담은 별도의 파일(inode 다름).\n레이스 컨디션(TOCTOU) 공격에서 임시 파일을 심볼릭 링크로 바꿔 원본 파일을 덮어쓰게 함.\n하드 링크는 같은 inode를 공유하므로 설명과 다름. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "심볼릭 링크",
+        "레이스 컨디션",
+        "하드 링크"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 20,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 응집도 유형을 쓰시오.\n① 모듈 내 구성 요소들이 순차적으로 수행되지만, 한 활동의 출력이 다음 활동의 입력으로 반드시 사용되지는 않음\n② 동일한 입력과 출력을 사용하는 소단위 작업들이 모인 경우\n③ 모듈 내 모든 기능 요소가 단일 기능을 수행하기 위해 구성된 경우",
+      "answer": [
+        "① 절차적, ② 교환적, ③ 기능적",
+        "① 절차적 응집도, ② 교환적 응집도, ③ 기능적 응집도",
+        "① 절차적, ② 통신적, ③ 기능적",
+        "① Procedural, ② Communicational, ③ Functional"
+      ],
+      "blanks": [
+        "절차적",
+        "교환적(통신적)",
+        "기능적"
+      ],
+      "explanation": "응집도 (약→강): 우연적 < 논리적 < 시간적 < 절차적 < 교환적(통신적) < 순차적 < 기능적.\n절차적: 순서대로 수행. 교환적(통신적): 동일 입출력 공유. 기능적: 단일 기능.\n순차적은 출력이 다음 입력이 되는 경우로 구분. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "응집도",
+        "절차적",
+        "교환적",
+        "통신적",
+        "기능적"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    }
+  ]
+}

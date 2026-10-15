@@ -1,0 +1,425 @@
+{
+  "year": 2025,
+  "round": 2,
+  "date": "2025-07-19",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "다음은 파일 구조와 관련된 설명이다. 괄호 안에 들어갈 가장 알맞은 용어를 쓰시오.\n\n데이터베이스의 물리 설계 시, 레코드에 접근하는 방법은 순차 접근 방법, (   ) 방법, 해싱 방법 등이 있다. 이 중 (   ) 방법은 레코드의 키 값과 포인터를 쌍으로 묶어 저장하며, 검색 시 키 값을 기준으로 빠르게 탐색할 수 있도록 설계되어 있다. 이 방식은 검색 속도가 빠르며 <키 값, 포인터> 쌍으로 구성된 자료 구조를 사용하여 해당 키가 가리키는 주소를 통해 원하는 레코드를 직접 찾을 수 있다.\n\n| 접근 방법 | 설명 |\n| 순차 접근 | 레코드를 처음부터 하나씩 검사 |\n| (   ) 접근 | 키-포인터 쌍으로 구성되어 빠르게 검색 |\n| 해싱 접근 | 해시 함수를 이용해 직접 주소 계산 후 접근 |",
+      "answer": [
+        "인덱스",
+        "색인",
+        "Index",
+        "인덱스 접근",
+        "색인 접근",
+        "Index Access"
+      ],
+      "explanation": "레코드 접근 방법은 순차(처음부터 차례로 검사), 인덱스(색인), 해싱(해시 함수로 주소 계산) 세 가지다.\n<키 값, 포인터> 쌍을 별도 자료구조로 저장해 두고 키로 탐색한 뒤 포인터가 가리키는 위치로 직접 이동하는 방식이 인덱스(색인) 접근이다.\n전체 레코드를 훑지 않아도 되므로 검색 속도가 빠르다. 가답안 논쟁에서 '인덱싱' 표기도 거론되었다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "인덱스",
+        "색인",
+        "순차 접근",
+        "해싱",
+        "파일 구조"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 2,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "다음은 데이터베이스 릴레이션의 구성 요소 중 하나에 대한 설명이다. 설명을 읽고 보기에서 알맞은 기호를 골라 쓰시오.\n\n릴레이션(Relation)에서 열(Column)을 의미하며 데이터 항목의 속성 또는 특성을 나타낸다. 각 열은 고유한 이름을 가지며 특정 도메인(Domain)에서 정의된 값을 갖는다. 예를 들어 \"학생\" 릴레이션에서 학번, 이름, 전공 등은 각각 하나의 열이며 이 열들은 학생의 고유한 속성을 나타낸다. 이 개념은 파일 구조에서의 필드(Field)에 해당하며 릴레이션에서 행(Row, Tuple)의 구성 요소가 된다.\n\n<보기>\nㄱ. Cardinality  ㄴ. Domain  ㄷ. Attribute  ㅁ. Degree  ㅂ. Schema  ㅅ. Tuple",
+      "answer": [
+        "ㄷ",
+        "ㄷ. Attribute",
+        "Attribute",
+        "속성",
+        "애트리뷰트"
+      ],
+      "explanation": "릴레이션의 열(Column)은 속성(Attribute)이며 파일 구조의 필드(Field)에 대응한다.\nTuple은 행(레코드), Domain은 속성이 가질 수 있는 값의 집합, Degree는 속성의 수, Cardinality는 튜플의 수, Schema는 릴레이션의 구조 정의다.\n따라서 보기 ㄷ. Attribute가 정답이다.",
+      "keywords": [
+        "Attribute",
+        "속성",
+        "릴레이션",
+        "Tuple",
+        "Degree",
+        "Cardinality"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 3,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 보안 프로토콜을 쓰시오.\n\n원격 접속과 관련된 보안 프로토콜이며 암호화된 통신을 제공하는 보안 접속용 프로토콜이다. 공개키 기반의 인증 방식을 사용하며 암호화된 데이터 전송을 지원한다. 주로 원격 서버에 안전하게 접속할 때 사용되며 기본 포트 번호는 22번이다. Telnet의 보안 취약점을 보완한 대안으로 널리 사용된다.",
+      "answer": [
+        "SSH",
+        "Secure Shell",
+        "시큐어 셸",
+        "시큐어셸"
+      ],
+      "explanation": "22번 포트를 기본으로 사용하는 암호화 원격 접속 프로토콜은 SSH(Secure Shell)다.\n평문으로 통신하는 Telnet(23번)의 보안 취약점을 보완하며, 공개키 기반 인증과 암호화된 데이터 전송을 지원한다.\n원격 로그인, 명령 실행, 파일 전송(SCP/SFTP) 등에 사용된다.",
+      "keywords": [
+        "SSH",
+        "22번 포트",
+        "Telnet",
+        "원격 접속",
+        "암호화"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 4,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "스케줄링 알고리즘에 관한 다음 설명을 읽고 (1)과 (2)에 알맞은 스케줄링 알고리즘의 명칭을 각각 쓰시오.\n\n(1) CPU burst 시간이 짧은 프로세스를 우선적으로 처리하는 스케줄링 방식이다. \"Shortest Next CPU Burst\"라고도 불리며 선점형 또는 비선점형으로 구현될 수 있다.\n(2) 위의 스케줄링 방식을 선점형으로 구현한 형태로, 실행 중인 프로세스보다 더 짧은 burst 시간을 가진 프로세스가 도착하면 현재 CPU를 선점한다.",
+      "answer": [
+        "① SJF, ② SRT",
+        "(1) SJF, (2) SRT",
+        "SJF, SRT",
+        "Shortest Job First, Shortest Remaining Time"
+      ],
+      "blanks": [
+        "SJF",
+        "SRT"
+      ],
+      "explanation": "실행(burst) 시간이 가장 짧은 프로세스를 먼저 처리하는 방식은 SJF(Shortest Job First)다. 보통 비선점형으로 분류한다.\nSJF를 선점형으로 구현하여 남은 실행 시간이 더 짧은 프로세스가 도착하면 CPU를 넘겨주는 방식이 SRT(Shortest Remaining Time)다.\n둘 다 평균 대기 시간이 짧지만 실행 시간 예측이 필요하고 긴 작업은 기아(starvation)가 생길 수 있다.",
+      "keywords": [
+        "SJF",
+        "SRT",
+        "스케줄링",
+        "선점",
+        "비선점"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 5,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static void change(String[] data, String s) {\n        data[0] = s;\n        s = \"Z\";\n    }\n    public static void main(String[] args) {\n        String data[] = { \"A\" };\n        String s = \"B\";\n        change(data, s);\n        System.out.print(data[0] + s);\n    }\n}",
+      "answer": [
+        "BB"
+      ],
+      "explanation": "Java는 참조 값을 복사해 전달한다. data는 main의 배열과 같은 객체를 가리키므로 data[0] = s로 배열 내용이 \"A\"→\"B\"로 바뀐다.\n반면 s = \"Z\"는 메서드 안의 지역 참조만 바꾸고 main의 s에는 영향이 없어 s는 여전히 \"B\"다.\n따라서 data[0] + s = \"B\" + \"B\" = BB가 출력된다.",
+      "keywords": [
+        "참조 전달",
+        "String 불변",
+        "배열",
+        "매개변수"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 6,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "다음은 IP 주소와 서브넷 마스크에 관한 문제이다. 괄호 안에 들어갈 알맞은 값을 쓰시오.\n\n호스트의 IP 주소가 223.13.234.132이고 서브넷 마스크가 255.255.255.192일 때,\n- 이 호스트가 속한 네트워크 주소는 223.13.234.( ① )이다.\n- 이 네트워크에서 사용 가능한 호스트 수는 ( ② )개이다. (단, 네트워크 주소와 브로드캐스트 주소는 제외한다.)",
+      "answer": [
+        "① 128, ② 62",
+        "128, 62"
+      ],
+      "blanks": [
+        "128",
+        "62"
+      ],
+      "explanation": "255.255.255.192는 /26으로, 마지막 옥텟의 앞 2비트가 네트워크, 뒤 6비트가 호스트 영역이다. 서브넷 블록 크기는 256-192=64 (0, 64, 128, 192).\n132는 128~191 범위에 속하므로 네트워크 주소는 223.13.234.128이다.\n호스트 비트 6개 → 2^6=64개 주소 중 네트워크 주소와 브로드캐스트 주소를 빼면 62개가 사용 가능하다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "서브넷 마스크",
+        "네트워크 주소",
+        "호스트 수",
+        "/26"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 7,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 디자인 패턴을 쓰시오.\n\n어떤 객체에 대한 접근을 제어하거나 추가적인 기능을 부여하기 위해 해당 객체의 대리 객체를 사용하는 방식의 디자인 패턴이다. 실제 객체에 대한 접근 전에 필요한 작업을 수행할 수 있으며 실제 객체의 생성을 지연시켜 메모리와 자원을 절약할 수 있다. 또한 실제 객체를 감추어 정보은닉을 강화할 수 있다는 장점이 있다.",
+      "answer": [
+        "Proxy",
+        "프록시",
+        "프록시 패턴",
+        "Proxy Pattern",
+        "Proxy 패턴"
+      ],
+      "explanation": "실제 객체 대신 '대리 객체'를 두어 접근을 제어하거나 부가 기능을 넣는 구조 패턴은 프록시(Proxy)다.\n객체 생성을 실제 사용 시점까지 미루는 가상 프록시, 권한을 검사하는 보호 프록시, 원격 객체를 대신하는 원격 프록시 등이 있다.\nAdapter(인터페이스 변환), Decorator(기능 동적 추가)와 구분해야 한다.",
+      "keywords": [
+        "Proxy",
+        "디자인 패턴",
+        "구조 패턴",
+        "대리 객체"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 8,
+      "subject": "인터페이스 구현",
+      "type": "빈칸",
+      "question": "다음 설명을 읽고 괄호 안에 공통으로 들어갈 알맞은 용어를 쓰시오.\n\n(   )은/는 웹 페이지 전체를 다시 불러오지 않고 JavaScript와 XML(또는 JSON)을 이용하여 일부 콘텐츠만 비동기적으로 갱신할 수 있는 기술이다. (   )은/는 HTML만으로는 구현하기 어려운 동적인 기능들을 가능하게 하여 사용자가 웹 페이지와 보다 자유롭게 상호작용할 수 있도록 해주는 웹 개발 기법이다.",
+      "answer": [
+        "AJAX",
+        "Ajax",
+        "Asynchronous JavaScript and XML",
+        "에이잭스"
+      ],
+      "explanation": "페이지 전체를 새로 고치지 않고 JavaScript로 서버와 비동기 통신하여 일부만 갱신하는 기법은 AJAX(Asynchronous JavaScript and XML)다.\nXMLHttpRequest(또는 Fetch API)로 데이터를 받아 DOM을 동적으로 수정하며, 데이터 포맷으로는 XML보다 JSON을 많이 쓴다.\n인터페이스 구현 단원의 데이터 통신 기술(AJAX, JSON, REST 등)에서 반복 출제된다.",
+      "keywords": [
+        "AJAX",
+        "비동기",
+        "JavaScript",
+        "XML",
+        "JSON"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 9,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    static interface F {\n        int apply(int x) throws Exception;\n    }\n    public static int run(F f) {\n        try {\n            return f.apply(3);\n        } catch (Exception e) {\n            return 7;\n        }\n    }\n    public static void main(String[] args) {\n        F f = (x) -> {\n            if (x > 2) {\n                throw new Exception();\n            }\n            return x * 2;\n        };\n        System.out.print(run(f) + run((int n) -> n + 9));\n    }\n}",
+      "answer": [
+        "19"
+      ],
+      "explanation": "run()은 람다의 apply(3)을 호출하고, 예외가 나면 catch에서 7을 반환한다.\n첫 람다 f는 x=3 > 2이므로 Exception을 던져 run(f)=7이다.\n두 번째 람다 n -> n + 9는 3+9=12를 정상 반환한다. 7 + 12 = 19가 출력된다.",
+      "keywords": [
+        "람다식",
+        "함수형 인터페이스",
+        "예외 처리",
+        "try-catch"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 10,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "class P {\n    static String print() {\n        return \"P\";\n    }\n    int sum(int a) {\n        return a + 1;\n    }\n}\nclass C extends P {\n    static String print() {\n        return \"C\";\n    }\n    int sum(int a) {\n        return a + 2;\n    }\n}\npublic class Main {\n    public static void main(String[] args) {\n        P tmp = new C();\n        System.out.println(tmp.sum(3) + tmp.print());\n    }\n}",
+      "answer": [
+        "5P"
+      ],
+      "explanation": "인스턴스 메서드 sum()은 오버라이딩되어 동적 바인딩이 적용되므로 실제 객체 타입 C의 sum(3)=3+2=5가 실행된다.\nstatic 메서드 print()는 오버라이딩이 아니라 숨김(hiding)이며 참조 변수의 선언 타입 P 기준으로 정적 바인딩되어 \"P\"를 반환한다.\n따라서 5 + \"P\" = 5P가 출력된다. 다른 복원본은 Parent/Child, x()/id() 이름으로 되어 있으나 구조와 답은 같다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "static",
+        "메서드 숨김",
+        "오버라이딩",
+        "동적 바인딩",
+        "다형성"
+      ],
+      "source": "https://dumok.net/center_notice/9316"
+    },
+    {
+      "no": 11,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "다음 제어 흐름 그래프가 분기 커버리지(Branch Coverage)를 만족하기 위한 테스트 경로(테스팅 순서)를 쓰시오.\n\n[제어 흐름 그래프 설명] 노드 1에서 시작하여 2로 이동한다. 2에서는 3 또는 4로 분기한다. 3은 4로 이동하고, 4는 5로, 5는 6으로 이동한다. 6에서는 1로 되돌아가는 경로와 7로 종료되는 경로가 있다.",
+      "answer": [
+        "1234561, 124567",
+        "1234567, 124561",
+        "1→2→3→4→5→6→1, 1→2→4→5→6→7",
+        "1→2→3→4→5→6→7, 1→2→4→5→6→1"
+      ],
+      "explanation": "분기 커버리지는 모든 결정 노드의 참/거짓 분기를 최소 한 번씩 실행해야 한다. 결정 노드는 2(→3 또는 →4)와 6(→1 또는 →7)이며 분기 간선은 총 4개다.\n경로 1→2→3→4→5→6→1과 1→2→4→5→6→7의 두 경로로 2→3, 2→4, 6→1, 6→7을 모두 통과한다.\n2와 6의 분기 조합을 바꾼 1234567, 124561 역시 정답으로 인정된다. 그래프 그림은 복원되지 않아 설명으로 대체했다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "분기 커버리지",
+        "제어 흐름 그래프",
+        "화이트박스 테스트",
+        "결정 커버리지"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 12,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n#define SIZE 3\ntypedef struct {\n    int a[SIZE];\n    int front;\n    int rear;\n} Queue;\nvoid enq(Queue* q, int val) {\n    q->a[q->rear] = val;\n    q->rear = (q->rear + 1) % SIZE;\n}\nint deq(Queue* q) {\n    int val = q->a[q->front];\n    q->front = (q->front + 1) % SIZE;\n    return val;\n}\nint main() {\n    Queue q = {{0}, 0, 0};\n    enq(&q, 1);\n    enq(&q, 2);\n    deq(&q);\n    enq(&q, 3);\n    int first = deq(&q);\n    int second = deq(&q);\n    printf(\"%d 그리고 %d\", first, second);\n    return 0;\n}",
+      "answer": [
+        "2 그리고 3",
+        "2그리고3"
+      ],
+      "explanation": "크기 3의 원형 큐다. enq(1), enq(2)로 a[0]=1, a[1]=2, rear=2. deq()로 a[0]=1을 꺼내고 front=1. enq(3)으로 a[2]=3, rear=0.\n이후 deq()는 a[1]=2를 반환(front=2), 다음 deq()는 a[2]=3을 반환한다.\n따라서 \"2 그리고 3\"이 출력된다.",
+      "keywords": [
+        "원형 큐",
+        "구조체",
+        "포인터",
+        "FIFO"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 13,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "라운드 로빈(Round Robin, RR) 스케줄링은 각 프로세스에 동일한 시간 할당량(타임 퀀텀)을 순차적으로 부여하며 CPU를 할당하는 방식이다. 다음 4개의 프로세스를 시간 할당량 4ms의 RR 방식으로 스케줄링할 때 평균 대기시간(Average Waiting Time)을 구하시오. (컨텍스트 스위칭 시간은 무시한다.)\n\n| 프로세스 | 도착 시간(ms) | 실행 시간(ms) |\n| P1 | 0 | 8 |\n| P2 | 1 | 4 |\n| P3 | 2 | 9 |\n| P4 | 3 | 5 |",
+      "answer": [
+        "11.75",
+        "11.75ms",
+        "11.75 ms"
+      ],
+      "explanation": "실행 순서: P1(0~4) → P2(4~8) → P3(8~12) → P4(12~16) → P1(16~20) → P3(20~24) → P4(24~25) → P3(25~26).\n완료 시각 P1=20, P2=8, P3=26, P4=25. 대기시간 = 완료시각 - 도착시각 - 실행시간 → P1=12, P2=3, P3=15, P4=17.\n평균 = (12+3+15+17)/4 = 47/4 = 11.75ms.",
+      "keywords": [
+        "라운드 로빈",
+        "RR",
+        "타임 퀀텀",
+        "평균 대기시간",
+        "스케줄링"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 14,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nstruct dat {\n    int x;\n    int y;\n};\nint main() {\n    struct dat a[] = {{1, 2}, {3, 4}, {5, 6}};\n    struct dat* ptr = a;\n    struct dat** pptr = &ptr;\n    (*pptr)[1] = (*pptr)[2];\n    printf(\"%d 그리고 %d\", a[1].x, a[1].y);\n    return 0;\n}",
+      "answer": [
+        "5 그리고 6",
+        "5그리고6"
+      ],
+      "explanation": "ptr은 배열 a의 시작을, pptr은 ptr을 가리킨다. 따라서 *pptr == ptr이고 (*pptr)[i]는 a[i]와 같다.\n(*pptr)[1] = (*pptr)[2]는 구조체 전체 대입이므로 a[1]이 {3,4}에서 {5,6}으로 덮어써진다.\n출력은 a[1].x=5, a[1].y=6 → \"5 그리고 6\".",
+      "keywords": [
+        "이중 포인터",
+        "구조체 대입",
+        "배열",
+        "포인터"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 15,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static class BO {\n        public int v;\n        public BO(int v) {\n            this.v = v;\n        }\n    }\n    public static void main(String[] args) {\n        BO a = new BO(1);\n        BO b = new BO(2);\n        BO c = new BO(3);\n        BO[] arr = {a, b, c};\n        BO t = arr[0];\n        arr[0] = arr[2];\n        arr[2] = t;\n        arr[1].v = arr[0].v;\n        System.out.println(a.v + \"a\" + b.v + \"b\" + c.v);\n    }\n}",
+      "answer": [
+        "1a3b3"
+      ],
+      "explanation": "배열에는 객체 참조가 저장된다. arr[0]과 arr[2]를 교환하면 arr = {c, b, a}가 되지만 a, b, c 객체 자체는 그대로다.\narr[1].v = arr[0].v는 b.v에 c.v(3)를 대입하므로 b.v=3이 된다. a.v=1, c.v=3은 변하지 않는다.\n출력은 1 + \"a\" + 3 + \"b\" + 3 = 1a3b3.",
+      "keywords": [
+        "참조",
+        "객체 배열",
+        "static 중첩 클래스",
+        "swap"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 16,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n#include <stdlib.h>\nstruct node {\n    int p;\n    struct node* n;\n};\nint main() {\n    struct node a = {1, NULL};\n    struct node b = {2, NULL};\n    struct node c = {3, NULL};\n    a.n = &b; b.n = &c; c.n = NULL;\n    c.n = &a; a.n = &b; b.n = NULL;\n    struct node* head = &c;\n    printf(\"%d %d %d\", head->p, head->n->p, head->n->n->p);\n    return 0;\n}",
+      "answer": [
+        "3 1 2",
+        "312"
+      ],
+      "explanation": "첫 줄에서 a→b→c로 연결하지만 다음 줄의 대입이 포인터를 덮어쓴다. 최종 연결은 c.n=&a, a.n=&b, b.n=NULL, 즉 c → a → b → NULL이다.\nhead는 c를 가리키므로 head->p=3, head->n->p는 a의 1, head->n->n->p는 b의 2다.\n따라서 \"3 1 2\"가 출력된다.",
+      "keywords": [
+        "연결 리스트",
+        "구조체 포인터",
+        "self-referential struct"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "def gisafirst():\n    lst = [1, 2, 3]\n    dic = {x: x * 2 for x in lst}\n    s = set(dic.values())\n    lst[0] = 99\n    dic[2] = 7\n    s.add(99)\n    return len(s & set(dic.values()))\n\nprint(gisafirst())",
+      "answer": [
+        "2"
+      ],
+      "explanation": "딕셔너리 컴프리헨션은 생성 시점의 lst를 사용하므로 dic = {1:2, 2:4, 3:6}, s = {2, 4, 6}이다. 이후 lst[0]=99는 dic에 영향이 없다.\ndic[2]=7로 dic.values()는 {2, 7, 6}, s.add(99)로 s는 {2, 4, 6, 99}가 된다.\n교집합 s & {2, 7, 6} = {2, 6}이므로 길이 2가 출력된다. 함수 없이 최상위 코드로 복원한 버전도 있으나 결과는 같다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "딕셔너리 컴프리헨션",
+        "set",
+        "교집합",
+        "&"
+      ],
+      "source": "https://dumok.net/center_notice/9316"
+    },
+    {
+      "no": 18,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n#include <stdlib.h>\nstruct node {\n    char c;\n    struct node* p;\n};\nstruct node* func(char* s) {\n    struct node* h = NULL, *n;\n    while (*s) {\n        n = malloc(sizeof(struct node));\n        n->c = *s++;\n        n->p = h;\n        h = n;\n    }\n    return h;\n}\nint main() {\n    struct node* n = func(\"BEST\");\n    while (n) {\n        putchar(n->c);\n        struct node* t = n;\n        n = n->p;\n        free(t);\n    }\n    return 0;\n}",
+      "answer": [
+        "TSEB"
+      ],
+      "explanation": "func()는 문자열을 한 글자씩 읽으면서 새 노드를 항상 리스트의 머리(head) 앞에 붙인다(n->p = h; h = n;).\n\"BEST\"를 처리하면 연결 순서는 T → S → E → B가 되어 입력의 역순 리스트가 만들어진다.\nmain에서 head부터 순회하며 putchar로 출력하고 free하므로 TSEB가 출력된다.",
+      "keywords": [
+        "연결 리스트",
+        "malloc",
+        "putchar",
+        "역순",
+        "포인터 증감"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 19,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음은 TCP 통신 과정에서 발생할 수 있는 보안 취약점에 대한 설명이다. 이를 이용한 공격 기법을 보기에서 골라 쓰시오.\n\nTCP는 연결을 수립하기 위해 클라이언트가 서버에 SYN 패킷을 보내고 서버는 SYN-ACK 패킷으로 응답한 후 클라이언트가 다시 ACK 패킷을 보내는 3-way-handshake 과정을 거친다. 이때 공격자는 클라이언트 역할로 수많은 SYN 패킷을 서버에 전송한 뒤 마지막 ACK를 고의로 보내지 않아 서버가 연결 대기 상태를 계속 유지하게 만든다. 이로 인해 서버의 연결 대기 큐가 가득 차면서 정상적인 접속 요청을 처리하지 못하게 되어 서비스 거부 상태가 발생한다.\n\n<보기> ㄱ. Smurf Attack  ㄴ. Land Attack  ㄷ. Ping of Death  ㄹ. SYN Flooding",
+      "answer": [
+        "ㄹ",
+        "ㄹ. SYN Flooding",
+        "SYN Flooding",
+        "SYN 플러딩",
+        "SYN Flood",
+        "SYN 플러딩 공격"
+      ],
+      "explanation": "3-way handshake에서 SYN만 대량으로 보내고 ACK를 보내지 않아 서버의 반열림(half-open) 연결 큐를 고갈시키는 DoS 공격은 SYN Flooding이다.\nSmurf는 ICMP 브로드캐스트 증폭, Land Attack은 출발지와 목적지 주소를 동일하게 조작, Ping of Death는 비정상적으로 큰 ICMP 패킷을 이용한다.\n보기의 기호와 순서는 복원본마다 다르며 원 시험에서는 기호(ㄹ)로 답했다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "SYN Flooding",
+        "3-way handshake",
+        "DoS",
+        "반열림 연결"
+      ],
+      "source": "https://chobopark.tistory.com/554"
+    },
+    {
+      "no": 20,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "다음은 <EMPLOYEE> 릴레이션에 대해 <관계 대수식>을 수행했을 때 출력되는 <결과>이다. <결과>의 각 괄호(①~⑤)에 들어갈 알맞은 답을 쓰시오.\n\n<관계 대수식>\nπ TTL (EMPLOYEE)\n\n<EMPLOYEE>\n| INDEX | AGE | TTL |\n| 1 | 48 | 부장 |\n| 2 | 25 | 과장 |\n| 3 | 41 | 차장 |\n| 4 | 36 | 대리 |\n\n<결과>\n| ( ① ) |\n| ( ② ) |\n| ( ③ ) |\n| ( ④ ) |\n| ( ⑤ ) |",
+      "answer": [
+        "① TTL, ② 부장, ③ 과장, ④ 차장, ⑤ 대리",
+        "TTL, 부장, 과장, 차장, 대리"
+      ],
+      "blanks": [
+        "TTL",
+        "부장",
+        "과장",
+        "차장",
+        "대리"
+      ],
+      "explanation": "π(프로젝션)는 릴레이션에서 지정한 속성(열)만 추출하는 관계대수 연산이다. πTTL(EMPLOYEE)는 TTL 열만 남긴다.\n결과 릴레이션의 첫 행은 속성명 TTL이고, 이어서 각 튜플의 TTL 값인 부장, 과장, 차장, 대리가 순서대로 들어간다.\n관계대수 결과는 집합이므로 중복 튜플은 제거되지만 여기서는 중복이 없다. 복원본마다 AGE 값과 행 순서가 조금씩 다르다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "관계대수",
+        "프로젝션",
+        "π",
+        "릴레이션"
+      ],
+      "source": "https://byeongg96.tistory.com/129"
+    }
+  ]
+}
