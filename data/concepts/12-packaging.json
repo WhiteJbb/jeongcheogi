@@ -1,0 +1,269 @@
+{
+  "chapter": "제품 소프트웨어 패키징",
+  "order": 12,
+  "topics": [
+    {
+      "title": "소프트웨어 패키징 개념과 순서",
+      "importance": 3,
+      "summary": "개발 완료된 소프트웨어를 모듈별로 배포용 설치 파일로 만드는 작업. 사용자 중심으로 진행하며 패키징 순서 7단계가 빈칸·순서 문제로 출제된다.",
+      "points": [
+        "패키징 순서: 기능 식별 → 모듈화 → 빌드 진행 → 사용자 환경 분석 → 패키징 및 적용 시험 → 패키징 변경 개선 → 배포 — 암기 '기모빌사패변배'",
+        "패키징 특징: 개발자가 아닌 '사용자 중심'으로 진행 / 신규 및 변경 개발 소스를 식별하고 모듈화하여 상용 제품으로 패키징 / 고객 편의성을 위해 매뉴얼·버전 관리 지속",
+        "패키징 시 고려사항: 사용자 시스템 환경(OS, CPU, 메모리) 정의 / 직관적 UI / 관리 서버에 재배포 가능한 Managed Service 형태 / 안정적 배포",
+        "모듈화 원리: 모듈 간 결합도 최소화·응집도 최대화, 재사용성·독립성 확보 → 패키징 단위의 기준"
+      ],
+      "terms": [
+        {"term": "소프트웨어 패키징 (Software Packaging)", "desc": "모듈별로 생성한 실행 파일을 묶어 배포용 설치 파일을 만드는 것"},
+        {"term": "모듈화 (Modularity)", "desc": "소프트웨어를 기능 단위로 분해하여 모듈로 만드는 것. 결합도↓ 응집도↑"},
+        {"term": "빌드 (Build)", "desc": "소스코드 파일을 컴파일·링크하여 실행 가능한 소프트웨어 산출물로 변환하는 과정"},
+        {"term": "사용자 환경 분석", "desc": "최소 운영 환경(OS, CPU, 메모리, 디스크)을 정의하여 설치 요건 결정"},
+        {"term": "Managed Service", "desc": "관리 서버를 통해 소프트웨어를 재배포·관리할 수 있는 형태의 서비스"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "릴리즈 노트 (Release Note)",
+      "importance": 3,
+      "summary": "소프트웨어 최종 사용자에게 변경·개선 사항을 전달하는 문서. 작성 항목(헤더·개요·목적 등)과 작성 순서 6단계가 출제된다.",
+      "points": [
+        "릴리즈 노트 작성 항목: 헤더(Header: 문서 이름·제품 이름·버전·릴리즈 날짜·참고 날짜·노트 버전) / 개요 / 목적 / 문제 요약 / 재현 항목 / 수정·개선 내용 / 사용자 영향도 / SW 지원 영향도 / 노트 / 면책 조항 / 연락처 — 암기 '헤개목문재수사소노면연'",
+        "작성 순서: 모듈 식별 → 릴리즈 정보 확인 → 릴리즈 노트 개요 작성 → 영향도 체크 → 정식 릴리즈 노트 작성 → 추가 개선 항목 식별 — 암기 '모릴개영정추'",
+        "작성 원칙: 개발 팀이 직접 작성(현재 시제, 완전·명확한 문체), 테스트 완료 후 배포 시점에 공개, 버전·일자 명시, 개발자·테스터·고객 모두 공유",
+        "릴리즈 노트는 변경 이력을 기록하므로 버전 관리의 근거 자료가 됨 / 최초 릴리즈 노트 작성 후 긴급 버그 수정·업데이트 시 추가 릴리즈 노트 작성"
+      ],
+      "terms": [
+        {"term": "릴리즈 노트 (Release Note)", "desc": "최종 사용자에게 소프트웨어 변경 사항·개선 내용·알려진 이슈를 정리하여 공유하는 문서"},
+        {"term": "헤더 (Header)", "desc": "문서 이름, 제품 이름, 버전 번호, 릴리즈 날짜, 참고 날짜, 노트 버전 등 기본 정보"},
+        {"term": "개요 (Overview)", "desc": "소프트웨어 및 변경 사항 전체에 대한 간략한 설명"},
+        {"term": "목적 (Purpose)", "desc": "릴리즈 버전의 새로운 기능 목록과 릴리즈 노트의 목적"},
+        {"term": "문제 요약 (Issue Summary)", "desc": "수정된 버그 또는 변경된 사항의 간단한 설명"},
+        {"term": "재현 항목 (Steps to Reproduce)", "desc": "버그 발견에 따른 재현 단계 기술"},
+        {"term": "사용자 영향도 (User Impact)", "desc": "버전 변경이 사용자에게 미치는 영향"},
+        {"term": "SW 지원 영향도 (Support Impact)", "desc": "버전 변경이 소프트웨어 지원 프로세스·조직에 미치는 영향"},
+        {"term": "면책 조항 (Disclaimer)", "desc": "회사·표준 제품 관련 법적 책임 범위 고지. 프리웨어·불법 복제 금지 등"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "DRM (디지털 저작권 관리) 개념과 구성 요소",
+      "importance": 3,
+      "summary": "저작권자가 배포한 디지털 콘텐츠가 허가된 사용자만 접근하도록 암호화·라이선스로 통제하는 기술. 클리어링하우스·패키저·DRM 컨트롤러 등 구성 요소의 역할 매칭이 빈출.",
+      "points": [
+        "DRM 흐름: 콘텐츠 제공자 → 패키저(암호화·메타데이터 패키징) → 콘텐츠 분배자(유통) → 콘텐츠 소비자(DRM 컨트롤러로 라이선스 확인 후 사용) / 클리어링하우스는 키·라이선스 발급과 사용 내역 정산",
+        "구성 요소 7가지: 클리어링하우스(Clearing House) / 콘텐츠 제공자(Contents Provider) / 패키저(Packager) / 콘텐츠 분배자(Contents Distributor) / 콘텐츠 소비자(Customer) / DRM 컨트롤러(DRM Controller) / 보안 컨테이너(Security Container)",
+        "DRM 특징: 거부·변경·분배·사용 통제 / 지속적 보호(Persistent Protection) / 암호화된 콘텐츠는 라이선스가 있어야 복호화 / 콘텐츠와 라이선스는 분리 유통",
+        "저작권 관리 구성 요소의 핵심 구분: 클리어링하우스 = '라이선스 발급·관리·정산' / 패키저 = '콘텐츠를 메타데이터와 함께 배포 가능한 형태로 묶어 암호화' / DRM 컨트롤러 = '배포된 콘텐츠의 이용 권한을 통제' / 보안 컨테이너 = '원본을 안전하게 유통하기 위한 전자적 보안 장치'"
+      ],
+      "terms": [
+        {"term": "DRM (Digital Rights Management, 디지털 저작권 관리)", "desc": "디지털 콘텐츠의 불법 복제·유통을 막고 저작권자의 권리를 보호하는 기술과 서비스"},
+        {"term": "클리어링하우스 (Clearing House)", "desc": "저작권에 대한 사용 권한, 라이선스 발급, 키 관리, 사용량 정산(과금)을 수행하는 곳"},
+        {"term": "콘텐츠 제공자 (Contents Provider)", "desc": "콘텐츠를 제공하는 저작권자"},
+        {"term": "패키저 (Packager)", "desc": "콘텐츠를 메타데이터와 함께 배포 가능한 형태로 묶어 암호화하는 프로그램"},
+        {"term": "콘텐츠 분배자 (Contents Distributor)", "desc": "암호화된 콘텐츠를 유통하는 곳이나 사람"},
+        {"term": "콘텐츠 소비자 (Customer)", "desc": "콘텐츠를 구매하여 사용하는 주체"},
+        {"term": "DRM 컨트롤러 (DRM Controller)", "desc": "배포된 콘텐츠의 이용 권한을 통제하는 프로그램"},
+        {"term": "보안 컨테이너 (Security Container)", "desc": "콘텐츠 원본을 안전하게 유통하기 위한 전자적 보안 장치"},
+        {"term": "라이선스 (License)", "desc": "콘텐츠 사용 권한·조건(횟수·기간·기기)과 복호화 키를 담은 정보"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "DRM 기술 요소와 저작권 보호 기술",
+      "importance": 3,
+      "summary": "DRM을 구현하는 기술 요소(암호화·키 관리·식별·저작권 표현·정책 관리·크랙 방지·인증)와 워터마킹·핑거프린팅 등 저작권 보호 기술.",
+      "points": [
+        "DRM 기술 요소: 암호화(Encryption) / 키 관리(Key Management) / 암호화 파일 생성(Packager) / 식별 기술(Identification) / 저작권 표현(Right Expression) / 정책 관리(Policy Management) / 크랙 방지(Tamper Resistance) / 인증(Authentication)",
+        "저작권 표현 언어: XrML(eXtensible Rights Markup Language), ODRL(Open Digital Rights Language), MPEG-21 REL / 식별 기술: DOI(Digital Object Identifier), URI",
+        "크랙 방지 기술: 코드 난독화(Code Obfuscation), Secure DB, Secure Storage, Tamper Resistance(변조 방지 하드웨어·소프트웨어)",
+        "저작권 보호 기술 비교: 워터마킹(Watermarking) = 저작권 정보를 콘텐츠에 비가시적으로 삽입하여 '저작권자 증명' / 핑거프린팅(Fingerprinting) = 구매자 정보를 삽입하여 '불법 유포자 추적' / 스테가노그래피(Steganography) = 메시지 자체를 다른 콘텐츠에 숨겨 존재를 은닉",
+        "패키징 도구 활용 시 고려사항: 반드시 내부 콘텐츠 암호화 및 인증 / 이기종 연동 고려 / 사용자 편의성 — 복잡성·비효율성 최소화 / 적합한 암호화 알고리즘 적용(대칭·비대칭·해시)"
+      ],
+      "terms": [
+        {"term": "암호화 (Encryption)", "desc": "콘텐츠 및 라이선스를 암호화하고 전자서명을 할 수 있는 기술. PKI, Symmetric/Asymmetric Method"},
+        {"term": "키 관리 (Key Management)", "desc": "콘텐츠를 암호화한 키에 대한 저장 및 분배 기술. Centralized, Enveloping"},
+        {"term": "암호화 파일 생성 (Packager)", "desc": "콘텐츠를 암호화된 콘텐츠로 생성하기 위한 기술. Pre-packaging, On-the-fly Packaging"},
+        {"term": "식별 기술 (Identification)", "desc": "콘텐츠에 대한 식별 체계 표현 기술. DOI, URI"},
+        {"term": "저작권 표현 (Right Expression)", "desc": "라이선스의 내용 표현 기술. XrML/MPEG-21 REL, ODRL"},
+        {"term": "정책 관리 (Policy Management)", "desc": "라이선스 발급 및 사용에 대한 정책 표현·관리 기술. XML, Contents Management System"},
+        {"term": "크랙 방지 (Tamper Resistance)", "desc": "크랙에 의한 콘텐츠 사용 방지 기술. Secure DB, Secure Time Management, Encryption, 코드 난독화"},
+        {"term": "인증 (Authentication)", "desc": "라이선스 발급 및 사용의 기준이 되는 사용자 인증 기술. SSO, ID/PW, 디지털 인증서"},
+        {"term": "워터마킹 (Watermarking)", "desc": "저작권 정보를 콘텐츠에 눈에 띄지 않게 삽입하여 소유권을 증명하는 기술"},
+        {"term": "핑거프린팅 (Fingerprinting)", "desc": "구매자 정보를 콘텐츠에 삽입하여 불법 배포자를 추적하는 기술. 포렌식 마킹"},
+        {"term": "스테가노그래피 (Steganography)", "desc": "메시지를 다른 파일(이미지·음성) 속에 숨겨 존재 자체를 감추는 기술"},
+        {"term": "코드 난독화 (Code Obfuscation)", "desc": "소스코드를 읽기 어렵게 변환하여 역공학·크랙을 방지"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "제품 소프트웨어 매뉴얼 (설치 / 사용자)",
+      "importance": 2,
+      "summary": "사용자가 소프트웨어를 설치·사용할 때 참고하는 문서. 설치 매뉴얼과 사용자 매뉴얼의 구성 항목과 작성 순서를 묻는다.",
+      "points": [
+        "설치 매뉴얼 기본 작성 항목: 목차 및 개요 / 서문(문서 이력, 설치 매뉴얼 주석, 설치 도구 구성, 설치 환경 체크) / 기본 사항(제품 소프트웨어 개요, 설치 관련 파일, 설치 아이콘, 프로그램 삭제, 관련 추가 정보)",
+        "설치 매뉴얼 작성 순서: 기능 식별 → UI 분류 → 설치 파일/백업 파일 확인 → Uninstall 절차 확인 → 이상 Case 확인 → 최종 매뉴얼 적용 — 암기 '기U설U이최'",
+        "사용자 매뉴얼 구성: 목차 및 개요 / 서문(문서 이력, 사용자 매뉴얼 주석, 기록 보관) / 기본 사항(소프트웨어 개요, 소프트웨어 사용 환경, 소프트웨어 관리, 모델·버전별 특징, 기능·인터페이스 특징, 구동 환경)",
+        "사용자 매뉴얼 작성 순서: 작성 지침 정의 → 사용자 매뉴얼 구성 요소 정의 → 구성 요소별 내용 작성 → 사용자 매뉴얼 검토 — 암기 '지구내검'",
+        "매뉴얼 작성 원칙: 사용자 관점, 설치 과정을 화면 단위로 순서대로 캡처, 오류 메시지·FAQ 포함, 버전·릴리즈 정보 명시"
+      ],
+      "terms": [
+        {"term": "설치 매뉴얼 (Installation Manual)", "desc": "설치 시작부터 완료까지 전 과정을 순서대로 설명하는 사용자용 문서. 설치 환경·절차·삭제·FAQ 포함"},
+        {"term": "사용자 매뉴얼 (User Manual)", "desc": "소프트웨어 사용 방법·기능·오류 대처법을 설명하는 문서. 사용자 화면·UI 중심"},
+        {"term": "문서 이력 (Document History)", "desc": "매뉴얼의 버전·작성일·변경 내용을 기록한 표. 서문 항목"},
+        {"term": "Uninstall (프로그램 삭제)", "desc": "설치 매뉴얼에 포함되는 제품 삭제 절차 안내"},
+        {"term": "FAQ (Frequently Asked Questions)", "desc": "설치 오류·사용 중 자주 묻는 질문과 해결법 모음"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "국제 표준 제품 품질 특성 (ISO/IEC 9126·25010·12119·14598)",
+      "importance": 3,
+      "summary": "소프트웨어 제품 품질을 평가하는 국제 표준. ISO/IEC 9126의 6가지 품질 특성과 부특성, 25010의 8특성, 12119·14598의 대상이 단답으로 출제된다.",
+      "points": [
+        "ISO/IEC 9126 품질 특성 6가지: 기능성(Functionality) / 신뢰성(Reliability) / 사용성(Usability) / 효율성(Efficiency) / 유지보수성(Maintainability) / 이식성(Portability) — 암기 '기신사효유이'",
+        "부특성: 기능성(적합성·정확성·상호운용성·보안성·준수성) / 신뢰성(성숙성·결함 허용성·회복성) / 사용성(이해성·학습성·운용성·친밀성) / 효율성(시간 효율성·자원 효율성) / 유지보수성(분석성·변경성·안정성·시험성) / 이식성(적응성·설치성·대체성·공존성)",
+        "ISO/IEC 25010 (SQuaRE, 9126 대체): 기능 적합성 / 성능 효율성 / 호환성 / 사용성 / 신뢰성 / 보안성 / 유지보수성 / 이식성 — 8특성 (보안성·호환성 신설)",
+        "ISO/IEC 12119: '패키지 소프트웨어'의 품질 요구사항 및 테스트 표준(제품 설명서·사용자 문서·프로그램 품질) / ISO/IEC 14598: 소프트웨어 '제품 평가' 프로세스 표준(반복성·재현성·공정성·객관성) / ISO/IEC 25000(SQuaRE): 9126+14598 통합",
+        "프로세스 품질 표준(구분): ISO/IEC 12207(생명주기 프로세스) / ISO/IEC 15504 SPICE(프로세스 심사·개선, 0~5 레벨) / CMMI(성숙도 1초기~5최적화) / ISO 9001(품질 경영 시스템)"
+      ],
+      "terms": [
+        {"term": "ISO/IEC 9126", "desc": "소프트웨어 품질 특성과 척도에 관한 국제 표준. 6개 품질 특성(기신사효유이)"},
+        {"term": "기능성 (Functionality)", "desc": "요구된 기능을 제공하는 능력. 적합성·정확성·상호운용성·보안성·준수성"},
+        {"term": "신뢰성 (Reliability)", "desc": "주어진 조건에서 일정 수준의 성능을 유지하는 능력. 성숙성·결함 허용성·회복성"},
+        {"term": "사용성 (Usability)", "desc": "사용자가 쉽게 이해·학습·사용할 수 있는 능력. 이해성·학습성·운용성·친밀성"},
+        {"term": "효율성 (Efficiency)", "desc": "사용 자원에 비해 적절한 성능을 제공하는 능력. 시간 효율성·자원 효율성"},
+        {"term": "유지보수성 (Maintainability)", "desc": "변경·수정이 쉬운 정도. 분석성·변경성·안정성·시험성"},
+        {"term": "이식성 (Portability)", "desc": "다른 환경으로 옮겨 사용할 수 있는 능력. 적응성·설치성·대체성·공존성"},
+        {"term": "ISO/IEC 25010", "desc": "9126을 대체한 SQuaRE 품질 모델. 보안성·호환성 추가로 8특성"},
+        {"term": "ISO/IEC 12119", "desc": "패키지 소프트웨어의 품질 요구사항 및 테스트를 위한 국제 표준"},
+        {"term": "ISO/IEC 14598", "desc": "소프트웨어 제품 평가 프로세스 국제 표준. 반복성·재현성·공정성·객관성"},
+        {"term": "ISO/IEC 25000 (SQuaRE)", "desc": "Software Quality Requirements and Evaluation. 9126과 14598을 통합한 품질 요구·평가 표준 시리즈"},
+        {"term": "ISO/IEC 12207", "desc": "소프트웨어 생명주기 프로세스 표준 (기본·지원·조직 생명주기 프로세스)"},
+        {"term": "SPICE (ISO/IEC 15504)", "desc": "Software Process Improvement and Capability dEtermination. 프로세스 수행 능력 0(불완전)~5(최적화) 6단계"},
+        {"term": "CMMI (Capability Maturity Model Integration)", "desc": "조직 프로세스 성숙도 모델. 초기 → 관리 → 정의 → 정량적 관리 → 최적화 5단계"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "소프트웨어 버전 관리 도구의 유형 (공유 폴더 / 클라이언트-서버 / 분산)",
+      "importance": 3,
+      "summary": "버전 관리 도구는 저장소 구조에 따라 공유 폴더 방식, 클라이언트/서버 방식, 분산 저장소 방식으로 나뉘며 각 방식의 대표 도구를 묻는다.",
+      "points": [
+        "공유 폴더 방식: 개발 완료 파일을 매일 공유 폴더에 복사, 담당자가 폴더 파일을 자기 PC로 복사해 컴파일하여 이상 유무 확인 — RCS, SCCS, PVCS, QVCS",
+        "클라이언트/서버 방식: 중앙 서버에 저장소, 개발자가 서버에서 자신의 PC로 받아 작업, 동시 수정 시 경고 — CVS, SVN(Subversion), CVSNT, Clear Case, Perforce",
+        "분산 저장소 방식: 원격 저장소 + 개발자별 로컬 저장소, 로컬에서 커밋 후 원격에 push, 서버 장애에도 로컬로 작업 가능 — Git, Bitkeeper, Bazaar, Mercurial",
+        "암기: 공유 'RCS·SCCS·PVCS·QVCS(S로 끝남)' / C-S 'CVS·SVN' / 분산 'Git·Bitkeeper·Bazaar·Mercurial'",
+        "버전 관리 도구 사용 유의점: 버전에 대한 쉬운 정보 접근성 / 불필요한 사용자 접근 제한 / 동일 프로젝트 동시 사용 가능성 / 빠른 오류 복구"
+      ],
+      "terms": [
+        {"term": "공유 폴더 방식 (Shared Folder)", "desc": "매일 개발 완료 파일을 공유 폴더에 복사하는 가장 단순한 방식. RCS, SCCS, PVCS, QVCS"},
+        {"term": "클라이언트/서버 방식 (Client/Server)", "desc": "중앙 버전 관리 서버에 모든 버전을 저장하고 클라이언트가 접속. CVS, SVN"},
+        {"term": "분산 저장소 방식 (Distributed)", "desc": "원격 저장소와 로컬 저장소에 모두 버전을 저장. Git, Mercurial, Bazaar, Bitkeeper"},
+        {"term": "RCS (Revision Control System)", "desc": "CVS 이전 공유 폴더 방식. 한 명만 파일을 수정할 수 있도록 잠금(Lock)"},
+        {"term": "SCCS (Source Code Control System)", "desc": "초기 UNIX용 버전 관리 도구. 공유 폴더 방식"},
+        {"term": "CVS (Concurrent Versions System)", "desc": "서버-클라이언트 구조의 공동 개발 버전 관리. 파일 단위 커밋, 이름 변경 추적 어려움"},
+        {"term": "SVN (Subversion)", "desc": "CVS의 단점(디렉터리 변경 추적·원자적 커밋)을 개선한 클라이언트/서버 방식. trunk, branches, tags"},
+        {"term": "Git (깃)", "desc": "리누스 토르발스가 개발한 분산 버전 관리 시스템. 로컬 저장소에서 커밋 후 원격 저장소로 push"},
+        {"term": "Mercurial (머큐리얼)", "desc": "Python 기반 분산 버전 관리 도구"},
+        {"term": "Bitkeeper (비트키퍼)", "desc": "분산 버전 관리 도구. 리눅스 커널 초기 버전 관리에 사용, Git 탄생 계기"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "버전 관리 용어와 Git/SVN 명령",
+      "importance": 2,
+      "summary": "버전 관리 도구에서 공통으로 쓰는 저장소·체크인·체크아웃·커밋·브랜치 등의 용어와 Git·SVN의 주요 명령어.",
+      "points": [
+        "공통 용어: 저장소(Repository) / 가져오기(Import) / 체크아웃(Check-Out) / 체크인(Check-In) / 커밋(Commit) / 동기화(Update) / 차이(Diff) / 브랜치(Branch) / 머지(Merge) / 태그(Tag) / 트렁크(Trunk)",
+        "Git 명령: init(저장소 생성) / clone(원격 복제) / add(스테이징) / commit(로컬 저장) / push(원격 반영) / pull(fetch+merge) / fetch(원격 변경 가져오기만) / branch / checkout·switch(브랜치 이동) / merge / rebase / log / status / diff / reset / revert / stash / tag",
+        "Git 영역 흐름: Working Directory → (add) → Staging Area(Index) → (commit) → Local Repository → (push) → Remote Repository",
+        "SVN 명령: import(최초 등록) / checkout(저장소에서 받기) / commit(반영) / update(최신 동기화) / add / diff / log / merge / branch(copy) / export(이력 없이 파일만) / revert(변경 취소)",
+        "충돌(Conflict): 두 사용자가 같은 파일 같은 부분을 수정해 자동 병합 불가 → 수동 해결 후 커밋"
+      ],
+      "terms": [
+        {"term": "저장소 (Repository)", "desc": "최신 버전의 파일과 변경 이력(버전)이 저장되는 공간"},
+        {"term": "가져오기 (Import)", "desc": "아무것도 없는 빈 저장소에 처음 파일을 복사(등록)"},
+        {"term": "체크아웃 (Check-Out)", "desc": "저장소에서 파일을 받아 로컬 작업 공간으로 가져오기"},
+        {"term": "체크인 (Check-In)", "desc": "체크아웃한 파일을 수정 후 저장소에 반영(커밋)"},
+        {"term": "커밋 (Commit)", "desc": "변경 내용을 저장소에 확정 기록. 버전(리비전) 생성"},
+        {"term": "동기화 (Update)", "desc": "저장소의 최신 변경 내용을 로컬 작업 공간에 반영"},
+        {"term": "브랜치 (Branch)", "desc": "독립적인 개발 라인(가지). 기능별·릴리즈별로 분기"},
+        {"term": "머지 (Merge)", "desc": "브랜치의 변경 내용을 다른 브랜치에 병합"},
+        {"term": "트렁크 (Trunk)", "desc": "SVN에서 메인 개발 라인. Git의 main/master"},
+        {"term": "태그 (Tag)", "desc": "특정 시점(릴리즈 버전)에 이름을 붙여 표시"},
+        {"term": "스테이징 영역 (Staging Area / Index)", "desc": "Git에서 커밋할 변경 사항을 임시로 모아두는 영역. git add로 등록"},
+        {"term": "포크 (Fork)", "desc": "다른 사람의 원격 저장소를 자신의 원격 저장소로 복제"},
+        {"term": "풀 리퀘스트 (Pull Request)", "desc": "브랜치 변경 사항을 원본에 병합해 달라고 요청·리뷰하는 절차"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "빌드 자동화 도구 (Ant / Maven / Gradle / Jenkins)",
+      "importance": 3,
+      "summary": "소스코드 컴파일·테스트·패키징·배포를 자동화하는 도구. 각 도구의 특징(XML 기반, POM, Groovy, CI 서버)으로 이름을 맞히는 단답이 출제된다.",
+      "points": [
+        "Ant: Apache, 'XML 기반 빌드 스크립트(build.xml)', 자유도 높지만 규칙 없음, 의존성 관리 X / Maven: Apache, 'POM(Project Object Model, pom.xml)' 기반, 정형화된 라이프사이클과 '의존성(Dependency) 자동 관리', 중앙 저장소",
+        "Gradle: 'Groovy 기반 DSL(Domain Specific Language)' 스크립트, Ant+Maven 장점 결합, '안드로이드 스튜디오 공식 빌드 도구', 증분 빌드로 속도 빠름 / Jenkins: 'Java 기반 오픈소스 CI(지속적 통합) 서버', 서블릿 컨테이너에서 실행, 웹 GUI, 플러그인 풍부, SVN·Git 연동",
+        "기타: Make(C/C++ Makefile) / Bamboo(Atlassian CI) / Travis CI, GitHub Actions, GitLab CI / Hudson(Jenkins 전신) / Buildbot",
+        "CI(Continuous Integration): 개발자가 코드를 자주 통합·자동 빌드·테스트 / CD(Continuous Delivery/Deployment): 빌드 결과를 자동 배포 → CI/CD 파이프라인",
+        "빌드 자동화 구성: 빌드 도구(Ant/Maven/Gradle) + CI 서버(Jenkins) + 버전 관리(Git/SVN) + 테스트 자동화(JUnit) + 저장소(Nexus/Artifactory)"
+      ],
+      "terms": [
+        {"term": "Ant (앤트)", "desc": "Apache 빌드 도구. XML 기반 build.xml에 타겟(target)과 태스크(task) 정의. 의존성 관리 없음"},
+        {"term": "Maven (메이븐)", "desc": "Apache 빌드·프로젝트 관리 도구. pom.xml로 의존성·라이프사이클 관리. 규약(Convention) 기반"},
+        {"term": "POM (Project Object Model)", "desc": "Maven 프로젝트의 설정·의존성·플러그인을 정의한 pom.xml"},
+        {"term": "Gradle (그래들)", "desc": "Groovy/Kotlin DSL 기반 빌드 도구. Ant와 Maven 장점 결합. 안드로이드 공식 빌드 도구"},
+        {"term": "Groovy (그루비)", "desc": "JVM 위에서 동작하는 동적 스크립트 언어. Gradle 빌드 스크립트 언어"},
+        {"term": "Jenkins (젠킨스)", "desc": "Java 기반 오픈소스 CI 서버. 서블릿 컨테이너에서 실행, 다양한 플러그인으로 빌드·테스트·배포 자동화"},
+        {"term": "Make (메이크)", "desc": "Makefile에 정의한 규칙으로 C/C++ 등을 빌드하는 UNIX 전통 도구"},
+        {"term": "Bamboo (뱀부)", "desc": "Atlassian의 CI/CD 서버. Jira·Bitbucket 연동"},
+        {"term": "CI (Continuous Integration, 지속적 통합)", "desc": "코드 변경을 자주 통합하고 자동 빌드·테스트하여 결함을 조기 발견"},
+        {"term": "CD (Continuous Delivery / Deployment, 지속적 제공·배포)", "desc": "빌드·테스트를 통과한 결과물을 자동으로 운영 환경까지 배포"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "소프트웨어 형상 관리 (SCM)",
+      "importance": 3,
+      "summary": "개발 과정에서 발생하는 산출물(소스·문서 등)의 변경을 체계적으로 관리하는 활동. 형상 관리의 정의 서술과 절차 4단계(식별→통제→감사→기록)가 빈출.",
+      "points": [
+        "형상 관리 정의(서술형): 소프트웨어 개발 과정에서 산출물(소스코드·문서·데이터)의 변경 사항을 버전별로 관리하여 소프트웨어의 가시성과 추적성을 보장하고 품질을 높이는 활동",
+        "형상 관리 절차: 형상 식별(Identification, 관리 대상 선정·ID·베이스라인) → 형상 통제(Control, 변경 요청 검토·CCB 승인) → 형상 감사(Audit, 변경 결과 검증·기준선 무결성) → 형상 기록/보고(Status Accounting, 변경 이력 기록) — 암기 '식통감기'",
+        "형상 항목(Configuration Item): 요구사항 명세서, 설계서, 소스코드, 테스트 케이스, 사용자 매뉴얼 등 / 베이스라인(기준선): 공식 검토·승인된 산출물, 이후 변경은 통제 절차 필요",
+        "형상 통제 위원회(CCB, Configuration Control Board): 변경 요청의 승인·거부·보류를 결정하는 조직",
+        "형상 관리 효과: 변경에 따른 부작용 최소화, 산출물 추적성·가시성, 동시 개발 지원, 이전 버전 복구 가능 / 형상 관리 ⊃ 버전 관리(형상 관리는 산출물 전체, 버전 관리는 소스코드 버전 중심)"
+      ],
+      "terms": [
+        {"term": "형상 관리 (SCM, Software Configuration Management)", "desc": "소프트웨어 개발 전 단계의 산출물 변경을 체계적으로 추적·통제하는 활동"},
+        {"term": "형상 식별 (Configuration Identification)", "desc": "형상 관리 대상(형상 항목)을 정의·선정하고 식별자를 부여, 베이스라인 설정"},
+        {"term": "형상 통제 (Configuration Control)", "desc": "형상 항목의 변경 요청을 검토·승인하여 기준선에 반영하도록 통제. CCB 운영"},
+        {"term": "형상 감사 (Configuration Audit)", "desc": "변경이 승인된 대로 적절히 이루어졌는지, 기준선의 무결성을 검증"},
+        {"term": "형상 기록 / 상태 보고 (Configuration Status Accounting)", "desc": "형상 항목의 식별·통제·감사 결과와 변경 이력을 기록·보고"},
+        {"term": "형상 항목 (Configuration Item)", "desc": "형상 관리 대상이 되는 산출물 단위. 요구사항 명세서, 설계서, 소스, 테스트 계획 등"},
+        {"term": "베이스라인 (Baseline, 기준선)", "desc": "공식적으로 검토·승인되어 이후 변경은 통제 절차를 거쳐야 하는 산출물의 기준 시점"},
+        {"term": "CCB (Configuration Control Board, 형상 통제 위원회)", "desc": "변경 요청을 평가하고 승인 여부를 결정하는 위원회"},
+        {"term": "변경 요청 (Change Request)", "desc": "형상 항목의 변경을 공식적으로 요청하는 문서. 형상 통제의 입력"}
+      ],
+      "asked": ["2020-3"]
+    },
+    {
+      "title": "제품 소프트웨어 패키징 도구와 배포 보안 (암호화·코드 사이닝)",
+      "importance": 1,
+      "summary": "패키징 도구가 사용하는 암호화 방식과 배포 파일의 신뢰성을 보장하는 코드 사이닝·해시 검증 등 배포 단계의 보안 요소.",
+      "points": [
+        "암호화 알고리즘 분류: 대칭키(비밀키, 동일 키로 암·복호화, 빠름 — DES, 3DES, AES, SEED, ARIA, IDEA, RC4) / 비대칭키(공개키, 공개키 암호화·개인키 복호화 — RSA, ECC, ElGamal, Diffie-Hellman 키 교환) / 해시(일방향, 무결성 — MD5, SHA-1, SHA-256, HAS-160)",
+        "코드 사이닝(Code Signing): 배포 파일에 개발사의 전자 서명을 붙여 출처와 무결성을 보증 → 설치 시 OS가 인증서 검증",
+        "배포 파일 무결성 검증: 다운로드 페이지에 SHA-256 체크섬 공개 → 사용자가 해시 비교 / 전송 구간은 HTTPS",
+        "패키징 도구 선택 기준: 지원 플랫폼(Windows MSI/EXE, macOS DMG/PKG, Linux RPM/DEB, 모바일 APK/IPA), 자동 업데이트, 라이선스 관리, 설치 로그"
+      ],
+      "terms": [
+        {"term": "코드 사이닝 (Code Signing)", "desc": "실행 파일·설치 파일에 개발자 인증서로 전자 서명하여 출처 확인과 변조 방지"},
+        {"term": "전자 서명 (Digital Signature)", "desc": "개인키로 해시값을 암호화해 서명하고 공개키로 검증. 무결성·인증·부인 방지"},
+        {"term": "체크섬 (Checksum)", "desc": "파일 전체의 해시값. 다운로드 후 비교하여 변조·손상 여부 확인"},
+        {"term": "대칭키 암호화 (Symmetric Key)", "desc": "암·복호화에 같은 키 사용. AES, DES, SEED, ARIA"},
+        {"term": "비대칭키 암호화 (Asymmetric / Public Key)", "desc": "공개키와 개인키 쌍 사용. RSA, ECC"},
+        {"term": "MSI / RPM / DEB / APK", "desc": "Windows / RedHat 계열 Linux / Debian 계열 Linux / Android 의 패키지 설치 파일 형식"}
+      ],
+      "asked": []
+    }
+  ]
+}

@@ -193,9 +193,9 @@
       "points": [
         "INNER JOIN(내부 조인): 양쪽 조건 일치 행만. SELECT * FROM A INNER JOIN B ON A.k = B.k; = SELECT * FROM A, B WHERE A.k = B.k; (등가 조인, Equi Join) / 비등가 조인(Non-Equi): ON A.점수 BETWEEN B.최소 AND B.최대",
         "NATURAL JOIN: 같은 이름의 열로 자동 등가 조인, 중복 열 한 번만 표시 / JOIN ... USING(열): 공통 열 지정, 중복 열 하나로 표시",
-        "LEFT OUTER JOIN: 왼콽 테이블 전체 + 오른쪽 일치 행(없으면 NULL) / RIGHT OUTER JOIN: 오른쪽 전체 / FULL OUTER JOIN: 양쪽 전체, 짝 없는 쪽 NULL / Oracle 외부 조인 기호: WHERE A.k = B.k(+) 는 LEFT OUTER JOIN (+가 붙은 쪽에 NULL 채움)",
+        "LEFT OUTER JOIN: 왼쪽 테이블 전체 + 오른쪽 일치 행(없으면 NULL) / RIGHT OUTER JOIN: 오른쪽 전체 / FULL OUTER JOIN: 양쪽 전체, 짝 없는 쪽 NULL / Oracle 외부 조인 기호: WHERE A.k = B.k(+) 는 LEFT OUTER JOIN (+가 붙은 쪽에 NULL 채움)",
         "CROSS JOIN(교차 조인, 카티션 곱): 조건 없이 모든 조합, 결과 행 수 = A 행 수 × B 행 수 / SELF JOIN(자체 조인): 같은 테이블을 별칭 둘로 조인 (사원-상사 관계)",
-        "결과 행 수 계산 요령: INNER = 매칭 쌍의 수(한쪽 값이 여러 번이면 곱해짐) / LEFT = 왼쪽 행 수 + (왼쪽 한 행에 오른콽 여러 행 매칭 시 추가) / FULL = INNER + 왼쪽 미매칭 + 오른쪽 미매칭 / NULL 값은 조인 조건에서 서로 매칭되지 않음",
+        "결과 행 수 계산 요령: INNER = 매칭 쌍의 수(한쪽 값이 여러 번이면 곱해짐) / LEFT = 왼쪽 행 수 + (왼쪽 한 행에 오른쪽 여러 행 매칭 시 추가) / FULL = INNER + 왼쪽 미매칭 + 오른쪽 미매칭 / NULL 값은 조인 조건에서 서로 매칭되지 않음",
         "조인 알고리즘(물리적): Nested Loop Join / Sort Merge Join / Hash Join"
       ],
       "terms": [

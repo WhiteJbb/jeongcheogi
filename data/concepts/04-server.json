@@ -1,0 +1,372 @@
+{
+  "chapter": "서버 프로그램 구현",
+  "order": 4,
+  "topics": [
+    {
+      "title": "소프트웨어 아키텍처 패턴",
+      "importance": 3,
+      "summary": "소프트웨어 시스템의 전체 구조를 정의하는 재사용 가능한 설계 틀. MVC·레이어드·클라이언트-서버·파이프-필터·브로커·마스터-슬레이브 등의 정의와 구성 요소를 묻는다.",
+      "points": [
+        "MVC: 모델(Model, 데이터·비즈니스 로직) / 뷰(View, 화면 표시) / 컨트롤러(Controller, 사용자 입력 처리·모델과 뷰 중재). 암기: 데이터-화면-중재",
+        "레이어드(계층화, Layered): 시스템을 계층(프레젠테이션·비즈니스·퍼시스턴스·DB)으로 구분, 인접 계층만 상호작용. 예: OSI 7계층",
+        "클라이언트-서버(Client-Server): 하나의 서버와 다수의 클라이언트. 서버는 항시 대기, 클라이언트가 요청",
+        "파이프-필터(Pipe-Filter): 데이터 스트림을 필터(처리)와 파이프(전달)로 단계적으로 처리. 재사용·확장 용이. 예: UNIX 쉘, 컴파일러",
+        "브로커(Broker): 분리된 컴포넌트들의 상호 연결·통신을 중재자(브로커)가 조정. 분산 환경",
+        "마스터-슬레이브(Master-Slave): 마스터가 작업을 분할해 슬레이브에 분배하고 결과를 수집. 실시간 시스템, 장애 허용",
+        "기타: 피어 투 피어(P2P), 이벤트-버스(Event-Bus, 소스·리스너·채널·버스), 모델-뷰-컨트롤러, 블랙보드(Blackboard, 해결책이 명확하지 않은 문제), 인터프리터(Interpreter)",
+        "아키텍처 4+1 뷰: 유스케이스 뷰 + 논리 뷰, 구현(개발) 뷰, 프로세스 뷰, 배치(물리) 뷰"
+      ],
+      "terms": [
+        {"term": "MVC (Model-View-Controller)", "desc": "데이터(모델), 화면(뷰), 제어(컨트롤러)를 분리해 유지보수·재사용성을 높인 패턴"},
+        {"term": "모델 (Model)", "desc": "핵심 기능과 데이터를 보관. 뷰·컨트롤러에 독립적"},
+        {"term": "뷰 (View)", "desc": "사용자에게 정보를 표시. 모델의 데이터를 화면으로"},
+        {"term": "컨트롤러 (Controller)", "desc": "사용자 입력을 받아 모델을 갱신하고 뷰를 선택"},
+        {"term": "레이어드 패턴 (Layered Pattern)", "desc": "시스템을 계층으로 구분, 상위 계층은 하위 계층의 서비스를 이용"},
+        {"term": "클라이언트-서버 패턴 (Client-Server Pattern)", "desc": "서비스 제공 서버와 요청 클라이언트로 구성"},
+        {"term": "파이프-필터 패턴 (Pipe-Filter Pattern)", "desc": "데이터를 필터로 처리하고 파이프로 다음 필터에 전달하는 스트림 처리 구조"},
+        {"term": "브로커 패턴 (Broker Pattern)", "desc": "브로커가 클라이언트 요청을 적절한 서버(컴포넌트)로 중개하는 분산 시스템 패턴"},
+        {"term": "마스터-슬레이브 패턴 (Master-Slave Pattern)", "desc": "마스터가 작업을 분배하고 슬레이브가 수행한 결과를 통합"},
+        {"term": "피어 투 피어 패턴 (Peer-to-Peer Pattern)", "desc": "각 컴포넌트가 클라이언트와 서버 역할을 모두 수행"},
+        {"term": "이벤트-버스 패턴 (Event-Bus Pattern)", "desc": "소스가 채널에 이벤트를 발행하고 리스너가 구독. 소스·리스너·채널·버스"},
+        {"term": "블랙보드 패턴 (Blackboard Pattern)", "desc": "해결책이 명확하지 않은 문제에 공유 데이터 저장소(블랙보드)와 지식 소스로 접근. 음성 인식"},
+        {"term": "인터프리터 패턴 (Interpreter Pattern, 아키텍처)", "desc": "특정 언어로 작성된 프로그램을 해석·실행하는 컴포넌트 설계"},
+        {"term": "4+1 뷰 (4+1 View Model)", "desc": "유스케이스 뷰 중심으로 논리·구현·프로세스·배치 뷰로 아키텍처를 기술"}
+      ],
+      "asked": ["2020-4", "2022-2", "2023-1", "2024-2"]
+    },
+    {
+      "title": "소프트웨어 설계 원리와 객체지향 개념",
+      "importance": 2,
+      "summary": "모듈 설계의 기본 원리(분할과 정복, 추상화, 단계적 분해, 모듈화, 정보 은닉)와 객체지향의 핵심 개념(클래스·객체·캡슐화·상속·다형성·추상화·정보 은닉).",
+      "points": [
+        "소프트웨어 설계 기본 원리: 분할과 정복(Divide & Conquer), 추상화(Abstraction), 단계적 분해(Stepwise Refinement), 모듈화(Modularity), 정보 은닉(Information Hiding)",
+        "추상화 종류: 과정(Procedure) 추상화, 데이터(Data) 추상화, 제어(Control) 추상화",
+        "객체지향 구성: 객체(Object, 속성+메서드), 클래스(Class, 객체의 틀), 메시지(Message, 객체 간 상호작용 요청), 인스턴스(Instance)",
+        "객체지향 특징: 캡슐화(Encapsulation, 데이터+함수를 하나로 묶고 외부 접근 제한) / 정보 은닉(Information Hiding) / 추상화(Abstraction, 공통 성질 추출) / 상속(Inheritance, 상위 클래스 속성·메서드를 하위가 물려받음) / 다형성(Polymorphism, 같은 메시지에 객체마다 다른 동작 - 오버로딩·오버라이딩)",
+        "오버로딩(Overloading): 같은 이름 메서드, 매개변수 다름 / 오버라이딩(Overriding): 상위 클래스 메서드를 하위에서 재정의",
+        "관계: 연관화(is member of), 집단화(is part of, 집합), 일반화(is a, 상속), 특수화/상세화(is a 반대 방향), 분류화(is instance of)"
+      ],
+      "terms": [
+        {"term": "모듈화 (Modularity)", "desc": "시스템을 기능 단위의 모듈로 분해. 모듈 수 많으면 통합 비용↑, 적으면 모듈당 비용↑"},
+        {"term": "추상화 (Abstraction)", "desc": "복잡한 문제의 핵심만 추출해 단순화. 과정·데이터·제어 추상화"},
+        {"term": "단계적 분해 (Stepwise Refinement)", "desc": "하향식 설계. 문제를 상위에서 하위로 점차 구체화. Niklaus Wirth"},
+        {"term": "정보 은닉 (Information Hiding)", "desc": "모듈 내부 정보를 숨기고 인터페이스로만 접근. 수정·테스트·유지보수 용이"},
+        {"term": "분할과 정복 (Divide and Conquer)", "desc": "큰 문제를 작은 문제로 나누어 해결 후 통합"},
+        {"term": "캡슐화 (Encapsulation)", "desc": "데이터와 메서드를 하나로 묶고 외부 접근을 제한. 결합도↓ 재사용성↑"},
+        {"term": "상속 (Inheritance)", "desc": "상위 클래스의 속성과 연산을 하위 클래스가 물려받음. 재사용"},
+        {"term": "다형성 (Polymorphism)", "desc": "하나의 메시지에 각 객체가 고유한 방식으로 응답. 오버로딩·오버라이딩"},
+        {"term": "오버로딩 (Overloading)", "desc": "같은 이름의 메서드를 매개변수 타입·개수를 달리해 여러 개 정의"},
+        {"term": "오버라이딩 (Overriding)", "desc": "상위 클래스의 메서드를 하위 클래스에서 재정의"},
+        {"term": "메시지 (Message)", "desc": "객체에게 동작(메서드) 수행을 요청하는 수단"},
+        {"term": "인스턴스 (Instance)", "desc": "클래스로부터 생성된 실제 객체"},
+        {"term": "집단화 (Aggregation)", "desc": "is part of 관계. 부분 객체들로 전체 객체 구성"},
+        {"term": "일반화 (Generalization)", "desc": "is a 관계. 하위 클래스들의 공통 특성을 상위 클래스로"}
+      ],
+      "asked": ["2020-3", "2022-2", "2023-3"]
+    },
+    {
+      "title": "객체지향 설계 원칙 (SOLID)",
+      "importance": 3,
+      "summary": "로버트 마틴이 정리한 객체지향 설계 5원칙. 영문 약어와 한글 명칭, 한 줄 정의를 모두 외워야 한다.",
+      "points": [
+        "SRP 단일 책임 원칙(Single Responsibility Principle): 한 클래스는 하나의 책임(변경 이유)만 가져야 한다",
+        "OCP 개방-폐쇄 원칙(Open-Closed Principle): 확장에는 열려 있고 수정에는 닫혀 있어야 한다",
+        "LSP 리스코프 치환 원칙(Liskov Substitution Principle): 자식 클래스는 부모 클래스를 대체(치환)할 수 있어야 한다",
+        "ISP 인터페이스 분리 원칙(Interface Segregation Principle): 클라이언트는 자신이 사용하지 않는 메서드(인터페이스)에 의존하지 않아야 한다. 범용 인터페이스 하나보다 특화된 여러 개",
+        "DIP 의존 역전 원칙(Dependency Inversion Principle): 상위 모듈은 하위 모듈에 의존하지 않고, 둘 다 추상화(인터페이스)에 의존해야 한다",
+        "암기: SOLID = 단개리인의"
+      ],
+      "terms": [
+        {"term": "단일 책임 원칙 (SRP, Single Responsibility Principle)", "desc": "객체는 단 하나의 책임만 가져야 한다"},
+        {"term": "개방-폐쇄 원칙 (OCP, Open-Closed Principle)", "desc": "기존 코드 변경 없이(폐쇄) 기능을 확장(개방)할 수 있어야 한다"},
+        {"term": "리스코프 치환 원칙 (LSP, Liskov Substitution Principle)", "desc": "자식 클래스는 최소한 부모 클래스의 기능은 수행할 수 있어야 한다"},
+        {"term": "인터페이스 분리 원칙 (ISP, Interface Segregation Principle)", "desc": "사용하지 않는 인터페이스에 의존하지 않도록 인터페이스를 분리"},
+        {"term": "의존 역전 원칙 (DIP, Dependency Inversion Principle)", "desc": "구체 클래스가 아닌 추상화(인터페이스)에 의존"},
+        {"term": "SOLID", "desc": "SRP, OCP, LSP, ISP, DIP의 첫 글자. 로버트 C. 마틴"}
+      ],
+      "asked": ["2021-2", "2022-3", "2023-2", "2024-3"]
+    },
+    {
+      "title": "디자인 패턴 - 생성 패턴 (Creational)",
+      "importance": 3,
+      "summary": "GoF 디자인 패턴 23개 중 객체의 생성 방식을 다루는 5가지. 설명을 읽고 패턴 이름을 영문으로 쓰는 문제가 매년 출제된다.",
+      "points": [
+        "생성 패턴 5개: 추상 팩토리(Abstract Factory), 빌더(Builder), 팩토리 메서드(Factory Method), 프로토타입(Prototype), 싱글톤(Singleton). 암기: 추빌팩프싱",
+        "Abstract Factory: 구체적인 클래스에 의존하지 않고 서로 연관·의존하는 객체들의 그룹(제품군)으로 생성하는 인터페이스 제공",
+        "Builder: 복잡한 객체의 생성 과정과 표현 방법을 분리하여 동일한 생성 절차에서 서로 다른 표현 결과를 만듦. 단계별로 조립",
+        "Factory Method: 객체 생성을 서브클래스에서 결정하도록 캡슐화. 상위 클래스는 인터페이스만 정의. 가상 생성자(Virtual Constructor) 패턴",
+        "Prototype: 원본 객체를 복제(clone)하여 새 객체 생성. 생성 비용이 큰 경우 유용",
+        "Singleton: 클래스의 인스턴스가 하나만 생성되도록 보장하고 전역 접근점 제공. 메모리 낭비 최소화",
+        "GoF 분류: 생성(5) / 구조(7) / 행위(11) = 23개. 목적(생성·구조·행위)과 범위(클래스·객체)로 분류"
+      ],
+      "terms": [
+        {"term": "추상 팩토리 (Abstract Factory)", "desc": "연관된 객체들의 집합(제품군)을 구체 클래스 지정 없이 생성하는 인터페이스. 공장의 공장"},
+        {"term": "빌더 (Builder)", "desc": "객체의 생성 과정과 표현을 분리. 복잡한 객체를 단계별로 조립"},
+        {"term": "팩토리 메서드 (Factory Method)", "desc": "객체 생성 인터페이스는 상위에서 정의, 어떤 클래스를 생성할지는 서브클래스가 결정"},
+        {"term": "프로토타입 (Prototype)", "desc": "원형 객체를 복제(Clone)하여 새로운 객체 생성"},
+        {"term": "싱글톤 (Singleton)", "desc": "클래스 인스턴스를 하나만 생성하고 어디서든 접근 가능. 전역 상태 공유"},
+        {"term": "GoF (Gang of Four)", "desc": "에리히 감마 등 4인이 정리한 23개 디자인 패턴. 생성·구조·행위"},
+        {"term": "디자인 패턴 (Design Pattern)", "desc": "자주 발생하는 설계 문제에 대한 재사용 가능한 해결 방법. 패턴 이름·문제·해결·결과"}
+      ],
+      "asked": ["2020-1", "2021-2", "2022-1", "2023-1", "2024-2"]
+    },
+    {
+      "title": "디자인 패턴 - 구조 패턴 (Structural)",
+      "importance": 3,
+      "summary": "클래스·객체를 조합하여 더 큰 구조를 만드는 7가지 패턴. 각 패턴의 핵심 키워드(변환·중개·대리·장식 등)로 이름을 식별해야 한다.",
+      "points": [
+        "구조 패턴 7개: 어댑터(Adapter), 브리지(Bridge), 컴포지트(Composite), 데코레이터(Decorator), 퍼사드(Facade), 플라이웨이트(Flyweight), 프록시(Proxy). 암기: 어브컴데퍼플프",
+        "Adapter: 호환되지 않는 인터페이스를 변환하여 함께 동작하게 함. 기존 클래스 재사용. 키워드 '인터페이스 변환'",
+        "Bridge: 구현부(Implementation)와 추상층(Abstraction)을 분리하여 서로 독립적으로 확장. 키워드 '구현과 추상 분리'",
+        "Composite: 객체들을 트리 구조로 구성하여 부분-전체 계층을 표현. 개별 객체와 복합 객체를 동일하게 취급. 키워드 '트리·부분-전체'",
+        "Decorator: 객체에 동적으로 새로운 기능(책임)을 추가. 상속 대신 래핑(Wrapping). 키워드 '기능 동적 추가'",
+        "Facade: 서브시스템의 복잡한 인터페이스들을 하나의 단순한 통합 인터페이스(창구)로 제공. 키워드 '단순화된 인터페이스'",
+        "Flyweight: 많은 수의 유사 객체를 공유하여 메모리 절약. 인스턴스를 가능한 대로 공유. 키워드 '공유·메모리 절약'",
+        "Proxy: 다른 객체에 대한 접근을 제어하는 대리자(대변인) 객체. 접근 제어·지연 로딩·원격 접근. 키워드 '대리·접근 제어'"
+      ],
+      "terms": [
+        {"term": "어댑터 (Adapter)", "desc": "인터페이스가 호환되지 않는 클래스를 변환기(어댑터)로 감싸 함께 동작하게 함. Wrapper"},
+        {"term": "브리지 (Bridge)", "desc": "구현부에서 추상층을 분리하여 각각 독립적으로 변형·확장 가능"},
+        {"term": "컴포지트 (Composite)", "desc": "객체를 트리 구조로 구성하여 단일 객체와 복합 객체를 동일하게 다룸"},
+        {"term": "데코레이터 (Decorator)", "desc": "기존 객체를 감싸 동적으로 기능을 추가. 상속의 대안"},
+        {"term": "퍼사드 (Facade)", "desc": "복잡한 서브시스템에 대한 통합된 단순 인터페이스 제공. 건물의 정면"},
+        {"term": "플라이웨이트 (Flyweight)", "desc": "다수의 작은 객체를 공유하여 메모리 사용 최소화"},
+        {"term": "프록시 (Proxy)", "desc": "실제 객체에 대한 접근을 제어하는 대리 객체. 가상·원격·보호 프록시"}
+      ],
+      "asked": ["2020-3", "2021-3", "2022-2", "2023-3", "2024-1"]
+    },
+    {
+      "title": "디자인 패턴 - 행위 패턴 (Behavioral)",
+      "importance": 3,
+      "summary": "객체 간 상호작용과 책임 분배를 다루는 11가지 패턴. 옵저버·전략·커맨드·이터레이터·상태·방문자·중재자 등이 자주 출제된다.",
+      "points": [
+        "행위 패턴 11개: 책임 연쇄(Chain of Responsibility), 커맨드(Command), 인터프리터(Interpreter), 이터레이터(Iterator), 중재자(Mediator), 메멘토(Memento), 옵저버(Observer), 상태(State), 전략(Strategy), 템플릿 메서드(Template Method), 방문자(Visitor). 암기: 책커인이중메옵상전템방",
+        "Chain of Responsibility: 요청을 처리할 수 있는 객체들을 연쇄(체인)로 연결, 처리 가능한 객체가 나올 때까지 전달",
+        "Command: 요청(명령)을 객체로 캡슐화하여 저장·큐잉·로깅·취소(Undo) 가능",
+        "Interpreter: 언어의 문법 표현을 정의하고 문장을 해석하는 해석기 구성",
+        "Iterator: 컬렉션 내부 구조를 노출하지 않고 요소에 순차 접근하는 방법 제공",
+        "Mediator: 객체 간 복잡한 상호작용을 중재자 객체에 집중시켜 결합도 감소. M:N → 1:N",
+        "Memento: 객체의 내부 상태를 저장해 두고 나중에 복원(Undo). 캡슐화 유지",
+        "Observer: 한 객체의 상태 변화를 의존 객체들에게 자동으로 통지(1:N 의존). 발행-구독(Publish-Subscribe)",
+        "State: 객체의 상태에 따라 행위를 변경. 상태를 객체로 캡슐화하여 상태 전이 시 객체 교체",
+        "Strategy: 알고리즘군을 각각 캡슐화하여 교환 가능하게 함. 클라이언트와 독립적으로 알고리즘 선택",
+        "Template Method: 알고리즘의 골격(뼈대)을 상위 클래스에서 정의하고 세부 단계는 서브클래스에서 재정의",
+        "Visitor: 객체 구조는 그대로 두고 처리(연산)를 방문자 클래스로 분리. 새 연산 추가 용이"
+      ],
+      "terms": [
+        {"term": "책임 연쇄 (Chain of Responsibility)", "desc": "요청을 처리할 객체를 체인으로 연결해 순차적으로 전달·처리"},
+        {"term": "커맨드 (Command)", "desc": "요청을 객체로 캡슐화해 매개변수화·저장·취소 지원"},
+        {"term": "인터프리터 (Interpreter)", "desc": "문법 규칙을 클래스로 표현하여 언어(명령어)를 해석"},
+        {"term": "이터레이터 (Iterator)", "desc": "집합 객체의 내부 표현을 노출하지 않고 요소를 순차 접근"},
+        {"term": "중재자 (Mediator)", "desc": "객체 간 상호작용을 중재자가 캡슐화하여 직접 참조 제거"},
+        {"term": "메멘토 (Memento)", "desc": "객체 상태를 저장하고 이전 상태로 복원(Undo). Ctrl+Z"},
+        {"term": "옵저버 (Observer)", "desc": "객체 상태 변화 시 등록된 관찰자들에게 자동 통지. 1:N 의존, 발행-구독"},
+        {"term": "상태 (State)", "desc": "상태에 따라 달라지는 행위를 상태 객체로 캡슐화. 상태 전이 시 행위 변경"},
+        {"term": "전략 (Strategy)", "desc": "알고리즘을 캡슐화하여 런타임에 교체 가능. 동일 계열 알고리즘군"},
+        {"term": "템플릿 메서드 (Template Method)", "desc": "상위 클래스에 알고리즘 뼈대, 하위 클래스가 세부 단계 구현. 훅(Hook) 메서드"},
+        {"term": "방문자 (Visitor)", "desc": "데이터 구조와 처리를 분리. 방문자가 각 요소를 방문하며 연산 수행"}
+      ],
+      "asked": ["2020-1", "2020-3", "2021-1", "2021-3", "2022-2", "2023-2", "2023-3", "2024-1", "2024-3"]
+    },
+    {
+      "title": "결합도 (Coupling)",
+      "importance": 3,
+      "summary": "모듈 간 상호 의존하는 정도. 낮을수록(약할수록) 좋은 설계이며 6단계 순서와 각 단계의 정의를 영문·한글로 정확히 써야 한다.",
+      "points": [
+        "약함 → 강함: 자료(Data) < 스탬프(Stamp) < 제어(Control) < 외부(External) < 공통(Common) < 내용(Content). 암기: 자스제외공내",
+        "자료 결합도(Data): 모듈 간 인터페이스가 자료 요소(매개변수)로만 구성. 가장 바람직",
+        "스탬프 결합도(Stamp): 배열·구조체·레코드 등 자료 구조 전체를 전달. 필요 없는 필드도 함께 전달",
+        "제어 결합도(Control): 다른 모듈의 논리 흐름을 제어하기 위한 제어 신호(플래그, 스위치)를 전달",
+        "외부 결합도(External): 어떤 모듈에서 선언한 데이터(외부 변수)를 다른 모듈에서 참조. 외부 환경(프로토콜, 장치, 포맷) 공유",
+        "공통 결합도(Common): 여러 모듈이 공통 데이터 영역(전역 변수)을 공유",
+        "내용 결합도(Content): 한 모듈이 다른 모듈의 내부 기능이나 내부 자료를 직접 참조·수정. 가장 나쁨",
+        "좋은 설계: 결합도↓ 응집도↑ (Low Coupling, High Cohesion)"
+      ],
+      "terms": [
+        {"term": "자료 결합도 (Data Coupling)", "desc": "모듈 간 매개변수(자료 요소)만 전달. 가장 낮은 결합도"},
+        {"term": "스탬프 결합도 (Stamp Coupling)", "desc": "배열·구조체 등 자료 구조 전체를 전달하며 일부만 사용"},
+        {"term": "제어 결합도 (Control Coupling)", "desc": "제어 신호(플래그)를 전달해 다른 모듈의 처리 흐름을 제어"},
+        {"term": "외부 결합도 (External Coupling)", "desc": "외부에서 선언된 변수·환경(프로토콜, 장치 등)을 공유"},
+        {"term": "공통 결합도 (Common Coupling)", "desc": "전역 변수 등 공통 데이터 영역을 여러 모듈이 공유"},
+        {"term": "내용 결합도 (Content Coupling)", "desc": "다른 모듈의 내부 자료나 코드를 직접 참조·수정. 가장 높은 결합도"},
+        {"term": "결합도 (Coupling)", "desc": "모듈과 모듈 사이의 상호 의존 정도. 낮을수록 독립성·재사용성 높음"}
+      ],
+      "asked": ["2020-4", "2021-1", "2021-3", "2022-3", "2023-1", "2023-3", "2024-2"]
+    },
+    {
+      "title": "응집도 (Cohesion)",
+      "importance": 3,
+      "summary": "모듈 내부 요소들이 하나의 기능을 위해 서로 관련된 정도. 높을수록(강할수록) 좋으며 7단계 순서와 정의를 묻는다.",
+      "points": [
+        "약함 → 강함: 우연적(Coincidental) < 논리적(Logical) < 시간적(Temporal) < 절차적(Procedural) < 교환적(Communicational) < 순차적(Sequential) < 기능적(Functional). 암기: 우논시절교순기",
+        "기능적 응집도(Functional): 모듈 내 모든 기능 요소가 단일 문제(하나의 기능)와 연관. 가장 바람직",
+        "순차적 응집도(Sequential): 한 활동의 출력 데이터를 다음 활동의 입력으로 사용",
+        "교환적(통신적) 응집도(Communicational): 동일한 입력과 출력을 사용하여 서로 다른 기능을 수행하는 요소들",
+        "절차적 응집도(Procedural): 다수의 관련 기능을 가질 때 모듈 내 요소들이 순서대로 수행",
+        "시간적 응집도(Temporal): 특정 시간에 처리되는 기능들을 모음 (초기화, 종료 처리)",
+        "논리적 응집도(Logical): 유사한 성격·특정 형태로 분류되는 처리 요소들을 한 모듈에서 처리 (제어 매개변수로 선택)",
+        "우연적 응집도(Coincidental): 모듈 내부 요소들이 서로 관련 없음. 가장 나쁨"
+      ],
+      "terms": [
+        {"term": "기능적 응집도 (Functional Cohesion)", "desc": "모듈의 모든 요소가 하나의 기능을 수행. 가장 높은 응집도"},
+        {"term": "순차적 응집도 (Sequential Cohesion)", "desc": "한 요소의 출력이 다음 요소의 입력으로 사용"},
+        {"term": "교환적 응집도 (Communicational Cohesion)", "desc": "동일한 입력·출력 데이터를 사용하는 요소들이 모임. 통신적 응집도"},
+        {"term": "절차적 응집도 (Procedural Cohesion)", "desc": "요소들이 정해진 순서에 따라 차례로 수행"},
+        {"term": "시간적 응집도 (Temporal Cohesion)", "desc": "같은 시간대에 수행되는 기능들을 모음. 초기화 모듈"},
+        {"term": "논리적 응집도 (Logical Cohesion)", "desc": "논리적으로 유사한 기능들을 모아 매개변수로 선택 수행"},
+        {"term": "우연적 응집도 (Coincidental Cohesion)", "desc": "요소 간 아무 관련 없이 우연히 모임. 가장 낮은 응집도"},
+        {"term": "응집도 (Cohesion)", "desc": "모듈 내부 구성 요소 간 연관 정도. 높을수록 독립성 높음"}
+      ],
+      "asked": ["2020-4", "2021-1", "2022-1", "2023-1", "2023-3", "2024-2"]
+    },
+    {
+      "title": "팬인·팬아웃과 공통 모듈 원칙",
+      "importance": 2,
+      "summary": "모듈 구조도에서 모듈을 호출하는 수(Fan-In)와 호출하는 모듈 수(Fan-Out), 그리고 공통 모듈 명세 원칙 5가지. 구조도를 보고 값을 계산하는 문제가 출제된다.",
+      "points": [
+        "팬인(Fan-In): 해당 모듈을 제어(호출)하는 상위 모듈의 수 = 들어오는 화살표 수",
+        "팬아웃(Fan-Out): 해당 모듈이 제어(호출)하는 하위 모듈의 수 = 나가는 화살표 수",
+        "바람직한 구조: 팬인은 높게(재사용↑), 팬아웃은 낮게(복잡도↓). 깊이(Depth)와 넓이(Width) 고려",
+        "공통 모듈 명세 원칙 5가지: 정확성(Correctness), 명확성(Clarity), 완전성(Completeness), 일관성(Consistency), 추적성(Traceability). 암기: 정명완일추",
+        "재사용 규모별 분류: 함수와 객체 재사용 < 컴포넌트 재사용 < 애플리케이션 재사용",
+        "효과적인 모듈 설계: 결합도↓ 응집도↑, 복잡도·중복 줄임, 유지보수 용이, 모듈 크기는 적당히"
+      ],
+      "terms": [
+        {"term": "팬인 (Fan-In)", "desc": "어떤 모듈을 호출하는 상위 모듈의 개수. 높으면 재사용성 좋음"},
+        {"term": "팬아웃 (Fan-Out)", "desc": "어떤 모듈이 호출하는 하위 모듈의 개수. 낮게 유지"},
+        {"term": "공통 모듈 (Common Module)", "desc": "여러 기능·프로그램에서 공통으로 사용하는 모듈. 날짜 처리, 로그 등"},
+        {"term": "정확성 (Correctness)", "desc": "시스템 구현 시 해당 기능이 필요하다는 것을 알 수 있도록 정확히 작성"},
+        {"term": "명확성 (Clarity)", "desc": "해당 기능을 일관되게 이해하고 한 가지로 해석되도록 작성"},
+        {"term": "완전성 (Completeness)", "desc": "시스템 구현을 위해 필요한 모든 것을 기술"},
+        {"term": "일관성 (Consistency)", "desc": "공통 기능 간 상호 충돌이 발생하지 않도록 작성"},
+        {"term": "추적성 (Traceability)", "desc": "기능에 대한 요구사항의 출처, 관련 시스템 등의 관계를 파악할 수 있도록 작성"},
+        {"term": "재사용 (Reuse)", "desc": "이미 개발된 기능을 새 시스템 개발에 다시 사용. 함수·객체/컴포넌트/애플리케이션 수준"}
+      ],
+      "asked": ["2020-1", "2021-2", "2021-3", "2023-2", "2024-1"]
+    },
+    {
+      "title": "코드 설계 (코드의 종류)",
+      "importance": 2,
+      "summary": "데이터를 식별·분류·배열하기 위해 부여하는 코드의 종류와 기능. 예시를 보고 코드 유형(연상·블록·10진 등)을 쓰는 문제가 출제된다.",
+      "points": [
+        "코드의 3대 기능: 식별 기능, 분류 기능, 배열 기능 (+ 표준화, 간소화, 연상, 암호화)",
+        "순차 코드(Sequence): 일련번호 부여. 1, 2, 3 ... 순서 코드",
+        "블록 코드(Block): 공통 특성별로 블록을 나누고 블록 내 일련번호. 구분 코드. 예: 1001~1100 총무부, 1101~1200 영업부",
+        "10진 코드(Decimal): 0~9 10진 분할 반복. 도서 분류(KDC, DDC)",
+        "그룹 분류 코드(Group Classification): 대분류·중분류·소분류로 구분. 예: 1-01-001",
+        "연상 코드(Mnemonic): 명칭·약호와 관계 있는 문자·숫자 사용. 예: TV-40 (40인치 TV), KR, USA",
+        "표의 숫자 코드(Significant Digit): 길이·넓이·무게 등 물리적 수치를 그대로 코드에 적용. 유효 숫자 코드. 예: 120-720-1500 (두께-폭-길이)",
+        "합성 코드(Combined): 두 개 이상의 코드를 조합. 예: 연상 코드 + 순차 코드 (KE-711)",
+        "코드 오류: 사본 오류(Transcription, 한 자리 잘못), 전위 오류(Transposition, 두 자리 바뀜), 생략 오류(Omission), 첨가 오류(Addition), 이중 전위 오류(Double Transposition), 임의 오류(Random)"
+      ],
+      "terms": [
+        {"term": "순차 코드 (Sequence Code)", "desc": "일정 기준에 따라 차례로 일련번호를 부여. 순서 코드"},
+        {"term": "블록 코드 (Block Code)", "desc": "공통 특성 블록으로 구분하고 블록 내 순차 번호 부여. 구분 코드"},
+        {"term": "10진 코드 (Decimal Code)", "desc": "0~9의 10진 분할을 반복. 도서 분류 코드"},
+        {"term": "그룹 분류 코드 (Group Classification Code)", "desc": "대·중·소 분류로 구분하여 각 그룹에 번호 부여"},
+        {"term": "연상 코드 (Mnemonic Code)", "desc": "대상과 관계 있는 문자·숫자를 사용하여 연상하기 쉽게 부여"},
+        {"term": "표의 숫자 코드 (Significant Digit Code)", "desc": "길이·무게 등 물리적 수치를 그대로 코드로 사용. 유효 숫자 코드"},
+        {"term": "합성 코드 (Combined Code)", "desc": "두 개 이상의 코드 방식을 조합"},
+        {"term": "사본 오류 (Transcription Error)", "desc": "한 자리를 잘못 기록. 1234 → 1235"},
+        {"term": "전위 오류 (Transposition Error)", "desc": "인접한 두 자리가 바뀜. 1234 → 1324"},
+        {"term": "생략 오류 (Omission Error)", "desc": "한 자리를 빼고 기록. 1234 → 123"},
+        {"term": "첨가 오류 (Addition Error)", "desc": "한 자리를 추가하여 기록. 1234 → 12345"}
+      ],
+      "asked": ["2021-1", "2022-2", "2023-2"]
+    },
+    {
+      "title": "배치 프로그램 (Batch Program)",
+      "importance": 2,
+      "summary": "사용자 상호작용 없이 일련의 작업을 모아 일괄 처리하는 프로그램. 유형(온디맨드·정기·이벤트)과 필수 요소, 스케줄러(cron, Quartz)를 묻는다.",
+      "points": [
+        "배치 프로그램 유형: 온디맨드 배치(On-Demand, 사용자 요청 시 실행), 정기 배치(정해진 시점에 실행), 이벤트성 배치(사전 정의 조건 충족 시 자동 실행)",
+        "필수 요소: 대용량 데이터, 자동화, 견고성(잘못된 데이터도 처리), 안정성/신뢰성(오류 추적), 성능(지정 시간 내 처리, 다른 애플리케이션 방해 금지)",
+        "배치 스케줄러: 스프링 배치(Spring Batch, Job-Step-Reader/Processor/Writer), Quartz(스케줄러 라이브러리, Scheduler-Job-JobDetail-Trigger), cron(유닉스 스케줄러)",
+        "cron 표현식: 분 시 일 월 요일 [년] 순서. * 모든 값, ? 미지정(일·요일), - 범위, , 열거, / 증분, L 마지막, W 가장 가까운 평일, # n번째 요일",
+        "예: 0 0 12 * * ? → 매일 12시 / 0 15 10 ? * MON-FRI → 월~금 10:15 / 0 0/5 14 * * ? → 매일 14:00~14:55 5분마다"
+      ],
+      "terms": [
+        {"term": "배치 프로그램 (Batch Program)", "desc": "일련의 작업을 사용자 개입 없이 정해진 시점·조건에 일괄 처리"},
+        {"term": "온디맨드 배치 (On-Demand Batch)", "desc": "사용자의 명시적 요청이 있을 때 실행"},
+        {"term": "정기 배치 (Scheduled Batch)", "desc": "정해진 시점(일·주·월)에 정기적으로 실행"},
+        {"term": "이벤트 배치 (Event-driven Batch)", "desc": "사전에 정의한 조건·이벤트가 충족되면 자동 실행"},
+        {"term": "스프링 배치 (Spring Batch)", "desc": "스프링 기반 배치 프레임워크. Job, Step, ItemReader/Processor/Writer"},
+        {"term": "Quartz", "desc": "Java 오픈소스 스케줄러. Scheduler, Job, JobDetail, Trigger"},
+        {"term": "cron", "desc": "UNIX/Linux의 작업 스케줄러. crontab으로 등록"},
+        {"term": "crontab 형식", "desc": "분(0-59) 시(0-23) 일(1-31) 월(1-12) 요일(0-6, 0=일) 명령"}
+      ],
+      "asked": ["2021-1", "2023-2", "2024-3"]
+    },
+    {
+      "title": "프레임워크와 서버 개발 환경",
+      "importance": 2,
+      "summary": "소프트웨어 개발의 뼈대를 제공하는 프레임워크의 특성(모듈화·재사용성·확장성·제어의 역전)과 서버 개발 프레임워크, 개발 도구·환경 구성.",
+      "points": [
+        "프레임워크 특성 4가지: 모듈화(Modularity), 재사용성(Reusability), 확장성(Extensibility), 제어의 역전(Inversion of Control, IoC). 암기: 모재확제",
+        "제어의 역전(IoC): 개발자가 아닌 프레임워크가 애플리케이션 흐름을 제어. 의존성 주입(DI, Dependency Injection)으로 구현",
+        "라이브러리 vs 프레임워크: 라이브러리는 개발자가 호출, 프레임워크는 개발자 코드를 프레임워크가 호출",
+        "서버 개발 프레임워크: Spring(Java, 전자정부 표준 프레임워크 기반), Node.js(JavaScript, 비동기 I/O), Django(Python, MTV), Ruby on Rails, Codeigniter(PHP), Flask, Express",
+        "서버 프로그램 구현 구성: DTO/VO(데이터 전달 객체), DAO(데이터 접근 객체), Service(비즈니스 로직), Controller(요청 처리)",
+        "개발 환경 도구: 구현 도구(Eclipse, IntelliJ, VS Code), 테스트 도구(JUnit, xUnit), 형상 관리 도구(Git, SVN), 빌드 도구(Ant, Maven, Gradle, Jenkins)"
+      ],
+      "terms": [
+        {"term": "프레임워크 (Framework)", "desc": "애플리케이션 개발의 기본 구조·골격과 공통 기능을 제공하는 반제품 형태의 소프트웨어"},
+        {"term": "제어의 역전 (IoC, Inversion of Control)", "desc": "객체 생성과 흐름 제어를 개발자가 아닌 프레임워크가 담당"},
+        {"term": "의존성 주입 (DI, Dependency Injection)", "desc": "객체가 필요한 의존 객체를 직접 생성하지 않고 외부(컨테이너)에서 주입"},
+        {"term": "모듈화 (Modularity)", "desc": "인터페이스로 구현을 캡슐화하여 설계·구현 변경 영향 최소화"},
+        {"term": "재사용성 (Reusability)", "desc": "반복 사용 가능한 컴포넌트를 정의하여 생산성·품질 향상"},
+        {"term": "확장성 (Extensibility)", "desc": "다형성을 통해 인터페이스를 확장하여 다양한 형태에 적용"},
+        {"term": "DTO (Data Transfer Object)", "desc": "계층 간 데이터 전달용 객체. getter/setter"},
+        {"term": "VO (Value Object)", "desc": "값 자체를 표현하는 불변 객체. 읽기 전용"},
+        {"term": "DAO (Data Access Object)", "desc": "DB 접근 로직을 담당하는 객체. CRUD 메서드"},
+        {"term": "Spring", "desc": "Java 기반 오픈소스 프레임워크. IoC, DI, AOP, MVC"},
+        {"term": "Node.js", "desc": "JavaScript 런타임. 이벤트 기반 비동기 I/O 서버 개발"},
+        {"term": "Django", "desc": "Python 웹 프레임워크. MTV(Model-Template-View) 구조"},
+        {"term": "Maven / Gradle", "desc": "Java 빌드 자동화 도구. Maven은 XML(pom.xml), Gradle은 Groovy/Kotlin DSL"},
+        {"term": "Jenkins", "desc": "지속적 통합(CI) 서버. 빌드·테스트·배포 자동화"}
+      ],
+      "asked": ["2021-3", "2022-3"]
+    },
+    {
+      "title": "형상 관리 (SCM)",
+      "importance": 3,
+      "summary": "소프트웨어 개발 과정의 산출물 변경을 체계적으로 추적·통제하는 활동. 절차(식별→통제→감사→기록)와 Git/SVN 명령어를 묻는다.",
+      "points": [
+        "형상 관리 절차: 형상 식별(Identification) → 형상 통제(Control, 변경 요청 평가·승인, CCB) → 형상 감사(Audit) → 형상 기록/보고(Status Accounting). 암기: 식통감기",
+        "형상 관리 도구 유형: 공유 폴더 방식(RCS, SCCS), 클라이언트/서버 방식(CVS, SVN), 분산 저장소 방식(Git, Bitkeeper)",
+        "Git 주요 명령: init(저장소 생성), clone(복제), add(스테이징), commit(지역 저장소 반영), push(원격 업로드), pull(원격 가져와 병합), fetch(가져오기만), branch(분기 생성), checkout(브랜치 전환/파일 복원), merge(병합), log(이력), status(상태), diff(차이), stash(임시 저장), rebase(기준점 변경), tag(태그)",
+        "SVN 주요 명령: import(최초 등록), checkout(가져오기), commit(반영), update(동기화), add, diff, log, revert(되돌리기), merge, branch/tag(copy), trunk(메인 개발 라인)",
+        "Git 영역: 작업 디렉토리(Working Directory) → 스테이징 영역(Staging Area/Index) → 지역 저장소(Local Repository) → 원격 저장소(Remote Repository)",
+        "관련 용어: 체크인(Check-In, 저장소 반영), 체크아웃(Check-Out, 저장소에서 가져오기), 커밋(Commit), 베이스라인(Baseline), 리포지토리(Repository), 브랜치, 머지, 충돌(Conflict)"
+      ],
+      "terms": [
+        {"term": "형상 관리 (SCM, Software Configuration Management)", "desc": "소프트웨어 변경 사항을 체계적으로 추적·통제하여 무결성 유지. 버전 관리 포함"},
+        {"term": "형상 식별 (Configuration Identification)", "desc": "형상 관리 대상(항목)을 식별하고 이름·번호 부여"},
+        {"term": "형상 통제 (Configuration Control)", "desc": "변경 요청을 검토·승인하여 베이스라인에 반영. 형상통제위원회(CCB)"},
+        {"term": "형상 감사 (Configuration Audit)", "desc": "베이스라인의 무결성 평가. 변경이 제대로 이루어졌는지 검증"},
+        {"term": "형상 기록 (Configuration Status Accounting)", "desc": "형상 식별·통제·감사 결과를 기록·보고"},
+        {"term": "Git", "desc": "리누스 토발즈가 개발한 분산 버전 관리 시스템. 지역·원격 저장소"},
+        {"term": "SVN (Subversion)", "desc": "중앙 집중식 클라이언트/서버 버전 관리 시스템. CVS 개선"},
+        {"term": "CVS (Concurrent Versions System)", "desc": "초기 클라이언트/서버 방식 버전 관리 도구"},
+        {"term": "체크인 (Check-In)", "desc": "수정한 파일을 저장소에 반영(SVN commit)"},
+        {"term": "체크아웃 (Check-Out)", "desc": "저장소에서 파일을 받아 작업 공간에 복사"},
+        {"term": "커밋 (Commit)", "desc": "변경 사항을 저장소에 확정 반영"},
+        {"term": "git clone", "desc": "원격 저장소를 지역에 복제"},
+        {"term": "git add", "desc": "변경 파일을 스테이징 영역에 추가"},
+        {"term": "git commit", "desc": "스테이징된 변경을 지역 저장소에 기록"},
+        {"term": "git push", "desc": "지역 저장소 커밋을 원격 저장소에 업로드"},
+        {"term": "git pull", "desc": "원격 저장소 변경을 가져와 병합(fetch + merge)"},
+        {"term": "git fetch", "desc": "원격 저장소 변경을 가져오지만 병합하지 않음"},
+        {"term": "git branch", "desc": "브랜치 생성·목록·삭제"},
+        {"term": "git checkout", "desc": "브랜치 전환 또는 파일을 특정 버전으로 복원. switch/restore로 분리됨"},
+        {"term": "git merge", "desc": "다른 브랜치의 변경을 현재 브랜치에 병합"},
+        {"term": "git rebase", "desc": "브랜치의 기준(base) 커밋을 다른 커밋으로 변경하여 이력 정리"},
+        {"term": "git stash", "desc": "작업 중인 변경을 임시 저장"},
+        {"term": "svn update", "desc": "저장소의 최신 변경을 작업 공간에 반영"},
+        {"term": "svn revert", "desc": "작업 공간의 변경을 취소하고 원래 상태로"},
+        {"term": "trunk / branches / tags", "desc": "SVN 표준 디렉토리. 메인 개발 라인 / 분기 / 릴리즈 스냅샷"}
+      ],
+      "asked": ["2020-2", "2021-1", "2022-1", "2023-1", "2023-3", "2024-2"]
+    }
+  ]
+}
