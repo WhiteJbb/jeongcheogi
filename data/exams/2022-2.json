@@ -1,0 +1,405 @@
+{
+  "year": 2022,
+  "round": 2,
+  "date": "2022-07-24",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "데이터베이스에 대한 다음 설명에서 괄호에 공통으로 들어갈 알맞은 용어를 쓰시오.\n\n- (     )은 관계 데이터의 연산을 표현하는 방법으로, 관계 데이터 모델의 제안자인 코드(E. F. Codd)가 수학의 술어 해석(Predicate Calculus)에 기반을 두고 관계 데이터베이스를 위해 제안했다.\n- 원하는 정보가 무엇이라는 것만 정의하는 비절차적 특성을 지니며, 원하는 정보를 정의할 때 계산 수식을 사용한다.\n- 튜플 해석식을 사용하는 튜플 (     )과 도메인 해석식을 사용하는 도메인 (     )으로 구분된다.",
+      "answer": [
+        "관계해석",
+        "관계 해석",
+        "Relational Calculus"
+      ],
+      "explanation": "관계해석(Relational Calculus)은 '무엇을 원하는지'만 기술하는 비절차적 언어로 술어 논리에 기반하며 튜플 관계해석과 도메인 관계해석으로 나뉜다.\n반대로 관계대수(Relational Algebra)는 '어떻게 구하는지'를 연산 순서로 기술하는 절차적 언어다.\n'비절차적', '술어 해석', '튜플/도메인'이 힌트다.",
+      "keywords": [
+        "관계해석",
+        "관계대수",
+        "비절차적"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 2,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "빈칸",
+      "question": "암호화 알고리즘에 대한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 쓰시오.\n\n① 스위스의 라이(Lai)와 메시(Messey)가 1990년 PES를 발표하고 이후 이를 개선한 IPES를 발표하였다. 128비트의 Key를 사용하여 64비트 블록을 8라운드로 암호화하는 알고리즘이며, 현재는 ( ① )라고 불린다.\n② ( ② )는 미국 국가안전보장국(NSA)에서 개발한 블록 암호화 알고리즘으로, 클리퍼 칩(Clipper Chip)이라는 IC 칩에 내장되어 있다. 80비트의 Key를 사용하여 64비트 블록을 32라운드로 암호화하며, 주로 전화기와 같은 음성 통신 장비에 삽입되어 음성 데이터를 암호화한다.",
+      "answer": [
+        "① IDEA, ② SKIPJACK",
+        "① IDEA, ② Skipjack",
+        "① International Data Encryption Algorithm, ② Skipjack"
+      ],
+      "blanks": [
+        "IDEA",
+        "SKIPJACK"
+      ],
+      "explanation": "IDEA(International Data Encryption Algorithm)는 PES→IPES를 거쳐 1991년 완성된 대칭키 블록 암호로 64비트 블록, 128비트 키, 8라운드다.\nSKIPJACK은 NSA가 클리퍼 칩에 내장한 블록 암호로 64비트 블록, 80비트 키, 32라운드이며 음성 암호화에 쓰였다.\n블록 크기·키 길이·라운드 수와 '스위스/클리퍼 칩' 키워드로 구분한다.",
+      "keywords": [
+        "IDEA",
+        "SKIPJACK",
+        "대칭키 암호",
+        "블록 암호"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 3,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음은 <제품>(제품명, 단가, 제조사) 테이블을 대상으로 'H' 제조사에서 생산한 제품들의 단가보다 높은 단가를 가진 제품의 정보를 조회하는 SQL문이다. 괄호에 알맞은 답을 적어 SQL문을 완성하시오.",
+      "code": "SELECT 제품명, 단가, 제조사\nFROM 제품\nWHERE 단가 > (    ) (SELECT 단가 FROM 제품 WHERE 제조사 = 'H');",
+      "answer": [
+        "ALL"
+      ],
+      "explanation": "하위 질의가 여러 행(H사 제품들의 단가)을 반환하므로 단일 비교 연산자만으로는 비교할 수 없다.\n'모든 단가보다 큰'이라는 조건은 > ALL (서브쿼리)로 표현하며, ANY/SOME은 '하나라도 크면'이 된다.\n따라서 WHERE 단가 > ALL (SELECT 단가 FROM 제품 WHERE 제조사 = 'H')가 된다.",
+      "keywords": [
+        "서브쿼리",
+        "ALL",
+        "ANY"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 4,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 <TABLE>을 참조하여 SQL문을 실행했을 때 출력되는 결과를 쓰시오. (<TABLE>에 표시된 'NULL'은 값이 없음을 의미한다.)\n\n<TABLE>\nINDEX | COL1 | COL2\n1 | 2 | NULL\n2 | 4 | 6\n3 | 3 | 5\n4 | 6 | 3\n5 | NULL | 3",
+      "code": "SELECT COUNT(COL2)\nFROM TABLE\nWHERE COL1 IN (2, 3)\n    OR COL2 IN (3, 5);",
+      "answer": [
+        "3"
+      ],
+      "explanation": "WHERE 조건(COL1이 2 또는 3, 또는 COL2가 3 또는 5)을 만족하는 행은 INDEX 1, 3, 4, 5 네 개다.\nCOUNT(COL2)는 COL2가 NULL인 행을 세지 않으므로 INDEX 1이 제외되어 3이 된다.\nCOUNT(*)라면 NULL 포함 4가 되는 점이 함정이다. 복원본에 따라 테이블 값이 달라(COL1=5, COL2=5 등) 정답이 4로 제시된 자료도 있다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "COUNT",
+        "NULL",
+        "IN"
+      ],
+      "source": "https://github.com/jiho6367-design/information-processing-practical/tree/main/pdf"
+    },
+    {
+      "no": 5,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "네트워크 보안에 대한 다음 설명에서 괄호에 공통으로 들어갈 알맞은 용어를 영문 약어로 쓰시오.\n\n- (     )은 인터넷 등 통신 사업자의 공중 네트워크와 암호화 기술을 이용하여 사용자가 마치 자신의 전용 회선을 사용하는 것처럼 해주는 보안 솔루션이다.\n- 암호화된 규격을 통해 인터넷망을 전용선의 사설망처럼 이용하므로 비용 부담을 줄일 수 있다.\n- (     )을 사용하면 두 장치 및 네트워크 사이에 암호화된 보안 터널이 생성되며, 터널에 사용되는 프로토콜에 따라 SSL (     )과 IPsec (     )으로 불린다.",
+      "answer": [
+        "VPN",
+        "Virtual Private Network",
+        "가상사설망",
+        "가상 사설망"
+      ],
+      "explanation": "VPN(Virtual Private Network)은 공중망 위에 암호화된 터널을 만들어 전용선처럼 안전하게 통신하는 기술이다.\n터널링 프로토콜에 따라 SSL VPN, IPsec VPN으로 나뉜다.\n'공중망', '전용 회선처럼', '터널'이 키워드다.",
+      "keywords": [
+        "VPN",
+        "터널링",
+        "IPsec"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 6,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "객체지향에 대한 다음 설명에 해당하는 용어를 <보기>에서 찾아 쓰시오.\n\n- 자신이 사용하지 않는 인터페이스와 의존 관계를 맺거나 영향을 받지 않아야 한다는 객체지향 설계 원칙 중 하나이다.\n- 예를 들어 프린터, 팩스, 복사 기능을 가진 복합기의 경우 3가지 기능을 모두 가진 범용 인터페이스보다는 프린터 인터페이스, 팩스 인터페이스, 복사 인터페이스로 분리함으로써 하나의 기능 변경으로 다른 기능이 영향을 받지 않도록 해야 한다.\n\n<보기> ㉠ SRP ㉡ SOLID ㉢ OCP ㉣ LSP ㉤ ISP ㉥ DIP ㉦ OTP ㉧ PNP",
+      "answer": [
+        "ISP",
+        "Interface Segregation Principle",
+        "인터페이스 분리 원칙",
+        "㉤"
+      ],
+      "explanation": "ISP(인터페이스 분리 원칙)는 클라이언트가 자신이 사용하지 않는 메서드에 의존하지 않도록 큰 인터페이스를 작은 단위로 분리하라는 원칙이다.\nSOLID: SRP(단일 책임), OCP(개방-폐쇄), LSP(리스코프 치환), ISP(인터페이스 분리), DIP(의존 역전).\n'사용하지 않는 인터페이스', '분리'가 힌트다.",
+      "keywords": [
+        "SOLID",
+        "ISP",
+        "객체지향 설계 원칙"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 7,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "public class Test {\n    public static void main(String[] args) {\n        int i = 3, k = 1;\n        switch(i) {\n        case 1: k++;\n        case 2: k -= 3;\n        case 3: k = 0;\n        case 4: k += 3;\n        case 5: k -= 10;\n        default: k--;\n        }\n        System.out.print(k);\n    }\n}",
+      "answer": [
+        "-8"
+      ],
+      "explanation": "switch(i)에서 i = 3이므로 case 3부터 실행되는데, break가 없어 아래 case들이 모두 연달아(fall-through) 실행된다.\nk = 0 → k += 3 → 3 → k -= 10 → -7 → default: k-- → -8.\n2020년 1회에 출제된 문제와 동일한 유형이다.",
+      "keywords": [
+        "switch",
+        "fall-through",
+        "break"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 8,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "#include <stdio.h>\n\nstruct A {\n    int n;\n    int g;\n};\n\nint main() {\n    struct A st[2];\n    for (int i = 0; i < 2; i++) {\n        st[i].n = i;\n        st[i].g = i + 1;\n    }\n    printf(\"%d\", st[0].n + st[1].g);\n}",
+      "answer": [
+        "2"
+      ],
+      "explanation": "구조체 A 배열 st[2]를 선언하고 반복문에서 st[i].n = i, st[i].g = i + 1을 저장한다.\nst[0] = {0, 1}, st[1] = {1, 2}가 되므로 st[0].n + st[1].g = 0 + 2 = 2.",
+      "keywords": [
+        "구조체",
+        "구조체 배열"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 9,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "서브네팅(Subnetting)에 대한 다음 설명에서 괄호에 들어갈 알맞은 답을 쓰시오.\n\n현재 IP 주소가 192.168.1.132이고 서브넷 마스크가 255.255.255.192일 때, 네트워크 주소는 192.168.1.( ① )이고, 해당 네트워크에서 네트워크 주소와 브로드캐스트 주소를 제외한 사용 가능 호스트의 수는 ( ② )개이다.",
+      "answer": [
+        "① 128, ② 62"
+      ],
+      "blanks": [
+        "128",
+        "62"
+      ],
+      "explanation": "255.255.255.192는 마지막 옥텟이 11000000으로 서브넷 비트 2개 → 네트워크 4개, 각 네트워크 64개 주소(0~63, 64~127, 128~191, 192~255).\n.132는 128~191 블록에 속하므로 네트워크 주소는 192.168.1.128이다.\n64개 중 네트워크 주소와 브로드캐스트 주소를 빼면 사용 가능 호스트는 62개다. 복원본에 따라 IP가 139.127.19.132로 제시되기도 하며 정답은 같다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "서브넷 마스크",
+        "네트워크 주소",
+        "호스트 수"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 10,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "question": "애플리케이션 테스트에 대한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 테스트를 쓰시오.\n\n인수 테스트는 개발한 소프트웨어가 사용자의 요구사항을 충족하는지에 중점을 두고 테스트하는 방법이다.\n① ( ) 테스트: 선정된 최종 사용자가 여러 명의 사용자 앞에서 행하는 테스트 기법으로, 실제 업무를 가지고 사용자가 직접 테스트한다. 개발자는 참여하지 않으며 통제되지 않은 환경에서 수행된다.\n② ( ) 테스트: 개발자의 장소에서 사용자가 개발자 앞에서 행하는 테스트 기법으로, 통제된 환경에서 오류와 사용상의 문제점을 사용자와 개발자가 함께 확인하면서 기록한다.",
+      "answer": [
+        "① 베타 테스트, ② 알파 테스트",
+        "① 베타, ② 알파",
+        "① Beta Test, ② Alpha Test",
+        "① Beta, ② Alpha"
+      ],
+      "blanks": [
+        "베타 테스트",
+        "알파 테스트"
+      ],
+      "explanation": "알파 테스트는 개발자 장소에서 개발자가 지켜보며 사용자가 수행하는 통제된 환경의 인수 테스트다.\n베타 테스트는 선정된 최종 사용자가 실제 환경에서 개발자 없이 수행하고 결과를 보고하는 테스트다.\n'개발자 앞에서/통제된' → 알파, '사용자가 직접/실제 업무' → 베타로 구분한다.",
+      "keywords": [
+        "인수 테스트",
+        "알파 테스트",
+        "베타 테스트"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 11,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 테스트를 <보기>에서 찾아 쓰시오.\n\n- 통합 테스트로 인해 변경된 모듈이나 컴포넌트에 새로운 오류가 있는지 확인하는 테스트이다.\n- 이미 테스트된 프로그램의 테스팅을 반복하는 것이다.\n- 수정한 모듈이나 컴포넌트가 다른 부분에 영향을 미치는지, 오류가 생기지 않았는지 테스트하여 새로운 오류가 발생하지 않음을 보증하기 위해 반복 테스트한다.\n\n<보기> ㉠ Integration ㉡ Big Bang ㉢ System ㉣ Acceptance ㉤ Unit ㉥ Regression ㉦ White Box ㉧ Black Box",
+      "answer": [
+        "Regression",
+        "회귀 테스트",
+        "회귀",
+        "Regression Test",
+        "㉥"
+      ],
+      "explanation": "회귀 테스트(Regression Test)는 오류 수정이나 변경 후 그 변경이 기존 기능에 새로운 결함을 일으키지 않았는지 확인하기 위해 이미 수행한 테스트를 반복하는 것이다.\n'수정 후 반복', '새로운 오류 유입 확인'이 키워드다.",
+      "keywords": [
+        "회귀 테스트",
+        "Regression"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 12,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "다음은 <EMPLOYEE> 릴레이션에 대해 관계 대수식 πTTL(EMPLOYEE)을 수행했을 때 출력되는 <결과>이다. <결과>의 각 괄호(①~⑤)에 들어갈 알맞은 답을 쓰시오.\n\n<EMPLOYEE>\nINDEX | AGE | TTL\n1 | 48 | 부장\n2 | 25 | 대리\n3 | 41 | 과장\n4 | 36 | 차장\n\n<결과>\n( ① )\n( ② )\n( ③ )\n( ④ )\n( ⑤ )",
+      "answer": [
+        "① TTL, ② 부장, ③ 대리, ④ 과장, ⑤ 차장"
+      ],
+      "blanks": [
+        "TTL",
+        "부장",
+        "대리",
+        "과장",
+        "차장"
+      ],
+      "explanation": "π(프로젝트)는 릴레이션에서 지정한 속성(열)만 추출하는 관계대수 연산이다.\nπTTL(EMPLOYEE)는 TTL 열만 뽑으므로 결과 릴레이션은 속성명 TTL과 그 값 부장, 대리, 과장, 차장이 된다.\n첫 칸이 속성명 TTL이라는 점이 함정이다. σ는 행 선택(SELECT), ⋈는 조인이다.",
+      "keywords": [
+        "관계대수",
+        "PROJECT",
+        "π"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 13,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "a = \"REMEMBER NOVEMBER\"\nb = a[0:3] + a[12:16]\nc = \"R AND %s\" % \"STR\"\nprint(b + c)",
+      "answer": [
+        "REMEMBER AND STR"
+      ],
+      "explanation": "a[0:3]은 인덱스 0~2 'REM', a[12:16]은 인덱스 12~15 'EMBE'이므로 b = 'REMEMBE'.\nc = 'R AND %s' % 'STR' 은 %s에 STR이 들어가 'R AND STR'.\nb + c = 'REMEMBER AND STR'. 공백 없이 쓰면 오답 처리된다.",
+      "keywords": [
+        "문자열 슬라이싱",
+        "서식 문자열"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 14,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "경로 제어 프로토콜(Routing Protocol)에 대한 다음 설명에서 괄호(①~④)에 들어갈 알맞은 용어를 <보기>에서 찾아 쓰시오.\n\n경로 제어 프로토콜은 크게 자율 시스템(AS) 내부의 라우팅에 사용되는 ( ① )와 자율 시스템 간의 라우팅에 사용되는 ( ② )로 구분할 수 있다.\n( ① )는 소규모 동종 자율 시스템에서 효율적인 RIP와, 대규모 자율 시스템에서 많이 사용되는 ( ③ )로 나누어진다. ( ③ )는 링크 상태(Link State)를 실시간으로 반영하여 최단 경로로 라우팅을 지원한다.\n( ④ )는 ( ② )의 단점을 보완하여 만들어진 라우팅 프로토콜로, 처음 연결될 때는 전체 라우팅 테이블을 교환하고 이후에는 변화된 정보만 교환한다.\n\n<보기> ㉠ BGP ㉡ AS ㉢ HOP ㉣ OSPF ㉤ NAT ㉥ ISP ㉦ EGP ㉧ IGP",
+      "answer": [
+        "① IGP, ② EGP, ③ OSPF, ④ BGP"
+      ],
+      "blanks": [
+        "IGP",
+        "EGP",
+        "OSPF",
+        "BGP"
+      ],
+      "explanation": "IGP(Interior Gateway Protocol)는 AS 내부 라우팅으로 RIP(거리 벡터, 홉 수 15 제한)과 OSPF(링크 상태, 대규모)가 대표적이다.\nEGP(Exterior Gateway Protocol)는 AS 간 라우팅이며, 그 단점을 보완한 것이 BGP로 초기엔 전체 테이블, 이후엔 변경분만 교환한다.\n내부→IGP(RIP/OSPF), 외부→EGP(BGP)로 정리한다.",
+      "keywords": [
+        "라우팅 프로토콜",
+        "IGP",
+        "EGP",
+        "OSPF",
+        "BGP"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 15,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "#include <stdio.h>\n\nint len(char* p);\n\nint main() {\n    char* p1 = \"2022\";\n    char* p2 = \"202207\";\n    int a = len(p1);\n    int b = len(p2);\n    printf(\"%d\", a + b);\n}\n\nint len(char* p) {\n    int r = 0;\n    while (*p != '\\0') {\n        p++;\n        r++;\n    }\n    return r;\n}",
+      "answer": [
+        "10"
+      ],
+      "explanation": "len()은 포인터가 가리키는 문자가 '\\0'(널 문자)이 아닐 때까지 포인터와 카운터를 1씩 증가시키며 문자열 길이를 구하는 함수다.\n\"2022\"는 4, \"202207\"은 6이므로 a + b = 10.",
+      "keywords": [
+        "문자열",
+        "포인터",
+        "널 문자"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 16,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "#include <stdio.h>\n\nint main() {\n    int a[4] = { 0, 2, 4, 8 };\n    int b[3];\n    int* p;\n    int sum = 0;\n    for (int i = 1; i < 4; i++) {\n        p = a + i;\n        b[i - 1] = *p - a[i - 1];\n        sum = sum + b[i - 1] + a[i];\n    }\n    printf(\"%d\", sum);\n}",
+      "answer": [
+        "22"
+      ],
+      "explanation": "p = a + i 이므로 *p는 a[i]다. b[i-1] = a[i] - a[i-1]로 인접 차이를 저장하고 sum에 b[i-1] + a[i]를 누적한다.\ni=1: b[0]=2, sum=2+2=4 / i=2: b[1]=2, sum=4+2+4=10 / i=3: b[2]=4, sum=10+4+8=22.\n따라서 22가 출력된다.",
+      "keywords": [
+        "포인터",
+        "배열",
+        "포인터 연산"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "class Test {\n    public static void main(String args[]) {\n        cond obj = new cond(3);\n        obj.a = 5;\n        int b = obj.func();\n        System.out.print(obj.a + b);\n    }\n}\n\nclass cond {\n    int a;\n    public cond(int a) {\n        this.a = a;\n    }\n    public int func() {\n        int b = 1;\n        for (int i = 1; i < a; i++)\n            b += a * i;\n        return a + b;\n    }\n}",
+      "answer": [
+        "61"
+      ],
+      "explanation": "생성자로 a = 3이 되지만 바로 obj.a = 5로 덮어쓴다.\nfunc()에서 b = 1부터 i = 1~4 동안 b += 5 * i → 1 + 5 + 10 + 15 + 20 = 51, 반환값은 a + b = 5 + 51 = 56.\n출력은 obj.a + b = 5 + 56 = 61. 복원본에 따라 클래스명이 Conv로 제시되기도 한다.",
+      "keywords": [
+        "생성자",
+        "this",
+        "멤버 변수"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 18,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "함수적 종속(Functional Dependency)에 대한 다음 설명에서 괄호(①~③)에 들어갈 알맞은 용어를 <보기>에서 찾아 쓰시오. (단, 테이블 <R>의 속성 '학생'과 '학과'의 밑줄은 키(Key)임을 의미한다.)\n\n<R>\n학생 | 학과 | 성적 | 학년\n이순신 | 컴퓨터공학 | A+ | 2\n이순신 | 전기공학 | B | 2\n유관순 | 경제학 | B+ | 1\n강감찬 | 문예창작 | C | 3\n강감찬 | 한국사 | C+ | 3\n홍길동 | 영문학 | B | 4\n\n- 테이블 <R>에서 '성적'은 기본키인 {학생, 학과}에 대해 ( ① ) Functional Dependency이다.\n- 테이블 <R>에서 '학년'은 기본키인 {학생, 학과} 중 '학생'만으로 식별이 가능하므로 기본키에 대해 ( ② ) Functional Dependency이다.\n- 임의의 테이블에 속성 A, B, C가 있을 때 A→B이고 B→C일 때 A→C인 관계는 ( ③ ) Functional Dependency이다.\n\n<보기> ㉠ Hybrid ㉡ Multi Valued ㉢ Transitive ㉣ Full ㉤ Defined ㉥ Natural ㉦ Relational ㉧ Partial",
+      "answer": [
+        "① Full, ② Partial, ③ Transitive",
+        "① 완전 함수 종속, ② 부분 함수 종속, ③ 이행 함수 종속",
+        "① 완전, ② 부분, ③ 이행"
+      ],
+      "blanks": [
+        "Full",
+        "Partial",
+        "Transitive"
+      ],
+      "explanation": "완전 함수 종속(Full)은 기본키 전체({학생, 학과})에 의해서만 결정되는 경우(성적), 부분 함수 종속(Partial)은 기본키의 일부(학생)만으로 결정되는 경우(학년)다.\n이행 함수 종속(Transitive)은 A→B, B→C일 때 A→C가 성립하는 관계다.\n부분 종속 제거가 2NF, 이행 종속 제거가 3NF다.",
+      "keywords": [
+        "함수적 종속",
+        "완전 함수 종속",
+        "부분 함수 종속",
+        "이행 함수 종속"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 19,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "인터넷에 대한 다음 설명에서 괄호(①~③)에 들어갈 알맞은 용어를 <보기>에서 찾아 쓰시오.\n\n인터넷이란 TCP/IP 프로토콜을 기반으로 하여 전 세계 수많은 컴퓨터와 네트워크들이 연결된 광범위한 컴퓨터 통신망이다.\n① ( ): 월드 와이드 웹(WWW)에서 HTML 문서를 송수신하기 위한 표준 프로토콜로, GET과 POST 메소드를 통해 메시지를 주고받는다.\n② ( ): 다른 문서나 그림으로 이동할 수 있는 연결을 가지고 있는 텍스트를 의미한다.\n③ ( ): 인터넷의 표준 문서인 하이퍼텍스트 문서를 만들기 위해 사용하는 언어이다.\n\n<보기> ㉠ UDDI ㉡ XML ㉢ WSDL ㉣ Hypertext ㉤ DHTML ㉥ HTML ㉦ SOAP ㉧ HTTP",
+      "answer": [
+        "① HTTP, ② Hypertext, ③ HTML",
+        "① HTTP, ② 하이퍼텍스트, ③ HTML"
+      ],
+      "blanks": [
+        "HTTP",
+        "Hypertext",
+        "HTML"
+      ],
+      "explanation": "HTTP는 웹 서버와 브라우저 간에 하이퍼텍스트 문서를 전송하는 프로토콜(GET/POST 메소드)이다.\nHypertext는 링크로 다른 문서로 이동할 수 있는 텍스트, HTML은 그 하이퍼텍스트 문서를 만드는 마크업 언어다.\nUDDI/WSDL/SOAP는 웹 서비스 관련 용어로 오답 보기다.",
+      "keywords": [
+        "HTTP",
+        "Hypertext",
+        "HTML"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    },
+    {
+      "no": 20,
+      "subject": "서버 프로그램 구현",
+      "type": "빈칸",
+      "question": "다음의 모듈 관계를 표현한 시스템 구조도를 참고하여 모듈 F의 팬인(Fan-In)과 팬아웃(Fan-Out)을 구하시오.\n\n(시스템 구조도 그림은 복원되지 않았다. 그림에서 모듈 F는 상위 모듈 3개로부터 호출되고, 하위 모듈 2개를 호출하는 구조이다.)\n① 팬인(Fan-In):\n② 팬아웃(Fan-Out):",
+      "answer": [
+        "① 3, ② 2",
+        "Fan-In: 3, Fan-Out: 2",
+        "팬인 3, 팬아웃 2"
+      ],
+      "blanks": [
+        "3",
+        "2"
+      ],
+      "explanation": "팬인(Fan-In)은 해당 모듈을 제어(호출)하는 상위 모듈의 수, 팬아웃(Fan-Out)은 해당 모듈이 제어(호출)하는 하위 모듈의 수다.\n구조도에서 F로 들어오는 화살표가 3개, F에서 나가는 화살표가 2개이므로 팬인 3, 팬아웃 2.\n좋은 설계는 팬인은 높게, 팬아웃은 낮게(일반적으로 7 이하) 유지한다. 원 문제는 그림으로 제시되었다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "팬인",
+        "팬아웃",
+        "모듈 설계"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 2회/흙기사"
+    }
+  ]
+}

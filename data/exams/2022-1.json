@@ -1,0 +1,409 @@
+{
+  "year": 2022,
+  "round": 1,
+  "date": "2022-05-07",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 RAID 레벨을 쓰시오.\n\n- 두 개 이상의 하드디스크를 병렬로 연결해 하나의 디스크처럼 사용하는 기술로, 패리티 없이 스트라이프(Stripe) 방식으로 구현하여 I/O 속도가 빠르다.\n- 데이터를 블록 단위로 분할하여 여러 디스크에 분산 저장하므로 디스크 수가 늘수록 입출력 속도와 용량이 배로 증가하지만, 디스크 하나만 손상되어도 전체 데이터를 사용할 수 없다.",
+      "answer": [
+        "RAID-0",
+        "RAID 0",
+        "RAID0",
+        "0",
+        "Level 0",
+        "레벨 0",
+        "RAID 레벨 0"
+      ],
+      "explanation": "RAID 0은 패리티나 미러 없이 데이터를 블록 단위로 여러 디스크에 분산(스트라이핑)하는 방식이다.\n병렬 입출력으로 속도와 용량은 디스크 수에 비례해 늘어나지만 중복 정보가 없어 한 디스크 장애로 전체 데이터가 유실된다.\nRAID 1(미러링), RAID 5(분산 패리티)와 구분해서 기억한다.",
+      "keywords": [
+        "RAID",
+        "스트라이핑",
+        "RAID 0"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 2,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "다음은 로그 기반 회복 기법에서 사용되는 DB 트랜잭션 연산에 대한 설명이다. 각 설명에 해당하는 연산을 <보기>에서 찾아 쓰시오.\n\n① 데이터베이스가 비정상 종료되었을 때 로그를 분석하여 시작(start)과 완료(commit) 기록이 모두 있는 트랜잭션의 작업을 재실행한다. 즉 해당 데이터 항목의 이전 값을 이후 값으로 변경한다.\n② 로그에 시작(start) 기록은 있지만 완료(commit) 기록이 없는 트랜잭션이 작업한 내용을 모두 취소한다. 즉 해당 데이터 항목의 이후 값을 이전 값으로 되돌린다.\n\n<보기> ㉠ ROLLBACK ㉡ UNDO ㉢ LOG ㉣ COMMIT ㉤ REDO ㉥ RECOVERY ㉦ BACKUP ㉧ CHECK",
+      "answer": [
+        "① REDO, ② UNDO",
+        "① 재실행, ② 취소"
+      ],
+      "blanks": [
+        "REDO",
+        "UNDO"
+      ],
+      "explanation": "REDO는 commit까지 끝난 트랜잭션의 결과를 로그를 이용해 다시 반영(이전 값→이후 값)하는 연산이다.\nUNDO는 commit되지 못한 트랜잭션이 남긴 변경을 로그를 이용해 원래 값으로 되돌리는(이후 값→이전 값) 연산이다.\n장애 회복 시 로그를 검사하여 완료된 것은 REDO, 미완료된 것은 UNDO 한다.",
+      "keywords": [
+        "REDO",
+        "UNDO",
+        "로그 기반 회복"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 3,
+      "subject": "데이터 입출력 구현",
+      "type": "서술",
+      "question": "데이터의 중복으로 인해 테이블 조작 시 문제가 발생하는 현상을 이상(Anomaly)이라고 한다. 이상 중 삭제 이상(Deletion Anomaly)에 대해 간략히 서술하시오.",
+      "answer": [
+        "테이블에서 튜플을 삭제할 때 의도와는 상관없는 값들도 함께 삭제되는 현상",
+        "데이터를 삭제할 때 원하지 않는 다른 데이터도 함께 삭제되는 현상",
+        "튜플 삭제 시 삭제하려는 정보 외의 다른 정보까지 함께 삭제되어 정보가 손실되는 현상"
+      ],
+      "explanation": "삭제 이상은 한 튜플을 삭제할 때 그 튜플에 함께 저장돼 있던 다른 필요한 정보까지 연쇄적으로 삭제되는 현상이다.\n예를 들어 학생-수강 정보가 한 테이블에 있을 때 수강 취소를 위해 튜플을 지우면 학생 정보도 사라진다.\n삽입 이상, 갱신 이상과 함께 정규화로 해결한다. 채점 시 '삭제', '원하지 않는(의도하지 않은) 다른 정보도 함께 삭제'가 핵심 키워드다.",
+      "keywords": [
+        "이상 현상",
+        "삭제 이상",
+        "정규화"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 4,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 보안 프로토콜을 영문 약어로 쓰시오.\n\n- IEEE 802.11 무선 네트워킹에서 사용되는 보안 프로토콜로, 임시 키 무결성 프로토콜이라고도 한다.\n- IEEE 802.11i 작업 그룹과 Wi-Fi Alliance가 WEP를 대체하기 위해 개발하였다.\n- 기존 하드웨어를 교체하지 않고 WEP의 취약점을 개선하기 위해 암호 알고리즘의 입력 키 길이를 128비트로 늘리고, 패킷당 키 할당·키 값 재설정 등 키 관리 방식을 개선하였다.",
+      "answer": [
+        "TKIP",
+        "Temporal Key Integrity Protocol"
+      ],
+      "explanation": "TKIP(Temporal Key Integrity Protocol)는 WEP의 취약한 RC4 키 관리를 보완하기 위해 만들어진 무선랜 보안 프로토콜로 WPA에 채택되었다.\n패킷마다 다른 키를 사용하고 128비트 키, 메시지 무결성 검사(MIC)를 도입했다.\n'임시 키 무결성', 'WEP 보완', '하드웨어 교체 없이'가 힌트 키워드다.",
+      "keywords": [
+        "TKIP",
+        "WEP",
+        "무선랜 보안"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 5,
+      "subject": "화면 설계",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 사용자 인터페이스(UI) 용어를 영문 약어로 쓰시오.\n\n키보드나 마우스와 같은 장치 없이 말이나 행동, 감정과 같은 인간의 자연스러운 표현으로 컴퓨터나 장치를 제어하는 인터페이스이다. 시리(Siri), 빅스비(Bixby) 같은 음성 비서에 쓰는 자연어 명령이나 휴대폰·태블릿의 터치 등이 여기에 해당한다.",
+      "answer": [
+        "NUI",
+        "Natural User Interface"
+      ],
+      "explanation": "NUI(Natural User Interface)는 터치, 음성, 제스처 등 사람의 자연스러운 행동으로 조작하는 인터페이스다.\nCLI(명령어), GUI(그래픽), NUI(자연어·행동), OUI(유기적) 순서로 UI 유형을 함께 기억한다.",
+      "keywords": [
+        "NUI",
+        "UI 유형"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 6,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "question": "소스 코드 품질 분석 도구에 대한 다음 설명에서 괄호에 해당하는 용어를 <보기>에서 찾아 쓰시오.\n\n① 작성한 소스 코드를 실행하지 않고 코딩 표준, 코딩 스타일, 결함 등을 확인하는 코드 분석 도구이다.\n② 소스 코드를 직접 실행하여 프로그램의 동작이나 반응을 추적·보고하는 분석 도구로, 메모리 누수·스레드 결함 등을 찾아내며 프로그램 모니터링이나 스냅샷 생성 기능을 포함한다.\n\n<보기> ㉠ Static Analysis ㉡ Running Analysis ㉢ Test Execution ㉣ Performance ㉤ Dynamic Analysis ㉥ Test Control ㉦ Test Harness ㉧ Test Monitoring",
+      "answer": [
+        "① Static Analysis, ② Dynamic Analysis",
+        "① 정적 분석, ② 동적 분석",
+        "① 정적 분석 도구, ② 동적 분석 도구"
+      ],
+      "blanks": [
+        "Static Analysis",
+        "Dynamic Analysis"
+      ],
+      "explanation": "정적 분석(Static Analysis)은 코드를 실행하지 않고 코딩 표준, 복잡도, 잠재 결함을 점검한다(pmd, cppcheck, SonarQube 등).\n동적 분석(Dynamic Analysis)은 프로그램을 실제 실행하면서 메모리 누수, 스레드 결함 등을 추적한다(Avalanche, Valgrind 등).\n'실행하지 않고'→정적, '실행하여'→동적으로 구분한다.",
+      "keywords": [
+        "정적 분석",
+        "동적 분석",
+        "소스 코드 품질 분석"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 7,
+      "subject": "인터페이스 구현",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 테스트 도구(프레임워크)를 영문으로 쓰시오.\n\nKent Beck과 Erich Gamma 등이 개발한 자바 프로그래밍 언어용 유닛 테스트 프레임워크로 xUnit 계열의 한 종류다. 같은 테스트 코드를 여러 번 작성하지 않게 도와주며, 테스트마다 예상 결과를 기억할 필요가 없는 자동화된 해법을 제공한다.",
+      "answer": [
+        "JUnit"
+      ],
+      "explanation": "JUnit은 xUnit 계열의 Java 단위 테스트 프레임워크로, 어노테이션(@Test)과 assert 메서드로 테스트를 자동화한다.\nxUnit 계열은 언어별로 JUnit(Java), CppUnit(C++), NUnit(.NET), PyUnit(Python) 등이 있다.\n'자바', 'xUnit', '단위 테스트'가 힌트다.",
+      "keywords": [
+        "JUnit",
+        "xUnit",
+        "단위 테스트"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 8,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "다음 중 블랙박스 테스트 기법에 해당하는 것을 모두 골라 기호로 쓰시오.\n\n㉠ Base Path Testing ㉡ Condition Testing ㉢ Boundary Value Analysis ㉣ Equivalence Partitioning ㉤ Data Flow Testing ㉥ Cause-Effect Graph ㉦ Branch Coverage Testing ㉧ Statement Coverage Testing ㉨ Boundary Division Analysis",
+      "answer": [
+        "㉢, ㉣, ㉥",
+        "㉣, ㉢, ㉥",
+        "Boundary Value Analysis, Equivalence Partitioning, Cause-Effect Graph",
+        "Equivalence Partitioning, Boundary Value Analysis, Cause-Effect Graph",
+        "동치 분할, 경계값 분석, 원인-효과 그래프",
+        "경계값 분석, 동치 분할, 원인-효과 그래프"
+      ],
+      "explanation": "블랙박스 테스트는 내부 구조를 보지 않고 명세(입력/출력) 기반으로 수행하는 기법으로 동치 분할(Equivalence Partitioning), 경계값 분석(Boundary Value Analysis), 원인-효과 그래프(Cause-Effect Graph), 오류 예측, 비교 테스트 등이 있다.\n기초 경로(Base Path), 조건(Condition), 데이터 흐름(Data Flow), 분기/문장 커버리지는 내부 로직을 보는 화이트박스 기법이다.\n㉨ Boundary Division Analysis는 존재하지 않는 용어(함정)다. 복원본에 따라 보기가 a~g 7개로 제시된 경우도 있다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "블랙박스 테스트",
+        "동치 분할",
+        "경계값 분석",
+        "원인-효과 그래프"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 9,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 용어를 영문 약어로 쓰시오.\n\n정보 자산을 안전하게 보호하기 위한 보호 절차와 대책으로 정보보호 관리 체계라고 한다. 정부에서 정한 인증기관 및 심사기관이 기업이 주요 정보자산을 보호하기 위해 수립·관리·운영하는 체계가 인증 기준에 적합한지를 심사하여 인증을 부여하며, 한국인터넷진흥원(KISA)에서 운영한다.",
+      "answer": [
+        "ISMS",
+        "Information Security Management System",
+        "정보보호 관리체계"
+      ],
+      "explanation": "ISMS(Information Security Management System)는 조직의 정보보호 정책·대책을 체계적으로 수립·운영하는지 KISA가 심사해 인증하는 제도다.\n개인정보 보호까지 포함하면 ISMS-P가 된다.\n'정보보호 관리체계', '인증', 'KISA'가 핵심 키워드다.",
+      "keywords": [
+        "ISMS",
+        "ISMS-P",
+        "정보보호 관리체계"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 10,
+      "subject": "데이터 입출력 구현",
+      "type": "빈칸",
+      "question": "키(Key)에 대한 다음 설명에서 괄호에 들어갈 알맞은 용어를 쓰시오.\n\n- 슈퍼키(Super Key)는 한 릴레이션 내 속성들의 집합으로 구성된 키로, 릴레이션을 구성하는 모든 튜플에 대해 ( ① )을 만족한다.\n- 후보키(Candidate Key)는 튜플을 유일하게 식별하기 위해 사용되는 속성들의 부분집합으로, ( ① )과 ( ② )을 만족한다.",
+      "answer": [
+        "① 유일성, ② 최소성",
+        "① Unique, ② Minimality",
+        "① Uniqueness, ② Minimality"
+      ],
+      "blanks": [
+        "유일성",
+        "최소성"
+      ],
+      "explanation": "유일성(Unique)은 키 값으로 각 튜플을 유일하게 식별할 수 있는 성질, 최소성(Minimality)은 꼭 필요한 최소한의 속성만으로 구성되는 성질이다.\n슈퍼키는 유일성만 만족하면 되고(불필요한 속성 포함 가능), 후보키는 유일성과 최소성을 모두 만족해야 한다.\n후보키 중 선택된 것이 기본키, 나머지는 대체키다.",
+      "keywords": [
+        "슈퍼키",
+        "후보키",
+        "유일성",
+        "최소성"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 11,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "보안 위협에 대한 다음 설명에 해당하는 용어를 <보기>에서 찾아 쓰시오.\n\nAPT 공격에서 주로 쓰이는 기법으로, 공격 대상이 자주 방문할 가능성이 있는 합법적인 웹 사이트를 미리 감염시킨 뒤 잠복하다가 대상이 방문하면 악성 코드에 감염시킨다. 이후 감염된 PC를 기반으로 조직의 중요 시스템에 접근하거나 불능으로 만든다.\n\n<보기> ㉠ Pharming ㉡ Drive-by Download ㉢ Watering Hole ㉣ Business SCAM ㉤ Phishing ㉥ Cyber Kill Chain ㉦ Ransomware ㉧ Sniffing",
+      "answer": [
+        "Watering Hole",
+        "워터링 홀",
+        "워터링홀",
+        "㉢"
+      ],
+      "explanation": "워터링 홀(Watering Hole)은 사자가 물웅덩이에서 먹잇감을 기다리듯, 표적이 자주 가는 웹사이트를 미리 감염시켜 놓고 기다리는 표적형(APT) 공격이다.\n불특정 다수를 노리는 Drive-by Download와 달리 특정 조직을 겨냥한다는 점이 구분 포인트다.",
+      "keywords": [
+        "워터링 홀",
+        "APT",
+        "보안 공격"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 12,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "빈칸",
+      "question": "다음은 개발 단계에 따른 애플리케이션 테스트를 형상화한 V-모델이다. 괄호(①~④)에 들어갈 알맞은 테스트 단계를 쓰시오.\n\n(V-모델 그림) 왼쪽 위에서 아래로 요구사항 분석 → 시스템 설계 → 아키텍처(상위) 설계 → 모듈(상세) 설계 → 코딩, 오른쪽 아래에서 위로 ( ① ) → ( ② ) → ( ③ ) → ( ④ ). 모듈 설계는 ①, 아키텍처 설계는 ②, 시스템 설계는 ③, 요구사항 분석은 ④와 대응한다.",
+      "answer": [
+        "① 단위 테스트, ② 통합 테스트, ③ 시스템 테스트, ④ 인수 테스트",
+        "① Unit Test, ② Integration Test, ③ System Test, ④ Acceptance Test",
+        "① 단위, ② 통합, ③ 시스템, ④ 인수"
+      ],
+      "blanks": [
+        "단위 테스트",
+        "통합 테스트",
+        "시스템 테스트",
+        "인수 테스트"
+      ],
+      "explanation": "V-모델은 개발 단계와 테스트 단계를 좌우 대칭으로 대응시킨 모델이다.\n코딩 직후 모듈 단위를 검증하는 단위 테스트, 모듈 간 인터페이스를 검증하는 통합 테스트, 전체 시스템 요구사항을 검증하는 시스템 테스트, 사용자가 최종 확인하는 인수 테스트 순서로 진행된다.\n암기: 단-통-시-인. 원 문제는 그림으로 제시되었다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "V-모델",
+        "단위 테스트",
+        "통합 테스트",
+        "시스템 테스트",
+        "인수 테스트"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 13,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음은 <성적> 테이블에서 이름(name)과 점수(score)를 조회하되, 점수를 기준으로 내림차순 정렬하여 조회하는 SQL문이다. 괄호(①~③)에 알맞은 답을 적어 SQL문을 완성하시오.\n\n<성적>\nname | class | score\n정기찬 | A | 85\n이영호 | C | 74\n환정형 | C | 95\n김지수 | A | 90\n최은영 | B | 82",
+      "code": "SELECT name, score\nFROM 성적\n( ① ) BY ( ② ) ( ③ );",
+      "answer": [
+        "① ORDER, ② score, ③ DESC",
+        "① ORDER, ② 점수, ③ DESC"
+      ],
+      "blanks": [
+        "ORDER",
+        "score",
+        "DESC"
+      ],
+      "explanation": "정렬은 ORDER BY 절로 하며 기본은 오름차순(ASC), 내림차순은 DESC를 붙인다.\n점수 기준이므로 ORDER BY score DESC가 된다.\n복원본에 따라 컬럼명이 한글(번호, 이름, 점수)로 제시되어 ②가 '점수'인 버전도 있다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "ORDER BY",
+        "DESC",
+        "정렬"
+      ],
+      "source": "https://github.com/jiho6367-design/information-processing-practical/tree/main/pdf"
+    },
+    {
+      "no": 14,
+      "subject": "프로그래밍 언어 활용",
+      "type": "빈칸",
+      "question": "다음은 Python의 리스트 객체에 속한 메소드들에 대한 설명이다. 각 괄호(①~③)에 해당하는 메소드의 이름을 <보기>에서 찾아 쓰시오.\n\n① 기존 리스트에 인수로 받은 반복 가능한 객체의 모든 요소를 추가하여 확장하는 메소드로, 여러 값을 한 번에 추가할 수 있다.\n② 리스트에서 맨 마지막 또는 인수로 지정한 위치의 요소를 삭제한 후 그 값을 반환한다.\n③ 리스트에 저장된 각 요소들의 순서를 역순으로 뒤집어 저장한다.\n\n<보기> ㉠ pop() ㉡ push() ㉢ reverse() ㉣ index() ㉤ write() ㉥ sort() ㉦ extend() ㉧ copy()",
+      "answer": [
+        "① extend, ② pop, ③ reverse",
+        "① extend(), ② pop(), ③ reverse()",
+        "① ㉦, ② ㉠, ③ ㉢"
+      ],
+      "blanks": [
+        "extend",
+        "pop",
+        "reverse"
+      ],
+      "explanation": "extend()는 iterable의 각 요소를 리스트 끝에 하나씩 추가한다(append는 객체 하나를 통째로 추가).\npop()은 인덱스를 생략하면 마지막 요소를 삭제하면서 반환하고, reverse()는 리스트 자체를 뒤집는다(반환값 None).\nsort()는 정렬, index()는 위치 검색이다.",
+      "keywords": [
+        "파이썬 리스트",
+        "extend",
+        "pop",
+        "reverse"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 15,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "def func(num1, num2 = 2):\n    print('a =', num1, 'b =', num2)\n\nfunc(20)",
+      "answer": [
+        "a = 20 b = 2",
+        "a= 20 b= 2"
+      ],
+      "explanation": "num2 = 2 는 기본값 매개변수로, 인수를 하나만 넘기면 num1에 20이 들어가고 num2는 기본값 2를 쓴다.\nprint()는 쉼표로 구분된 인수들을 공백 하나로 이어 출력하므로 'a = 20 b = 2'가 된다.\n쉼표 등을 임의로 넣으면 오답 처리된다.",
+      "keywords": [
+        "파이썬",
+        "기본값 매개변수",
+        "print"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 16,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java로 구현된 프로그램을 분석하여 괄호에 들어갈 알맞은 답을 쓰시오.",
+      "code": "class Car implements Runnable {\n    int a;\n    public void run() {\n        try {\n            while(++a < 100) {\n                System.out.println(\"miles traveled : \" + a);\n                Thread.sleep(100);\n            }\n        } catch(Exception E) { }\n    }\n}\n\npublic class Test {\n    public static void main(String args[]) {\n        Thread t1 = new Thread(new (       )());\n        t1.start();\n    }\n}",
+      "answer": [
+        "Car"
+      ],
+      "explanation": "Thread 클래스의 생성자는 Runnable 인터페이스를 구현한 객체를 인수로 받는다.\nRunnable을 implements 한 클래스가 Car이므로 new Thread(new Car())가 되어야 하고, t1.start()가 호출되면 Car의 run()이 별도 스레드에서 실행된다.\n클래스명은 대소문자를 구분하므로 'Car'로 정확히 써야 한다.",
+      "keywords": [
+        "스레드",
+        "Runnable",
+        "Thread"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "class A {\n    int a;\n    int b;\n}\n\npublic class Test {\n    static void func1(A m) {\n        m.a *= 10;\n    }\n    static void func2(A m) {\n        m.a += m.b;\n    }\n    public static void main(String args[]) {\n        A m = new A();\n        m.a = 100;\n        func1(m);\n        m.b = m.a;\n        func2(m);\n        System.out.printf(\"%d\", m.a);\n    }\n}",
+      "answer": [
+        "2000"
+      ],
+      "explanation": "객체 m을 메소드에 넘기면 참조(주소)가 전달되므로 메소드 안의 변경이 원본 객체에 반영된다.\nm.a = 100 → func1: m.a = 1000 → m.b = m.a = 1000 → func2: m.a = 1000 + 1000 = 2000.\n따라서 2000이 출력된다.",
+      "keywords": [
+        "참조 전달",
+        "객체",
+        "static 메소드"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 18,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어로 구현된 프로그램을 분석하여 5를 입력했을 때 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "#include <stdio.h>\n\nint func(int a) {\n    if (a <= 1) return 1;\n    return a * func(a - 1);\n}\n\nint main() {\n    int a;\n    scanf(\"%d\", &a);\n    printf(\"%d\", func(a));\n}",
+      "answer": [
+        "120"
+      ],
+      "explanation": "func(a)는 a가 1 이하이면 1을 반환하고, 그렇지 않으면 a * func(a-1)을 반환하는 재귀 함수, 즉 팩토리얼이다.\nfunc(5) = 5 × 4 × 3 × 2 × 1 = 120.",
+      "keywords": [
+        "재귀 함수",
+        "팩토리얼"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 19,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음은 정수를 역순으로 출력하는 C언어 프로그램이다. 예를 들어 1234의 역순은 4321이다. (단, 1230처럼 0으로 끝나는 정수는 고려하지 않는다.) 프로그램을 분석하여 괄호(①~③)에 들어갈 알맞은 연산자를 쓰시오.",
+      "code": "#include <stdio.h>\n\nint main() {\n    int number = 1234;\n    int div = 10, result = 0;\n    while (number ( ① ) 0) {\n        result = result * div;\n        result = result + number ( ② ) div;\n        number = number ( ③ ) div;\n    }\n    printf(\"%d\", result);\n}",
+      "answer": [
+        "① !=, ② %, ③ /",
+        "① >, ② %, ③ /"
+      ],
+      "blanks": [
+        "!=",
+        "%",
+        "/"
+      ],
+      "explanation": "number가 0이 될 때까지(① != 또는 >) 반복하면서 마지막 자리수를 number % div(②)로 떼어 result에 붙이고, number = number / div(③)로 한 자리를 줄인다.\n1234 → result: 4 → 43 → 432 → 4321.\n①은 '!='와 '>' 모두 정답으로 인정된다.",
+      "keywords": [
+        "연산자",
+        "나머지",
+        "역순 출력"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    },
+    {
+      "no": 20,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하시오.)",
+      "code": "#include <stdio.h>\n\nint isPrime(int number) {\n    for (int i = 2; i < number; i++)\n        if (number % i == 0) return 0;\n    return 1;\n}\n\nint main() {\n    int number = 13195;\n    int max_div = 0;\n    for (int i = 2; i < number; i++)\n        if (isPrime(i) == 1 && number % i == 0) max_div = i;\n    printf(\"%d\", max_div);\n}",
+      "answer": [
+        "29"
+      ],
+      "explanation": "isPrime(i)는 2부터 i-1까지 나눠지는 수가 없으면 1을 반환하는 소수 판별 함수다.\nmain은 2~13194 중 소수이면서 13195의 약수인 i를 만날 때마다 max_div에 덮어쓰므로 결국 가장 큰 소인수가 남는다.\n13195 = 5 × 7 × 13 × 29 이므로 29가 출력된다.",
+      "keywords": [
+        "소수",
+        "소인수",
+        "함수 호출"
+      ],
+      "source": "https://newbt.kr/시험/정보처리기사 실기/2022년 1회"
+    }
+  ]
+}
