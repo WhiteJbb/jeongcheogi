@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정처기 실기 스터디</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#1a1d23;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;--code:#0f172a;--codefg:#e2e8f0;--chip:#eef2ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1115;--card:#171a21;--fg:#e6e8ee;--muted:#9aa3b2;--line:#2a2f3a;--accent:#60a5fa;--ok:#4ade80;--okbg:#14532d;--bad:#f87171;--badbg:#7f1d1d;--code:#0b0e14;--codefg:#dbe2f0;--chip:#1e2433}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--line);z-index:9}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:10px 0}
+nav .brand{font-weight:800;margin-right:8px}
+nav a{padding:6px 10px;border-radius:8px;color:var(--fg)}nav a.on,nav a:hover{background:var(--chip);text-decoration:none}
+nav input{margin-left:auto;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);min-width:140px}
+main{padding:20px 0 60px}
+h1{font-size:1.5rem;margin:0 0 12px}h2{font-size:1.15rem;margin:24px 0 8px}h3{font-size:1rem;margin:0 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.grid .card{margin:0;padding:12px;cursor:pointer}.grid .card:hover{border-color:var(--accent)}
+.muted{color:var(--muted);font-size:.9rem}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:1px 10px;font-size:.8rem;margin:2px 4px 2px 0}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:var(--accent)}
+pre{background:var(--code);color:var(--codefg);padding:14px;border-radius:10px;overflow:auto;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:4;white-space:pre}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+textarea,input.ans{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit}
+textarea{min-height:70px;resize:vertical}
+button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+button.pri{background:var(--accent);color:#fff;border-color:var(--accent)}button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.ok{background:var(--okbg);color:var(--ok);border-left:4px solid var(--ok)}.bad{background:var(--badbg);color:var(--bad);border-left:4px solid var(--bad)}
+.res{padding:10px 14px;border-radius:8px;margin-top:12px;font-weight:600}
+.ans-box{margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:8px}
+.q{white-space:pre-wrap}
+.stat{display:flex;gap:16px;flex-wrap:wrap}.stat b{font-size:1.4rem;display:block}
+.star{color:#f59e0b;letter-spacing:-2px}
+table{border-collapse:collapse;width:100%;font-size:.93rem}td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--muted);font-weight:600;white-space:nowrap}
+.flash{min-height:200px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer;font-size:1.15rem;padding:28px}
+.flash .big{font-size:1.5rem;font-weight:800}
+ul{margin:6px 0;padding-left:20px}
+.topic-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+details summary{cursor:pointer;color:var(--accent)}
+.hl{background:#fde68a;color:#000;border-radius:2px}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="brand" href="#/">정처기 실기</a>
+<a href="#/" data-nav="/">홈</a><a href="#/exams" data-nav="/exam">기출</a><a href="#/concepts" data-nav="/concepts">개념</a><a href="#/cards" data-nav="/cards">암기카드</a><a href="#/wrong" data-nav="/wrong">오답노트</a>
+<input id="search" placeholder="검색 (문제·개념)" aria-label="검색">
+</nav></div></header>
+<main><div class="wrap" id="app"></div></main>
+<script src="data.js"></script>
+<script>
+const D=window.DATA||{exams:[],concepts:[]};
+const Q=[];D.exams.forEach(e=>e.questions.forEach(q=>Q.push({...q,id:`${e.year}-${e.round}-${q.no}`,year:e.year,round:e.round,exam:`${e.year}-${e.round}`})));
+const SUBJECTS=[...new Set(Q.map(q=>q.subject))].sort();
+const ls=(k,v)=>v===undefined?JSON.parse(localStorage.getItem(k)||'{}'):localStorage.setItem(k,JSON.stringify(v));
+let P=ls('jcg.progress'); let CARDS=ls('jcg.cards');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s).normalize('NFKC').toLowerCase().replace(/[\s　]+/g,'').replace(/["'`“”‘’]/g,'').replace(/\.$/,'');
+const roundName=e=>`${e.year}년 ${e.round}회${e.year===2020&&e.round===4?'(4·5회 통합)':''}`;
+const examOf=id=>D.exams.find(e=>`${e.year}-${e.round}`===id);
+const $=s=>document.querySelector(s);const app=$('#app');
+function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(arr,seed){const r=rng(seed),a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const go=h=>location.hash=h;
+
+/* ---------- 라우터 ---------- */
+function route(){
+  const h=location.hash.replace(/^#/,'')||'/';const [path,qs]=h.split('?');const p=path.split('/').filter(Boolean);
+  document.querySelectorAll('nav a[data-nav]').forEach(a=>a.classList.toggle('on',path===a.dataset.nav||(a.dataset.nav!=='/'&&path.startsWith(a.dataset.nav))));
+  window.scrollTo(0,0);document.onkeydown=null;
+  if(p[0]==='exams')return home(true);
+  if(p[0]==='exam'){const e=examOf(p[1]);if(!e)return home();return quiz(Q.filter(q=>q.exam===p[1]),+(p[2]||1)-1,roundName(e),`/exam/${p[1]}`)}
+  if(p[0]==='subject'){const s=decodeURIComponent(p[1]);return quiz(Q.filter(q=>q.subject===s),+(p[2]||1)-1,s,`/subject/${p[1]}`)}
+  if(p[0]==='random'){const seed=+p[1]||Date.now()%1e9;if(!p[1])return go(`/random/${seed}/1`);return quiz(shuffle(Q,seed).slice(0,20),+(p[2]||1)-1,`랜덤 모의고사 #${seed}`,`/random/${seed}`)}
+  if(p[0]==='wrong'){const l=Q.filter(q=>P[q.id]&&P[q.id].ok===false);if(!l.length)return app.innerHTML='<h1>오답노트</h1><div class="card">틀린 문제가 없습니다. 기출을 풀면 틀린 문제가 여기에 모입니다.</div>';return quiz(l,+(p[1]||1)-1,`오답노트 (${l.length}문항)`,'/wrong')}
+  if(p[0]==='concepts')return concepts(p[1]);
+  if(p[0]==='cards')return cards(p[1]);
+  if(p[0]==='search')return search(decodeURIComponent((qs||'').replace(/^q=/,'')));
+  home();
+}
+
+/* ---------- 홈 / 회차 목록 ---------- */
+function home(onlyExams){
+  const done=Object.keys(P).filter(id=>Q.some(q=>q.id===id)),ok=done.filter(id=>P[id].ok).length;
+  const stats=onlyExams?'':`<h1>정보처리기사 실기 스터디</h1><div class="card"><div class="stat">
+    <div><b>${Q.length}</b><span class="muted">기출 문항</span></div><div><b>${done.length}</b><span class="muted">풀어본 문항</span></div>
+    <div><b>${done.length?Math.round(ok/done.length*100):0}%</b><span class="muted">정답률</span></div>
+    <div><b>${done.length-ok}</b><span class="muted">오답노트</span></div></div>
+    <div class="row"><button class="pri" onclick="go('/random')">랜덤 모의고사 20문항</button><button onclick="go('/wrong')">오답 다시 풀기</button><button onclick="go('/cards')">용어 암기카드</button>
+    <button onclick="if(confirm('풀이 기록을 모두 지울까요?')){localStorage.removeItem('jcg.progress');P={};route()}" class="muted" style="margin-left:auto">기록 초기화</button></div></div>`;
+  const exams=[...D.exams].sort((a,b)=>b.year-a.year||b.round-a.round).map(e=>{
+    const l=Q.filter(q=>q.exam===`${e.year}-${e.round}`),d=l.filter(q=>P[q.id]),o=d.filter(q=>P[q.id].ok);
+    return `<div class="card" onclick="go('/exam/${e.year}-${e.round}/1')"><h3>${roundName(e)}</h3><div class="muted">${l.length}문항 · ${e.date||''}</div>
+    <div class="muted">${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'}</div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('');
+  const subj=SUBJECTS.map(s=>{const l=Q.filter(q=>q.subject===s),d=l.filter(q=>P[q.id]);return `<div class="card" onclick="go('/subject/${encodeURIComponent(s)}/1')"><h3>${esc(s)}</h3><div class="muted">${l.length}문항 · 풀이 ${d.length}</div></div>`}).join('');
+  app.innerHTML=`${stats}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>과목별 기출</h2><div class="grid">${subj}</div>`;
+}
+
+/* ---------- 문제 풀이 ---------- */
+let cur=null;
+function quiz(list,idx,title,base){
+  if(!list.length)return app.innerHTML=`<h1>${esc(title)}</h1><div class="card">문제가 없습니다.</div>`;
+  idx=Math.max(0,Math.min(idx,list.length-1));const q=list[idx];cur={list,idx,base,q};
+  const st=P[q.id];const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;
+  const inputs=blanks?blanks.map((_,i)=>`<div class="row"><span style="min-width:2em">${'①②③④⑤⑥⑦⑧⑨⑩'[i]||i+1}</span><input class="ans" data-i="${i}" autocomplete="off"></div>`).join('')
+    :`<textarea id="ans" placeholder="${q.type==='서술'?'서술형: 답을 작성 후 정답과 비교해 스스로 채점하세요':'답 입력 후 Enter'}"></textarea>`;
+  app.innerHTML=`<div class="muted"><a href="#${base.startsWith('/exam')?'/exams':'/'}">← 목록</a> · ${esc(title)}</div>
+  <h1>${idx+1} / ${list.length} <span class="muted" style="font-size:.9rem;font-weight:400">${q.exam} ${q.no}번</span></h1>
+  <div class="bar"><i style="width:${(idx+1)/list.length*100}%"></i></div>
+  <div class="card" style="margin-top:14px"><div><span class="chip">${esc(q.subject)}</span><span class="chip">${esc(q.type)}${q.lang?' · '+esc(q.lang):''}</span>${st?`<span class="chip" style="color:${st.ok?'var(--ok)':'var(--bad)'}">이전 풀이: ${st.ok?'정답':'오답'}</span>`:''}</div>
+  <p class="q">${esc(q.question)}</p>${q.code?`<pre><code>${esc(q.code)}</code></pre>`:''}
+  <div id="in">${inputs}</div>
+  <div class="row"><button class="pri" id="check">정답 확인</button><button id="skip">모르겠음 (정답 보기)</button></div>
+  <div id="out"></div></div>
+  <div class="row"><button id="prev" ${idx===0?'disabled':''}>← 이전</button><button id="next" ${idx===list.length-1?'disabled':''}>다음 →</button>
+  <span class="muted" style="margin-left:auto">${q.source?`<a href="${esc(q.source)}" target="_blank" rel="noopener">출처</a>`:''}</span></div>`;
+  const nav=d=>go(`${base}/${idx+1+d}`);
+  $('#prev').onclick=()=>nav(-1);$('#next').onclick=()=>nav(1);
+  $('#check').onclick=()=>check(false);$('#skip').onclick=()=>check(true);
+  app.querySelectorAll('textarea,input.ans').forEach((el,i,all)=>{el.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(all[i+1])all[i+1].focus();else check(false)}};if(i===0)el.focus()});
+}
+function check(skip){
+  const {q,idx,list}=cur;if($('#out').innerHTML)return;
+  const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;let ok,detail='';
+  if(blanks){
+    const got=[...app.querySelectorAll('input.ans')].map(i=>i.value);
+    const each=blanks.map((b,i)=>b.split('|').some(alt=>norm(alt)===norm(got[i])));
+    ok=!skip&&each.every(Boolean);
+    detail=blanks.map((b,i)=>`<div>${'①②③④⑤⑥⑦⑧⑨⑩'[i]} <b>${esc(b.split('|')[0])}</b> ${skip?'':each[i]?'✅':`❌ <s>${esc(got[i])}</s>`}</div>`).join('');
+  }else{
+    const got=$('#ans').value;ok=!skip&&q.type!=='서술'&&q.answer.some(a=>norm(a)===norm(got));
+    if(q.type==='서술'&&!skip)ok=null;
+  }
+  const auto=ok!==null;
+  $('#out').innerHTML=`${auto?`<div class="res ${ok?'ok':'bad'}">${ok?'정답입니다!':skip?'정답을 확인하세요':'오답입니다'}</div>`:`<div class="res" style="background:var(--chip)">서술형 — 정답과 비교해 스스로 채점하세요</div>`}
+  <div class="ans-box"><div class="muted">정답</div>${detail||`<div class="q"><b>${esc(q.answer.join('  /  '))}</b></div>`}
+  ${q.explanation?`<div class="muted" style="margin-top:8px">해설</div><div class="q">${esc(q.explanation)}</div>`:''}
+  ${q.keywords&&q.keywords.length?`<div style="margin-top:8px">${q.keywords.map(k=>`<a class="chip" href="#/search?q=${encodeURIComponent(k)}">${esc(k)}</a>`).join('')}</div>`:''}</div>
+  <div class="row"><span class="muted">채점 수정:</span><button id="mok">맞았어요</button><button id="mbad">틀렸어요</button>${idx<list.length-1?'<button class="pri" id="go-next" style="margin-left:auto">다음 문제 →</button>':''}</div>`;
+  const mark=v=>{P[q.id]={ok:v,at:Date.now(),tries:((P[q.id]||{}).tries||0)+1};ls('jcg.progress',P)};
+  if(auto)mark(ok);
+  $('#mok').onclick=()=>{mark(true);$('#out .res').className='res ok';$('#out .res').textContent='정답으로 기록'};
+  $('#mbad').onclick=()=>{mark(false);$('#out .res').className='res bad';$('#out .res').textContent='오답으로 기록'};
+  const n=$('#go-next');if(n){n.onclick=()=>go(`${cur.base}/${idx+2}`);setTimeout(()=>n.focus(),0)}
+}
+
+/* ---------- 개념 ---------- */
+const stars=n=>`<span class="star" title="중요도 ${n}">${'★'.repeat(n)}${'☆'.repeat(3-n)}</span>`;
+function concepts(ord){
+  const nav=`<div class="topic-nav">${D.concepts.map(c=>`<a class="chip" href="#/concepts/${c.order}" ${String(c.order)===ord?'style="outline:2px solid var(--accent)"':''}>${c.order}. ${esc(c.chapter)}</a>`).join('')}</div>`;
+  if(!ord){
+    app.innerHTML=`<h1>핵심 개념</h1><p class="muted">실기에 실제로 출제되는 것만 뽑았습니다. ★★★ = 거의 매년 출제.</p>${nav}<div class="grid">${D.concepts.map(c=>`<div class="card" onclick="go('/concepts/${c.order}')"><h3>${c.order}. ${esc(c.chapter)}</h3><div class="muted">${c.topics.length}개 토픽 · ★★★ ${c.topics.filter(t=>t.importance===3).length}개</div></div>`).join('')}</div>`;return;
+  }
+  const c=D.concepts.find(c=>String(c.order)===ord);if(!c)return concepts();
+  app.innerHTML=`<div class="muted"><a href="#/concepts">← 개념 목록</a></div><h1>${c.order}. ${esc(c.chapter)}</h1>${nav}
+  <div class="row" style="margin-bottom:12px"><input class="ans" id="tf" placeholder="이 과목 안에서 필터" style="max-width:300px"><button onclick="go('/cards/${c.order}')">이 과목 암기카드</button></div>
+  <div id="topics">${c.topics.map(topicCard).join('')}</div>`;
+  $('#tf').oninput=e=>{const v=e.target.value.trim().toLowerCase();app.querySelectorAll('#topics .card').forEach(el=>el.style.display=!v||el.textContent.toLowerCase().includes(v)?'':'none')};
+}
+function topicCard(t){
+  return `<div class="card"><h3>${esc(t.title)} ${stars(t.importance||1)}</h3><div>${esc(t.summary)}</div>
+  ${t.points&&t.points.length?`<ul>${t.points.map(p=>`<li>${fmt(p)}</li>`).join('')}</ul>`:''}
+  ${t.terms&&t.terms.length?`<table>${t.terms.map(x=>`<tr><th>${esc(x.term)}</th><td>${fmt(x.desc)}</td></tr>`).join('')}</table>`:''}
+  ${t.asked&&t.asked.length?`<div class="muted" style="margin-top:6px">출제: ${t.asked.map(a=>`<a href="#/exam/${a}/1">${a}</a>`).join(', ')}</div>`:''}</div>`;
+}
+const fmt=s=>esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
+
+/* ---------- 암기카드 ---------- */
+function cards(ord){
+  const pool=[];D.concepts.filter(c=>!ord||String(c.order)===ord).forEach(c=>c.topics.forEach(t=>(t.terms||[]).forEach(x=>pool.push({...x,topic:t.title,ch:c.chapter,key:x.term}))));
+  const nav=`<div class="topic-nav"><a class="chip" href="#/cards" ${!ord?'style="outline:2px solid var(--accent)"':''}>전체</a>${D.concepts.map(c=>`<a class="chip" href="#/cards/${c.order}" ${String(c.order)===ord?'style="outline:2px solid var(--accent)"':''}>${c.order}. ${esc(c.chapter)}</a>`).join('')}</div>`;
+  if(!pool.length)return app.innerHTML=`<h1>암기카드</h1>${nav}<div class="card">용어 데이터가 없습니다.</div>`;
+  let onlyUnknown=false,deck=[],i=0,flip=false;
+  const build=()=>{deck=shuffle(pool.filter(x=>!onlyUnknown||CARDS[x.key]===false),Date.now()%1e9);i=0;flip=false;draw()};
+  const draw=()=>{
+    const known=pool.filter(x=>CARDS[x.key]===true).length,unk=pool.filter(x=>CARDS[x.key]===false).length;
+    const x=deck[i];
+    app.innerHTML=`<h1>암기카드 <span class="muted" style="font-size:.9rem;font-weight:400">설명을 보고 용어를 떠올리세요</span></h1>${nav}
+    <div class="row"><span class="muted">${pool.length}개 용어 · 알아요 ${known} · 몰라요 ${unk}</span><label style="margin-left:auto"><input type="checkbox" id="unk" ${onlyUnknown?'checked':''}> 모르는 것만</label></div>
+    ${!x?'<div class="card">카드가 없습니다.</div>':`<div class="card flash" id="fc"><div class="muted">${esc(x.ch)} › ${esc(x.topic)} · ${i+1}/${deck.length}</div>
+    <div style="margin:14px 0">${flip?`<div class="big">${esc(x.term)}</div><div class="muted" style="margin-top:8px">${fmt(x.desc)}</div>`:fmt(x.desc)}</div>
+    <div class="muted">${flip?'':'클릭하면 정답 공개'}</div></div>
+    <div class="row"><button id="no" ${flip?'':'disabled'}>몰라요</button><button id="yes" class="pri" ${flip?'':'disabled'}>알아요</button><button id="nx" style="margin-left:auto">건너뛰기 →</button></div>`}`;
+    $('#unk').onchange=e=>{onlyUnknown=e.target.checked;build()};
+    if(!x)return;
+    $('#fc').onclick=()=>{flip=true;draw()};
+    const next=()=>{i=(i+1)%deck.length;flip=false;draw()};
+    $('#nx').onclick=next;
+    $('#yes').onclick=()=>{CARDS[x.key]=true;ls('jcg.cards',CARDS);next()};
+    $('#no').onclick=()=>{CARDS[x.key]=false;ls('jcg.cards',CARDS);next()};
+    document.onkeydown=e=>{if(e.key===' '){e.preventDefault();flip?next():(flip=true,draw())}else if(e.key==='1'&&flip)$('#no').click();else if(e.key==='2'&&flip)$('#yes').click()};
+  };
+  build();
+}
+
+/* ---------- 검색 ---------- */
+function search(qstr){
+  const v=qstr.trim().toLowerCase();
+  if(!v)return app.innerHTML='<h1>검색</h1><div class="muted">상단 검색창에 키워드를 입력하세요.</div>';
+  const hl=s=>esc(s).replace(new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<span class="hl">${m}</span>`);
+  const qs=Q.filter(q=>[q.question,q.code,...(q.answer||[]),...(q.keywords||[]),q.explanation].join(' ').toLowerCase().includes(v));
+  const ts=[];D.concepts.forEach(c=>c.topics.forEach(t=>{if(JSON.stringify(t).toLowerCase().includes(v))ts.push({c,t})}));
+  app.innerHTML=`<h1>"${esc(qstr)}" 검색 결과</h1><h2>개념 (${ts.length})</h2>${ts.map(({c,t})=>`<div class="card"><div class="muted"><a href="#/concepts/${c.order}">${esc(c.chapter)}</a></div>${topicCard(t).replace(/^<div class="card">|<\/div>$/g,'')}</div>`).join('')||'<div class="muted">없음</div>'}
+  <h2>기출 문제 (${qs.length})</h2>${qs.map(q=>{const l=Q.filter(x=>x.exam===q.exam);const i=l.indexOf(q)+1;return `<div class="card"><div class="muted">${q.exam} ${q.no}번 · ${esc(q.subject)} <a href="#/exam/${q.exam}/${i}" style="float:right">풀기 →</a></div><div class="q">${hl(q.question)}</div><details><summary>정답</summary><b>${hl(q.answer.join(' / '))}</b></details></div>`}).join('')||'<div class="muted">없음</div>'}`;
+}
+$('#search').onkeydown=e=>{if(e.key==='Enter'&&e.target.value.trim())go('/search?q='+encodeURIComponent(e.target.value.trim()))};
+window.addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>

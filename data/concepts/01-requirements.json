@@ -1,0 +1,336 @@
+{
+  "chapter": "요구사항 확인",
+  "order": 1,
+  "topics": [
+    {
+      "title": "소프트웨어 생명주기 모델 (SDLC)",
+      "importance": 2,
+      "summary": "소프트웨어 개발 전 과정을 단계별로 나눈 절차 모델. 폭포수·프로토타입·나선형·반복적 모델이 대표.",
+      "points": [
+        "폭포수(Waterfall): 타당성 검토→계획→요구분석→설계→구현→테스트→유지보수. 선형 순차, 이전 단계로 되돌아가기 어려움, 고전적 모델",
+        "나선형(Spiral, Boehm): 계획 및 정의→위험 분석→공학적 개발→고객 평가 를 반복. 암기: 계위개고. 위험 분석(Risk Analysis)이 핵심",
+        "프로토타입(Prototype): 시제품을 만들어 사용자 요구를 먼저 확인·수정. 요구사항 불명확 시 적합",
+        "반복적(Iterative): 증분형(Incremental, 기능 단위로 추가)과 진화형(Evolutionary, 핵심 먼저 후 개선)",
+        "V-모델: 폭포수 각 개발 단계에 대응하는 검증(Verification)/확인(Validation) 테스트 단계를 짝지음"
+      ],
+      "terms": [
+        {"term": "폭포수 모델 (Waterfall Model)", "desc": "각 단계를 순차적으로 진행, 이전 단계 완료 후 다음 단계 진행"},
+        {"term": "프로토타입 모델 (Prototype Model)", "desc": "시제품(견본품)으로 요구사항을 미리 확인하는 모델"},
+        {"term": "나선형 모델 (Spiral Model)", "desc": "점진적 모델. 계획→위험 분석→개발→고객 평가 반복, 대규모 시스템에 적합"},
+        {"term": "반복적 모델 (Iterative Model)", "desc": "구축 대상을 나누어 병렬 개발 후 통합하거나 반복 개발"},
+        {"term": "RAD (Rapid Application Development)", "desc": "CASE 도구와 프로토타입을 이용한 짧은 주기(60~90일)의 빠른 개발"},
+        {"term": "V-모델 (V-Model)", "desc": "개발 단계와 테스트 단계를 대응시킨 모델. 단위→통합→시스템→인수 테스트"}
+      ],
+      "asked": ["2020-4", "2022-1"]
+    },
+    {
+      "title": "애자일 방법론 (Agile)",
+      "importance": 3,
+      "summary": "절차·문서보다 사람과 소통, 변화 대응, 동작하는 소프트웨어를 중시하는 경량 개발 방법론의 총칭. 짧은 주기로 반복(Iteration) 개발한다.",
+      "points": [
+        "애자일 선언문 4가지 가치: ①프로세스와 도구보다 개인과 상호작용 ②포괄적 문서보다 동작하는 소프트웨어 ③계약 협상보다 고객과의 협력 ④계획 준수보다 변화에 대응",
+        "종류: XP, 스크럼(Scrum), 린(Lean), 칸반(Kanban), 크리스탈(Crystal), FDD, DSDM, ASD",
+        "폭포수와 비교: 요구사항 변경 수용, 고객 참여, 짧은 릴리즈 주기, 문서 최소화"
+      ],
+      "terms": [
+        {"term": "애자일 (Agile)", "desc": "민첩한, 기민한. 변화에 유연하게 대응하는 반복·점진적 개발 방법론"},
+        {"term": "린 (Lean)", "desc": "도요타 생산 방식을 SW에 적용. 7가지 낭비 제거(미완성 작업, 가외 기능, 재학습, 인수인계, 지연, 작업 전환, 결함)"},
+        {"term": "칸반 (Kanban)", "desc": "작업 흐름을 보드로 시각화하고 진행 중 작업(WIP)을 제한"},
+        {"term": "FDD (Feature Driven Development)", "desc": "기능(Feature) 중심 개발. 짧은 반복으로 기능 단위 설계·구축"},
+        {"term": "크리스탈 (Crystal)", "desc": "프로젝트 규모와 중요도에 따라 색상별 방법론을 선택"},
+        {"term": "DSDM (Dynamic Systems Development Method)", "desc": "RAD 기반, 기능 모델 반복→설계 및 구축 반복→구현 단계로 진행"},
+        {"term": "ASD (Adaptive Software Development)", "desc": "적응형 SW 개발. 추측→협력→학습 사이클"}
+      ],
+      "asked": ["2020-1", "2021-2", "2022-3"]
+    },
+    {
+      "title": "XP (eXtreme Programming)",
+      "importance": 3,
+      "summary": "켄트 벡이 제안한 애자일 방법론. 고객 참여와 짧은 개발 반복으로 요구 변화에 적극 대응하며, 5가지 가치와 12가지 실천 항목이 핵심.",
+      "points": [
+        "5가지 가치: 용기(Courage), 단순성(Simplicity), 의사소통(Communication), 피드백(Feedback), 존중(Respect). 암기: 용단의피존",
+        "12 실천 항목: 짝 프로그래밍, 공동 코드 소유, 지속적 통합(CI), 계획 세우기(Planning Game), 작은 릴리즈, 메타포(Metaphor), 간단한 디자인, 테스트 기반 개발(TDD), 리팩토링, 40시간 작업, 고객 상주(On-site Customer), 코드 표준",
+        "개발 프로세스: 사용자 스토리 → 릴리즈 계획 → 스파이크(Spike) → 이터레이션 → 승인 검사(인수 테스트) → 소규모 릴리즈"
+      ],
+      "terms": [
+        {"term": "짝 프로그래밍 (Pair Programming)", "desc": "두 명이 한 컴퓨터에서 함께 개발. 코드 품질·지식 공유"},
+        {"term": "공동 코드 소유 (Collective Ownership)", "desc": "모든 코드에 대해 팀 모두가 책임을 가짐"},
+        {"term": "지속적 통합 (Continuous Integration, CI)", "desc": "코드를 자주 통합·빌드·테스트하여 결함을 조기 발견"},
+        {"term": "테스트 주도 개발 (Test Driven Development, TDD)", "desc": "테스트 케이스를 먼저 작성한 후 통과하는 코드를 구현"},
+        {"term": "리팩토링 (Refactoring)", "desc": "기능 변경 없이 코드 구조를 개선"},
+        {"term": "소규모 릴리즈 (Small Release)", "desc": "짧은 주기로 자주 배포하여 피드백 획득"},
+        {"term": "사용자 스토리 (User Story)", "desc": "고객의 요구를 짧은 문장으로 기술한 요구사항 단위"},
+        {"term": "스파이크 (Spike)", "desc": "기술 문제 해결이나 리스크 감소를 위한 간단한 탐색 프로그램"},
+        {"term": "메타포 (Metaphor)", "desc": "시스템을 설명하는 공통 비유로 의사소통 원활화"}
+      ],
+      "asked": ["2020-1", "2022-3", "2024-1"]
+    },
+    {
+      "title": "스크럼 (Scrum)",
+      "importance": 2,
+      "summary": "팀 중심의 애자일 프레임워크. 2~4주 스프린트 단위로 제품 백로그의 항목을 개발하며 일일 스크럼으로 진행 상황을 공유.",
+      "points": [
+        "3역할: 제품 책임자(Product Owner, 백로그 우선순위 결정) / 스크럼 마스터(Scrum Master, 프로세스 조율·장애 제거) / 개발팀(Development Team)",
+        "진행: 제품 백로그 → 스프린트 계획 회의 → 스프린트(2~4주) → 일일 스크럼(15분) → 스프린트 검토(Review) → 스프린트 회고(Retrospective)",
+        "산출물: 제품 백로그, 스프린트 백로그, 증분(Increment), 번다운 차트"
+      ],
+      "terms": [
+        {"term": "스프린트 (Sprint)", "desc": "2~4주의 고정된 개발 반복 주기"},
+        {"term": "제품 백로그 (Product Backlog)", "desc": "제품에 필요한 요구사항(사용자 스토리)의 우선순위 목록"},
+        {"term": "스프린트 백로그 (Sprint Backlog)", "desc": "해당 스프린트에서 수행할 작업 목록"},
+        {"term": "일일 스크럼 (Daily Scrum)", "desc": "매일 15분 정도 진행 상황·계획·장애를 공유하는 회의"},
+        {"term": "번다운 차트 (Burn-down Chart)", "desc": "남은 작업량을 시간에 따라 표시한 차트"},
+        {"term": "속도 (Velocity)", "desc": "한 스프린트에서 팀이 완료할 수 있는 작업량"},
+        {"term": "스프린트 회고 (Sprint Retrospective)", "desc": "스프린트 종료 후 프로세스 개선점을 논의"}
+      ],
+      "asked": ["2021-2"]
+    },
+    {
+      "title": "요구사항 분류와 개발 프로세스",
+      "importance": 2,
+      "summary": "요구사항은 기능/비기능으로 분류되며, 도출→분석→명세→확인의 과정을 거쳐 개발된다.",
+      "points": [
+        "기능 요구사항(Functional): 시스템이 수행해야 하는 기능·입출력·처리 / 비기능 요구사항(Non-functional): 성능, 보안, 품질, 제약 조건, 사용성 등",
+        "요구사항 개발 프로세스: 도출(Elicitation)→분석(Analysis)→명세(Specification)→확인(Validation). 암기: 도분명확",
+        "요구사항 명세 특성: 정확성, 명확성(무결성), 완전성, 일관성, 수정 용이성, 추적 가능성, 검증 가능성",
+        "요구공학(Requirements Engineering): 요구사항 개발 + 요구사항 관리(변경 관리, 추적, 협상, 베이스라인)"
+      ],
+      "terms": [
+        {"term": "요구사항 도출 (Requirement Elicitation)", "desc": "이해관계자로부터 요구를 수집. 인터뷰, 브레인스토밍, 설문, 워크숍, 프로토타이핑, 유스케이스"},
+        {"term": "요구사항 분석 (Requirement Analysis)", "desc": "요구사항의 타당성 조사, 상충 해결, 비용·일정 제약 설정"},
+        {"term": "요구사항 명세 (Requirement Specification)", "desc": "분석된 요구사항을 문서화. 정형/비정형 명세 기법"},
+        {"term": "요구사항 확인 (Requirement Validation)", "desc": "명세서가 이해관계자의 요구를 정확히 반영했는지 검증. 리뷰, 프로토타이핑, 모델 검증"},
+        {"term": "기능 요구사항 (Functional Requirement)", "desc": "시스템이 제공해야 하는 기능과 동작"},
+        {"term": "비기능 요구사항 (Non-functional Requirement)", "desc": "성능·보안·품질·제약 등 기능 외 요구"},
+        {"term": "베이스라인 (Baseline)", "desc": "공식적으로 검토·합의된 요구사항의 기준선"},
+        {"term": "SRS (Software Requirement Specification)", "desc": "소프트웨어 요구사항 명세서"}
+      ],
+      "asked": ["2020-2", "2023-1"]
+    },
+    {
+      "title": "구조적 분석 도구 (DFD, 자료사전)",
+      "importance": 2,
+      "summary": "구조적 분석 기법에서 자료의 흐름과 처리 과정을 도형으로 표현하는 자료 흐름도(DFD)와 자료의 의미를 정의하는 자료 사전(DD).",
+      "points": [
+        "DFD 4요소: 프로세스(Process, 원) / 자료 흐름(Data Flow, 화살표) / 자료 저장소(Data Store, 평행선) / 단말(Terminator, 사각형)",
+        "자료 사전 기호: = 정의(is composed of), + 연결(and), ( ) 생략 가능(optional), [ | ] 선택(or), { } 반복(iteration), * * 주석(comment)",
+        "구조적 분석 도구: DFD, 자료 사전, 소단위 명세서(Mini-Spec), 개체 관계도(ERD), 상태 전이도(STD)",
+        "HIPO: 하향식 시스템 분석·문서화 도구. 가시적 도표(Visual Table of Contents), 총체적 도표(Overview), 세부적 도표(Detail)"
+      ],
+      "terms": [
+        {"term": "자료 흐름도 (DFD, Data Flow Diagram)", "desc": "자료의 흐름과 변환 과정을 도형으로 기술. 버블 차트라고도 함"},
+        {"term": "자료 사전 (DD, Data Dictionary)", "desc": "DFD의 자료를 자세히 정의한 메타데이터. 자료 이름, 별명, 구성, 유형"},
+        {"term": "소단위 명세서 (Mini-Spec)", "desc": "DFD 최하위 프로세스의 처리 절차를 상세히 기술. 서술문, 구조적 언어, 의사결정표"},
+        {"term": "상태 전이도 (STD, State Transition Diagram)", "desc": "시스템에 어떤 일이 발생할 경우 상태의 변화를 표현"},
+        {"term": "HIPO (Hierarchy Input Process Output)", "desc": "입력·처리·출력의 기능을 계층 구조로 표현하는 문서화 도구"},
+        {"term": "SADT (Structured Analysis and Design Technique)", "desc": "SoftTech사가 개발한 구조적 분석 및 설계 도구. 블록 다이어그램"}
+      ],
+      "asked": ["2021-3"]
+    },
+    {
+      "title": "객체지향 분석 방법론 (럼바우 등)",
+      "importance": 3,
+      "summary": "객체지향 분석(OOA)에서 사용하는 대표 방법론. 럼바우(Rumbaugh) 분석 기법의 객체→동적→기능 모델링 순서가 가장 자주 출제된다.",
+      "points": [
+        "럼바우(Rumbaugh) OMT 3단계: 객체 모델링(Object Modeling, 객체 다이어그램) → 동적 모델링(Dynamic Modeling, 상태 다이어그램) → 기능 모델링(Functional Modeling, 자료 흐름도 DFD). 암기: 객동기",
+        "Booch: 미시적/거시적 개발 프로세스, 클래스와 객체 식별",
+        "Jacobson: 유스케이스(Use Case)를 강조한 OOSE",
+        "Coad와 Yourdon: E-R 다이어그램 사용, 객체 식별·구조·주제·속성·관계·서비스 정의",
+        "Wirfs-Brock: 분석과 설계 구분 없이 고객 명세서를 평가하여 설계로 연속 진행"
+      ],
+      "terms": [
+        {"term": "객체 모델링 (Object Modeling)", "desc": "정보 모델링. 객체·속성·연산·관계를 객체 다이어그램으로 표현. 가장 중요하며 선행"},
+        {"term": "동적 모델링 (Dynamic Modeling)", "desc": "상태 다이어그램으로 시간 흐름에 따른 객체 간 제어 흐름·상호작용·동작 순서 표현"},
+        {"term": "기능 모델링 (Functional Modeling)", "desc": "자료 흐름도(DFD)로 다수의 프로세스 간 자료 흐름을 중심으로 처리 과정 표현"},
+        {"term": "OMT (Object Modeling Technique)", "desc": "럼바우의 객체 모델링 기법"},
+        {"term": "OOSE (Object Oriented Software Engineering)", "desc": "Jacobson이 제안. 유스케이스 중심 방법론"},
+        {"term": "Booch 방법", "desc": "미시적·거시적 프로세스를 모두 사용. 클래스·객체 식별 및 의미·관계 식별"},
+        {"term": "Coad-Yourdon 방법", "desc": "E-R 다이어그램을 사용하여 객체의 행위를 모델링"}
+      ],
+      "asked": ["2021-1", "2024-2"]
+    },
+    {
+      "title": "UML 다이어그램 종류",
+      "importance": 3,
+      "summary": "UML(Unified Modeling Language)은 객체지향 시스템을 모델링하는 표준 표기법. 구조(정적) 다이어그램 6종과 행위(동적) 다이어그램 7종으로 나뉜다.",
+      "points": [
+        "UML 구성 요소: 사물(Things), 관계(Relationships), 다이어그램(Diagram)",
+        "구조적(정적) 다이어그램: 클래스(Class), 객체(Object), 컴포넌트(Component), 배치(Deployment), 복합체 구조(Composite Structure), 패키지(Package). 암기: 클객컴배복패",
+        "행위적(동적) 다이어그램: 유스케이스(Use Case), 시퀀스(Sequence), 커뮤니케이션(Communication), 상태(State), 활동(Activity), 타이밍(Timing), 상호작용 개요(Interaction Overview). 암기: 유시커상활타상",
+        "스테레오타입(Stereotype): << >> 길러멧 기호로 UML 요소의 의미 확장. 예: <<include>>, <<extend>>, <<interface>>, <<entity>>"
+      ],
+      "terms": [
+        {"term": "클래스 다이어그램 (Class Diagram)", "desc": "클래스의 속성·연산과 클래스 간 관계를 표현. 접근제어자 + public, - private, # protected, ~ package"},
+        {"term": "객체 다이어그램 (Object Diagram)", "desc": "클래스의 인스턴스(객체)와 관계를 특정 시점에서 표현"},
+        {"term": "컴포넌트 다이어그램 (Component Diagram)", "desc": "컴포넌트 간 의존 관계와 인터페이스 표현. 구현 단계"},
+        {"term": "배치 다이어그램 (Deployment Diagram)", "desc": "물리적 요소(노드, 디바이스)의 위치와 통신 경로 표현"},
+        {"term": "패키지 다이어그램 (Package Diagram)", "desc": "유스케이스나 클래스 등 모델 요소를 그룹화한 패키지 간 관계 표현"},
+        {"term": "복합체 구조 다이어그램 (Composite Structure Diagram)", "desc": "클래스나 컴포넌트의 내부 구조 표현"},
+        {"term": "유스케이스 다이어그램 (Use Case Diagram)", "desc": "사용자 관점의 시스템 기능과 액터 간 관계 표현"},
+        {"term": "시퀀스 다이어그램 (Sequence Diagram)", "desc": "객체 간 메시지 교환을 시간 순서로 표현. 액터, 객체, 생명선, 활성 상자, 메시지"},
+        {"term": "커뮤니케이션 다이어그램 (Communication Diagram)", "desc": "객체 간 메시지와 연관 관계를 함께 표현. 협동 다이어그램"},
+        {"term": "상태 다이어그램 (State Diagram)", "desc": "이벤트에 따른 객체의 상태 변화를 표현. 럼바우 동적 모델링"},
+        {"term": "활동 다이어그램 (Activity Diagram)", "desc": "처리 로직이나 조건에 따른 처리 흐름을 순서대로 표현. 순서도 유사"},
+        {"term": "타이밍 다이어그램 (Timing Diagram)", "desc": "객체 상태 변화와 시간 제약을 명시적으로 표현"},
+        {"term": "상호작용 개요 다이어그램 (Interaction Overview Diagram)", "desc": "상호작용 다이어그램 간 제어 흐름을 표현"},
+        {"term": "생명선 (Lifeline)", "desc": "시퀀스 다이어그램에서 객체가 존재하는 시간을 점선으로 표현"},
+        {"term": "활성 상자 (Activation Box)", "desc": "시퀀스 다이어그램에서 객체가 연산을 실행하는 기간을 직사각형으로 표현"}
+      ],
+      "asked": ["2020-2", "2021-3", "2022-1", "2022-3", "2024-1"]
+    },
+    {
+      "title": "UML 관계 (Relationships)",
+      "importance": 3,
+      "summary": "UML에서 사물(클래스, 객체 등) 사이의 연결을 표현하는 6가지 관계. 표기법(선 모양·화살촉)과 의미를 구분해야 한다.",
+      "points": [
+        "연관(Association): 실선. 2개 이상 사물이 서로 관련. 방향성은 화살표, 다중성 표기(1, *, 0..1, 1..*, n..m)",
+        "집합(Aggregation): 빈 마름모 실선. 부분(Part)과 전체(Whole), 독립적 생명주기(약한 소유)",
+        "포함(Composition): 채워진 마름모 실선. 부분이 전체에 종속, 생명주기 같음(강한 소유)",
+        "일반화(Generalization): 빈 삼각형 실선, 자식→부모. 상속(is-a) 관계",
+        "의존(Dependency): 점선 화살표. 짧은 시간 동안만 연관(매개변수, 지역변수 등)",
+        "실체화(Realization): 점선 빈 삼각형. 인터페이스와 구현 클래스(can do) 관계",
+        "암기: 연집포일의실 / 집합·포함은 마름모, 일반화·실체화는 삼각형"
+      ],
+      "terms": [
+        {"term": "연관 관계 (Association)", "desc": "사물 간 서로 관련이 있음. 실선, 다중성(Multiplicity) 표기"},
+        {"term": "집합 관계 (Aggregation)", "desc": "전체-부분 관계이나 부분이 독립적으로 존재 가능. 빈 마름모"},
+        {"term": "포함 관계 (Composition)", "desc": "전체-부분 관계로 부분이 전체에 종속. 채워진 마름모"},
+        {"term": "일반화 관계 (Generalization)", "desc": "상위 개념과 하위 개념(상속). 빈 삼각형 화살촉 실선"},
+        {"term": "의존 관계 (Dependency)", "desc": "한 사물의 변경이 다른 사물에 영향, 일시적 관계. 점선 화살표"},
+        {"term": "실체화 관계 (Realization)", "desc": "인터페이스(기능)를 클래스가 실제로 구현. 점선에 빈 삼각형"},
+        {"term": "다중성 (Multiplicity)", "desc": "연관 관계에서 연결되는 객체 수. 1(정확히 1), *(0 이상), 0..1, 1..*, n..m"}
+      ],
+      "asked": ["2020-1", "2021-3", "2022-1", "2023-3"]
+    },
+    {
+      "title": "유스케이스 다이어그램 구성과 관계",
+      "importance": 2,
+      "summary": "사용자(액터) 관점에서 시스템이 제공하는 기능(유스케이스)과 그 관계를 표현. 액터·유스케이스·시스템 경계와 include/extend 관계가 핵심.",
+      "points": [
+        "구성 요소: 시스템(System)/시스템 범위, 액터(Actor), 유스케이스(Use Case), 관계(Relationship)",
+        "액터: 주액터(Primary Actor, 시스템을 사용하는 사람·주로 좌측) / 부액터(Secondary Actor, 외부 시스템·주로 우측)",
+        "관계: 연관(Association, 액터-유스케이스 실선) / 포함(Include, <<include>> 점선, 반드시 실행되는 공통 기능, 포함하는 쪽→포함되는 쪽) / 확장(Extend, <<extend>> 점선, 조건에 따라 선택적 실행, 확장 기능→기본 기능) / 일반화(Generalization)",
+        "유스케이스 명세서: 사전 조건(Pre-condition), 사후 조건(Post-condition), 기본 흐름, 대안 흐름, 예외 흐름"
+      ],
+      "terms": [
+        {"term": "액터 (Actor)", "desc": "시스템과 상호작용하는 사용자나 외부 시스템. 사람 모양 아이콘"},
+        {"term": "유스케이스 (Use Case)", "desc": "시스템이 액터에게 제공하는 기능 단위. 타원으로 표현"},
+        {"term": "포함 관계 (Include)", "desc": "하나의 유스케이스가 다른 유스케이스를 반드시 실행. <<include>>"},
+        {"term": "확장 관계 (Extend)", "desc": "특정 조건에서 선택적으로 다른 유스케이스를 실행. <<extend>>"},
+        {"term": "시스템 경계 (System Boundary)", "desc": "유스케이스들을 둘러싼 사각형. 시스템의 범위"},
+        {"term": "시나리오 (Scenario)", "desc": "유스케이스의 한 가지 실행 경로를 구체적으로 기술"}
+      ],
+      "asked": ["2020-3", "2022-3", "2023-2"]
+    },
+    {
+      "title": "현행 시스템 분석",
+      "importance": 1,
+      "summary": "개발 전 현행 시스템의 플랫폼·운영체제·네트워크·DBMS·비즈니스 융합을 분석하여 요구사항 도출의 기반을 마련.",
+      "points": [
+        "현행 시스템 파악 절차: 구성·기능·인터페이스 파악 → 아키텍처·소프트웨어 구성 파악 → 하드웨어·네트워크 구성 파악",
+        "플랫폼 성능 특성 분석 항목: 가용성(Availability), 응답 시간(Response Time), 정확성(Accuracy), 사용률(Utilization). 암기: 가응정사",
+        "운영체제 분석 항목(고려사항): 신뢰도, 성능, 기술 지원, 주변 기기, 구축 비용",
+        "DBMS/네트워크 분석 항목: 가용성, 성능, 기술 지원, 상호 호환성, 구축 비용",
+        "플랫폼 유형: 싱글 사이드 플랫폼, 투 사이드, 멀티 사이드 플랫폼"
+      ],
+      "terms": [
+        {"term": "플랫폼 (Platform)", "desc": "애플리케이션을 구동시키는 데 필요한 소프트웨어 환경(하드웨어+OS+미들웨어 등)"},
+        {"term": "가용성 (Availability)", "desc": "시스템이 정상 서비스 가능한 시간의 비율"},
+        {"term": "응답 시간 (Response Time)", "desc": "요청 후 응답까지 걸리는 시간"},
+        {"term": "정확성 (Accuracy)", "desc": "처리 결과의 정확한 정도"},
+        {"term": "사용률 (Utilization)", "desc": "자원(CPU, 메모리 등)이 사용되는 비율"},
+        {"term": "비즈니스 융합 (Business Convergence)", "desc": "IT 기술을 기존 산업에 결합하여 새로운 가치를 창출"},
+        {"term": "DBMS 분석 시 고려사항", "desc": "가용성, 성능, 기술 지원, 상호 호환성, 구축 비용"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "소프트웨어 비용 산정 (COCOMO, Putnam, FP)",
+      "importance": 2,
+      "summary": "개발에 필요한 노력·비용·기간을 예측하는 기법. 하향식(전문가·델파이)과 상향식(LOC·수학적 산정 모델)으로 나뉜다.",
+      "points": [
+        "하향식: 전문가 감정 기법, 델파이(Delphi) 기법(전문가 + 조정자) / 상향식: LOC 기법, 개발 단계별 인월수 기법, 수학적 산정(COCOMO, Putnam, FP)",
+        "LOC: 예측치 = (낙관치 + 4×기대치(중간치) + 비관치) / 6. 노력(인월) = LOC / 1인당 월평균 생산 코드 라인 수. 개발 기간 = 노력 / 투입 인원. 비용 = 노력 × 단위 비용",
+        "COCOMO(Boehm) 유형: 조직형(Organic, 5만 라인 이하, 소규모) / 반분리형(Semi-detached, 30만 라인 이하, 중규모) / 내장형(Embedded, 30만 라인 이상, 대규모). 모델: Basic, Intermediate, Detailed",
+        "Putnam: 소프트웨어 생명주기 전 과정 동안 사용될 노력의 분포를 가정. Rayleigh-Norden 곡선, 자동화 도구 SLIM",
+        "기능 점수(FP, Function Point, Albrecht): 기능(입력, 출력, 질의, 파일, 인터페이스)에 가중치를 부여하여 산정. 자동화 도구 ESTIMACS"
+      ],
+      "terms": [
+        {"term": "델파이 기법 (Delphi Technique)", "desc": "여러 전문가의 의견을 조정자가 종합하여 산정. 전문가 감정의 주관성 보완"},
+        {"term": "LOC 기법 (Line Of Code)", "desc": "원시 코드 라인 수의 낙관치·중간치·비관치로 예측치를 구해 산정"},
+        {"term": "COCOMO (COnstructive COst MOdel)", "desc": "Boehm이 제안. LOC 기반으로 비용 산정, 규모에 따라 Organic/Semi-detached/Embedded"},
+        {"term": "조직형 (Organic Mode)", "desc": "5만 라인 이하 소규모, 사무 처리용·업무용 소프트웨어"},
+        {"term": "반분리형 (Semi-detached Mode)", "desc": "30만 라인 이하 중규모, 컴파일러·인터프리터 등 유틸리티"},
+        {"term": "내장형 (Embedded Mode)", "desc": "30만 라인 이상 대규모, 미사일 유도·실시간 처리 시스템"},
+        {"term": "Putnam 모형", "desc": "Rayleigh-Norden 곡선 기반, 대형 프로젝트 노력 분포 산정. 도구 SLIM"},
+        {"term": "기능 점수 모형 (Function Point Model)", "desc": "Albrecht 제안. 기능별 가중치 합산으로 비용 산정. 도구 ESTIMACS"},
+        {"term": "SLIM", "desc": "Rayleigh-Norden 곡선과 Putnam 예측 모델 기반 자동화 추정 도구"},
+        {"term": "ESTIMACS", "desc": "기능 점수 모형 기반 자동화 추정 도구"}
+      ],
+      "asked": ["2021-1", "2023-3"]
+    },
+    {
+      "title": "일정 계획 (PERT, CPM, 간트 차트)",
+      "importance": 1,
+      "summary": "프로젝트 작업을 분해(WBS)하고 작업 순서·소요 시간을 분석하여 일정을 계획하는 기법.",
+      "points": [
+        "WBS(Work Breakdown Structure): 작업 분해 구조도. 프로젝트를 작은 단위 작업으로 분할",
+        "PERT: 작업별 낙관치·중간치(기대치)·비관치 3점 추정으로 소요 시간 확률적 산정. 경험 없는 신규 프로젝트에 적합. 소요 시간 = (낙관+4×중간+비관)/6",
+        "CPM(Critical Path Method): 임계 경로(가장 긴 경로, 여유 시간 0) 중심으로 프로젝트 최단 완료 기간 산정. 경험 있는 프로젝트에 적합",
+        "간트 차트(Gantt Chart): 작업 일정을 막대 그래프로 표시. 이정표(Milestone), 작업 일정, 작업 기간, 산출물",
+        "브룩스의 법칙(Brooks' Law): 지연된 프로젝트에 인력을 추가하면 더 지연된다"
+      ],
+      "terms": [
+        {"term": "PERT (Program Evaluation and Review Technique)", "desc": "작업 소요 시간을 확률적으로 추정(낙관/중간/비관)하여 일정 계획"},
+        {"term": "CPM (Critical Path Method)", "desc": "임계 경로 기법. 노드(작업)와 간선(소요 시간)으로 최장 경로 산출"},
+        {"term": "임계 경로 (Critical Path)", "desc": "프로젝트 완료까지 가장 오래 걸리는 경로. 여유 시간 0"},
+        {"term": "간트 차트 (Gantt Chart)", "desc": "작업 일정을 수평 막대 그래프로 표시한 시간선 차트"},
+        {"term": "WBS (Work Breakdown Structure)", "desc": "프로젝트 목표 달성을 위해 작업을 계층적으로 분해"},
+        {"term": "이정표 (Milestone)", "desc": "프로젝트 진행 중 중요한 시점이나 사건"},
+        {"term": "브룩스의 법칙 (Brooks' Law)", "desc": "지연된 SW 프로젝트에 인력을 추가하면 일정이 더 지연됨"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "CASE (Computer Aided Software Engineering)",
+      "importance": 1,
+      "summary": "소프트웨어 개발 과정의 전체 또는 일부를 컴퓨터와 전용 소프트웨어 도구로 자동화하는 기술.",
+      "points": [
+        "분류: 상위(Upper) CASE - 계획·요구분석·설계 지원 / 하위(Lower) CASE - 코딩·테스트·문서화 지원 / 통합(Integrated) CASE - 전 과정 지원",
+        "주요 기능: 소프트웨어 생명주기 전 단계 연결, 모델들의 모순 검사, 자료 흐름도 작성, 다양한 소프트웨어 개발 모형 지원, 그래픽 지원",
+        "장점: 개발 비용 절감, 품질 향상, 생산성 향상, 표준화, 재사용성 향상, 유지보수 용이",
+        "정보 저장소(Repository): CASE 도구에서 산출물과 메타데이터를 저장·관리하는 중앙 저장소"
+      ],
+      "terms": [
+        {"term": "상위 CASE (Upper CASE)", "desc": "요구 분석과 설계 단계를 지원. 모델링, 다이어그램 작성"},
+        {"term": "하위 CASE (Lower CASE)", "desc": "코드 생성, 테스트, 문서화 등 구현 단계 지원"},
+        {"term": "통합 CASE (Integrated CASE, I-CASE)", "desc": "개발 전 주기를 지원. 상위+하위 CASE"},
+        {"term": "정보 저장소 (Repository)", "desc": "소프트웨어 개발 과정의 정보를 저장·관리하는 공간"},
+        {"term": "자동화 도구 예", "desc": "SADT, SREM(RSL/REVS), PSL/PSA, TAGS, EPOS"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "요구사항 명세·검증 기법",
+      "importance": 1,
+      "summary": "요구사항을 문서로 기술하는 정형/비정형 명세 기법과, 명세가 요구를 올바르게 반영했는지 확인하는 검증(Validation) 기법.",
+      "points": [
+        "정형 명세(Formal): 수학적 기호·정형화된 표기법 사용, 일관성 있고 완전하며 명확. Z, VDM, Petri-net, CSP, LOTOS. 이해가 어려움",
+        "비정형 명세(Informal): 자연어·다이어그램 사용, 이해 쉬움, 일관성 떨어지고 해석 모호. FSM, Decision Table, E-R 모델링, SADT, 상태 차트",
+        "요구사항 검증 기법: 요구사항 검토(동료 검토 Peer Review, 워크스루 Walk Through, 인스펙션 Inspection), 프로토타이핑, 모델 검증, 테스트 설계, CASE 도구 활용, 베이스라인 설정",
+        "요구사항 분석 자동화 도구: SADT, SREM(RSL/REVS), PSL/PSA, TAGS"
+      ],
+      "terms": [
+        {"term": "정형 명세 기법 (Formal Specification)", "desc": "수학적 원리와 표기법으로 요구사항을 기술. VDM, Z, Petri-net, CSP"},
+        {"term": "비정형 명세 기법 (Informal Specification)", "desc": "자연어 기반 또는 다이어그램으로 기술. 상태/기능/객체 중심 명세"},
+        {"term": "동료 검토 (Peer Review)", "desc": "요구사항 명세서 작성자가 설명하고 동료들이 결함을 발견"},
+        {"term": "워크스루 (Walk Through)", "desc": "검토 자료를 회의 전 배포하여 사전 검토 후 짧은 회의로 결함 발견"},
+        {"term": "인스펙션 (Inspection)", "desc": "작성자 외 다른 전문가(검토 전문가)가 명세서를 확인하며 결함 발견. 가장 공식적"},
+        {"term": "Z 표기법", "desc": "집합론과 1차 논리에 기반한 정형 명세 언어"},
+        {"term": "VDM (Vienna Development Method)", "desc": "IBM 비엔나 연구소에서 개발한 정형 명세 기법"},
+        {"term": "Petri-net", "desc": "병행 시스템 모델링을 위한 정형 기법. 상태 변화를 토큰으로 표현"}
+      ],
+      "asked": ["2023-2"]
+    }
+  ]
+}

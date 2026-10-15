@@ -1,0 +1,202 @@
+{
+  "chapter": "인터페이스 구현",
+  "order": 5,
+  "topics": [
+    {
+      "title": "인터페이스 요구사항 검증",
+      "importance": 2,
+      "summary": "인터페이스 요구사항이 명확·일관·검증 가능하게 작성되었는지 요구사항 검토 기법으로 확인하는 활동.",
+      "points": [
+        "검증 절차: 요구사항 검토 계획 수립 → 검토 및 오류 수정 → 베이스라인 설정",
+        "검토 기법: 동료 검토(Peer Review, 작성자가 설명·이해관계자가 결함 발견) / 워크스루(Walk Through, 사전 배포 후 짧은 회의) / 인스펙션(Inspection, 작성자 외 전문가가 공식 검토)",
+        "요구사항 검증 기준: 완전성·일관성·명확성·기능성·검증 가능성·추적 가능성·변경 용이성",
+        "요구사항 검증 보조 도구: 요구사항 추적표(Requirements Traceability Matrix), 프로토타이핑, 테스트 설계, CASE 도구"
+      ],
+      "terms": [
+        {"term": "동료 검토 (Peer Review)", "desc": "요구사항 명세서 작성자가 내용을 직접 설명하고 동료들이 결함을 발견하는 비공식 검토"},
+        {"term": "워크스루 (Walk Through)", "desc": "검토 자료를 회의 전에 배포하여 사전 검토한 후 짧은 회의로 결함을 발견"},
+        {"term": "인스펙션 (Inspection)", "desc": "작성자 외 다른 전문가(검토 팀)가 정해진 절차에 따라 공식적으로 검토하는 가장 엄격한 기법"},
+        {"term": "요구사항 추적표 (RTM, Requirements Traceability Matrix)", "desc": "요구사항과 설계·구현·테스트 산출물의 대응 관계를 표로 관리하여 누락을 확인"},
+        {"term": "베이스라인 (Baseline)", "desc": "검토가 끝나 공식 승인된 요구사항의 기준선. 이후 변경은 형상 통제 절차를 따름"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "송수신 데이터 식별과 인터페이스 데이터 표준",
+      "importance": 2,
+      "summary": "인터페이스 설계서를 바탕으로 송수신 시스템 간 주고받는 데이터 항목과 형식(전문 구조)을 확인하고 표준화하는 작업.",
+      "points": [
+        "인터페이스 데이터 표준 확인 순서: 송수신 데이터 식별 → 인터페이스 표준 항목 식별 → 데이터 표준 매핑/변환 규칙 정의",
+        "전문(인터페이스 메시지) 구조: 전문 공통부(인터페이스 ID·전송 일시·시스템 ID 등 고정) + 전문 개별부(업무 데이터) + 전문 종료부(전송 종료 표시)",
+        "식별 대상: 인터페이스 ID, 송수신 시스템, 데이터 항목(이름·타입·길이·필수 여부), 교환 주기, 전송 방식",
+        "데이터 변환 시 코드 매핑·단위 변환·NULL 처리 규칙을 사전에 정의"
+      ],
+      "terms": [
+        {"term": "전문 공통부 (Common Header)", "desc": "모든 인터페이스 전문에 공통으로 들어가는 고정 길이 영역. 인터페이스 ID, 전송 시간, 응답 코드 등"},
+        {"term": "전문 개별부 (Body)", "desc": "인터페이스별로 다른 실제 업무 데이터 영역"},
+        {"term": "전문 종료부 (Tail)", "desc": "전문의 끝을 알리는 고정 영역"},
+        {"term": "인터페이스 설계서 (Interface Design Document)", "desc": "시스템 인터페이스 목록·정의서, 상세 기능 인터페이스 정의서로 구성되어 송수신 데이터를 명세"},
+        {"term": "코드 매핑 (Code Mapping)", "desc": "송신 시스템 코드 체계를 수신 시스템 코드 체계로 대응시키는 규칙"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "인터페이스 데이터 표현 형식 (JSON / XML / YAML)",
+      "importance": 3,
+      "summary": "송수신 데이터를 교환할 때 쓰는 텍스트 기반 데이터 포맷. 단답형으로 정의만 주고 명칭을 묻는 유형이 잦다.",
+      "points": [
+        "JSON: '속성-값 쌍(Attribute-Value Pairs)'으로 이루어진 개방형 표준 포맷, 자바스크립트 기반, AJAX에서 XML 대체",
+        "XML: 태그 기반 마크업 언어, HTML의 문법 한계와 SGML의 복잡성을 개선, 스키마(XSD/DTD)로 구조 검증",
+        "YAML: 들여쓰기 기반, 사람이 읽기 쉬운 데이터 직렬화 포맷. 설정 파일에 많이 사용",
+        "CSV: 쉼표로 구분한 평면 텍스트. 단순 표 데이터 교환용"
+      ],
+      "terms": [
+        {"term": "JSON (JavaScript Object Notation)", "desc": "속성-값 쌍으로 구성된 경량 데이터 교환 포맷. 사람과 기계가 모두 읽기 쉬움"},
+        {"term": "XML (eXtensible Markup Language)", "desc": "W3C 표준 마크업 언어. 사용자 정의 태그로 데이터 구조와 의미를 함께 표현"},
+        {"term": "YAML (YAML Ain't Markup Language)", "desc": "들여쓰기와 키-값으로 데이터를 표현하는 사람 친화적 직렬화 형식"},
+        {"term": "CSV (Comma-Separated Values)", "desc": "쉼표로 필드를 구분한 텍스트 표 형식"},
+        {"term": "AJAX (Asynchronous JavaScript and XML)", "desc": "자바스크립트로 서버와 비동기 통신하여 페이지 전체를 새로 고치지 않고 일부만 갱신하는 기술"}
+      ],
+      "asked": ["2020-1"]
+    },
+    {
+      "title": "인터페이스 구현 방식과 연계 기술",
+      "importance": 2,
+      "summary": "데이터 통신(JSON/XML + AJAX)을 이용한 방식과 인터페이스 엔터티(테이블)를 이용한 방식으로 구현하며, 연계 기술로 소켓·DB 링크·웹 서비스 등이 있다.",
+      "points": [
+        "데이터 통신 방식: 송신 시스템이 JSON/XML로 데이터 생성 → AJAX 등으로 전송 → 수신 시스템이 파싱 후 처리",
+        "인터페이스 엔터티 방식: 송수신 시스템 사이에 인터페이스 테이블(엔터티)을 두고 송신이 INSERT, 수신이 읽어 처리",
+        "연계 기술: DB Link / DB Connection(Pool) / API·Open API / JDBC / Hyper Link / Socket / Web Service(SOAP·WSDL·UDDI, REST)",
+        "통신 유형: 실시간 직접 연계(Direct) vs 간접 연계(중계·미들웨어) / 동기(Sync) vs 비동기(Async) / 배치(Batch)"
+      ],
+      "terms": [
+        {"term": "소켓 (Socket)", "desc": "서버가 통신 포트를 열고 클라이언트 요청을 받아 네트워크로 데이터를 교환하는 방식"},
+        {"term": "DB 링크 (DB Link)", "desc": "DB에서 제공하는 DB 링크 객체로 다른 DB에 직접 접근하는 연계 기술"},
+        {"term": "웹 서비스 (Web Service)", "desc": "WSDL(서비스 기술), UDDI(서비스 등록/검색), SOAP(XML 기반 메시지 교환 프로토콜)으로 구성된 서비스 연계 방식"},
+        {"term": "SOAP (Simple Object Access Protocol)", "desc": "HTTP·HTTPS·SMTP 위에서 XML 메시지를 교환하는 프로토콜"},
+        {"term": "WSDL (Web Services Description Language)", "desc": "웹 서비스의 기능·위치·접근 방법을 XML로 기술한 언어"},
+        {"term": "UDDI (Universal Description, Discovery and Integration)", "desc": "웹 서비스를 등록·검색하는 레지스트리(저장소) 표준"},
+        {"term": "REST (Representational State Transfer)", "desc": "HTTP 메서드(GET/POST/PUT/DELETE)와 URI로 자원을 표현·조작하는 아키텍처 스타일"},
+        {"term": "인터페이스 엔터티 (Interface Entity)", "desc": "송수신 시스템 사이에서 데이터를 임시 보관하는 인터페이스 테이블"}
+      ],
+      "asked": ["2020-1"]
+    },
+    {
+      "title": "인터페이스 보안 - 네트워크 구간 보호 (IPSec / SSL·TLS / S-HTTP)",
+      "importance": 3,
+      "summary": "송수신 구간의 데이터 탈취·변조를 막기 위해 네트워크 계층·전송 계층·응용 계층에서 각각 암호화 프로토콜을 적용한다.",
+      "points": [
+        "계층별 매칭(단답 빈출): IPSec = 네트워크(IP) 계층 / SSL·TLS = 전송 계층(TCP, 443) / S-HTTP = 응용 계층(HTTP 메시지 단위)",
+        "IPSec 프로토콜: AH(인증·무결성, 암호화 X) / ESP(암호화+인증) / IKE(키 교환). 동작 모드: 전송 모드(페이로드만 암호화) / 터널 모드(IP 헤더까지 암호화, VPN)",
+        "SSL/TLS 하위 프로토콜: Handshake(상호 인증·세션키 생성) / Change Cipher Spec / Alert / Record(데이터 암호화·압축)",
+        "인터페이스 보안 취약점 분석 → 보안 기능 적용: 네트워크 구간(IPSec, SSL, S-HTTP) + 애플리케이션(시큐어 코딩) + 데이터베이스(암호화, 접근 권한)",
+        "DB 암호화 방식: API 방식(애플리케이션 레벨) / Plug-in 방식(DB 서버 레벨) / TDE(Transparent Data Encryption, DBMS 커널) / Hybrid"
+      ],
+      "terms": [
+        {"term": "IPSec (IP Security)", "desc": "네트워크 계층(IP)에서 패킷 단위로 인증·암호화·키 관리를 제공하는 프로토콜 집합"},
+        {"term": "AH (Authentication Header)", "desc": "IPSec에서 메시지 인증과 무결성만 제공(기밀성 없음)"},
+        {"term": "ESP (Encapsulating Security Payload)", "desc": "IPSec에서 암호화(기밀성)와 인증을 함께 제공"},
+        {"term": "IKE (Internet Key Exchange)", "desc": "IPSec의 보안 연관(SA)과 키를 협상·교환하는 프로토콜"},
+        {"term": "SSL (Secure Sockets Layer) / TLS (Transport Layer Security)", "desc": "전송 계층과 응용 계층 사이에서 인증·암호화·무결성을 제공. TLS는 SSL 3.0의 후속 표준"},
+        {"term": "S-HTTP (Secure HTTP)", "desc": "응용 계층에서 HTTP 메시지 하나하나를 암호화하여 전송하는 프로토콜"},
+        {"term": "HTTPS (HTTP over SSL/TLS)", "desc": "SSL/TLS 위에서 HTTP 통신 전체를 보호. 기본 포트 443"},
+        {"term": "전송 모드 (Transport Mode)", "desc": "IPSec에서 IP 페이로드만 보호. 호스트 대 호스트"},
+        {"term": "터널 모드 (Tunnel Mode)", "desc": "IPSec에서 원래 IP 패킷 전체를 새 IP 헤더로 캡슐화. VPN 게이트웨이 간 통신"},
+        {"term": "SA (Security Association, 보안 연관)", "desc": "IPSec 통신 양단이 합의한 알고리즘·키·수명 등의 보안 파라미터 집합"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "데이터 무결성 검사 도구",
+      "importance": 2,
+      "summary": "시스템 파일의 해시값을 저장해 두고 주기적으로 비교하여 인터페이스 보안 취약점으로 인한 파일 변조를 감지하는 도구.",
+      "points": [
+        "대표 도구: Tripwire, AIDE, Samhain, Claymore, Slipwire, Fcheck",
+        "원리: 설치 직후 파일 해시(MD5/SHA)를 DB에 저장 → 주기적으로 재계산하여 비교 → 변경 시 경고",
+        "인터페이스 보안 취약점(스니핑·데이터 변조 등)에 대응하는 '데이터 무결성' 확보 수단"
+      ],
+      "terms": [
+        {"term": "Tripwire (트립와이어)", "desc": "가장 대표적인 파일 무결성 검사 도구. 크래커가 파일을 변경했는지 해시 비교로 탐지"},
+        {"term": "AIDE (Advanced Intrusion Detection Environment)", "desc": "Tripwire의 오픈소스 대안. 파일 속성·해시 DB와 비교"},
+        {"term": "Samhain (삼하인)", "desc": "중앙 집중식 로그/모니터링을 지원하는 호스트 기반 무결성 검사 도구"},
+        {"term": "해시 함수 (Hash Function)", "desc": "임의 길이 입력을 고정 길이 값으로 변환하는 일방향 함수. MD5, SHA-1, SHA-256"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "인터페이스 구현 검증 도구 (xUnit / STAF / FitNesse / NTAF / Selenium / watir)",
+      "importance": 3,
+      "summary": "인터페이스 동작을 자동으로 테스트·검증하는 도구들. 각 도구의 특징을 설명하고 이름을 묻는 단답형이 반복 출제된다.",
+      "points": [
+        "xUnit: Java(JUnit), C++(CppUnit), .NET(NUnit) 등 다양한 언어 지원 '단위 테스트' 프레임워크",
+        "STAF: 서비스 호출·컴포넌트 재사용 등 '다양한 환경 지원', 데몬을 이용해 분산 환경 테스트",
+        "FitNesse: '웹 기반' 테스트 케이스 설계·실행·결과 확인 지원 (위키 형태)",
+        "NTAF: 'FitNesse + STAF' 를 통합한 NHN(네이버)의 테스트 자동화 프레임워크",
+        "Selenium: 다양한 브라우저·개발 언어 지원 '웹 애플리케이션 테스트' 프레임워크",
+        "watir: 'Ruby' 기반 웹 애플리케이션 테스트 프레임워크"
+      ],
+      "terms": [
+        {"term": "xUnit (엑스유닛)", "desc": "JUnit, CppUnit, NUnit, HttpUnit 등 언어별 단위 테스트 프레임워크 총칭"},
+        {"term": "STAF (Software Testing Automation Framework)", "desc": "서비스 호출, 컴포넌트 재사용 등 다양한 환경을 지원하는 테스트 프레임워크"},
+        {"term": "FitNesse (핏네스)", "desc": "웹 기반 테스트 케이스 설계·실행·결과 확인을 지원하는 테스트 프레임워크"},
+        {"term": "NTAF (NHN Test Automation Framework)", "desc": "FitNesse의 장점(웹 기반)과 STAF의 장점(분산 환경)을 통합한 테스트 자동화 프레임워크"},
+        {"term": "Selenium (셀레니움)", "desc": "다양한 브라우저와 언어를 지원하는 웹 애플리케이션 테스트 프레임워크"},
+        {"term": "watir (와티르)", "desc": "Ruby 기반의 웹 애플리케이션 테스트 프레임워크"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "인터페이스 감시 도구 - APM",
+      "importance": 2,
+      "summary": "애플리케이션 성능 관리(APM) 도구로 인터페이스 동작 상태를 실시간 감시하고 리소스·트랜잭션을 모니터링한다.",
+      "points": [
+        "APM 분류: 리소스 방식(CPU·메모리·네트워크 등 자원 모니터링, Nagios·Zabbix·Cacti) / 엔드투엔드 방식(사용자 요청에서 응답까지 거래 추적, 제니퍼·VisualVM·스카우터)",
+        "오픈소스 APM: 스카우터(Scouter), Pinpoint(네이버) / 상용: 제니퍼(Jennifer)",
+        "인터페이스 구현 검증 = 구현 검증 도구(테스트) + 감시 도구(APM) 두 축으로 수행"
+      ],
+      "terms": [
+        {"term": "APM (Application Performance Management/Monitoring)", "desc": "애플리케이션의 성능과 가용성을 모니터링·관리하는 도구 또는 활동"},
+        {"term": "스카우터 (Scouter)", "desc": "LG CNS에서 공개한 오픈소스 APM. 실시간 트랜잭션·리소스 모니터링"},
+        {"term": "제니퍼 (Jennifer)", "desc": "국내 대표 상용 APM. 애플리케이션 전 단계(개발~운영) 성능 모니터링"},
+        {"term": "Zabbix (자빅스)", "desc": "서버·네트워크 자원을 모니터링하는 오픈소스 도구"},
+        {"term": "Nagios (나기오스)", "desc": "서버·서비스 상태를 감시하는 오픈소스 모니터링 도구"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "인터페이스 오류 처리와 오류 보고",
+      "importance": 2,
+      "summary": "인터페이스 오류 발생 시 사용자 화면·로그·오류 테이블로 오류를 확인하고, 오류 발생 보고서를 작성해 조치하는 절차.",
+      "points": [
+        "오류 확인 방법 3가지: 사용자 화면에서 오류 확인(즉시) / 인터페이스 오류 로그 확인(상세) / 인터페이스 관련 테이블(오류 테이블)로 확인(정렬·조회 용이)",
+        "오류 처리 방안: 데이터 통신 방식 → 예외 처리(try-catch) 후 사용자 메시지·로그 / 엔터티 방식 → 오류 테이블에 오류 코드·메시지 기록, 재처리 플래그",
+        "오류 발생 보고서 구성: 최초 발생 보고서(개요·발생 일시·현상·영향도) → 오류 처리 경과 보고서 → 완료 보고서(원인·조치·재발 방지)",
+        "주요 오류 유형: 송수신 시스템 오류, 네트워크 오류, 데이터 형식 불일치, 보안(인증) 오류, 시간 초과(Timeout)"
+      ],
+      "terms": [
+        {"term": "인터페이스 오류 로그 (Interface Error Log)", "desc": "오류 발생 시점·내용·스택 트레이스를 파일로 기록. 상세 원인 분석용"},
+        {"term": "오류 테이블 (Error Table)", "desc": "인터페이스 오류 코드·메시지·발생 일시를 저장하는 DB 테이블. 재처리와 통계에 활용"},
+        {"term": "예외 처리 (Exception Handling)", "desc": "프로그램 실행 중 오류 상황을 try-catch 등으로 포착하여 정해진 방식으로 대응"},
+        {"term": "타임아웃 (Timeout)", "desc": "정해진 시간 내 응답이 없을 때 발생하는 오류. 재시도 횟수·대기 시간 정책 필요"},
+        {"term": "오류 발생 보고서 (Error Report)", "desc": "오류 개요·현상·영향도·원인·조치 내용을 담은 문서. 최초 보고 → 경과 보고 → 완료 보고"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "인터페이스(연계) 테스트",
+      "importance": 1,
+      "summary": "구현된 인터페이스를 송신·수신·통합 관점에서 검증하는 테스트. 단위 → 통합(연계) → 시스템 테스트 순으로 수행한다.",
+      "points": [
+        "연계 테스트 절차: 연계 테스트 케이스 작성 → 연계 테스트 환경 구축 → 연계 테스트 수행 → 연계 테스트 수행 결과 검증",
+        "검증 관점: 송신 데이터 생성 정확성 / 전송 성공 여부 / 수신 데이터 변환·반영 정확성 / 오류 시 예외 처리",
+        "테스트 케이스 항목: 인터페이스 ID, 사전 조건, 입력 데이터, 기대 결과, 실제 결과, 통과 여부"
+      ],
+      "terms": [
+        {"term": "연계 테스트 (Interface Test)", "desc": "송수신 시스템 간 데이터 연계가 설계대로 동작하는지 확인하는 통합 수준 테스트"},
+        {"term": "인터페이스 테스트 케이스 (Interface Test Case)", "desc": "입력값·실행 조건·기대 결과를 기록한 인터페이스 검증 항목"},
+        {"term": "사전 조건 (Pre-condition)", "desc": "테스트 수행 전 만족해야 하는 시스템 상태·데이터 조건"}
+      ],
+      "asked": []
+    }
+  ]
+}
