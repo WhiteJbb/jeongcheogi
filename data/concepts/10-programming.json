@@ -74,7 +74,7 @@
         "10진→2진: 2로 나눈 나머지 역순. 13 = 1101. 2진→8진: 3비트씩, 2진→16진: 4비트씩 묶기. 1101 = 0xD = 015",
         "C/Java 리터럴: 0x1F(16진)=31, 017(8진)=15, 0b101(2진)=5. Python 0o17=15",
         "printf %x 소문자 16진, %X 대문자, %o 8진. printf(\"%x\", 255) → ff. Python bin(5)='0b101', hex(255)='0xff', oct(8)='0o10', int('ff',16)=255",
-        "짝수/홀수 판정: n & 1. 2의 거듭제곱 판정: n & (n-1) == 0. 비트 세기: while(n){ cnt += n&1; n >>= 1; }"
+        "짝수/홀수 판정: n & 1. 2의 거듭제곱 판정: n > 0 && (n & (n-1)) == 0 (==가 &보다 우선순위 높아 괄호 필수). 비트 세기: while(n){ cnt += n&1; n >>= 1; }"
       ],
       "terms": [
         {"term": "비트 AND (&)", "desc": "두 비트가 모두 1일 때 1. 특정 비트 추출(마스킹)"},
@@ -119,7 +119,7 @@
         {"term": "포인터 배열 (Array of Pointers, int *p[N])", "desc": "포인터 N개를 담는 배열. 문자열 배열에 자주 사용"},
         {"term": "이중 포인터 (Double Pointer, int **pp)", "desc": "포인터를 가리키는 포인터. 포인터 배열이나 함수에서 포인터 변경 시 사용"},
         {"term": "값에 의한 호출 (Call by Value)", "desc": "값 복사 전달. 함수 내 변경이 원본에 영향 없음"},
-        {"term": "참조에 의한 호출 (Call by Reference, 주소 전달)", "desc": "주소 전달. 함수 내 *p 변경이 원본에 반영"},
+        {"term": "참조에 의한 호출 (Call by Reference, 주소 전달)", "desc": "C는 모두 값 전달(Call by Value). 포인터(주소)를 값으로 넘겨 참조 효과를 냄 — 시험에서는 'Call by Reference 효과'로 표현. 함수 내 *p 변경이 원본에 반영"},
         {"term": "구조체 (struct)", "desc": "서로 다른 자료형 묶음. 멤버 접근 .(변수), ->(포인터). typedef로 별칭"},
         {"term": "공용체 (union)", "desc": "멤버가 메모리를 공유. 크기는 가장 큰 멤버. 마지막 저장값만 유효"},
         {"term": "void 포인터 (void *)", "desc": "자료형 없는 범용 포인터. 역참조 전 형변환 필요"},
@@ -142,7 +142,7 @@
         "문자열 순회 패턴: for(i=0; s[i]; i++) 또는 while(*p) p++; → 널 문자(0=거짓)에서 멈춤",
         "문자열 역순 출력: for(i=strlen(s)-1; i>=0; i--) printf(\"%c\", s[i]);",
         "printf(\"%s\", s+2) → 3번째 문자부터 끝까지. printf(\"%c\", *(s+2)) → 3번째 문자 하나",
-        "문자열 비교에 == 사용 금지(주소 비교). if(s == \"abc\") 는 항상 거짓",
+        "문자열 비교에 == 사용 금지(주소 비교). if(s == \"abc\") 는 주소 비교라 내용 비교가 아님(우연히 참일 수도). 내용 비교는 strcmp",
         "getchar/putchar, scanf(\"%s\")는 공백 전까지, gets(위험)/fgets",
         "isalpha, isdigit, isupper, islower, toupper, tolower (ctype.h). atoi(\"123\")=123, atof, itoa(비표준), sprintf로 정수→문자열"
       ],
@@ -154,7 +154,7 @@
         {"term": "strcmp (String Compare)", "desc": "사전순 비교. 같으면 0, 앞<뒤 음수, 앞>뒤 양수"},
         {"term": "ASCII (American Standard Code for Information Interchange)", "desc": "7비트 문자 코드. '0'~'9'=48~57, 'A'~'Z'=65~90, 'a'~'z'=97~122"},
         {"term": "이스케이프 문자 (Escape Sequence)", "desc": "\\n 줄바꿈, \\t 탭, \\0 널, \\\\ 역슬래시, \\\" 큰따옴표, \\' 작은따옴표"},
-        {"term": "문자 리터럴 vs 문자열 리터럴", "desc": "'a'는 char(1바이트, 정수 97), \"a\"는 char[2] {'a','\\0'}"},
+        {"term": "문자 리터럴 vs 문자열 리터럴", "desc": "'a'는 문자 상수(정수 97). char 변수는 1바이트. 단, C에서 문자 상수 'a' 자체의 타입은 int (sizeof('a')==4), Java에서는 char 2바이트, \"a\"는 char[2] {'a','\\0'}"},
         {"term": "atoi / atof", "desc": "문자열 → 정수/실수 변환 (stdlib.h)"},
         {"term": "toupper / tolower", "desc": "대소문자 변환 (ctype.h). 반환형 int"}
       ],
@@ -165,7 +165,7 @@
       "importance": 3,
       "summary": "출력 결과를 정확히 쓰려면 폭·정렬·소수점 서식을 알아야 한다. 공백 개수까지 채점한다.",
       "points": [
-        "%d 10진 정수, %u 부호없는, %f 실수(기본 소수점 6자리), %lf double(scanf에서 필수), %c 문자, %s 문자열, %x/%X 16진, %o 8진, %e 지수, %p 주소, %% 퍼센트 기호",
+        "%d 10진 정수, %u 부호없는, %f 실수(기본 소수점 6자리), %lf double(printf에서는 %f와 동일(C99), scanf에서는 double에 반드시 %lf), %c 문자, %s 문자열, %x/%X 16진, %o 8진, %e 지수, %p 주소, %% 퍼센트 기호",
         "%5d: 폭 5, 오른쪽 정렬 (앞에 공백). 42 → '   42'. %-5d: 왼쪽 정렬 '42   '. %05d: 0으로 채움 '00042'",
         "%.2f: 소수점 2자리 반올림. 3.14159 → 3.14. %8.2f: 전체 폭 8, 소수 2자리 '    3.14'. %.0f 는 소수점 없이 반올림",
         "%5s: 폭 5 오른쪽 정렬. %-5s 왼쪽 정렬. %.3s: 앞 3글자만",
@@ -185,7 +185,7 @@
         {"term": "%e (Exponent)", "desc": "지수 표기. 1234.5 → 1.234500e+03"},
         {"term": "%p (Pointer)", "desc": "주소 16진수 출력"},
         {"term": "%u (Unsigned)", "desc": "부호 없는 10진 정수. -1을 %u로 → 4294967295"},
-        {"term": "%ld / %lld / %lf", "desc": "long / long long / double(scanf 전용, printf는 %f)"},
+        {"term": "%ld / %lld / %lf", "desc": "long / long long / double(printf에서 %lf는 %f와 동일(C99). scanf에서는 double에 반드시 %lf)"},
         {"term": "폭 지정 (Width, %5d)", "desc": "최소 출력 폭. 부족하면 공백(기본 오른쪽 정렬), -는 왼쪽 정렬, 0은 0 채움"},
         {"term": "정밀도 (Precision, %.2f)", "desc": "소수점 아래 자리수(반올림). 문자열에선 최대 글자 수"}
       ],
@@ -199,7 +199,7 @@
         "재귀 추적법: 호출 트리를 그려 기저 조건부터 거꾸로 합산. f(n)=n+f(n-1), f(0)=0 → f(4)=10. 팩토리얼 f(n)=n*f(n-1), f(1)=1",
         "피보나치 fib(n)=fib(n-1)+fib(n-2), fib(0)=0, fib(1)=1 → 0,1,1,2,3,5,8,13,21,34. fib(6)=8",
         "재귀에서 출력 위치 함정: printf가 재귀 호출 앞이면 n,n-1,...(내려가며), 뒤면 1,2,...,n(올라오며 역순)",
-        "static 지역변수: 프로그램 시작 시 한 번만 초기화, 함수 종료 후에도 값 유지. void f(){static int c=0; c++; printf(\"%d\",c);} 3번 호출 → 1 2 3. 일반 지역변수면 1 1 1",
+        "static 지역변수: 프로그램 시작 시 한 번만 초기화, 함수 종료 후에도 값 유지. void f(){static int c=0; c++; printf(\"%d\",c);} 3번 호출 → 123. 일반 지역변수면 111",
         "전역변수: 함수 밖 선언, 자동 0 초기화, 모든 함수에서 접근. 지역변수: 초기화 안 하면 쓰레기값(시험에선 보통 초기화됨)",
         "같은 이름의 지역변수가 전역변수를 가림(shadowing). 블록 { } 안에서 선언된 변수는 블록 종료 시 소멸",
         "값 전달이므로 함수 안에서 매개변수 변경은 호출자에 영향 없음. 배열/포인터 전달은 원본 변경 가능",
@@ -357,7 +357,7 @@
         "StringBuilder는 가변. sb.append(), insert(), reverse(), delete(), toString(). 반복 문자열 연결 시 사용",
         "배열: int[] a = new int[5]; 기본값 0 (boolean false, 참조 null, char '\\u0000'). a.length. 2차원 a[i].length는 i행의 열 수(가변 배열 가능 new int[3][])",
         "배열 선언 int[][] a = {{1,2,3},{4,5}}; a.length=2, a[1].length=2, a[1][1]=5",
-        "Integer 캐시: Integer a=127, b=127; a==b → true. Integer a=128, b=128; a==b → false(-128~127만 캐시). equals는 true",
+        "Integer 캐시: Integer a=127, b=127; a==b → true. Integer a=128, b=128; a==b → false(-128~127 범위 밖은 캐시 보장이 없어 false, 시험 정답은 false). equals는 true",
         "ArrayList<Integer> list: add, get(i), remove(int index) vs remove(Object), size(), contains, set(i, v). HashMap: put, get, containsKey, keySet. HashSet: 중복 제거, 순서 없음",
         "for-each: for(int x : arr). 배열 복사 Arrays.copyOf, 정렬 Arrays.sort, 출력 Arrays.toString. 배열 대입 b = a 는 참조 복사(같은 배열)",
         "ArrayIndexOutOfBoundsException: 인덱스 범위 초과. StringIndexOutOfBoundsException. NullPointerException"
@@ -367,7 +367,7 @@
         {"term": "String Pool (문자열 상수 풀)", "desc": "같은 리터럴은 하나의 객체 공유 → == 가 true. new String은 별도 객체"},
         {"term": "equals()", "desc": "내용(값) 비교. Object의 기본 구현은 == 와 같으므로 오버라이딩 필요"},
         {"term": "== (참조 비교)", "desc": "기본형은 값 비교, 참조형은 주소 비교"},
-        {"term": "StringBuilder / StringBuffer", "desc": "가변 문자열. StringBuffer는 동기화(스레드 안전), StringBuilder는 비동기(빠름)"},
+        {"term": "StringBuilder / StringBuffer", "desc": "가변 문자열. StringBuffer는 동기화(스레드 안전), StringBuilder는 비동기화(non-synchronized, 스레드 안전 X, 빠름)"},
         {"term": "length vs length() vs size()", "desc": "배열.length(필드), 문자열.length()(메서드), 컬렉션.size()"},
         {"term": "substring(begin, end)", "desc": "begin 포함, end 미포함. \"hello\".substring(1,3) → \"el\""},
         {"term": "charAt(i)", "desc": "i번째 문자(char) 반환"},
@@ -380,7 +380,7 @@
         {"term": "HashSet", "desc": "중복 없는 집합. 순서 없음. TreeSet은 정렬, LinkedHashSet은 입력 순서"},
         {"term": "제네릭 (Generics)", "desc": "List<String> 처럼 타입을 매개변수화. 컴파일 시 타입 검사"},
         {"term": "Iterator", "desc": "hasNext(), next()로 컬렉션 순회"},
-        {"term": "얕은 복사 vs 깊은 복사 (Shallow vs Deep Copy)", "desc": "참조만 복사 vs 내용까지 새로 복사. b=a 는 얕은 복사"}
+        {"term": "얕은 복사 vs 깊은 복사 (Shallow vs Deep Copy)", "desc": "참조만 복사 vs 내용까지 새로 복사. b=a 는 참조 대입(같은 객체). 얕은 복사는 clone()처럼 새 객체를 만들되 내부 참조는 공유"}
       ],
       "asked": ["2020-3", "2021-1", "2022-2", "2023-1", "2024-1"]
     },
@@ -489,7 +489,7 @@
     {
       "title": "Python 문자열 메서드·포매팅",
       "importance": 3,
-      "summary": "문자열은 불변. 메서드는 모두 새 문자열을 반환하고 원본은 그대로. 포매팅 3가지 방식.",
+      "summary": "문자열은 불변. 메서드는 원본을 바꾸지 않고 결과를 반환(split은 리스트, find/count는 정수, startswith/isdigit은 bool). 포매팅 3가지 방식.",
       "points": [
         "s.upper(), lower(), capitalize()(첫 글자만 대문자), title()(단어별 첫 글자), swapcase(), strip()(양쪽 공백 제거), lstrip/rstrip",
         "s.split() 공백 기준 리스트, s.split(',') 구분자 기준. ','.join(['a','b']) → 'a,b'. s.replace('a','b') 모두 치환. s.find('x') 없으면 -1, s.index('x') 없으면 ValueError. s.count('l')",

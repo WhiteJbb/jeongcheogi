@@ -625,7 +625,7 @@
         },
         {
           "term": "umask",
-          "desc": "새 파일·디렉터리 기본 권한에서 제거할 권한 마스크. 파일 666-umask, 디렉터리 777-umask"
+          "desc": "새 파일·디렉터리 기본 권한에서 제거할 권한 마스크. 파일 666-umask, 디렉터리 777-umask (정확히는 기본권한 & ~umask. umask 022·027 등 일반적인 값에서는 뺄셈과 같음)"
         },
         {
           "term": "SetUID / SetGID",
@@ -786,7 +786,7 @@
         },
         {
           "term": "허브 (Hub)",
-          "desc": "1계층. 모든 포트로 신호 전달(브로드캐스트). 더미 허브, 스위칭 허브"
+          "desc": "1계층. 모든 포트로 신호 전달(브로드캐스트). 더미 허브/리피터가 물리 계층, 스위치(스위칭 허브)/브리지는 데이터링크 계층"
         },
         {
           "term": "브리지 (Bridge)",
@@ -1110,7 +1110,7 @@
         },
         {
           "term": "슬로우 스타트 (Slow Start)",
-          "desc": "윈도우 1부터 ACK마다 2배(지수) 증가, 임계값 도달 시 선형"
+          "desc": "윈도우 1부터 ACK마다 1 MSS씩 증가해 RTT마다 약 2배(지수 증가), 임계값 도달 시 선형"
         },
         {
           "term": "오류 제어 (Error Control)",
@@ -1134,7 +1134,7 @@
         },
         {
           "term": "패리티 검사 (Parity Check)",
-          "desc": "1의 개수를 짝수/홀수로 맞춤. 1비트 오류만 검출"
+          "desc": "1의 개수를 짝수/홀수로 맞춤. 홀수 개 비트 오류만 검출(짝수 개는 검출 불가)"
         },
         {
           "term": "해밍 코드 (Hamming Code)",
@@ -1389,7 +1389,7 @@
         },
         {
           "term": "포이즌 리버스 (Poison Reverse)",
-          "desc": "다운된 경로를 메트릭 16(무한)으로 광고"
+          "desc": "경로를 배운 인터페이스 방향으로 그 경로를 무한대(16) 메트릭으로 광고해 루프 방지(다운된 경로를 16으로 광고하는 것은 Route Poisoning)"
         },
         {
           "term": "LSA (Link State Advertisement)",
@@ -1434,7 +1434,7 @@
         "거리별: PAN(개인, 블루투스) < LAN(건물) < MAN(도시) < WAN(국가·대륙)",
         "전송 방식: 단방향(Simplex, 라디오) / 반이중(Half Duplex, 무전기) / 전이중(Full Duplex, 전화). 직렬 vs 병렬. 동기 vs 비동기(start/stop 비트)",
         "다중화(Multiplexing): 하나의 회선에 여러 신호. FDM(주파수), TDM(시간, 동기식/비동기식·통계적), WDM(파장, 광), CDM(코드)",
-        "대역폭(Bandwidth, bps), 처리율(Throughput), 지연(Latency), 지터(Jitter, 지연 변동), BER(비트 오류율), 보(Baud, 초당 신호 변화 횟수. bps = baud × 비트/신호)"
+        "대역폭(Bandwidth, bps), 처리율(Throughput), 지연(Latency), 지터(Jitter, 지연 변동), BER(비트 오류율), 보(Baud, 초당 전송 심벌(신호 단위) 수. bps = baud × 심벌당 비트 수)"
       ],
       "terms": [
         {
@@ -1543,7 +1543,7 @@
         },
         {
           "term": "보 (Baud)",
-          "desc": "초당 신호(심볼) 변화 횟수. bps = baud × 심볼당 비트 수"
+          "desc": "초당 전송 심벌(신호 단위) 수. bps = baud × 심벌당 비트 수"
         },
         {
           "term": "QoS (Quality of Service)",
@@ -1786,7 +1786,7 @@
         },
         {
           "term": "멤리스터 (Memristor)",
-          "desc": "메모리 + 레지스터. 전원 끊겨도 저항 상태 기억"
+          "desc": "Memory + Resistor(저항). 전류 흐름·방향을 기억하는 소자. 전원 끊겨도 저항 상태 기억"
         },
         {
           "term": "RPA (Robotic Process Automation)",
@@ -2010,7 +2010,7 @@
       "importance": 3,
       "summary": "병행 수행 문제 4가지와 제어 기법, 로킹 단위 크기 효과, 트랜잭션 격리 수준 4단계와 현상. 빈출.",
       "points": [
-        "병행 제어 목적: DB 공유·일관성 유지, 시스템 활용도·응답 시간 최대화",
+        "병행 제어 목적: DB 공유·일관성 유지, 시스템 활용도 최대화·응답 시간 최소화",
         "병행 수행 문제: 갱신 분실(Lost Update, 두 트랜잭션이 같은 데이터 갱신 → 하나 덮어씀), 모순성(Inconsistency, 다른 트랜잭션 갱신 중 읽어 불일치), 연쇄 복귀(Cascading Rollback, 하나의 롤백이 다른 트랜잭션도 롤백), 비완료 의존성(Uncommitted Dependency, 실패한 트랜잭션 결과 참조)",
         "로킹(Locking): 데이터에 lock 설정 후 접근, unlock. 공유 락(S-lock, 읽기, 여러 트랜잭션 가능) vs 배타 락(X-lock, 쓰기, 하나만)",
         "로킹 단위(Granularity): DB > 테이블 > 레코드 > 필드. 단위 클수록 → 로크 수 적음, 관리 쉬움, 병행성(동시성) 낮음. 단위 작을수록 → 로크 수 많음, 오버헤드 큼, 병행성 높음",
@@ -2132,7 +2132,7 @@
         "분산 DB 구성: 분산 처리기, 분산 데이터베이스, 통신 네트워크",
         "분산 설계 전략: 테이블 위치 분산, 분할(Fragmentation: 수평/수직), 할당(Allocation: 중복/비중복)",
         "2단계 커밋(2PC, Two-Phase Commit): 분산 트랜잭션 원자성. 1단계 준비(Prepare/Vote) → 2단계 커밋/중단(Commit/Abort). 조정자(Coordinator)와 참여자(Participant)",
-        "CAP 정리: 분산 시스템은 일관성(Consistency), 가용성(Availability), 분할 내성(Partition Tolerance) 중 둘만 보장 가능. RDB = CA, NoSQL = CP 또는 AP",
+        "CAP 정리: 분산 시스템은 일관성(Consistency), 가용성(Availability), 분할 내성(Partition Tolerance) 중 둘만 보장 가능. 일반적으로 RDB는 CA 성향, NoSQL은 CP(HBase, MongoDB) 또는 AP(Cassandra, CouchDB) 성향으로 분류(설계에 따라 다름)",
         "BASE: Basically Available, Soft state, Eventually consistent. NoSQL의 느슨한 일관성 모델(ACID 대비)"
       ],
       "terms": [

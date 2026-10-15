@@ -27,11 +27,11 @@
       "importance": 3,
       "summary": "행안부 SW 개발보안 가이드의 보안 약점 7개 분류. 분류명과 대표 약점을 단답으로 묻는다.",
       "points": [
-        "① 입력데이터 검증 및 표현: SQL 삽입, XSS, 경로 조작 및 자원 삽입, 운영체제 명령어 삽입, 크로스사이트 요청 위조(CSRF), 포맷 스트링 삽입, 메모리 버퍼 오버플로",
+        "① 입력데이터 검증 및 표현: SQL 삽입, XSS, 경로 조작 및 자원 삽입, 운영체제 명령어 삽입, 크로스사이트 요청 위조(CSRF), 포맷 스트링 삽입, 메모리 버퍼 오버플로, 정수 오버플로",
         "② 보안 기능: 부적절한 인가, 취약한 암호화 알고리즘 사용, 하드코드된 비밀번호·암호키, 중요 정보 평문 저장/전송, 충분하지 않은 키 길이",
         "③ 시간 및 상태: 경쟁 조건(Race Condition, TOCTOU), 종료되지 않는 반복문·재귀",
         "④ 에러 처리: 오류 메시지를 통한 정보 노출, 오류 상황 대응 부재, 부적절한 예외 처리",
-        "⑤ 코드 오류: 널 포인터 역참조, 부적절한 자원 해제, 해제된 자원 사용(Use After Free), 정수 오버플로",
+        "⑤ 코드 오류: 널 포인터 역참조, 부적절한 자원 해제, 해제된 자원 사용(Use After Free)",
         "⑥ 캡슐화: 잘못된 세션에 의한 데이터 정보 노출, 제거되지 않은 디버그 코드, Private 배열에 Public 데이터 할당",
         "⑦ API 오용: DNS lookup에 의존한 보안 결정, 취약한 API 사용(strcpy, gets 등)",
         "암기: 입보시에코캡API"
@@ -61,7 +61,7 @@
         "해시: 일방향(단방향), 고정길이 출력, 키 없음. 무결성 검증·비밀번호 저장",
         "대칭키 = 블록 암호(DES, 3DES, AES, SEED, ARIA, IDEA, LEA, Blowfish, Skipjack) + 스트림 암호(RC4, LFSR, A5/1)",
         "비대칭키: RSA, ECC, DSA, ElGamal, Diffie-Hellman(키 교환), Rabin",
-        "해시: MD5, SHA-1, SHA-2(SHA-256/512), SHA-3, HAVAL, N-NASH, SNEFRU",
+        "해시: MD5, SHA-1, SHA-2(SHA-256/512), SHA-3, HAVAL, N-HASH, SNEFRU",
         "블록 암호 운영 모드: ECB, CBC, CFB, OFB, CTR"
       ],
       "terms": [
@@ -358,7 +358,7 @@
         {"term": "트러스트존 (TrustZone)", "desc": "ARM 프로세서의 하드웨어 기반 보안 영역 분리 기술"},
         {"term": "다크 데이터 (Dark Data)", "desc": "수집·저장되었으나 분석·활용되지 않는 데이터"},
         {"term": "사이버 스쿼팅 (Cyber Squatting)", "desc": "유명 상표의 도메인을 선점해 되파는 행위"},
-        {"term": "스턱스넷 (Stuxnet)", "desc": "산업 제어 시스템(SCADA)을 공격한 웜. 이란 원전"},
+        {"term": "스턱스넷 (Stuxnet)", "desc": "산업 제어 시스템(SCADA)을 공격한 웜. 이란 나탄즈 우라늄 농축 시설의 원심분리기(산업제어시스템) 공격"},
         {"term": "허니팟 (Honeypot)", "desc": "공격자를 유인하기 위해 의도적으로 취약하게 만든 시스템. 공격 분석"},
         {"term": "좀비 PC (Zombie PC)", "desc": "악성코드에 감염되어 공격자가 조종하는 PC"},
         {"term": "메모리 해킹 (Memory Hacking)", "desc": "PC 메모리에 있는 데이터를 위변조. 금융거래 금액 변조"},
@@ -453,7 +453,7 @@
         {"term": "SOAR (Security Orchestration, Automation and Response)", "desc": "보안 대응 절차를 플레이북으로 자동화"},
         {"term": "EDR (Endpoint Detection and Response)", "desc": "엔드포인트에서 악성 행위를 지속 감시·탐지·대응"},
         {"term": "XDR (Extended Detection and Response)", "desc": "엔드포인트·네트워크·클라우드 데이터를 통합한 확장 탐지·대응"},
-        {"term": "SOC (Security Operation Center, 보안 관제 센터)", "desc": "24시간 보안 이벤트 모니터링·대응 조직"},
+        {"term": "SOC (Security Operations Center, 보안 관제 센터)", "desc": "24시간 보안 이벤트 모니터링·대응 조직"},
         {"term": "TMS (Threat Management System, 위협 관리 시스템)", "desc": "네트워크 위협을 종합 분석·조기 경보"},
         {"term": "wtmp", "desc": "리눅스 로그인·로그아웃·재부팅 기록. last 명령으로 조회"},
         {"term": "btmp", "desc": "리눅스 로그인 실패 기록. lastb 명령으로 조회"},
@@ -536,7 +536,7 @@
       "points": [
         "ISMS-P: 정보보호 및 개인정보보호 관리체계 인증(KISA). ISMS + PIMS 통합(2018)",
         "ISO/IEC 27001: 정보보호 관리체계 국제 표준. PDCA(Plan-Do-Check-Act)",
-        "보안 개발 방법론: MS-SDL(MS), Seven Touchpoints(소프트웨어 보안 모범사례 7개 접점), CLASP(OWASP, 활동 중심), CWE(취약점 분류)",
+        "보안 개발 방법론: MS-SDL(MS), Seven Touchpoints(소프트웨어 보안 모범사례 7개 접점), CLASP(OWASP, 활동 중심) / CWE는 방법론이 아닌 SW/HW 보안 약점(weakness) 유형 목록",
         "위험 관리: 자산 식별 → 위협·취약점 분석 → 위험 평가 → 대응(수용/회피/전가/감소)",
         "BCP/DRP: 업무 연속성 계획/재해 복구 계획. RTO(복구 목표 시간), RPO(복구 목표 시점)",
         "DRS 복구 센터 유형: 미러 사이트(즉시) > 핫 사이트(수시간) > 웜 사이트(수일~주) > 콜드 사이트(수주~월)"
@@ -547,9 +547,9 @@
         {"term": "ISO/IEC 27001", "desc": "정보보호 관리체계 국제 표준. 14개 통제 영역"},
         {"term": "PIMS (Personal Information Management System)", "desc": "개인정보보호 관리체계 인증. ISMS-P로 통합"},
         {"term": "MS-SDL (Microsoft Security Development Lifecycle)", "desc": "MS의 보안 개발 생명주기 방법론"},
-        {"term": "Seven Touchpoints", "desc": "SW 개발 생명주기 7단계에 보안 활동을 통합한 방법론"},
+        {"term": "Seven Touchpoints", "desc": "SW 개발 생명주기 전반에 적용하는 7가지 보안 실천 활동(단계가 아님)"},
         {"term": "CLASP (Comprehensive Lightweight Application Security Process)", "desc": "OWASP. 이미 운영 중인 시스템에 적용하기 좋은 활동 중심 보안 방법론"},
-        {"term": "CWE (Common Weakness Enumeration)", "desc": "MITRE의 소프트웨어 보안 약점 목록"},
+        {"term": "CWE (Common Weakness Enumeration)", "desc": "MITRE의 SW/HW 보안 약점(weakness) 유형 목록"},
         {"term": "CVE (Common Vulnerabilities and Exposures)", "desc": "공개된 보안 취약점에 부여하는 식별 번호. CVE-연도-번호"},
         {"term": "CVSS (Common Vulnerability Scoring System)", "desc": "취약점 심각도 점수(0~10) 표준"},
         {"term": "BCP (Business Continuity Planning, 업무 연속성 계획)", "desc": "재해 시에도 핵심 업무를 지속하기 위한 계획"},

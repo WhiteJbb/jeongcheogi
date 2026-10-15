@@ -492,14 +492,14 @@
         "개체 무결성(Entity Integrity): 기본키는 NULL이나 중복 값을 가질 수 없음",
         "참조 무결성(Referential Integrity): 외래키 값은 참조하는 릴레이션의 기본키 값이거나 NULL",
         "도메인 무결성(Domain Integrity): 속성 값은 정의된 도메인 범위 내의 값",
-        "키 무결성(Key Integrity): 하나의 릴레이션에는 최소 하나의 키가 존재 / 사용자 정의 무결성: 사용자가 정의한 업무 규칙 / NULL 무결성: 특정 속성은 NULL 불가",
+        "키 무결성(Key Integrity): 키로 지정된 속성(집합)의 값은 튜플 간에 중복될 수 없음 / 사용자 정의 무결성: 사용자가 정의한 업무 규칙 / NULL 무결성: 특정 속성은 NULL 불가",
         "SQL 제약 조건: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK, DEFAULT",
         "참조 무결성 옵션(ON DELETE/UPDATE): CASCADE(연쇄 삭제·갱신), SET NULL, SET DEFAULT, RESTRICT/NO ACTION(거부)"
       ],
       "terms": [
         {
           "term": "개체 무결성 (Entity Integrity)",
-          "desc": "기본키를 구성하는 속성은 NULL이나 중복 값을 가질 수 없음"
+          "desc": "기본키(복합키면 그 조합)의 값은 NULL 불가·유일해야 함. 개별 속성값은 중복 가능"
         },
         {
           "term": "참조 무결성 (Referential Integrity)",
@@ -511,7 +511,7 @@
         },
         {
           "term": "키 무결성 (Key Integrity)",
-          "desc": "한 릴레이션에 적어도 하나의 키가 존재"
+          "desc": "키로 지정된 속성(집합)의 값은 튜플 간에 중복될 수 없음"
         },
         {
           "term": "사용자 정의 무결성 (User-defined Integrity)",
