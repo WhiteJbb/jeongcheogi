@@ -1,0 +1,379 @@
+{
+  "year": 2020,
+  "round": 3,
+  "date": "2020-10-17",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "서술",
+      "question": "리팩토링(Refactoring)의 목적에 대해 간략히 설명하시오.",
+      "answer": [
+        "코드의 외부 동작(결과)은 바꾸지 않고 내부 구조를 개선하여 소프트웨어를 이해하기 쉽고 수정하기 쉽게 만드는 것",
+        "결과의 변경 없이 코드 구조를 재조정하여 가독성을 높이고 유지보수를 쉽게 하기 위함"
+      ],
+      "explanation": "리팩토링은 기능(외부 행위)을 변경하지 않으면서 코드의 내부 구조를 개선하는 활동이다.\n목적은 가독성 향상, 유지보수 용이, 버그를 빨리 찾기, 생산성 향상이다.\n중복 코드, 긴 메서드, 거대한 클래스 등이 주요 대상이다.",
+      "keywords": [
+        "리팩토링",
+        "코드 최적화",
+        "유지보수"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 2,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nvoid main() {\n    int c = 0;\n    int i = 0;\n    while (i < 10) {\n        i++;\n        c *= i;\n    }\n    printf(\"%d\", c);\n}",
+      "answer": [
+        "0"
+      ],
+      "explanation": "c의 초기값이 0이고 반복문 안에서 c *= i 만 수행한다.\n0에 어떤 수를 곱해도 0이므로 i가 1~10까지 증가해도 c는 계속 0이다.\n따라서 0이 출력된다.",
+      "keywords": [
+        "while",
+        "복합 대입 연산자",
+        "곱셈"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 3,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 [학생] 테이블에서 이름이 '민수'인 튜플을 삭제하는 SQL문을 작성하시오.\n\n- 대소문자는 구분하지 않는다.\n- 세미콜론(;)은 생략 가능하다.\n- 속성값에는 작은따옴표(' ')를 사용한다.\n\n[학생]\n학번 | 이름 | 점수 | 과목이름\n1000 | 김정미 | 90 | 알고리즘\n2000 | 강은미 | 95 | 데이터베이스\n3000 | 홍길동 | 90 | 전산수학\n4000 | 민수 | 95 | 운영체제",
+      "answer": [
+        "DELETE FROM 학생 WHERE 이름 = '민수';",
+        "DELETE FROM 학생 WHERE 이름 = '민수'"
+      ],
+      "explanation": "튜플(행) 삭제는 DELETE FROM 테이블명 WHERE 조건; 구문을 사용한다.\n조건은 이름 = '민수' 이며 문자열이므로 작은따옴표로 감싼다.\nWHERE를 빼면 모든 행이 삭제되므로 주의한다.",
+      "keywords": [
+        "DELETE",
+        "DML",
+        "WHERE"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 4,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "TCP/IP에서 신뢰성 없는 IP를 대신하여 송신 측으로 네트워크의 IP 상태 및 에러 메시지를 전달해 주는 프로토콜을 (   )이라 한다. 괄호 안에 들어갈 용어를 쓰시오.",
+      "answer": [
+        "ICMP",
+        "Internet Control Message Protocol"
+      ],
+      "explanation": "ICMP는 IP 패킷 전송 중 발생한 오류 보고와 네트워크 상태 진단 메시지를 송신 측에 전달하는 네트워크 계층 프로토콜이다.\nping(Echo Request/Reply), traceroute 등이 ICMP를 이용한다.",
+      "keywords": [
+        "ICMP",
+        "TCP/IP",
+        "에러 메시지",
+        "ping"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 5,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Test {\n    public static void main(String[] args) {\n        int i = 0;\n        int sum = 0;\n        while (i < 10) {\n            i++;\n            if (i % 2 == 1)\n                continue;\n            sum += i;\n        }\n        System.out.print(sum);\n    }\n}",
+      "answer": [
+        "30"
+      ],
+      "explanation": "i를 1씩 증가시키며 i%2==1(홀수)이면 continue로 건너뛰고, 짝수만 sum에 더한다.\ni가 1~10까지 진행되므로 더해지는 값은 2+4+6+8+10.\n따라서 30이 출력된다.",
+      "keywords": [
+        "while",
+        "continue",
+        "짝수 합"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 6,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "심리학자 톰 마릴(Tom Marill)은 컴퓨터가 메시지를 전달하고 메시지가 제대로 도착했는지 확인하며, 도착하지 않았을 경우 메시지를 재전송하는 일련의 방법을 '기술적 은어'를 뜻하는 (   )이라는 용어로 정의하였다. 괄호 안에 들어갈 용어를 쓰시오.",
+      "answer": [
+        "프로토콜",
+        "Protocol"
+      ],
+      "explanation": "프로토콜은 서로 다른 시스템 간 데이터 교환을 위해 정한 통신 규약이다.\n톰 마릴이 1965년 컴퓨터 간 메시지 전달·확인·재전송 절차를 '프로토콜'이라 명명했다.\n기본 3요소는 구문, 의미, 타이밍이다.",
+      "keywords": [
+        "프로토콜",
+        "톰 마릴",
+        "통신 규약"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 7,
+      "subject": "통합 구현",
+      "type": "빈칸",
+      "question": "EAI(Enterprise Application Integration) 구축 유형에는 메시지 버스(Message Bus) 유형, 하이브리드(Hybrid) 유형, ( A ) 유형, ( B ) 유형이 있다. 괄호 안에 들어갈 유형을 쓰시오.",
+      "answer": [
+        "(A) Point-to-Point, (B) Hub & Spoke",
+        "(A) 포인트 투 포인트, (B) 허브 앤 스포크",
+        "Point to Point, Hub & Spoke"
+      ],
+      "blanks": [
+        "Point-to-Point",
+        "Hub & Spoke"
+      ],
+      "explanation": "Point-to-Point: 미들웨어 없이 애플리케이션을 1:1로 직접 연결. 변경·재사용이 어렵다.\nHub & Spoke: 단일 허브를 통해 데이터를 전송하는 중앙 집중형. 확장·유지보수 용이하나 허브 장애 시 전체 영향.\nMessage Bus: 미들웨어(버스)를 두는 방식. Hybrid: Hub & Spoke와 Message Bus 혼합. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "EAI",
+        "Point-to-Point",
+        "Hub & Spoke",
+        "Message Bus"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 8,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "abstract class Vehicle {\n    String name;\n    abstract public String getName(String val);\n    public String getName() {\n        return \"Vehicle name : \" + name;\n    }\n}\nclass Car extends Vehicle {\n    public Car(String val) {\n        name = super.name = val;\n    }\n    public String getName(String val) {\n        return \"Car name : \" + val;\n    }\n    public String getName(byte val[]) {\n        return \"Car name : \" + val;\n    }\n}\npublic class Test {\n    public static void main(String[] args) {\n        Vehicle obj = new Car(\"Spark\");\n        System.out.printf(obj.getName());\n    }\n}",
+      "answer": [
+        "Vehicle name : Spark",
+        "Vehicle name: Spark"
+      ],
+      "explanation": "Vehicle obj = new Car(\"Spark\") 로 Car 생성자가 실행되어 name(부모 필드)에 Spark가 저장된다.\nobj.getName()은 인자가 없으므로 오버로딩된 메서드 중 매개변수 없는 Vehicle의 getName()이 호출된다.\n(Car의 getName(String), getName(byte[])는 매개변수가 있어 대상이 아님.) 따라서 Vehicle name : Spark 출력. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "추상 클래스",
+        "오버로딩",
+        "오버라이딩",
+        "상속"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 9,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nint r1() {\n    return 4;\n}\nint r10() {\n    return (30 + r1());\n}\nint r100() {\n    return (200 + r10());\n}\nint main() {\n    printf(\"%d\", r100());\n    return 0;\n}",
+      "answer": [
+        "234"
+      ],
+      "explanation": "main에서 r100()을 호출하면 200 + r10(), r10()은 30 + r1(), r1()은 4를 반환한다.\n연쇄 호출 결과 200 + 30 + 4 = 234.\n따라서 234가 출력된다.",
+      "keywords": [
+        "함수 호출",
+        "반환값",
+        "중첩 호출"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 10,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "동치 분할 테스트, 경계값 분석 테스트 등 프로그램의 내부 구조를 보지 않고 명세(요구사항)를 기반으로 수행하는 테스트 기법을 쓰시오.",
+      "answer": [
+        "블랙박스 테스트",
+        "Black Box Test",
+        "명세 기반 테스트",
+        "블랙박스 테스팅"
+      ],
+      "explanation": "블랙박스 테스트는 내부 로직을 모르는 상태에서 입력과 출력만으로 기능을 검증하는 명세 기반 테스트다.\n종류: 동치 분할, 경계값 분석, 원인-결과 그래프, 오류 예측, 비교 테스트 등.\n반대로 내부 구조를 보는 화이트박스 테스트에는 기초 경로, 제어 흐름, 조건·루프 테스트가 있다.",
+      "keywords": [
+        "블랙박스 테스트",
+        "동치 분할",
+        "경계값 분석",
+        "명세 기반"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 11,
+      "subject": "통합 구현",
+      "type": "서술",
+      "question": "형상 관리 절차 중 형상 통제(Configuration Control)에 대해 간략히 설명하시오.",
+      "answer": [
+        "형상 항목의 변경 요구를 검토·승인하여 현재의 베이스라인에 반영될 수 있도록 통제하는 활동",
+        "산출물의 변경 사항을 버전별로 관리하여 목표 시스템의 품질 향상을 지원하는 활동",
+        "형상 항목의 버전 관리를 위해 변경 여부와 변경 활동을 통제하는 활동"
+      ],
+      "explanation": "형상 관리 절차: 형상 식별 → 형상 통제 → 형상 감사 → 형상 기록.\n형상 통제는 변경 요청을 형상통제위원회(CCB)가 검토·승인하고 베이스라인에 반영되도록 변경을 통제하는 활동이다.\n산출물의 변경 사항을 버전별로 관리해 시스템 품질 향상을 지원한다.",
+      "keywords": [
+        "형상 통제",
+        "형상 관리",
+        "베이스라인",
+        "CCB"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 12,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "다음 제어 흐름 그래프가 분기 커버리지(Branch Coverage)를 만족하기 위한 테스트 케이스(노드 실행 순서)를 쓰시오. (그래프는 복원되지 않음. 노드 1~7로 구성되며 1→2, 2→3, 2→4, 3→4, 4→5, 5→6, 6→1, 6→7의 흐름을 가지는 것으로 전해진다)",
+      "answer": [
+        "1234561, 124567",
+        "1234567, 124561",
+        "1-2-3-4-5-6-1, 1-2-4-5-6-7"
+      ],
+      "explanation": "분기 커버리지는 모든 분기(결정 노드의 참/거짓 간선)가 적어도 한 번씩 실행되어야 한다.\n결정 노드 2(→3 또는 →4)와 6(→1 또는 →7)의 네 간선을 모두 덮으려면 두 경로가 필요하다.\n1234561 + 124567 조합 또는 1234567 + 124561 조합이 네 분기를 모두 통과한다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "분기 커버리지",
+        "제어 흐름 그래프",
+        "화이트박스 테스트"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 13,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "대표적인 내부 라우팅 프로토콜(IGP)로 대규모 네트워크에 적합하고, 링크 상태(Link State) 라우팅 프로토콜로도 불리는 라우팅 프로토콜을 쓰시오.",
+      "answer": [
+        "OSPF",
+        "Open Shortest Path First"
+      ],
+      "explanation": "OSPF는 AS 내부에서 사용하는 링크 상태 기반 IGP로, 다익스트라(SPF) 알고리즘으로 최단 경로를 계산한다.\n홉 수 제한(15)이 있는 RIP(거리 벡터)과 달리 대규모 네트워크에 적합하고 수렴이 빠르다.\nAS 간 라우팅에는 BGP(EGP)를 사용한다.",
+      "keywords": [
+        "OSPF",
+        "링크 상태",
+        "IGP",
+        "라우팅 프로토콜"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 14,
+      "subject": "프로그래밍 언어 활용",
+      "type": "서술",
+      "question": "C++에서 생성자(Constructor)란 무엇인지 간략히 설명하시오.",
+      "answer": [
+        "클래스의 객체가 생성될 때 자동으로 호출되어 객체를 초기화하는 특수한 메서드(함수)",
+        "객체 생성 시 초기화 작업을 위해 반드시 호출되고 제일 먼저 실행되는 함수"
+      ],
+      "explanation": "생성자는 클래스 이름과 같은 이름을 가지며 반환형이 없는 특수 멤버 함수다.\n객체가 생성될 때 자동으로 호출되어 멤버 변수 초기화 등 준비 작업을 수행한다.\n매개변수에 따라 여러 개를 오버로딩할 수 있고, 반대 역할의 소멸자(~클래스명)가 있다.",
+      "keywords": [
+        "생성자",
+        "C++",
+        "객체 초기화"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 15,
+      "subject": "데이터 입출력 구현",
+      "type": "서술",
+      "question": "데이터베이스에서 스키마(Schema)에 대해 간략히 설명하시오.",
+      "answer": [
+        "데이터베이스의 구조와 제약조건에 관한 전반적인 명세를 기술한 메타데이터의 집합",
+        "데이터베이스의 전체적인 구조와 제약조건에 대한 명세로 외부·개념·내부 스키마로 나뉜다"
+      ],
+      "explanation": "스키마는 데이터베이스를 구성하는 개체, 속성, 관계와 제약조건을 정의한 메타데이터다.\n3계층 스키마: 외부 스키마(사용자 관점), 개념 스키마(전체 논리 구조), 내부 스키마(물리 저장 구조).",
+      "keywords": [
+        "스키마",
+        "메타데이터",
+        "3계층 스키마"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 16,
+      "subject": "서버 프로그램 구현",
+      "type": "서술",
+      "question": "헝가리안 표기법(Hungarian Notation)에 대해 간략히 설명하시오.",
+      "answer": [
+        "변수나 함수 등 식별자의 이름 앞에 자료형(데이터 타입)을 나타내는 접두어를 붙이는 명명 규칙",
+        "식별자 표기 시 접두어에 자료형을 붙이는 표기법"
+      ],
+      "explanation": "식별자 앞에 자료형을 뜻하는 접두어를 붙이는 명명 규칙이다. 예: int nCount, String strName, bool bFlag.\n이름만 보고 자료형을 알 수 있어 가독성이 좋다는 장점이 있다.\n카멜 케이스(camelCase), 파스칼 케이스(PascalCase), 스네이크 케이스(snake_case)와 함께 대표적 코딩 표기법이다.",
+      "keywords": [
+        "헝가리안 표기법",
+        "명명 규칙",
+        "코딩 표준"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 17,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 [성적] 테이블에서 과목별 점수의 평균이 90 이상인 과목이름, 최소점수, 최대점수를 구하는 SQL문을 아래 조건에 맞게 작성하시오.\n\n- 대소문자를 구분하지 않는다.\n- WHERE 구문을 사용하지 않는다.\n- GROUP BY, HAVING 구문을 반드시 사용한다.\n- 세미콜론(;)은 생략 가능하다.\n- 별칭(AS)을 사용해야 한다.\n\n[성적]\n과목코드 | 과목이름 | 학점 | 점수\n1000 | 컴퓨터과학 | A+ | 95\n2000 | 운영체제 | B+ | 85\n1000 | 컴퓨터과학 | B+ | 85\n2000 | 운영체제 | B | 80\n\n[결과]\n과목이름 | 최소점수 | 최대점수\n컴퓨터과학 | 85 | 95",
+      "answer": [
+        "SELECT 과목이름, MIN(점수) AS 최소점수, MAX(점수) AS 최대점수 FROM 성적 GROUP BY 과목이름 HAVING AVG(점수) >= 90;",
+        "SELECT 과목이름, MIN(점수) AS 최소점수, MAX(점수) AS 최대점수 FROM 성적 GROUP BY 과목이름 HAVING AVG(점수) >= 90"
+      ],
+      "explanation": "과목별로 묶어야 하므로 GROUP BY 과목이름, 그룹별 조건은 WHERE가 아닌 HAVING AVG(점수) >= 90 으로 건다.\n결과 컬럼명이 최소점수, 최대점수이므로 MIN(점수) AS 최소점수, MAX(점수) AS 최대점수 로 별칭을 준다.\n컴퓨터과학 평균 90(≥90)만 조건을 만족하고 운영체제 평균 82.5는 제외된다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "GROUP BY",
+        "HAVING",
+        "AVG",
+        "MIN",
+        "MAX",
+        "AS"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 18,
+      "subject": "화면 설계",
+      "type": "서술",
+      "question": "UI 설계 원칙 중 직관성(Intuitiveness)에 대해 간략히 설명하시오.",
+      "answer": [
+        "누구나 쉽게 이해하고 쉽게 사용할 수 있어야 한다는 원칙"
+      ],
+      "explanation": "UI 설계 4원칙은 직관성, 유효성, 학습성, 유연성이다.\n직관성은 사용자가 별도 설명 없이도 인터페이스를 쉽게 이해하고 사용할 수 있어야 한다는 원칙이다.",
+      "keywords": [
+        "UI 설계 원칙",
+        "직관성"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 19,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "릴레이션 A, B가 있을 때 릴레이션 B의 조건에 맞는 것들만 릴레이션 A에서 튜플을 분리해 프로젝션하는 관계대수 연산의 기호를 쓰시오.",
+      "answer": [
+        "÷",
+        "Division",
+        "디비전",
+        "나누기"
+      ],
+      "explanation": "관계대수의 순수 관계 연산자: Select(σ), Project(π), Join(⋈), Division(÷).\nDivision(A ÷ B)은 B 릴레이션의 모든 튜플 조건을 만족하는 A의 튜플을 찾아 B의 속성을 제외하고 프로젝션하는 연산이다.\n문제의 설명은 Division에 해당하므로 기호는 ÷ 이다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "관계대수",
+        "Division",
+        "÷",
+        "순수 관계 연산자"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    },
+    {
+      "no": 20,
+      "subject": "SQL 응용",
+      "type": "빈칸",
+      "lang": "SQL",
+      "question": "학생 테이블에 크기 20의 문자형 주소 속성(컬럼)을 추가하는 SQL문이다. 괄호 ①, ②에 들어갈 명령어를 쓰시오.",
+      "code": "( ① ) TABLE 학생 ( ② ) 주소 VARCHAR(20);",
+      "answer": [
+        "① ALTER, ② ADD",
+        "ALTER, ADD"
+      ],
+      "blanks": [
+        "ALTER",
+        "ADD"
+      ],
+      "explanation": "테이블 구조 변경은 DDL의 ALTER TABLE 구문을 사용한다.\n컬럼 추가는 ADD, 변경은 MODIFY(ALTER COLUMN), 삭제는 DROP COLUMN 이다.\n따라서 ALTER TABLE 학생 ADD 주소 VARCHAR(20); 이 된다.",
+      "keywords": [
+        "ALTER TABLE",
+        "ADD",
+        "DDL"
+      ],
+      "source": "https://ss-o.tistory.com/108"
+    }
+  ]
+}

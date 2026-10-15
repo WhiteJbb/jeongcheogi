@@ -1,0 +1,400 @@
+{
+  "year": 2020,
+  "round": 4,
+  "date": "2020-11-29",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "현재 IPv4의 확장형으로 IPv4가 가지고 있는 주소 고갈, 보안성, 이동성 지원 등의 문제점을 해결하기 위해 개발된 128비트 주소 체계를 갖는 차세대 인터넷 프로토콜을 쓰시오.",
+      "answer": [
+        "IPv6",
+        "Internet Protocol version 6"
+      ],
+      "explanation": "IPv6는 32비트 IPv4의 주소 고갈 문제를 해결하기 위한 128비트 주소 체계다.\n16비트씩 8부분을 콜론(:)으로 구분한 16진수로 표기하며, IPSec 기본 내장으로 보안성과 이동성·QoS 지원이 강화되었다.\n주소 유형은 유니캐스트, 멀티캐스트, 애니캐스트다.",
+      "keywords": [
+        "IPv6",
+        "128비트",
+        "주소 고갈"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 2,
+      "subject": "서버 프로그램 구현",
+      "type": "빈칸",
+      "question": "목적에 따른 디자인 패턴의 유형에는 생성(Creational) 패턴, 구조(Structural) 패턴, (   ) 패턴이 있다. 괄호에 들어갈 패턴 유형을 쓰시오.",
+      "answer": [
+        "행위",
+        "행위 패턴",
+        "Behavioral",
+        "행동"
+      ],
+      "blanks": [
+        "행위"
+      ],
+      "explanation": "GoF 디자인 패턴은 목적에 따라 생성·구조·행위 3가지로 분류된다.\n생성 패턴(객체 생성 방식: Singleton, Factory Method, Abstract Factory, Builder, Prototype), 구조 패턴(클래스·객체 조합: Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy).\n행위 패턴은 객체 간 상호작용·책임 분배를 다루며 Observer, Strategy, Command, State, Visitor 등이 있다.",
+      "keywords": [
+        "디자인 패턴",
+        "행위 패턴",
+        "GoF"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 3,
+      "subject": "요구사항 확인",
+      "type": "단답",
+      "question": "다음은 어떤 UML 다이어그램의 예시이다. 어떤 종류의 다이어그램인지 쓰시오. (그림은 복원되지 않음. 여러 패키지 안에 클래스들이 묶여 있고 패키지 간 의존 관계가 점선 화살표로 표시된 그림이다)",
+      "answer": [
+        "패키지 다이어그램",
+        "Package Diagram"
+      ],
+      "explanation": "패키지 다이어그램은 UML 구조 다이어그램의 하나로, 클래스 등 모델 요소를 패키지로 그룹화하고 패키지 간 의존 관계를 표현한다.\n폴더 모양의 패키지 기호와 점선 화살표(의존)로 그린다.\n구조 다이어그램에는 클래스·객체·컴포넌트·배치·복합체 구조·패키지 다이어그램이 있다.",
+      "keywords": [
+        "UML",
+        "패키지 다이어그램",
+        "구조 다이어그램"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 4,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "데이터베이스 회복(Recovery) 기법 중 Rollback 시 Redo, Undo가 모두 실행되는 트랜잭션 처리법으로, 트랜잭션 수행 중 갱신 결과를 바로 DB에 반영하는 기법을 쓰시오.",
+      "answer": [
+        "즉시 갱신 회복 기법",
+        "즉시 갱신 기법",
+        "즉시 갱신",
+        "Immediate Update"
+      ],
+      "explanation": "즉시 갱신 기법은 트랜잭션 수행 중 변경 내용을 로그에 기록하면서 즉시 DB에도 반영한다.\n장애 시 커밋된 트랜잭션은 Redo, 커밋되지 않은 트랜잭션은 Undo를 수행한다.\n지연 갱신 기법은 커밋 전까지 로그에만 기록해 Undo가 필요 없다는 점에서 구분된다.",
+      "keywords": [
+        "회복 기법",
+        "즉시 갱신",
+        "Redo",
+        "Undo"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 5,
+      "subject": "프로그래밍 언어 활용",
+      "type": "빈칸",
+      "lang": "Java",
+      "question": "다음은 n이 10일 때 10을 2진수로 변환하는 Java 코드이다. 괄호 A, B에 들어갈 알맞은 값을 쓰시오.",
+      "code": "class Good {\n    public static void main(String[] args) {\n        int[] a = new int[8];\n        int i = 0;\n        int n = 10;\n        while ( A ) {\n            a[i++] = ( B );\n            n /= 2;\n        }\n        for (i = 7; i >= 0; i--) {\n            System.out.print(a[i]);\n        }\n    }\n}",
+      "answer": [
+        "A: n > 0, B: n % 2",
+        "(A) n > 0, (B) n % 2",
+        "A: n >= 1, B: n % 2",
+        "A: n > 0, B: n & 1"
+      ],
+      "blanks": [
+        "n > 0",
+        "n % 2"
+      ],
+      "explanation": "10진수를 2로 나눈 나머지를 차례로 배열에 저장하면 2진수 각 자리가 하위 비트부터 만들어진다.\nA: n이 0이 될 때까지 반복해야 하므로 n > 0 (또는 n >= 1).\nB: 2로 나눈 나머지를 저장하므로 n % 2 (또는 n & 1). 배열을 역순(a[7]→a[0])으로 출력하면 00001010이 된다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "2진수 변환",
+        "while",
+        "나머지 연산",
+        "배열"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 6,
+      "subject": "프로그래밍 언어 활용",
+      "type": "빈칸",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 보고 괄호 A, B에 들어갈 알맞은 값을 쓰시오.\n\n[출력 결과]\n1 4 7 10 13\n2 5 8 11 14\n3 6 9 12 15",
+      "code": "public class Good {\n    public static void main(String[] args) {\n        int[][] a = new int[( A )][( B )];\n        for (int i = 0; i < 3; i++) {\n            for (int j = 0; j < 5; j++) {\n                a[i][j] = j * 3 + (i + 1);\n                System.out.print(a[i][j] + \" \");\n            }\n            System.out.println();\n        }\n    }\n}",
+      "answer": [
+        "A: 3, B: 5",
+        "(A) 3, (B) 5",
+        "3, 5"
+      ],
+      "blanks": [
+        "3",
+        "5"
+      ],
+      "explanation": "바깥 루프 i가 0~2(3회), 안쪽 루프 j가 0~4(5회) 돌며 a[i][j]에 값을 저장한다.\n출력이 3행 5열이므로 배열은 int[3][5]로 선언해야 한다.\n따라서 A = 3, B = 5 이다.",
+      "keywords": [
+        "2차원 배열",
+        "중첩 반복문"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 7,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "서술",
+      "question": "해킹 공격의 종류 중 하나인 스니핑(Sniffing)에 대하여 간략히 설명하시오.",
+      "answer": [
+        "네트워크 상에 흘러 다니는 패킷(트래픽)을 몰래 훔쳐보거나 도청하는 수동적 공격",
+        "공격 대상에게 직접 공격하지 않고 네트워크 중간에서 데이터를 몰래 들여다보는 수동적 공격 기법"
+      ],
+      "explanation": "스니핑은 네트워크를 지나는 패킷을 가로채어 내용을 엿보는 수동적(Passive) 공격이다.\n암호화되지 않은 ID/비밀번호 등 민감 정보가 유출될 수 있다.\n스푸핑(위장)과 달리 데이터를 변조하지 않으며, 방어책은 암호화(SSL/TLS, VPN)와 스위치 환경 구성이다.",
+      "keywords": [
+        "스니핑",
+        "수동적 공격",
+        "패킷 도청"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 8,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "IP 패킷에서 외부의 공인 IP 주소와 포트 주소에 해당하는 내부 IP 주소를 재기록하여 라우터를 통해 네트워크 트래픽을 주고받는 기술을 쓰시오.",
+      "answer": [
+        "NAT",
+        "Network Address Translation",
+        "네트워크 주소 변환"
+      ],
+      "explanation": "NAT는 사설 IP와 공인 IP를 상호 변환하여 내부 네트워크의 여러 호스트가 하나의 공인 IP로 인터넷에 접속할 수 있게 하는 기술이다.\nIPv4 주소 부족을 완화하고 내부 주소를 숨겨 보안에도 도움을 준다.\n포트까지 변환하는 방식을 NAPT(PAT)라 한다.",
+      "keywords": [
+        "NAT",
+        "공인 IP",
+        "사설 IP",
+        "주소 변환"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 9,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "lol = [[1, 2, 3], [4, 5], [6, 7, 8, 9]]\nprint(lol[0])\nprint(lol[2][1])\nfor sub in lol:\n    for item in sub:\n        print(item, end='')\n    print()",
+      "answer": [
+        "[1, 2, 3]\n7\n123\n45\n6789"
+      ],
+      "explanation": "lol[0]은 첫 번째 하위 리스트 [1, 2, 3], lol[2][1]은 세 번째 리스트의 두 번째 원소 7이다.\n이중 for문에서 print(item, end='')는 줄바꿈 없이 이어 출력하고, 안쪽 루프가 끝날 때마다 print()로 줄을 바꾼다.\n따라서 [1, 2, 3] / 7 / 123 / 45 / 6789 가 각 줄에 출력된다.",
+      "keywords": [
+        "리스트",
+        "중첩 리스트",
+        "for",
+        "end"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 10,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "분산 컴퓨팅 기술 기반의 데이터 위변조 방지 기술로, P2P 방식을 기반으로 하여 소규모 데이터들이 연결되어 형성된 '블록'이라는 분산 데이터 저장 환경에 관리 대상 데이터를 저장함으로써 누구도 임의로 수정할 수 없고 누구나 변경의 결과를 열람할 수 있게 만드는 기술을 쓰시오.",
+      "answer": [
+        "블록체인",
+        "Blockchain"
+      ],
+      "explanation": "블록체인은 거래 내역을 담은 블록을 해시로 연결(체인)하여 P2P 네트워크의 모든 참여자가 분산 저장하는 기술이다.\n중앙 서버 없이 참여자 합의로 검증하므로 위변조가 매우 어렵고 투명하다.\n비트코인 등 암호화폐의 기반 기술이다.",
+      "keywords": [
+        "블록체인",
+        "P2P",
+        "분산 원장"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 11,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "오픈 소스 기반의 분산 컴퓨팅 플랫폼으로, 일반 PC급 컴퓨터들로 가상화된 대형 스토리지를 형성하고 그 안에 보관된 거대한 데이터 세트를 병렬로 처리할 수 있도록 개발된 자바 소프트웨어 프레임워크로 구글, 야후 등에 적용된 기술을 쓰시오.",
+      "answer": [
+        "하둡",
+        "Hadoop"
+      ],
+      "explanation": "하둡은 더그 커팅이 구글의 GFS·MapReduce 논문을 바탕으로 만든 아파치 오픈소스 빅데이터 분산 처리 프레임워크다.\n분산 파일 시스템 HDFS와 병렬 처리 모델 MapReduce가 핵심이다.\n저가 범용 서버 여러 대를 클러스터로 묶어 대용량 데이터를 처리한다.",
+      "keywords": [
+        "하둡",
+        "HDFS",
+        "MapReduce",
+        "빅데이터"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 12,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "데이터베이스 이상 현상(Anomaly)의 종류 3가지를 쓰시오.",
+      "answer": [
+        "삽입 이상, 삭제 이상, 갱신 이상",
+        "삽입 이상, 삭제 이상, 수정 이상",
+        "Insertion Anomaly, Deletion Anomaly, Update Anomaly"
+      ],
+      "explanation": "이상 현상은 정규화되지 않은 테이블의 데이터 중복 때문에 발생한다.\n삽입 이상: 원하지 않는 불필요한 데이터까지 함께 삽입해야 하는 문제.\n삭제 이상: 튜플 삭제 시 필요한 다른 정보까지 함께 삭제되는 문제.\n갱신 이상: 중복 데이터 일부만 수정되어 불일치가 생기는 문제.",
+      "keywords": [
+        "이상 현상",
+        "삽입 이상",
+        "삭제 이상",
+        "갱신 이상",
+        "정규화"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 13,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "빈칸",
+      "question": "다음은 프로세스 상태 전이도이다. ①, ②, ③에 알맞은 상태를 쓰시오. (그림은 복원되지 않음. 생성 → ① → ② → 종료 흐름이며, ①→②는 Dispatch, ②→①은 Timeout(시간 할당량 만료), ②→③은 입출력 요청 등 이벤트 대기, ③→①은 Wake up 으로 표시된다)",
+      "answer": [
+        "① 준비, ② 실행, ③ 대기",
+        "① Ready, ② Run, ③ Wait",
+        "① 준비, ② 실행, ③ 대기(블록)"
+      ],
+      "blanks": [
+        "준비",
+        "실행",
+        "대기"
+      ],
+      "explanation": "준비(Ready): CPU 할당을 기다리는 상태. 디스패치되면 실행 상태로 간다.\n실행(Run): CPU를 점유해 명령을 수행하는 상태. 시간 할당량이 끝나면 준비로, 입출력 요청 시 대기로 전이한다.\n대기(Wait/Block): 입출력 등 이벤트 완료를 기다리는 상태. 완료되면 Wake up으로 준비 상태가 된다. (복원 문제로 표현 차이 있음)",
+      "keywords": [
+        "프로세스 상태",
+        "준비",
+        "실행",
+        "대기",
+        "디스패치"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 14,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "테스트 오라클 중 특정한 몇 개의 입력값에 대해서만 기대하는 결과를 제공해 주는 오라클을 쓰시오.",
+      "answer": [
+        "샘플링 오라클",
+        "Sampling Oracle"
+      ],
+      "explanation": "테스트 오라클은 테스트 결과가 참인지 판단하기 위해 사전에 정의된 참 값을 제공하는 기준이다.\n참(True) 오라클: 모든 입력에 기대 결과 제공. 샘플링 오라클: 특정 몇 개 입력값에 대해서만 기대 결과 제공.\n휴리스틱 오라클: 샘플링 + 나머지는 추정, 일관성 검사 오라클: 변경 전후 결과 동일 여부 확인.",
+      "keywords": [
+        "테스트 오라클",
+        "샘플링 오라클",
+        "참 오라클",
+        "휴리스틱 오라클"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 15,
+      "subject": "애플리케이션 테스트 관리",
+      "type": "단답",
+      "question": "점수에 따른 성적 부여가 잘 되었는지 테스트하고자 한다. 아래와 같이 각 구간을 대표하는 값을 골라 테스트하는 기법은 무엇인지 쓰시오.\n\n점수 | 성적\n0 ~ 59 | 가\n60 ~ 69 | 양\n70 ~ 79 | 미\n80 ~ 89 | 우\n90 ~ 100 | 수\n\n[테스트 값] -10점 / 30점 / 65점 / 75점 / 85점 / 95점 / 110점",
+      "answer": [
+        "동치 분할 테스트",
+        "동등 분할 테스트",
+        "동치 분할",
+        "Equivalence Partitioning",
+        "동치 클래스 분해"
+      ],
+      "explanation": "입력 영역을 결과가 같은 동치 클래스로 나누고, 각 클래스에서 대표값 하나씩을 골라 테스트하는 블랙박스 기법이다.\n유효 구간(30, 65, 75, 85, 95)과 무효 구간(-10, 110)에서 각각 대표값을 택했으므로 동치 분할 테스트다.\n구간의 경계값(59, 60, 69, 70 등)을 택했다면 경계값 분석이다.",
+      "keywords": [
+        "동치 분할",
+        "블랙박스 테스트",
+        "경계값 분석"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 16,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음 조건을 만족하면서 학과별 튜플 수를 구하는 SQL문을 작성하시오.\n\n- WHERE 구문을 사용하지 않는다.\n- GROUP BY를 사용한다.\n- 별칭(AS)을 사용한다.\n- 집계 함수를 사용한다.\n\n[학생]\n학과 | 학생\n전기 | 이순신\n컴퓨터 | 안중근\n컴퓨터 | 윤봉길\n전자 | 이봉창\n전자 | 강우규\n\n[결과]\n학과 | 학과별튜플수\n전기 | 1\n컴퓨터 | 2\n전자 | 2",
+      "answer": [
+        "SELECT 학과, COUNT(학과) AS 학과별튜플수 FROM 학생 GROUP BY 학과;",
+        "SELECT 학과, COUNT(*) AS 학과별튜플수 FROM 학생 GROUP BY 학과;",
+        "SELECT 학과, COUNT(학과) AS 학과별튜플수 FROM 학생 GROUP BY 학과"
+      ],
+      "explanation": "학과별로 묶어 개수를 세야 하므로 GROUP BY 학과 와 집계 함수 COUNT를 사용한다.\n결과 컬럼명이 학과별튜플수이므로 COUNT(학과) AS 학과별튜플수 로 별칭을 준다.\nCOUNT(*)도 같은 결과를 내므로 허용된다.",
+      "keywords": [
+        "GROUP BY",
+        "COUNT",
+        "AS",
+        "집계 함수"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 17,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "데니스 리치와 켄 톰슨 등이 벨 연구소에서 만든 운영체제로, 90% 이상 C언어로 구현되어 있고 시스템 프로그램이 모듈화되어 다른 하드웨어 기종으로 쉽게 이식 가능하며, 계층적 트리 구조를 가짐으로써 통합적인 파일 관리가 용이한 운영체제를 쓰시오.",
+      "answer": [
+        "유닉스",
+        "UNIX",
+        "Unix"
+      ],
+      "explanation": "UNIX는 1969년 AT&T 벨 연구소에서 켄 톰슨, 데니스 리치 등이 개발한 다중 사용자·다중 작업 운영체제다.\n대부분 C로 작성되어 이식성이 높고, 트리 구조 파일 시스템과 셸, 커널로 구성된다.\n리눅스는 유닉스와 호환되는 오픈소스 운영체제다.",
+      "keywords": [
+        "UNIX",
+        "벨 연구소",
+        "C언어",
+        "트리 구조"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 18,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C언어 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nint main() {\n    char *p = \"KOREA\";\n    printf(\"%s\\n\", p);\n    printf(\"%s\\n\", p + 3);\n    printf(\"%c\\n\", *p);\n    printf(\"%c\\n\", *(p + 3));\n    printf(\"%c\\n\", *p + 2);\n    return 0;\n}",
+      "answer": [
+        "KOREA\nEA\nK\nE\nM"
+      ],
+      "explanation": "p는 문자열 \"KOREA\"의 시작 주소. %s로 p를 출력하면 KOREA, p+3은 'E'부터이므로 EA.\n*p는 첫 문자 'K', *(p+3)은 네 번째 문자 'E'.\n*p+2는 'K'(ASCII 75)+2 = 77 = 'M'. 따라서 KOREA, EA, K, E, M 이 각 줄에 출력된다.",
+      "keywords": [
+        "포인터",
+        "문자열",
+        "문자 연산",
+        "ASCII"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 19,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "class Parent {\n    public int compute(int num) {\n        if (num <= 1) return num;\n        return compute(num - 1) + compute(num - 2);\n    }\n}\nclass Child extends Parent {\n    public int compute(int num) {\n        if (num <= 1) return num;\n        return compute(num - 1) + compute(num - 3);\n    }\n}\nclass Good {\n    public static void main(String[] args) {\n        Parent obj = new Child();\n        System.out.print(obj.compute(4));\n    }\n}",
+      "answer": [
+        "1"
+      ],
+      "explanation": "Parent obj = new Child() 이므로 오버라이딩된 Child의 compute()가 호출된다(재귀 호출도 모두 Child 버전).\ncompute(4) = compute(3) + compute(1) = compute(3) + 1.\ncompute(3) = compute(2) + compute(0) = compute(2) + 0, compute(2) = compute(1) + compute(-1) = 1 + (-1) = 0.\n따라서 compute(4) = 0 + 1 = 1.",
+      "keywords": [
+        "재귀",
+        "오버라이딩",
+        "다형성",
+        "동적 바인딩"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    },
+    {
+      "no": 20,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "서술",
+      "question": "정보 보안의 3요소 중 가용성(Availability)에 대하여 간략히 설명하시오.",
+      "answer": [
+        "인가된(권한을 가진) 사용자가 필요할 때 언제든지 정보와 자원에 접근하여 사용할 수 있도록 보장하는 특성",
+        "인가된 사용자는 원할 때 정보에 접근이 가능해야 함"
+      ],
+      "explanation": "정보 보안 3요소(CIA): 기밀성(Confidentiality), 무결성(Integrity), 가용성(Availability).\n가용성은 인가된 사용자가 원하는 시점에 서비스와 데이터를 중단 없이 이용할 수 있어야 한다는 특성이다.\nDoS/DDoS 공격이 가용성을 침해하는 대표 사례다.",
+      "keywords": [
+        "가용성",
+        "정보 보안 3요소",
+        "기밀성",
+        "무결성"
+      ],
+      "source": "https://ss-o.tistory.com/125"
+    }
+  ]
+}

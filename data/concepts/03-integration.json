@@ -1,0 +1,303 @@
+{
+  "chapter": "통합 구현",
+  "order": 3,
+  "topics": [
+    {
+      "title": "연계 요구사항 분석과 연계 메커니즘",
+      "importance": 3,
+      "summary": "송신 시스템·수신 시스템·중계 시스템으로 구성되는 연계 구조와, 직접 연계/간접 연계 방식의 차이. 통합 구현의 출발점이다.",
+      "points": [
+        "통합 구현 구성: 송신 시스템(연계 데이터 생성·변환·전송), 수신 시스템(수신·DB 반영), 중계 시스템(내·외부 연계 중계, 보안·변환), 연계 데이터, 네트워크",
+        "직접 연계: 중간 매개체 없이 송·수신 시스템을 직접 연결. 속도 빠름·구현 단순·비용 저렴, 결합도 높음·암호화 등 보안 처리 어려움·시스템 변경 시 영향. 예: DB Link, API/Open API, DB Connection(JDBC/ODBC), JDBC, 하이퍼링크",
+        "간접 연계: 중계 서버(연계 솔루션)를 통해 연결. 서로 다른 네트워크·프로토콜 연계 가능, 보안·업무 처리 로직 반영 가능, 느리고 구축 복잡. 예: EAI, ESB, 웹 서비스(Web Service), 소켓(Socket)",
+        "연계 메커니즘 송신 절차: 연계 데이터 생성 및 추출 → 코드 매핑 및 데이터 변환 → 인터페이스 테이블/파일 생성 → 로그 기록 → 연계 서버 또는 송신 어댑터 → 전송",
+        "연계 데이터 식별·표준화 절차: 연계 범위 및 항목 정의 → 연계 코드 변환 및 매핑 → 연계 데이터 식별자(PK)·변경 구분 정의 → 연계 데이터 표현 방법 정의(테이블, 파일: 태그/콤마 구분, XML) → 연계 정의서·명세서 작성"
+      ],
+      "terms": [
+        {"term": "송신 시스템 (Sending System)", "desc": "연계할 데이터를 DB와 애플리케이션에서 연계 테이블·파일 형태로 생성해 송신"},
+        {"term": "수신 시스템 (Receiving System)", "desc": "수신한 연계 테이블·파일을 수신 시스템의 DB나 애플리케이션에 맞게 변환·반영"},
+        {"term": "중계 시스템 (Relay System)", "desc": "송·수신 시스템 사이에서 데이터 변환·중계·모니터링 담당. 내부↔외부 연계 시 사용"},
+        {"term": "직접 연계 (Direct Integration)", "desc": "중간 매개체 없이 두 시스템을 직접 연결. DB Link, API, JDBC"},
+        {"term": "간접 연계 (Indirect Integration)", "desc": "연계 솔루션(EAI, ESB, 웹 서비스)을 통한 연계"},
+        {"term": "연계 데이터 (Interface Data)", "desc": "송·수신 시스템 간 교환하는 데이터. 공통부/개별부/종료부로 구성"},
+        {"term": "코드 매핑 (Code Mapping)", "desc": "송신 코드를 수신 시스템 코드로 변환하기 위한 대응표 정의"},
+        {"term": "연계 정의서 (Interface Definition)", "desc": "송·수신 시스템 정보, 연계 방식, 주기, 데이터 항목을 정리한 문서"}
+      ],
+      "asked": ["2021-2", "2023-2"]
+    },
+    {
+      "title": "연계 기술 (DB Link, API, JDBC, 소켓 등)",
+      "importance": 2,
+      "summary": "직접·간접 연계에 사용되는 구체적인 기술 수단. 각 기술의 한 줄 정의를 단답형으로 묻는다.",
+      "points": [
+        "DB Link: DB에서 제공하는 DB 링크 객체를 이용. 수신 시스템에서 DB 링크를 생성하고 송신 시스템이 참조",
+        "DB Connection: 수신 시스템 WAS에서 송신 시스템 DB로 연결하는 DB 커넥션 풀(DBCP) 생성 후 이용",
+        "API/Open API: 송신 시스템의 DB와 연결해 데이터를 제공하는 인터페이스 프로그램",
+        "JDBC: 수신 시스템 프로그램에서 JDBC 드라이버로 송신 시스템 DB에 직접 연결",
+        "하이퍼링크(Hyper Link): 웹 애플리케이션에서 하이퍼링크로 연계",
+        "소켓(Socket): 서버가 포트를 열고 클라이언트 요청을 받아 통신. 네트워크 프로그래밍 기본 기술",
+        "웹 서비스(Web Service): WSDL·UDDI·SOAP 프로토콜을 이용해 서비스를 호출. 간접 연계"
+      ],
+      "terms": [
+        {"term": "DB 링크 (DB Link)", "desc": "DB에서 제공하는 링크 객체로 다른 DB를 직접 참조. 수신 측에서 생성"},
+        {"term": "DB 커넥션 (DB Connection)", "desc": "WAS의 DB 커넥션 풀(DBCP)을 송신 시스템 DB로 연결"},
+        {"term": "API (Application Programming Interface)", "desc": "응용 프로그램이 다른 시스템의 기능·데이터를 사용할 수 있게 제공하는 인터페이스"},
+        {"term": "Open API", "desc": "누구나 사용할 수 있도록 공개된 API"},
+        {"term": "JDBC (Java Database Connectivity)", "desc": "Java 프로그램이 DB에 접속·질의할 수 있게 하는 표준 API"},
+        {"term": "ODBC (Open Database Connectivity)", "desc": "MS가 제안한 DB 접근 표준 API. 언어·DBMS 독립"},
+        {"term": "소켓 (Socket)", "desc": "네트워크 상 프로세스 간 통신의 종단점. IP 주소 + 포트"},
+        {"term": "하이퍼링크 (Hyper Link)", "desc": "웹 문서 간 연결. 클릭으로 연계 시스템 이동"}
+      ],
+      "asked": ["2021-2"]
+    },
+    {
+      "title": "EAI (Enterprise Application Integration)",
+      "importance": 3,
+      "summary": "기업 내 서로 다른 플랫폼·애플리케이션을 연계·통합하는 솔루션. 4가지 구축 유형(Point-to-Point, Hub & Spoke, Message Bus, Hybrid)이 거의 매년 출제된다.",
+      "points": [
+        "포인트 투 포인트(Point-to-Point): 가장 기본적인 1:1 직접 연결 방식. 솔루션 구매 없이 구축 가능, 변경·재사용 어려움, 연결 수 n(n-1)/2",
+        "허브 앤 스포크(Hub & Spoke): 단일 접점인 허브 시스템을 통해 데이터 전송하는 중앙 집중형. 확장·유지보수 용이, 허브 장애 시 시스템 전체 영향",
+        "메시지 버스(Message Bus, ESB 방식): 애플리케이션 사이에 미들웨어(버스)를 두어 처리. 확장성 뛰어나고 대용량 처리 가능",
+        "하이브리드(Hybrid): 그룹 내는 허브 앤 스포크, 그룹 간은 메시지 버스 방식. 필요한 경우 한 가지 방식으로 EAI 구현 가능, 데이터 병목 현상 최소화",
+        "암기: 포허메하. 그림 문제 - 중앙에 허브 하나면 Hub&Spoke, 가로 버스 선이면 Message Bus, 둘이 섞이면 Hybrid",
+        "EAI 구성 요소: 어댑터(Adapter), 플랫폼(Platform), 브로커(Broker), 메시지 큐(Message Queue), 비즈니스 워크플로우"
+      ],
+      "terms": [
+        {"term": "EAI (Enterprise Application Integration)", "desc": "기업 내 각종 애플리케이션 및 플랫폼 간 정보 전달·연계·통합을 가능하게 해주는 솔루션"},
+        {"term": "포인트 투 포인트 (Point-to-Point)", "desc": "중간 미들웨어 없이 애플리케이션을 1:1로 직접 연결. 가장 기본적 방식"},
+        {"term": "허브 앤 스포크 (Hub & Spoke)", "desc": "단일 접점(허브)을 통해 데이터를 전송하는 중앙 집중형 방식"},
+        {"term": "메시지 버스 (Message Bus)", "desc": "애플리케이션 사이에 미들웨어(버스)를 두어 처리하는 방식. ESB 방식"},
+        {"term": "하이브리드 (Hybrid)", "desc": "허브 앤 스포크와 메시지 버스를 혼합. 그룹 내 허브, 그룹 간 버스"},
+        {"term": "어댑터 (Adapter)", "desc": "각 애플리케이션과 EAI 플랫폼을 연결하는 접속 모듈"},
+        {"term": "브로커 (Broker)", "desc": "시스템 상호 간 데이터가 전송될 때 데이터 포맷·코드를 변환"},
+        {"term": "메시지 큐 (Message Queue)", "desc": "비동기 메시지 전달을 위해 메시지를 일시 저장하는 큐"}
+      ],
+      "asked": ["2020-2", "2021-3", "2022-1", "2023-2", "2024-1", "2024-3"]
+    },
+    {
+      "title": "ESB (Enterprise Service Bus)",
+      "importance": 2,
+      "summary": "애플리케이션 간 표준 기반 인터페이스(버스)를 제공하는 서비스 중심 통합 미들웨어. EAI와 비교하여 느슨한 결합(Loosely Coupled)과 SOA 기반이라는 점이 핵심.",
+      "points": [
+        "ESB: 서비스 중심의 통합을 지향, 애플리케이션 간 표준 기반 메시지 버스. 범용적·확장성, 느슨한 결합(Loosely Coupled)",
+        "EAI vs ESB: EAI는 기업 내 애플리케이션 통합(미들웨어 중심, 허브 앤 스포크 등) / ESB는 기업 내·외부 서비스 통합(SOA 기반, 웹 서비스 표준), 결합도 낮음",
+        "SOA(Service Oriented Architecture): 서비스를 기본 단위로 조합하여 시스템을 구성. 서비스 제공자·소비자·레지스트리",
+        "ESB 특징: 메시지 라우팅, 프로토콜 변환, 메시지 변환, 서비스 오케스트레이션(Orchestration)"
+      ],
+      "terms": [
+        {"term": "ESB (Enterprise Service Bus)", "desc": "서비스 간 표준 인터페이스를 제공하는 통합 미들웨어 버스. 느슨한 결합 통합"},
+        {"term": "SOA (Service Oriented Architecture)", "desc": "업무 기능을 재사용 가능한 서비스 단위로 분리·조합하여 구축하는 아키텍처"},
+        {"term": "느슨한 결합 (Loosely Coupled)", "desc": "구성 요소 간 의존도가 낮아 독립적 변경이 가능한 상태"},
+        {"term": "오케스트레이션 (Orchestration)", "desc": "여러 서비스를 중앙 제어로 조합하여 하나의 비즈니스 프로세스로 실행"},
+        {"term": "코레오그래피 (Choreography)", "desc": "중앙 제어 없이 서비스들이 상호 메시지 교환으로 협업"},
+        {"term": "MSA (Microservice Architecture)", "desc": "애플리케이션을 작은 독립 서비스들로 분해하여 개발·배포하는 아키텍처"}
+      ],
+      "asked": ["2022-1", "2024-1"]
+    },
+    {
+      "title": "웹 서비스 (SOAP, WSDL, UDDI)",
+      "importance": 3,
+      "summary": "네트워크상에 분산된 정보를 서비스 형태로 공개·검색·호출하는 표준 기술. SOAP(통신 프로토콜), WSDL(서비스 기술 언어), UDDI(서비스 등록·검색)의 3요소.",
+      "points": [
+        "SOAP(Simple Object Access Protocol): HTTP, HTTPS, SMTP 등을 통해 XML 기반 메시지를 교환하는 프로토콜. Envelope, Header, Body로 구성",
+        "WSDL(Web Services Description Language): 웹 서비스명, 제공 위치, 메시지 포맷, 프로토콜 정보 등 웹 서비스에 대한 상세 정보를 XML로 기술한 언어",
+        "UDDI(Universal Description, Discovery and Integration): WSDL을 등록·검색하기 위한 저장소(레지스트리). 서비스 제공자 등록, 사용자 검색",
+        "동작: 제공자가 WSDL 작성 → UDDI에 등록 → 요청자가 UDDI 검색 → WSDL 획득 → SOAP으로 서비스 호출",
+        "암기: SOAP=프로토콜, WSDL=설명서, UDDI=전화번호부(등록·검색)"
+      ],
+      "terms": [
+        {"term": "웹 서비스 (Web Service)", "desc": "네트워크에 분산된 정보를 서비스 형태로 개방하여 표준화된 방식으로 공유하는 기술"},
+        {"term": "SOAP (Simple Object Access Protocol)", "desc": "HTTP/HTTPS/SMTP를 이용해 XML 기반 메시지를 네트워크상에서 교환하는 프로토콜"},
+        {"term": "WSDL (Web Services Description Language)", "desc": "웹 서비스의 이름·위치·메시지 포맷·프로토콜을 XML로 기술한 서비스 설명 언어"},
+        {"term": "UDDI (Universal Description, Discovery and Integration)", "desc": "웹 서비스 정보(WSDL)를 등록하고 검색하기 위한 저장소(레지스트리)"},
+        {"term": "SOAP Envelope", "desc": "SOAP 메시지의 최상위 요소. Header(선택)와 Body(필수) 포함"},
+        {"term": "서비스 제공자 (Service Provider)", "desc": "웹 서비스를 구현하고 WSDL을 UDDI에 등록"},
+        {"term": "서비스 요청자 (Service Requester)", "desc": "UDDI에서 서비스를 검색하고 SOAP으로 호출"}
+      ],
+      "asked": ["2021-1", "2022-3", "2023-3"]
+    },
+    {
+      "title": "REST / RESTful",
+      "importance": 2,
+      "summary": "HTTP URI로 자원(Resource)을 표현하고 HTTP 메서드(GET/POST/PUT/DELETE)로 자원에 대한 행위를 정의하는 웹 아키텍처 스타일.",
+      "points": [
+        "REST 구성 3요소: 자원(Resource, URI), 행위(Verb, HTTP Method), 표현(Representation, JSON/XML)",
+        "HTTP 메서드: GET(조회), POST(생성), PUT(전체 수정), PATCH(부분 수정), DELETE(삭제)",
+        "REST 특징: 클라이언트-서버, 무상태(Stateless), 캐시 가능, 계층화, 균일한 인터페이스(Uniform Interface), 자체 표현 구조",
+        "SOAP vs REST: SOAP은 XML 전용·무겁고 표준 엄격·WS-Security / REST는 HTTP 기반 경량, JSON 주로 사용, 단순"
+      ],
+      "terms": [
+        {"term": "REST (Representational State Transfer)", "desc": "HTTP URI로 자원을 명시하고 HTTP 메서드로 자원의 CRUD를 적용하는 아키텍처 스타일"},
+        {"term": "RESTful", "desc": "REST 원칙을 준수하여 설계된 웹 서비스 API"},
+        {"term": "URI (Uniform Resource Identifier)", "desc": "인터넷 자원을 식별하는 고유 식별자. URL은 URI의 일종"},
+        {"term": "무상태 (Stateless)", "desc": "서버가 클라이언트의 상태(세션)를 저장하지 않음. 각 요청은 독립적"},
+        {"term": "GET", "desc": "자원 조회. 서버 상태 변경 없음"},
+        {"term": "POST", "desc": "자원 생성. 요청 본문에 데이터 포함"},
+        {"term": "PUT", "desc": "자원 전체 수정(대체)"},
+        {"term": "DELETE", "desc": "자원 삭제"},
+        {"term": "HTTP 상태 코드", "desc": "200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error"}
+      ],
+      "asked": ["2023-3"]
+    },
+    {
+      "title": "XML (eXtensible Markup Language)",
+      "importance": 2,
+      "summary": "특수한 목적을 갖는 마크업 언어를 만드는 데 사용되는 다목적 마크업 언어. 플랫폼·언어 독립적인 데이터 교환 형식으로 HTML의 한계를 보완.",
+      "points": [
+        "W3C 제정. 태그를 사용자가 정의 가능, 데이터의 구조와 의미를 함께 표현",
+        "특징: 사용자 정의 태그, 플랫폼 독립, 트리(계층) 구조, 유니코드 지원, 대소문자 구분, 시작·종료 태그 필수, 루트 요소 하나",
+        "구조 정의: DTD(Document Type Definition), XML Schema(XSD) / 변환·표현: XSL/XSLT / 탐색: XPath, XQuery / 파싱: DOM(트리 전체 로드), SAX(이벤트 기반 순차)",
+        "관련 기술: XML 네임스페이스, SOAP 메시지 포맷, WSDL 기술 언어"
+      ],
+      "terms": [
+        {"term": "XML (eXtensible Markup Language)", "desc": "데이터의 구조와 의미를 사용자 정의 태그로 기술하는 확장 가능한 마크업 언어"},
+        {"term": "DTD (Document Type Definition)", "desc": "XML 문서의 구조(요소, 속성)를 정의하는 문서 형식 정의"},
+        {"term": "XML 스키마 (XML Schema, XSD)", "desc": "XML 문서 구조를 XML 문법으로 정의. DTD보다 데이터 타입 지원 풍부"},
+        {"term": "XSLT (XSL Transformations)", "desc": "XML 문서를 다른 XML·HTML 문서로 변환하는 언어"},
+        {"term": "XPath", "desc": "XML 문서의 특정 노드를 경로 표현식으로 찾는 언어"},
+        {"term": "DOM (Document Object Model)", "desc": "XML/HTML 문서를 트리 구조 객체로 메모리에 로드하여 접근하는 방식"},
+        {"term": "SAX (Simple API for XML)", "desc": "XML을 순차적으로 읽으며 이벤트 기반으로 처리. 메모리 효율적"},
+        {"term": "마크업 언어 (Markup Language)", "desc": "태그로 문서의 구조와 표현을 기술하는 언어. HTML, XML, SGML"}
+      ],
+      "asked": ["2020-2", "2022-1"]
+    },
+    {
+      "title": "JSON (JavaScript Object Notation)",
+      "importance": 3,
+      "summary": "속성-값 쌍(Attribute-Value Pairs)으로 이루어진 데이터 객체를 전달하기 위해 사람이 읽을 수 있는 텍스트를 사용하는 개방형 표준 포맷. AJAX에서 XML 대체로 널리 사용.",
+      "points": [
+        "정의 서술 시 키워드: 속성-값 쌍, 키-값 쌍, 텍스트 기반, 경량(Lightweight), 비동기 통신(AJAX)에서 XML 대체, 언어 독립적",
+        "표기: 객체 { \"key\": value }, 배열 [ ], 값 타입: 문자열(큰따옴표), 숫자, true/false, null, 객체, 배열",
+        "XML과 비교: 태그 없이 간결, 파싱 빠름, 스키마·네임스페이스·주석 미지원",
+        "예: {\"name\": \"홍길동\", \"age\": 30, \"skills\": [\"Java\", \"SQL\"]}"
+      ],
+      "terms": [
+        {"term": "JSON (JavaScript Object Notation)", "desc": "속성-값 쌍으로 이루어진 데이터 객체를 텍스트로 전달하는 경량 개방형 표준 포맷"},
+        {"term": "속성-값 쌍 (Attribute-Value Pair)", "desc": "\"키\": 값 형태의 데이터 단위. 키-값 쌍"},
+        {"term": "JSON 객체 (Object)", "desc": "중괄호 { }로 둘러싼 순서 없는 키-값 쌍의 집합"},
+        {"term": "JSON 배열 (Array)", "desc": "대괄호 [ ]로 둘러싼 순서 있는 값의 목록"},
+        {"term": "직렬화 (Serialization)", "desc": "객체를 전송·저장 가능한 포맷(JSON 문자열)으로 변환"},
+        {"term": "YAML (YAML Ain't Markup Language)", "desc": "들여쓰기 기반의 사람이 읽기 쉬운 데이터 직렬화 형식. 설정 파일에 많이 사용"},
+        {"term": "CSV (Comma-Separated Values)", "desc": "콤마로 구분된 텍스트 데이터 형식"}
+      ],
+      "asked": ["2020-1", "2021-1", "2024-2"]
+    },
+    {
+      "title": "AJAX (Asynchronous JavaScript and XML)",
+      "importance": 2,
+      "summary": "자바스크립트로 서버와 비동기(Asynchronous) 통신을 하여 전체 페이지를 새로 고치지 않고 일부만 갱신하는 웹 개발 기법.",
+      "points": [
+        "핵심 키워드: 비동기, JavaScript, XMLHttpRequest 객체, 페이지 전체 리로드 없이 부분 갱신",
+        "구성 기술: HTML/CSS, DOM, JavaScript, XMLHttpRequest, XML 또는 JSON",
+        "동작: 이벤트 발생 → XMLHttpRequest로 서버 요청 → 서버 응답(XML/JSON) → DOM 조작으로 화면 일부 갱신",
+        "장점: 응답성 향상, 네트워크 부하 감소 / 단점: 히스토리 관리 어려움, 보안 취약(XSS), 검색 엔진 색인 어려움"
+      ],
+      "terms": [
+        {"term": "AJAX (Asynchronous JavaScript and XML)", "desc": "자바스크립트를 이용해 클라이언트와 서버 간 XML/JSON 데이터를 비동기로 주고받는 기술"},
+        {"term": "XMLHttpRequest", "desc": "브라우저에서 서버와 비동기 HTTP 통신을 수행하는 자바스크립트 객체"},
+        {"term": "비동기 통신 (Asynchronous Communication)", "desc": "요청 후 응답을 기다리지 않고 다른 작업 수행. 응답 도착 시 콜백 처리"},
+        {"term": "DOM (Document Object Model)", "desc": "HTML 문서를 객체 트리로 표현하여 자바스크립트로 접근·조작"},
+        {"term": "Fetch API", "desc": "XMLHttpRequest를 대체하는 Promise 기반 최신 비동기 HTTP 요청 API"},
+        {"term": "WebSocket", "desc": "클라이언트-서버 간 양방향 실시간 통신 프로토콜"}
+      ],
+      "asked": ["2020-2", "2022-2"]
+    },
+    {
+      "title": "IPC (Inter-Process Communication)",
+      "importance": 2,
+      "summary": "실행 중인 프로세스 간 데이터를 주고받는 기법. 공유 메모리·소켓·세마포어·파이프·메시지 큐 등 종류를 단답형으로 묻는다.",
+      "points": [
+        "IPC 대표 메서드 5가지: 공유 메모리(Shared Memory), 소켓(Socket), 세마포어(Semaphore), 파이프와 네임드 파이프(Pipe & Named Pipe), 메시지 큐(Message Queueing)",
+        "공유 메모리: 공유 가능한 메모리를 구성해 다수의 프로세스가 통신. 속도 가장 빠름, 동기화 필요",
+        "소켓: 네트워크 소켓을 이용해 클라이언트-서버 구조로 통신. 원격 프로세스 간 가능",
+        "세마포어: 공유 자원 접근을 제어하는 정수형 동기화 변수. P(wait)/V(signal) 연산",
+        "파이프: 단방향 통신. 부모-자식 프로세스 간 / 네임드 파이프(FIFO): 이름을 가진 파이프로 무관한 프로세스 간 통신 가능",
+        "메시지 큐: 메시지 단위로 커널의 큐에 저장·전달. 비동기"
+      ],
+      "terms": [
+        {"term": "IPC (Inter-Process Communication)", "desc": "프로세스 간 데이터와 신호를 교환하는 운영체제 제공 메커니즘"},
+        {"term": "공유 메모리 (Shared Memory)", "desc": "여러 프로세스가 동일 메모리 영역을 공유하여 통신. 가장 빠름"},
+        {"term": "소켓 (Socket)", "desc": "네트워크를 통한 프로세스 간 양방향 통신 종단점. IP+포트"},
+        {"term": "세마포어 (Semaphore)", "desc": "공유 자원에 접근하는 프로세스 수를 제어하는 동기화 도구. P/V 연산"},
+        {"term": "파이프 (Pipe)", "desc": "한 프로세스의 출력을 다른 프로세스의 입력으로 연결하는 단방향 통신"},
+        {"term": "네임드 파이프 (Named Pipe, FIFO)", "desc": "파일 시스템에 이름을 가진 파이프. 무관한 프로세스 간 통신 가능"},
+        {"term": "메시지 큐 (Message Queue)", "desc": "커널이 관리하는 큐에 메시지를 넣고 꺼내는 비동기 통신"},
+        {"term": "시그널 (Signal)", "desc": "프로세스에 이벤트 발생을 알리는 소프트웨어 인터럽트"},
+        {"term": "RPC (Remote Procedure Call)", "desc": "원격 시스템의 프로시저를 로컬처럼 호출하는 방식"}
+      ],
+      "asked": ["2022-2", "2024-1"]
+    },
+    {
+      "title": "미들웨어 (Middleware)",
+      "importance": 2,
+      "summary": "운영체제와 응용 프로그램 사이에서 서로 다른 시스템·애플리케이션을 연결하는 소프트웨어. 종류(DB, RPC, MOM, TP-Monitor, ORB, WAS)를 묻는다.",
+      "points": [
+        "미들웨어 종류 6가지: DB(데이터베이스 미들웨어), RPC(원격 프로시저 호출), MOM(메시지 지향 미들웨어), TP-Monitor(트랜잭션 처리 모니터), ORB(객체 요청 브로커), WAS(웹 애플리케이션 서버)",
+        "DB 미들웨어: 데이터베이스 벤더가 제공하는 클라이언트에서 원격 DB 연결. 2-Tier 아키텍처. 예: ODBC, JDBC",
+        "RPC: 응용 프로그램의 프로시저를 사용하여 원격 프로시저를 마치 로컬 프로시저처럼 호출",
+        "MOM: 메시지 기반의 비동기형 메시지 전달 방식. 온라인 업무보다 이기종 분산 데이터 시스템의 데이터 동기를 위해 사용",
+        "TP-Monitor: 항공기·철도 예약 업무 등 온라인 트랜잭션 업무에서 트랜잭션을 처리·감시",
+        "ORB: 객체 지향 미들웨어로 코바(CORBA) 표준 스펙을 구현. 원격 객체 호출",
+        "WAS: 정적인 콘텐츠를 처리하는 웹 서버와 달리 사용자 요구에 따라 변하는 동적인 콘텐츠를 처리. 예: Tomcat, JEUS, WebLogic, WebSphere, JBoss"
+      ],
+      "terms": [
+        {"term": "미들웨어 (Middleware)", "desc": "클라이언트와 서버 사이(OS와 응용 프로그램 사이)에서 통신·연결을 담당하는 소프트웨어"},
+        {"term": "RPC (Remote Procedure Call)", "desc": "원격 프로시저를 로컬 프로시저처럼 호출하는 미들웨어"},
+        {"term": "MOM (Message Oriented Middleware)", "desc": "메시지 기반 비동기 미들웨어. 이기종 분산 시스템 데이터 동기화. 예: IBM MQ, JMS"},
+        {"term": "TP-Monitor (Transaction Processing Monitor)", "desc": "온라인 트랜잭션 처리를 감시·관리하는 미들웨어. 예: Tuxedo, Tmax"},
+        {"term": "ORB (Object Request Broker)", "desc": "객체 지향 미들웨어. CORBA 표준 구현, 원격 객체 호출"},
+        {"term": "WAS (Web Application Server)", "desc": "동적 콘텐츠 처리를 위한 서버. 예: Tomcat, JEUS, WebLogic, JBoss"},
+        {"term": "CORBA (Common Object Request Broker Architecture)", "desc": "OMG가 제정한 분산 객체 간 통신 표준"},
+        {"term": "DB 미들웨어", "desc": "클라이언트에서 원격 DB에 연결하는 미들웨어. ODBC, JDBC"}
+      ],
+      "asked": ["2021-1", "2022-3", "2023-1"]
+    },
+    {
+      "title": "인터페이스 송·수신 데이터 구조와 전문",
+      "importance": 1,
+      "summary": "시스템 간 교환되는 인터페이스 데이터(전문)의 구성. 공통부·개별부·종료부로 나뉘며 각 부분에 담기는 정보를 묻는다.",
+      "points": [
+        "전문(Message) 구조: 공통부(헤더, 인터페이스 표준 항목) + 개별부(업무 데이터 항목) + 종료부(전송 데이터 끝 식별)",
+        "공통부: 인터페이스 ID, 전송 시스템 정보, 서비스 코드, 응답 결과, 장애 정보 등 인터페이스 표준 항목",
+        "개별부: 송·수신 데이터 항목(실제 업무 데이터), 송·수신 데이터 식별자(PK), 변경 구분(C/U/D)",
+        "종료부: 전송 데이터의 끝을 표시하는 문자(또는 길이)",
+        "인터페이스 설계서 구성: 인터페이스 목록(ID, 송·수신 시스템, 방식, 주기), 인터페이스 정의서(데이터 항목·형식·길이·필수 여부)"
+      ],
+      "terms": [
+        {"term": "전문 (Message)", "desc": "시스템 간 송·수신되는 데이터 묶음. 공통부·개별부·종료부로 구성"},
+        {"term": "공통부 (Header)", "desc": "인터페이스 ID, 전송 시스템 정보, 결과 코드 등 공통 표준 항목"},
+        {"term": "개별부 (Body)", "desc": "업무별 송·수신 데이터 항목"},
+        {"term": "종료부 (Trailer)", "desc": "전송 데이터의 끝을 식별하는 부분"},
+        {"term": "인터페이스 목록 (Interface List)", "desc": "인터페이스 ID, 송·수신 시스템, 연계 방식, 주기 등을 정리한 목록"},
+        {"term": "인터페이스 정의서 (Interface Definition)", "desc": "각 인터페이스의 데이터 항목·형식·길이·필수 여부 등을 상세 기술"},
+        {"term": "변경 구분 (Change Flag)", "desc": "연계 데이터의 처리 유형(C 추가, U 수정, D 삭제) 표시"}
+      ],
+      "asked": []
+    },
+    {
+      "title": "모듈 연계 검증 도구",
+      "importance": 1,
+      "summary": "통합 구현 단계에서 단위 모듈과 연계 모듈을 검증하기 위한 테스트 프레임워크·도구. 이름과 한 줄 설명을 묻는다.",
+      "points": [
+        "xUnit: Java(JUnit), C++(CppUnit), .Net(NUnit) 등 다양한 언어를 지원하는 단위 테스트 프레임워크",
+        "STAF: 서비스 호출·컴포넌트 재사용 등 다양한 환경을 지원하는 테스트 프레임워크. 데몬을 사용해 분산 환경 테스트",
+        "FitNesse: 웹 기반 테스트 케이스 설계·실행·결과 확인을 지원하는 테스트 프레임워크",
+        "NTAF: FitNesse의 장점인 협업 기능과 STAF의 장점인 재사용 및 확장성을 통합한 NHN의 테스트 자동화 프레임워크",
+        "Selenium: 다양한 브라우저와 개발 언어를 지원하는 웹 애플리케이션 테스트 프레임워크",
+        "watir: Ruby 기반 웹 애플리케이션 테스트 프레임워크"
+      ],
+      "terms": [
+        {"term": "xUnit", "desc": "다양한 언어를 지원하는 단위 테스트 프레임워크 총칭. JUnit, CppUnit, NUnit, HttpUnit"},
+        {"term": "JUnit", "desc": "Java 단위 테스트 프레임워크. @Test, assertEquals"},
+        {"term": "STAF (Software Testing Automation Framework)", "desc": "서비스 호출·컴포넌트 재사용 등 다양한 환경 지원. 분산 환경 데몬 기반"},
+        {"term": "FitNesse", "desc": "웹(위키) 기반 테스트 케이스 설계·실행·결과 확인 프레임워크"},
+        {"term": "NTAF (NHN Test Automation Framework)", "desc": "FitNesse + STAF 통합. NHN 테스트 자동화 프레임워크"},
+        {"term": "Selenium", "desc": "다양한 브라우저·언어 지원 웹 애플리케이션 테스트 자동화 도구"},
+        {"term": "watir (Web Application Testing in Ruby)", "desc": "Ruby 기반 웹 애플리케이션 테스트 프레임워크"},
+        {"term": "테스트 드라이버 (Test Driver)", "desc": "하위 모듈을 테스트할 때 상위 모듈 역할을 하는 가상 모듈. 상향식 통합"},
+        {"term": "테스트 스텁 (Test Stub)", "desc": "상위 모듈을 테스트할 때 하위 모듈 역할을 하는 가상 모듈. 하향식 통합"}
+      ],
+      "asked": ["2020-2"]
+    }
+  ]
+}

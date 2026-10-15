@@ -13,18 +13,52 @@
         "데이터 독립성: 논리적 독립성(개념 스키마 변경이 외부 스키마에 영향 없음) / 물리적 독립성(내부 스키마 변경이 개념 스키마에 영향 없음)"
       ],
       "terms": [
-        {"term": "개념적 데이터 모델 (Conceptual Data Model)", "desc": "현실 세계를 추상적 개념(개체·속성·관계)으로 표현. E-R 모델"},
-        {"term": "논리적 데이터 모델 (Logical Data Model)", "desc": "개념적 모델을 DBMS가 처리할 수 있는 구조(관계·계층·네트워크)로 변환"},
-        {"term": "물리적 데이터 모델 (Physical Data Model)", "desc": "저장 구조, 접근 경로, 인덱스 등 물리적 저장 장치 관점 설계"},
-        {"term": "외부 스키마 (External Schema)", "desc": "사용자나 프로그래머 관점의 데이터베이스 논리 구조. 서브 스키마"},
-        {"term": "개념 스키마 (Conceptual Schema)", "desc": "조직 전체 관점의 논리적 구조. 접근 권한·보안·무결성 규칙 포함"},
-        {"term": "내부 스키마 (Internal Schema)", "desc": "물리적 저장 장치 관점의 구조. 레코드 형식, 인덱스, 저장 데이터 항목"},
-        {"term": "논리적 데이터 독립성 (Logical Data Independence)", "desc": "개념 스키마 변경 시 외부 스키마나 응용 프로그램에 영향 없음"},
-        {"term": "물리적 데이터 독립성 (Physical Data Independence)", "desc": "내부 스키마 변경 시 개념·외부 스키마에 영향 없음"},
-        {"term": "트랜잭션 인터페이스 설계", "desc": "논리적 설계 단계에서 트랜잭션의 인터페이스를 설계"},
-        {"term": "DBMS 필수 기능", "desc": "정의(Definition), 조작(Manipulation), 제어(Control)"}
+        {
+          "term": "개념적 데이터 모델 (Conceptual Data Model)",
+          "desc": "현실 세계를 추상적 개념(개체·속성·관계)으로 표현. E-R 모델"
+        },
+        {
+          "term": "논리적 데이터 모델 (Logical Data Model)",
+          "desc": "개념적 모델을 DBMS가 처리할 수 있는 구조(관계·계층·네트워크)로 변환"
+        },
+        {
+          "term": "물리적 데이터 모델 (Physical Data Model)",
+          "desc": "저장 구조, 접근 경로, 인덱스 등 물리적 저장 장치 관점 설계"
+        },
+        {
+          "term": "외부 스키마 (External Schema)",
+          "desc": "사용자나 프로그래머 관점의 데이터베이스 논리 구조. 서브 스키마"
+        },
+        {
+          "term": "개념 스키마 (Conceptual Schema)",
+          "desc": "조직 전체 관점의 논리적 구조. 접근 권한·보안·무결성 규칙 포함"
+        },
+        {
+          "term": "내부 스키마 (Internal Schema)",
+          "desc": "물리적 저장 장치 관점의 구조. 레코드 형식, 인덱스, 저장 데이터 항목"
+        },
+        {
+          "term": "논리적 데이터 독립성 (Logical Data Independence)",
+          "desc": "개념 스키마 변경 시 외부 스키마나 응용 프로그램에 영향 없음"
+        },
+        {
+          "term": "물리적 데이터 독립성 (Physical Data Independence)",
+          "desc": "내부 스키마 변경 시 개념·외부 스키마에 영향 없음"
+        },
+        {
+          "term": "트랜잭션 인터페이스 설계",
+          "desc": "논리적 설계 단계에서 트랜잭션의 인터페이스를 설계"
+        },
+        {
+          "term": "DBMS 필수 기능",
+          "desc": "정의(Definition), 조작(Manipulation), 제어(Control)"
+        }
       ],
-      "asked": ["2020-2", "2021-3", "2023-2"]
+      "asked": [
+        "2020-2",
+        "2021-3",
+        "2023-2"
+      ]
     },
     {
       "title": "E-R 다이어그램과 관계형 데이터 모델 용어",
@@ -37,19 +71,55 @@
         "릴레이션 특징: 튜플 유일, 튜플 순서 무의미, 속성 순서 무의미, 속성 값은 원자값(Atomic)"
       ],
       "terms": [
-        {"term": "개체 (Entity)", "desc": "현실 세계에서 독립적으로 존재하는 대상. 사각형"},
-        {"term": "속성 (Attribute)", "desc": "개체의 특성·성질. 타원"},
-        {"term": "관계 (Relationship)", "desc": "개체 간 의미 있는 연관. 마름모"},
-        {"term": "릴레이션 (Relation)", "desc": "관계형 DB에서 데이터를 저장하는 2차원 표(테이블)"},
-        {"term": "튜플 (Tuple)", "desc": "릴레이션의 행(Row). 레코드"},
-        {"term": "속성 (Attribute, 열)", "desc": "릴레이션의 열(Column). 필드"},
-        {"term": "도메인 (Domain)", "desc": "하나의 속성이 가질 수 있는 원자값들의 집합"},
-        {"term": "카디널리티 (Cardinality)", "desc": "튜플의 수(기수)"},
-        {"term": "디그리 (Degree)", "desc": "속성의 수(차수)"},
-        {"term": "널 (NULL)", "desc": "값이 존재하지 않음(모름, 해당 없음). 공백이나 0과 다름"},
-        {"term": "식별자 (Identifier)", "desc": "개체를 유일하게 구분하는 속성. 주 식별자/보조 식별자, 내부/외부 식별자"}
+        {
+          "term": "개체 (Entity)",
+          "desc": "현실 세계에서 독립적으로 존재하는 대상. 사각형"
+        },
+        {
+          "term": "속성 (Attribute)",
+          "desc": "개체의 특성·성질. 타원"
+        },
+        {
+          "term": "관계 (Relationship)",
+          "desc": "개체 간 의미 있는 연관. 마름모"
+        },
+        {
+          "term": "릴레이션 (Relation)",
+          "desc": "관계형 DB에서 데이터를 저장하는 2차원 표(테이블)"
+        },
+        {
+          "term": "튜플 (Tuple)",
+          "desc": "릴레이션의 행(Row). 레코드"
+        },
+        {
+          "term": "속성 (Attribute, 열)",
+          "desc": "릴레이션의 열(Column). 필드"
+        },
+        {
+          "term": "도메인 (Domain)",
+          "desc": "하나의 속성이 가질 수 있는 원자값들의 집합"
+        },
+        {
+          "term": "카디널리티 (Cardinality)",
+          "desc": "튜플의 수(기수)"
+        },
+        {
+          "term": "디그리 (Degree)",
+          "desc": "속성의 수(차수)"
+        },
+        {
+          "term": "널 (NULL)",
+          "desc": "값이 존재하지 않음(모름, 해당 없음). 공백이나 0과 다름"
+        },
+        {
+          "term": "식별자 (Identifier)",
+          "desc": "개체를 유일하게 구분하는 속성. 주 식별자/보조 식별자, 내부/외부 식별자"
+        }
       ],
-      "asked": ["2020-3", "2022-2"]
+      "asked": [
+        "2020-3",
+        "2022-2"
+      ]
     },
     {
       "title": "키 (Key) 종류",
@@ -64,16 +134,45 @@
         "암기: 후보키 = 기본키 + 대체키 / 슈퍼키 ⊃ 후보키"
       ],
       "terms": [
-        {"term": "슈퍼키 (Super Key)", "desc": "유일성은 만족하지만 최소성은 만족하지 않는 속성 집합"},
-        {"term": "후보키 (Candidate Key)", "desc": "유일성과 최소성을 모두 만족하는 속성 집합"},
-        {"term": "기본키 (Primary Key)", "desc": "후보키 중 선정된 주 키. NULL·중복 불가"},
-        {"term": "대체키 (Alternate Key)", "desc": "후보키 중 기본키를 제외한 나머지. 보조키"},
-        {"term": "외래키 (Foreign Key)", "desc": "다른 릴레이션의 기본키를 참조하는 속성. 참조 릴레이션의 값 또는 NULL만 가능"},
-        {"term": "복합키 (Composite Key)", "desc": "두 개 이상의 속성으로 구성된 키"},
-        {"term": "유일성 (Uniqueness)", "desc": "키 값으로 하나의 튜플만 유일하게 식별 가능"},
-        {"term": "최소성 (Minimality)", "desc": "꼭 필요한 최소한의 속성으로만 키를 구성"}
+        {
+          "term": "슈퍼키 (Super Key)",
+          "desc": "유일성은 만족하지만 최소성은 만족하지 않는 속성 집합"
+        },
+        {
+          "term": "후보키 (Candidate Key)",
+          "desc": "유일성과 최소성을 모두 만족하는 속성 집합"
+        },
+        {
+          "term": "기본키 (Primary Key)",
+          "desc": "후보키 중 선정된 주 키. NULL·중복 불가"
+        },
+        {
+          "term": "대체키 (Alternate Key)",
+          "desc": "후보키 중 기본키를 제외한 나머지. 보조키"
+        },
+        {
+          "term": "외래키 (Foreign Key)",
+          "desc": "다른 릴레이션의 기본키를 참조하는 속성. 참조 릴레이션의 값 또는 NULL만 가능"
+        },
+        {
+          "term": "복합키 (Composite Key)",
+          "desc": "두 개 이상의 속성으로 구성된 키"
+        },
+        {
+          "term": "유일성 (Uniqueness)",
+          "desc": "키 값으로 하나의 튜플만 유일하게 식별 가능"
+        },
+        {
+          "term": "최소성 (Minimality)",
+          "desc": "꼭 필요한 최소한의 속성으로만 키를 구성"
+        }
       ],
-      "asked": ["2021-1", "2022-2", "2023-1", "2024-1"]
+      "asked": [
+        "2021-1",
+        "2022-2",
+        "2023-1",
+        "2024-1"
+      ]
     },
     {
       "title": "함수적 종속과 이상 현상",
@@ -86,17 +185,47 @@
         "다치 종속(MVD, A↠B): 하나의 A 값에 여러 B 값 → 4NF / 조인 종속(JD): 릴레이션 분해 후 조인 시 원래 복원 → 5NF"
       ],
       "terms": [
-        {"term": "함수적 종속 (Functional Dependency)", "desc": "속성 X 값에 따라 속성 Y 값이 유일하게 결정되는 관계. X→Y"},
-        {"term": "완전 함수적 종속 (Full Functional Dependency)", "desc": "속성이 기본키 전체에 종속"},
-        {"term": "부분 함수적 종속 (Partial Functional Dependency)", "desc": "속성이 복합 기본키의 일부에만 종속"},
-        {"term": "이행적 함수 종속 (Transitive Functional Dependency)", "desc": "A→B, B→C일 때 A→C가 성립하는 종속"},
-        {"term": "다치 종속 (Multi-Valued Dependency)", "desc": "A↠B. A 값 하나에 B 값이 여러 개 대응"},
-        {"term": "조인 종속 (Join Dependency)", "desc": "릴레이션을 분해한 후 조인하면 원래 릴레이션이 복원되는 종속"},
-        {"term": "삽입 이상 (Insertion Anomaly)", "desc": "데이터 삽입 시 원하지 않는 값도 함께 삽입해야 하는 현상"},
-        {"term": "삭제 이상 (Deletion Anomaly)", "desc": "튜플 삭제 시 필요한 정보까지 연쇄 삭제되는 현상"},
-        {"term": "갱신 이상 (Update Anomaly)", "desc": "중복 데이터 일부만 갱신되어 데이터 불일치가 발생하는 현상"}
+        {
+          "term": "함수적 종속 (Functional Dependency)",
+          "desc": "속성 X 값에 따라 속성 Y 값이 유일하게 결정되는 관계. X→Y"
+        },
+        {
+          "term": "완전 함수적 종속 (Full Functional Dependency)",
+          "desc": "속성이 기본키 전체에 종속"
+        },
+        {
+          "term": "부분 함수적 종속 (Partial Functional Dependency)",
+          "desc": "속성이 복합 기본키의 일부에만 종속"
+        },
+        {
+          "term": "이행적 함수 종속 (Transitive Functional Dependency)",
+          "desc": "A→B, B→C일 때 A→C가 성립하는 종속"
+        },
+        {
+          "term": "다치 종속 (Multi-Valued Dependency)",
+          "desc": "A↠B. A 값 하나에 B 값이 여러 개 대응"
+        },
+        {
+          "term": "조인 종속 (Join Dependency)",
+          "desc": "릴레이션을 분해한 후 조인하면 원래 릴레이션이 복원되는 종속"
+        },
+        {
+          "term": "삽입 이상 (Insertion Anomaly)",
+          "desc": "데이터 삽입 시 원하지 않는 값도 함께 삽입해야 하는 현상"
+        },
+        {
+          "term": "삭제 이상 (Deletion Anomaly)",
+          "desc": "튜플 삭제 시 필요한 정보까지 연쇄 삭제되는 현상"
+        },
+        {
+          "term": "갱신 이상 (Update Anomaly)",
+          "desc": "중복 데이터 일부만 갱신되어 데이터 불일치가 발생하는 현상"
+        }
       ],
-      "asked": ["2020-3", "2022-2"]
+      "asked": [
+        "2020-3",
+        "2022-2"
+      ]
     },
     {
       "title": "정규화 (Normalization)",
@@ -113,16 +242,47 @@
         "정규화 목적: 이상 현상 제거, 중복 최소화, 삽입·삭제·갱신 이상 방지, 저장 공간 효율화. 단, 조인 연산 증가로 성능 저하 가능"
       ],
       "terms": [
-        {"term": "제1정규형 (1NF, First Normal Form)", "desc": "모든 속성이 원자값(더 이상 분해 불가능한 값)으로만 구성"},
-        {"term": "제2정규형 (2NF, Second Normal Form)", "desc": "1NF이며 부분 함수 종속이 제거된 상태. 완전 함수 종속"},
-        {"term": "제3정규형 (3NF, Third Normal Form)", "desc": "2NF이며 이행적 함수 종속이 제거된 상태"},
-        {"term": "보이스-코드 정규형 (BCNF, Boyce-Codd Normal Form)", "desc": "모든 결정자가 후보키인 상태. 강한 제3정규형"},
-        {"term": "제4정규형 (4NF, Fourth Normal Form)", "desc": "다치 종속이 제거된 상태"},
-        {"term": "제5정규형 (5NF, Fifth Normal Form)", "desc": "후보키를 통하지 않는 조인 종속이 제거된 상태. PJ/NF(Project-Join Normal Form)"},
-        {"term": "원자값 (Atomic Value)", "desc": "더 이상 분해할 수 없는 단일 값"},
-        {"term": "정규화 (Normalization)", "desc": "함수적 종속을 기반으로 릴레이션을 무손실 분해하여 이상 현상을 제거"}
+        {
+          "term": "제1정규형 (1NF, First Normal Form)",
+          "desc": "모든 속성이 원자값(더 이상 분해 불가능한 값)으로만 구성"
+        },
+        {
+          "term": "제2정규형 (2NF, Second Normal Form)",
+          "desc": "1NF이며 부분 함수 종속이 제거된 상태. 완전 함수 종속"
+        },
+        {
+          "term": "제3정규형 (3NF, Third Normal Form)",
+          "desc": "2NF이며 이행적 함수 종속이 제거된 상태"
+        },
+        {
+          "term": "보이스-코드 정규형 (BCNF, Boyce-Codd Normal Form)",
+          "desc": "모든 결정자가 후보키인 상태. 강한 제3정규형"
+        },
+        {
+          "term": "제4정규형 (4NF, Fourth Normal Form)",
+          "desc": "다치 종속이 제거된 상태"
+        },
+        {
+          "term": "제5정규형 (5NF, Fifth Normal Form)",
+          "desc": "후보키를 통하지 않는 조인 종속이 제거된 상태. PJ/NF(Project-Join Normal Form)"
+        },
+        {
+          "term": "원자값 (Atomic Value)",
+          "desc": "더 이상 분해할 수 없는 단일 값"
+        },
+        {
+          "term": "정규화 (Normalization)",
+          "desc": "함수적 종속을 기반으로 릴레이션을 무손실 분해하여 이상 현상을 제거"
+        }
       ],
-      "asked": ["2020-2", "2020-3", "2021-3", "2022-2", "2023-2", "2024-1"]
+      "asked": [
+        "2020-2",
+        "2020-3",
+        "2021-3",
+        "2022-2",
+        "2023-2",
+        "2024-1"
+      ]
     },
     {
       "title": "반정규화 (Denormalization)",
@@ -136,15 +296,39 @@
         "반정규화 절차: 반정규화 대상 조사 → 다른 방법 유도 검토(뷰, 클러스터링, 인덱스, 파티션) → 반정규화 적용"
       ],
       "terms": [
-        {"term": "반정규화 (Denormalization)", "desc": "성능 향상을 위해 정규화된 테이블을 의도적으로 중복·통합·분리하는 과정. 역정규화"},
-        {"term": "수평 분할 (Horizontal Partitioning)", "desc": "레코드(행)를 기준으로 테이블을 분할. 특정 속성 값 범위별"},
-        {"term": "수직 분할 (Vertical Partitioning)", "desc": "속성(열)을 기준으로 테이블을 분할. 갱신 위주 속성·자주 조회되는 속성 분리"},
-        {"term": "중복 테이블 (Duplicate Table)", "desc": "집계·통계 처리를 위해 데이터를 중복 저장하는 테이블"},
-        {"term": "통계 테이블 (Statistics Table)", "desc": "SUM, AVG 등을 미리 계산해 저장하는 테이블"},
-        {"term": "이력 테이블 (History Table)", "desc": "마스터 테이블의 변경 이력을 저장하는 테이블"},
-        {"term": "파생 컬럼 (Derived Column)", "desc": "다른 컬럼을 계산하여 얻은 값을 저장하는 컬럼"}
+        {
+          "term": "반정규화 (Denormalization)",
+          "desc": "성능 향상을 위해 정규화된 테이블을 의도적으로 중복·통합·분리하는 과정. 역정규화"
+        },
+        {
+          "term": "수평 분할 (Horizontal Partitioning)",
+          "desc": "레코드(행)를 기준으로 테이블을 분할. 특정 속성 값 범위별"
+        },
+        {
+          "term": "수직 분할 (Vertical Partitioning)",
+          "desc": "속성(열)을 기준으로 테이블을 분할. 갱신 위주 속성·자주 조회되는 속성 분리"
+        },
+        {
+          "term": "중복 테이블 (Duplicate Table)",
+          "desc": "집계·통계 처리를 위해 데이터를 중복 저장하는 테이블"
+        },
+        {
+          "term": "통계 테이블 (Statistics Table)",
+          "desc": "SUM, AVG 등을 미리 계산해 저장하는 테이블"
+        },
+        {
+          "term": "이력 테이블 (History Table)",
+          "desc": "마스터 테이블의 변경 이력을 저장하는 테이블"
+        },
+        {
+          "term": "파생 컬럼 (Derived Column)",
+          "desc": "다른 컬럼을 계산하여 얻은 값을 저장하는 컬럼"
+        }
       ],
-      "asked": ["2021-2", "2024-2"]
+      "asked": [
+        "2021-2",
+        "2024-2"
+      ]
     },
     {
       "title": "트랜잭션 (Transaction)과 ACID",
@@ -158,22 +342,70 @@
         "CRUD 매트릭스: 트랜잭션이 테이블에 수행하는 Create/Read/Update/Delete를 분석하는 표"
       ],
       "terms": [
-        {"term": "원자성 (Atomicity)", "desc": "트랜잭션 연산이 DB에 모두 반영되거나 전혀 반영되지 않아야 함"},
-        {"term": "일관성 (Consistency)", "desc": "트랜잭션 수행 전후 DB가 항상 일관된 상태를 유지"},
-        {"term": "격리성 (Isolation)", "desc": "수행 중인 트랜잭션에 다른 트랜잭션이 끼어들 수 없음. 독립성"},
-        {"term": "지속성 (Durability)", "desc": "완료된 트랜잭션 결과는 시스템 장애에도 영구 보존. 영속성"},
-        {"term": "활동 (Active)", "desc": "트랜잭션이 실행 중인 상태"},
-        {"term": "부분 완료 (Partially Committed)", "desc": "마지막 연산까지 실행했지만 COMMIT 전 상태"},
-        {"term": "완료 (Committed)", "desc": "트랜잭션이 성공적으로 완료되어 COMMIT된 상태"},
-        {"term": "실패 (Failed)", "desc": "오류가 발생하여 중단된 상태"},
-        {"term": "철회 (Aborted)", "desc": "트랜잭션이 비정상 종료되어 ROLLBACK된 상태"},
-        {"term": "COMMIT", "desc": "트랜잭션의 결과를 DB에 영구 반영"},
-        {"term": "ROLLBACK", "desc": "트랜잭션을 취소하고 이전 상태로 복구"},
-        {"term": "SAVEPOINT", "desc": "트랜잭션 내 롤백할 지점을 지정"},
-        {"term": "Dirty Read", "desc": "다른 트랜잭션의 커밋되지 않은 데이터를 읽는 현상. Read Uncommitted에서 발생"},
-        {"term": "Phantom Read", "desc": "같은 조회를 반복했을 때 없던 행이 나타나는 현상. Serializable에서만 방지"}
+        {
+          "term": "원자성 (Atomicity)",
+          "desc": "트랜잭션 연산이 DB에 모두 반영되거나 전혀 반영되지 않아야 함"
+        },
+        {
+          "term": "일관성 (Consistency)",
+          "desc": "트랜잭션 수행 전후 DB가 항상 일관된 상태를 유지"
+        },
+        {
+          "term": "격리성 (Isolation)",
+          "desc": "수행 중인 트랜잭션에 다른 트랜잭션이 끼어들 수 없음. 독립성"
+        },
+        {
+          "term": "지속성 (Durability)",
+          "desc": "완료된 트랜잭션 결과는 시스템 장애에도 영구 보존. 영속성"
+        },
+        {
+          "term": "활동 (Active)",
+          "desc": "트랜잭션이 실행 중인 상태"
+        },
+        {
+          "term": "부분 완료 (Partially Committed)",
+          "desc": "마지막 연산까지 실행했지만 COMMIT 전 상태"
+        },
+        {
+          "term": "완료 (Committed)",
+          "desc": "트랜잭션이 성공적으로 완료되어 COMMIT된 상태"
+        },
+        {
+          "term": "실패 (Failed)",
+          "desc": "오류가 발생하여 중단된 상태"
+        },
+        {
+          "term": "철회 (Aborted)",
+          "desc": "트랜잭션이 비정상 종료되어 ROLLBACK된 상태"
+        },
+        {
+          "term": "COMMIT",
+          "desc": "트랜잭션의 결과를 DB에 영구 반영"
+        },
+        {
+          "term": "ROLLBACK",
+          "desc": "트랜잭션을 취소하고 이전 상태로 복구"
+        },
+        {
+          "term": "SAVEPOINT",
+          "desc": "트랜잭션 내 롤백할 지점을 지정"
+        },
+        {
+          "term": "Dirty Read",
+          "desc": "다른 트랜잭션의 커밋되지 않은 데이터를 읽는 현상. Read Uncommitted에서 발생"
+        },
+        {
+          "term": "Phantom Read",
+          "desc": "같은 조회를 반복했을 때 없던 행이 나타나는 현상. Serializable에서만 방지"
+        }
       ],
-      "asked": ["2020-2", "2021-2", "2022-1", "2023-1", "2023-3"]
+      "asked": [
+        "2020-2",
+        "2021-2",
+        "2022-1",
+        "2023-1",
+        "2023-3"
+      ]
     },
     {
       "title": "병행 제어와 회복 기법",
@@ -188,22 +420,69 @@
         "REDO: 로그에 Start와 Commit 모두 있는 트랜잭션 → 재실행 / UNDO: Start만 있고 Commit 없는 트랜잭션 → 취소"
       ],
       "terms": [
-        {"term": "로킹 (Locking)", "desc": "트랜잭션이 사용하는 데이터에 잠금을 설정하여 다른 트랜잭션의 접근을 제한"},
-        {"term": "공유 락 (Shared Lock, S-Lock)", "desc": "읽기만 허용. 다른 트랜잭션도 읽기 가능"},
-        {"term": "배타 락 (Exclusive Lock, X-Lock)", "desc": "읽기·쓰기 모두 독점. 다른 트랜잭션 접근 불가"},
-        {"term": "2단계 로킹 (Two-Phase Locking, 2PL)", "desc": "확장 단계와 축소 단계로 구분하여 Lock/Unlock. 직렬 가능성 보장"},
-        {"term": "타임 스탬프 (Time Stamp)", "desc": "트랜잭션에 시간 값을 부여해 순서대로 실행. 교착상태 없음"},
-        {"term": "낙관적 검증 (Optimistic Validation)", "desc": "트랜잭션 수행 후 검증 단계에서 충돌 확인"},
-        {"term": "다중 버전 병행 제어 (MVCC, Multi-Version Concurrency Control)", "desc": "데이터의 여러 버전을 유지하여 읽기·쓰기 충돌 최소화"},
-        {"term": "교착 상태 (Deadlock)", "desc": "두 트랜잭션이 서로 상대의 락 해제를 기다리며 무한 대기"},
-        {"term": "REDO (재실행)", "desc": "커밋된 트랜잭션의 변경을 로그로 다시 반영"},
-        {"term": "UNDO (취소)", "desc": "커밋되지 않은 트랜잭션의 변경을 로그로 되돌림"},
-        {"term": "지연 갱신 (Deferred Update)", "desc": "트랜잭션 완료 전까지 DB에 기록하지 않고 로그에만 저장. UNDO 불필요"},
-        {"term": "즉시 갱신 (Immediate Update)", "desc": "변경 즉시 DB에 반영하며 로그 기록. REDO·UNDO 모두 필요"},
-        {"term": "검사점 (Checkpoint)", "desc": "로그에 검사점을 기록하여 회복 시 그 이후만 처리"},
-        {"term": "그림자 페이징 (Shadow Paging)", "desc": "변경 전 페이지 복사본(그림자 페이지)을 유지하여 장애 시 교체. 로그 불필요"}
+        {
+          "term": "로킹 (Locking)",
+          "desc": "트랜잭션이 사용하는 데이터에 잠금을 설정하여 다른 트랜잭션의 접근을 제한"
+        },
+        {
+          "term": "공유 락 (Shared Lock, S-Lock)",
+          "desc": "읽기만 허용. 다른 트랜잭션도 읽기 가능"
+        },
+        {
+          "term": "배타 락 (Exclusive Lock, X-Lock)",
+          "desc": "읽기·쓰기 모두 독점. 다른 트랜잭션 접근 불가"
+        },
+        {
+          "term": "2단계 로킹 (Two-Phase Locking, 2PL)",
+          "desc": "확장 단계와 축소 단계로 구분하여 Lock/Unlock. 직렬 가능성 보장"
+        },
+        {
+          "term": "타임 스탬프 (Time Stamp)",
+          "desc": "트랜잭션에 시간 값을 부여해 순서대로 실행. 교착상태 없음"
+        },
+        {
+          "term": "낙관적 검증 (Optimistic Validation)",
+          "desc": "트랜잭션 수행 후 검증 단계에서 충돌 확인"
+        },
+        {
+          "term": "다중 버전 병행 제어 (MVCC, Multi-Version Concurrency Control)",
+          "desc": "데이터의 여러 버전을 유지하여 읽기·쓰기 충돌 최소화"
+        },
+        {
+          "term": "교착 상태 (Deadlock)",
+          "desc": "두 트랜잭션이 서로 상대의 락 해제를 기다리며 무한 대기"
+        },
+        {
+          "term": "REDO (재실행)",
+          "desc": "커밋된 트랜잭션의 변경을 로그로 다시 반영"
+        },
+        {
+          "term": "UNDO (취소)",
+          "desc": "커밋되지 않은 트랜잭션의 변경을 로그로 되돌림"
+        },
+        {
+          "term": "지연 갱신 (Deferred Update)",
+          "desc": "트랜잭션 완료 전까지 DB에 기록하지 않고 로그에만 저장. UNDO 불필요"
+        },
+        {
+          "term": "즉시 갱신 (Immediate Update)",
+          "desc": "변경 즉시 DB에 반영하며 로그 기록. REDO·UNDO 모두 필요"
+        },
+        {
+          "term": "검사점 (Checkpoint)",
+          "desc": "로그에 검사점을 기록하여 회복 시 그 이후만 처리"
+        },
+        {
+          "term": "그림자 페이징 (Shadow Paging)",
+          "desc": "변경 전 페이지 복사본(그림자 페이지)을 유지하여 장애 시 교체. 로그 불필요"
+        }
       ],
-      "asked": ["2021-2", "2022-2", "2022-3", "2024-1"]
+      "asked": [
+        "2021-2",
+        "2022-2",
+        "2022-3",
+        "2024-1"
+      ]
     },
     {
       "title": "무결성 (Integrity)",
@@ -218,18 +497,52 @@
         "참조 무결성 옵션(ON DELETE/UPDATE): CASCADE(연쇄 삭제·갱신), SET NULL, SET DEFAULT, RESTRICT/NO ACTION(거부)"
       ],
       "terms": [
-        {"term": "개체 무결성 (Entity Integrity)", "desc": "기본키를 구성하는 속성은 NULL이나 중복 값을 가질 수 없음"},
-        {"term": "참조 무결성 (Referential Integrity)", "desc": "외래키 값은 NULL이거나 참조 릴레이션의 기본키 값과 동일"},
-        {"term": "도메인 무결성 (Domain Integrity)", "desc": "속성 값은 지정된 도메인(데이터 타입, 범위, 형식)에 속해야 함"},
-        {"term": "키 무결성 (Key Integrity)", "desc": "한 릴레이션에 적어도 하나의 키가 존재"},
-        {"term": "사용자 정의 무결성 (User-defined Integrity)", "desc": "사용자가 정의한 업무 규칙(트리거, CHECK 등)"},
-        {"term": "CASCADE", "desc": "참조되는 튜플 삭제·갱신 시 참조하는 튜플도 함께 삭제·갱신"},
-        {"term": "SET NULL", "desc": "참조되는 튜플 삭제 시 참조하는 외래키 값을 NULL로 설정"},
-        {"term": "RESTRICT", "desc": "참조하는 튜플이 존재하면 삭제·갱신을 거부"},
-        {"term": "CHECK", "desc": "속성 값이 특정 조건을 만족하도록 제약"},
-        {"term": "UNIQUE", "desc": "속성 값의 중복을 허용하지 않음(NULL은 허용)"}
+        {
+          "term": "개체 무결성 (Entity Integrity)",
+          "desc": "기본키를 구성하는 속성은 NULL이나 중복 값을 가질 수 없음"
+        },
+        {
+          "term": "참조 무결성 (Referential Integrity)",
+          "desc": "외래키 값은 NULL이거나 참조 릴레이션의 기본키 값과 동일"
+        },
+        {
+          "term": "도메인 무결성 (Domain Integrity)",
+          "desc": "속성 값은 지정된 도메인(데이터 타입, 범위, 형식)에 속해야 함"
+        },
+        {
+          "term": "키 무결성 (Key Integrity)",
+          "desc": "한 릴레이션에 적어도 하나의 키가 존재"
+        },
+        {
+          "term": "사용자 정의 무결성 (User-defined Integrity)",
+          "desc": "사용자가 정의한 업무 규칙(트리거, CHECK 등)"
+        },
+        {
+          "term": "CASCADE",
+          "desc": "참조되는 튜플 삭제·갱신 시 참조하는 튜플도 함께 삭제·갱신"
+        },
+        {
+          "term": "SET NULL",
+          "desc": "참조되는 튜플 삭제 시 참조하는 외래키 값을 NULL로 설정"
+        },
+        {
+          "term": "RESTRICT",
+          "desc": "참조하는 튜플이 존재하면 삭제·갱신을 거부"
+        },
+        {
+          "term": "CHECK",
+          "desc": "속성 값이 특정 조건을 만족하도록 제약"
+        },
+        {
+          "term": "UNIQUE",
+          "desc": "속성 값의 중복을 허용하지 않음(NULL은 허용)"
+        }
       ],
-      "asked": ["2021-1", "2022-3", "2024-2"]
+      "asked": [
+        "2021-1",
+        "2022-3",
+        "2024-2"
+      ]
     },
     {
       "title": "인덱스·뷰·클러스터·파티션",
@@ -242,67 +555,146 @@
         "파티션(Partition): 대용량 테이블을 작은 논리 단위로 나눔. 범위(Range), 해시(Hash), 리스트(List), 조합(Composite), 라운드로빈(Round-robin). 장점: 성능·가용성 향상, 백업·복구 용이"
       ],
       "terms": [
-        {"term": "인덱스 (Index)", "desc": "데이터를 빠르게 찾기 위해 키 값과 레코드 위치를 저장한 자료구조"},
-        {"term": "클러스터드 인덱스 (Clustered Index)", "desc": "인덱스 키 순서대로 데이터가 물리적으로 정렬 저장. 테이블당 1개"},
-        {"term": "논클러스터드 인덱스 (Non-Clustered Index)", "desc": "데이터 순서와 무관하게 별도 인덱스 페이지에 포인터 저장. 여러 개 가능"},
-        {"term": "B-Tree 인덱스", "desc": "균형 트리 구조의 가장 일반적인 인덱스. 범위 검색에 유리"},
-        {"term": "비트맵 인덱스 (Bitmap Index)", "desc": "컬럼 값마다 비트맵으로 저장. 분포도(카디널리티)가 낮은 컬럼에 적합"},
-        {"term": "뷰 (View)", "desc": "기본 테이블에서 유도된 논리적 가상 테이블. CREATE VIEW ... AS SELECT"},
-        {"term": "클러스터 (Cluster)", "desc": "관련 데이터를 물리적으로 같은 블록에 저장하여 접근 효율 향상"},
-        {"term": "범위 분할 (Range Partitioning)", "desc": "컬럼 값 범위(날짜, 번호대)를 기준으로 분할"},
-        {"term": "해시 분할 (Hash Partitioning)", "desc": "해시 함수 결과로 분할. 데이터 고르게 분산, 범위 검색 불리"},
-        {"term": "리스트 분할 (List Partitioning)", "desc": "특정 값 목록(지역, 코드)을 기준으로 분할"},
-        {"term": "조합 분할 (Composite Partitioning)", "desc": "범위 분할 후 해시 등 다른 방법으로 다시 분할"},
-        {"term": "라운드로빈 분할 (Round-robin Partitioning)", "desc": "레코드를 순차적으로 균등 분배. 키 없이 분할"}
+        {
+          "term": "인덱스 (Index)",
+          "desc": "데이터를 빠르게 찾기 위해 키 값과 레코드 위치를 저장한 자료구조"
+        },
+        {
+          "term": "클러스터드 인덱스 (Clustered Index)",
+          "desc": "인덱스 키 순서대로 데이터가 물리적으로 정렬 저장. 테이블당 1개"
+        },
+        {
+          "term": "논클러스터드 인덱스 (Non-Clustered Index)",
+          "desc": "데이터 순서와 무관하게 별도 인덱스 페이지에 포인터 저장. 여러 개 가능"
+        },
+        {
+          "term": "B-Tree 인덱스",
+          "desc": "균형 트리 구조의 가장 일반적인 인덱스. 범위 검색에 유리"
+        },
+        {
+          "term": "비트맵 인덱스 (Bitmap Index)",
+          "desc": "컬럼 값마다 비트맵으로 저장. 분포도(카디널리티)가 낮은 컬럼에 적합"
+        },
+        {
+          "term": "뷰 (View)",
+          "desc": "기본 테이블에서 유도된 논리적 가상 테이블. CREATE VIEW ... AS SELECT"
+        },
+        {
+          "term": "클러스터 (Cluster)",
+          "desc": "관련 데이터를 물리적으로 같은 블록에 저장하여 접근 효율 향상"
+        },
+        {
+          "term": "범위 분할 (Range Partitioning)",
+          "desc": "컬럼 값 범위(날짜, 번호대)를 기준으로 분할"
+        },
+        {
+          "term": "해시 분할 (Hash Partitioning)",
+          "desc": "해시 함수 결과로 분할. 데이터 고르게 분산, 범위 검색 불리"
+        },
+        {
+          "term": "리스트 분할 (List Partitioning)",
+          "desc": "특정 값 목록(지역, 코드)을 기준으로 분할"
+        },
+        {
+          "term": "조합 분할 (Composite Partitioning)",
+          "desc": "범위 분할 후 해시 등 다른 방법으로 다시 분할"
+        },
+        {
+          "term": "라운드로빈 분할 (Round-robin Partitioning)",
+          "desc": "레코드를 순차적으로 균등 분배. 키 없이 분할"
+        }
       ],
-      "asked": ["2020-1", "2021-1", "2022-3", "2023-2", "2024-3"]
+      "asked": [
+        "2020-1",
+        "2021-1",
+        "2022-3",
+        "2023-2",
+        "2024-3"
+      ]
     },
     {
-      "title": "스토리지와 분산 데이터베이스",
+      "title": "스토리지·분산 DB·데이터 웨어하우스",
       "importance": 2,
-      "summary": "데이터 저장 장치 연결 방식(DAS/NAS/SAN)과, 물리적으로 분산된 DB를 하나처럼 사용하게 하는 분산 DB의 투명성.",
+      "summary": "저장 장치 연결 방식(DAS/NAS/SAN), 분산 DB의 투명성, 의사결정용 데이터 웨어하우스/OLAP 용어.",
       "points": [
         "DAS(Direct Attached Storage): 서버에 직접 연결, 확장·공유 어려움 / NAS(Network Attached Storage): 네트워크(LAN)로 연결, 파일 단위 공유 / SAN(Storage Area Network): 광채널(Fibre Channel) 전용 네트워크, 블록 단위, 고성능·고가",
         "분산 DB 투명성 4(+1): 위치 투명성(Location), 중복 투명성(Replication), 병행 투명성(Concurrency), 장애 투명성(Failure), 분할 투명성(Fragmentation). 암기: 위중병장분",
         "분산 DB 구성: 분산 처리기, 분산 데이터베이스, 통신 네트워크. 장점: 지역 자치성, 신뢰성·가용성, 점진적 확장 / 단점: 설계 복잡, 개발 비용, 무결성·보안 유지 어려움",
-        "RAID: 0(스트라이핑), 1(미러링), 5(패리티 분산), 6(이중 패리티), 10(1+0)"
-      ],
-      "terms": [
-        {"term": "DAS (Direct Attached Storage)", "desc": "서버와 저장 장치를 전용 케이블로 직접 연결. 속도 빠름, 공유 불가"},
-        {"term": "NAS (Network Attached Storage)", "desc": "서버와 저장 장치를 네트워크로 연결. 파일 단위 공유, 이더넷 기반"},
-        {"term": "SAN (Storage Area Network)", "desc": "저장 장치 전용 고속 네트워크(광채널). 블록 단위, 확장성·가용성 높음"},
-        {"term": "위치 투명성 (Location Transparency)", "desc": "데이터의 물리적 위치를 알 필요 없이 논리적 이름만으로 접근"},
-        {"term": "중복 투명성 (Replication Transparency)", "desc": "데이터가 여러 곳에 중복 저장되어도 사용자는 하나로 인식"},
-        {"term": "병행 투명성 (Concurrency Transparency)", "desc": "여러 트랜잭션이 동시 수행되어도 결과의 일관성 유지"},
-        {"term": "장애 투명성 (Failure Transparency)", "desc": "구성 요소(DBMS, 컴퓨터, 네트워크) 장애에도 트랜잭션 정확히 처리"},
-        {"term": "분할 투명성 (Fragmentation Transparency)", "desc": "하나의 릴레이션이 여러 단편으로 나뉘어 저장되어도 사용자는 알 필요 없음"},
-        {"term": "RAID (Redundant Array of Independent Disks)", "desc": "여러 디스크를 하나처럼 묶어 성능·안정성 향상"}
-      ],
-      "asked": ["2021-2", "2022-2", "2023-3"]
-    },
-    {
-      "title": "데이터 웨어하우스·OLAP·빅데이터",
-      "importance": 1,
-      "summary": "의사결정 지원을 위해 데이터를 통합·분석하는 기술. DW/데이터 마트/OLAP 연산/데이터 마이닝 용어를 묻는다.",
-      "points": [
+        "RAID: 0(스트라이핑), 1(미러링), 5(패리티 분산), 6(이중 패리티), 10(1+0)",
         "데이터 웨어하우스(DW): 의사결정을 위해 운영 DB에서 추출·변환·적재(ETL)한 주제 지향·통합·시계열·비휘발성 데이터 집합",
-        "OLAP 연산: Roll-up(상위 레벨 요약), Drill-down(하위 레벨 상세), Slicing(한 차원 고정 절단), Dicing(여러 차원 부분 큐브), Pivot(축 회전)",
-        "OLAP 종류: ROLAP(관계형), MOLAP(다차원), HOLAP(혼합)",
-        "빅데이터 3V: 규모(Volume), 다양성(Variety), 속도(Velocity) (+ 정확성 Veracity, 가치 Value)"
+        "OLAP 연산: Roll-up(상위 레벨 요약), Drill-down(하위 레벨 상세), Slicing(한 차원 고정 절단), Dicing(여러 차원 부분 큐브), Pivot(축 회전)"
       ],
       "terms": [
-        {"term": "데이터 웨어하우스 (Data Warehouse)", "desc": "의사결정 지원을 위한 주제 중심·통합·시계열·비휘발성 데이터 저장소"},
-        {"term": "데이터 마트 (Data Mart)", "desc": "특정 부서·주제에 맞게 DW에서 추출한 소규모 데이터 웨어하우스"},
-        {"term": "ETL (Extract, Transform, Load)", "desc": "데이터를 추출·변환·적재하는 과정"},
-        {"term": "OLAP (On-Line Analytical Processing)", "desc": "다차원 데이터를 대화식으로 분석하는 처리 기술"},
-        {"term": "OLTP (On-Line Transaction Processing)", "desc": "실시간 트랜잭션 처리. 운영 업무용"},
-        {"term": "데이터 마이닝 (Data Mining)", "desc": "대량 데이터에서 숨겨진 패턴·규칙을 발견. 연관·분류·군집 분석"},
-        {"term": "메타데이터 (Metadata)", "desc": "데이터에 대한 데이터. 데이터의 구조·속성·위치 등을 설명"},
-        {"term": "MDR (Metadata Registry)", "desc": "메타데이터 등록·관리 저장소. ISO/IEC 11179"},
-        {"term": "데이터 레이크 (Data Lake)", "desc": "정형·비정형 원시 데이터를 그대로 저장하는 대규모 저장소"},
-        {"term": "하둡 (Hadoop)", "desc": "대용량 데이터 분산 처리 오픈소스 프레임워크. HDFS + MapReduce"}
+        {
+          "term": "DAS (Direct Attached Storage)",
+          "desc": "서버와 저장 장치를 전용 케이블로 직접 연결. 속도 빠름, 공유 불가"
+        },
+        {
+          "term": "NAS (Network Attached Storage)",
+          "desc": "서버와 저장 장치를 네트워크로 연결. 파일 단위 공유, 이더넷 기반"
+        },
+        {
+          "term": "SAN (Storage Area Network)",
+          "desc": "저장 장치 전용 고속 네트워크(광채널). 블록 단위, 확장성·가용성 높음"
+        },
+        {
+          "term": "위치 투명성 (Location Transparency)",
+          "desc": "데이터의 물리적 위치를 알 필요 없이 논리적 이름만으로 접근"
+        },
+        {
+          "term": "중복 투명성 (Replication Transparency)",
+          "desc": "데이터가 여러 곳에 중복 저장되어도 사용자는 하나로 인식"
+        },
+        {
+          "term": "병행 투명성 (Concurrency Transparency)",
+          "desc": "여러 트랜잭션이 동시 수행되어도 결과의 일관성 유지"
+        },
+        {
+          "term": "장애 투명성 (Failure Transparency)",
+          "desc": "구성 요소(DBMS, 컴퓨터, 네트워크) 장애에도 트랜잭션 정확히 처리"
+        },
+        {
+          "term": "분할 투명성 (Fragmentation Transparency)",
+          "desc": "하나의 릴레이션이 여러 단편으로 나뉘어 저장되어도 사용자는 알 필요 없음"
+        },
+        {
+          "term": "RAID (Redundant Array of Independent Disks)",
+          "desc": "여러 디스크를 하나처럼 묶어 성능·안정성 향상"
+        },
+        {
+          "term": "데이터 웨어하우스 (Data Warehouse)",
+          "desc": "의사결정 지원을 위한 주제 중심·통합·시계열·비휘발성 데이터 저장소"
+        },
+        {
+          "term": "데이터 마트 (Data Mart)",
+          "desc": "특정 부서·주제에 맞게 DW에서 추출한 소규모 데이터 웨어하우스"
+        },
+        {
+          "term": "ETL (Extract, Transform, Load)",
+          "desc": "데이터를 추출·변환·적재하는 과정"
+        },
+        {
+          "term": "OLAP (On-Line Analytical Processing)",
+          "desc": "다차원 데이터를 대화식으로 분석하는 처리 기술"
+        },
+        {
+          "term": "데이터 마이닝 (Data Mining)",
+          "desc": "대량 데이터에서 숨겨진 패턴·규칙을 발견. 연관·분류·군집 분석"
+        },
+        {
+          "term": "메타데이터 (Metadata)",
+          "desc": "데이터에 대한 데이터. 데이터의 구조·속성·위치 등을 설명"
+        },
+        {
+          "term": "MDR (Metadata Registry)",
+          "desc": "메타데이터 등록·관리 저장소. ISO/IEC 11179"
+        }
       ],
-      "asked": ["2021-2", "2023-3"]
+      "asked": [
+        "2021-2",
+        "2022-2",
+        "2023-3"
+      ]
     },
     {
       "title": "자료구조 (스택·큐·데크·리스트)",
@@ -316,17 +708,48 @@
         "스택 오버플로(Overflow): 가득 찬 상태에서 push / 언더플로(Underflow): 빈 상태에서 pop"
       ],
       "terms": [
-        {"term": "스택 (Stack)", "desc": "한쪽 끝(top)에서만 삽입·삭제하는 후입선출(LIFO) 구조"},
-        {"term": "큐 (Queue)", "desc": "한쪽(rear)에서 삽입, 다른 쪽(front)에서 삭제하는 선입선출(FIFO) 구조"},
-        {"term": "데크 (Deque, Double-ended Queue)", "desc": "양쪽 끝에서 삽입·삭제가 모두 가능한 구조"},
-        {"term": "원형 큐 (Circular Queue)", "desc": "큐의 끝과 처음이 연결된 구조. 선형 큐의 공간 낭비 해결"},
-        {"term": "배열 (Array)", "desc": "같은 자료형을 연속된 메모리에 저장. 인덱스 접근 빠름, 삽입·삭제 느림"},
-        {"term": "연결 리스트 (Linked List)", "desc": "노드(데이터+포인터)로 연결. 삽입·삭제 용이, 접근 느림, 포인터 공간 필요"},
-        {"term": "LIFO (Last In First Out)", "desc": "마지막에 들어온 자료가 먼저 나가는 방식. 스택"},
-        {"term": "FIFO (First In First Out)", "desc": "먼저 들어온 자료가 먼저 나가는 방식. 큐"},
-        {"term": "후위 표기법 (Postfix Notation)", "desc": "연산자를 피연산자 뒤에 쓰는 표기. 스택으로 계산. A+B → AB+"}
+        {
+          "term": "스택 (Stack)",
+          "desc": "한쪽 끝(top)에서만 삽입·삭제하는 후입선출(LIFO) 구조"
+        },
+        {
+          "term": "큐 (Queue)",
+          "desc": "한쪽(rear)에서 삽입, 다른 쪽(front)에서 삭제하는 선입선출(FIFO) 구조"
+        },
+        {
+          "term": "데크 (Deque, Double-ended Queue)",
+          "desc": "양쪽 끝에서 삽입·삭제가 모두 가능한 구조"
+        },
+        {
+          "term": "원형 큐 (Circular Queue)",
+          "desc": "큐의 끝과 처음이 연결된 구조. 선형 큐의 공간 낭비 해결"
+        },
+        {
+          "term": "배열 (Array)",
+          "desc": "같은 자료형을 연속된 메모리에 저장. 인덱스 접근 빠름, 삽입·삭제 느림"
+        },
+        {
+          "term": "연결 리스트 (Linked List)",
+          "desc": "노드(데이터+포인터)로 연결. 삽입·삭제 용이, 접근 느림, 포인터 공간 필요"
+        },
+        {
+          "term": "LIFO (Last In First Out)",
+          "desc": "마지막에 들어온 자료가 먼저 나가는 방식. 스택"
+        },
+        {
+          "term": "FIFO (First In First Out)",
+          "desc": "먼저 들어온 자료가 먼저 나가는 방식. 큐"
+        },
+        {
+          "term": "후위 표기법 (Postfix Notation)",
+          "desc": "연산자를 피연산자 뒤에 쓰는 표기. 스택으로 계산. A+B → AB+"
+        }
       ],
-      "asked": ["2020-3", "2022-1", "2023-1"]
+      "asked": [
+        "2020-3",
+        "2022-1",
+        "2023-1"
+      ]
     },
     {
       "title": "트리와 그래프",
@@ -340,21 +763,65 @@
         "그래프 탐색: 깊이 우선 탐색 DFS(스택·재귀), 너비 우선 탐색 BFS(큐). 최소 신장 트리(MST): Kruskal(간선 선택), Prim(정점 확장). 최단 경로: Dijkstra, Floyd-Warshall, Bellman-Ford"
       ],
       "terms": [
-        {"term": "차수 (Degree)", "desc": "노드가 가진 자식 노드(가지)의 수. 트리의 차수는 노드 차수 중 최대값"},
-        {"term": "단말 노드 (Terminal Node, Leaf Node)", "desc": "자식이 없는 노드(차수 0)"},
-        {"term": "전위 순회 (Preorder Traversal)", "desc": "Root → Left → Right"},
-        {"term": "중위 순회 (Inorder Traversal)", "desc": "Left → Root → Right"},
-        {"term": "후위 순회 (Postorder Traversal)", "desc": "Left → Right → Root"},
-        {"term": "이진 탐색 트리 (Binary Search Tree, BST)", "desc": "왼쪽 서브트리 < 루트 < 오른쪽 서브트리를 만족하는 이진 트리"},
-        {"term": "AVL 트리", "desc": "좌우 서브트리 높이 차가 1 이하인 자가 균형 이진 탐색 트리"},
-        {"term": "힙 (Heap)", "desc": "부모가 자식보다 항상 크거나(최대 힙) 작은(최소 힙) 완전 이진 트리. 우선순위 큐"},
-        {"term": "B-트리 (B-Tree)", "desc": "자식이 여러 개인 균형 탐색 트리. DB 인덱스에 사용"},
-        {"term": "깊이 우선 탐색 (DFS, Depth First Search)", "desc": "한 경로를 끝까지 탐색 후 되돌아옴. 스택/재귀 이용"},
-        {"term": "너비 우선 탐색 (BFS, Breadth First Search)", "desc": "인접한 정점을 먼저 모두 방문. 큐 이용"},
-        {"term": "최소 신장 트리 (MST, Minimum Spanning Tree)", "desc": "모든 정점을 최소 비용 간선으로 연결한 트리. Kruskal, Prim"},
-        {"term": "다익스트라 (Dijkstra) 알고리즘", "desc": "한 정점에서 다른 모든 정점까지의 최단 경로. 음수 가중치 불가"}
+        {
+          "term": "차수 (Degree)",
+          "desc": "노드가 가진 자식 노드(가지)의 수. 트리의 차수는 노드 차수 중 최대값"
+        },
+        {
+          "term": "단말 노드 (Terminal Node, Leaf Node)",
+          "desc": "자식이 없는 노드(차수 0)"
+        },
+        {
+          "term": "전위 순회 (Preorder Traversal)",
+          "desc": "Root → Left → Right"
+        },
+        {
+          "term": "중위 순회 (Inorder Traversal)",
+          "desc": "Left → Root → Right"
+        },
+        {
+          "term": "후위 순회 (Postorder Traversal)",
+          "desc": "Left → Right → Root"
+        },
+        {
+          "term": "이진 탐색 트리 (Binary Search Tree, BST)",
+          "desc": "왼쪽 서브트리 < 루트 < 오른쪽 서브트리를 만족하는 이진 트리"
+        },
+        {
+          "term": "AVL 트리",
+          "desc": "좌우 서브트리 높이 차가 1 이하인 자가 균형 이진 탐색 트리"
+        },
+        {
+          "term": "힙 (Heap)",
+          "desc": "부모가 자식보다 항상 크거나(최대 힙) 작은(최소 힙) 완전 이진 트리. 우선순위 큐"
+        },
+        {
+          "term": "B-트리 (B-Tree)",
+          "desc": "자식이 여러 개인 균형 탐색 트리. DB 인덱스에 사용"
+        },
+        {
+          "term": "깊이 우선 탐색 (DFS, Depth First Search)",
+          "desc": "한 경로를 끝까지 탐색 후 되돌아옴. 스택/재귀 이용"
+        },
+        {
+          "term": "너비 우선 탐색 (BFS, Breadth First Search)",
+          "desc": "인접한 정점을 먼저 모두 방문. 큐 이용"
+        },
+        {
+          "term": "최소 신장 트리 (MST, Minimum Spanning Tree)",
+          "desc": "모든 정점을 최소 비용 간선으로 연결한 트리. Kruskal, Prim"
+        },
+        {
+          "term": "다익스트라 (Dijkstra) 알고리즘",
+          "desc": "한 정점에서 다른 모든 정점까지의 최단 경로. 음수 가중치 불가"
+        }
       ],
-      "asked": ["2020-3", "2021-2", "2022-3", "2024-2"]
+      "asked": [
+        "2020-3",
+        "2021-2",
+        "2022-3",
+        "2024-2"
+      ]
     },
     {
       "title": "정렬 알고리즘",
@@ -372,18 +839,55 @@
         "시간 복잡도 O(n²): 선택·버블·삽입 / O(n log n): 퀵(평균)·합병·힙"
       ],
       "terms": [
-        {"term": "선택 정렬 (Selection Sort)", "desc": "남은 자료 중 최소값을 선택해 앞자리와 교환"},
-        {"term": "버블 정렬 (Bubble Sort)", "desc": "인접한 두 자료를 비교하여 교환, 큰 값이 뒤로 이동"},
-        {"term": "삽입 정렬 (Insertion Sort)", "desc": "정렬된 부분에 새 자료를 알맞은 위치에 삽입"},
-        {"term": "셸 정렬 (Shell Sort)", "desc": "일정 간격의 부분 리스트를 삽입 정렬, 간격을 줄여가며 반복"},
-        {"term": "퀵 정렬 (Quick Sort)", "desc": "피벗을 기준으로 분할 정복. 평균 가장 빠름"},
-        {"term": "합병 정렬 (Merge Sort)", "desc": "분할 후 병합하며 정렬. 안정 정렬, O(n log n) 보장"},
-        {"term": "힙 정렬 (Heap Sort)", "desc": "힙 자료구조를 이용. 추가 메모리 불필요"},
-        {"term": "기수 정렬 (Radix Sort)", "desc": "키 값의 자릿수별로 버킷에 분배하여 정렬"},
-        {"term": "피벗 (Pivot)", "desc": "퀵 정렬에서 분할 기준이 되는 값"},
-        {"term": "안정 정렬 (Stable Sort)", "desc": "같은 값의 상대 순서가 정렬 후에도 유지. 버블·삽입·합병"}
+        {
+          "term": "선택 정렬 (Selection Sort)",
+          "desc": "남은 자료 중 최소값을 선택해 앞자리와 교환"
+        },
+        {
+          "term": "버블 정렬 (Bubble Sort)",
+          "desc": "인접한 두 자료를 비교하여 교환, 큰 값이 뒤로 이동"
+        },
+        {
+          "term": "삽입 정렬 (Insertion Sort)",
+          "desc": "정렬된 부분에 새 자료를 알맞은 위치에 삽입"
+        },
+        {
+          "term": "셸 정렬 (Shell Sort)",
+          "desc": "일정 간격의 부분 리스트를 삽입 정렬, 간격을 줄여가며 반복"
+        },
+        {
+          "term": "퀵 정렬 (Quick Sort)",
+          "desc": "피벗을 기준으로 분할 정복. 평균 가장 빠름"
+        },
+        {
+          "term": "합병 정렬 (Merge Sort)",
+          "desc": "분할 후 병합하며 정렬. 안정 정렬, O(n log n) 보장"
+        },
+        {
+          "term": "힙 정렬 (Heap Sort)",
+          "desc": "힙 자료구조를 이용. 추가 메모리 불필요"
+        },
+        {
+          "term": "기수 정렬 (Radix Sort)",
+          "desc": "키 값의 자릿수별로 버킷에 분배하여 정렬"
+        },
+        {
+          "term": "피벗 (Pivot)",
+          "desc": "퀵 정렬에서 분할 기준이 되는 값"
+        },
+        {
+          "term": "안정 정렬 (Stable Sort)",
+          "desc": "같은 값의 상대 순서가 정렬 후에도 유지. 버블·삽입·합병"
+        }
       ],
-      "asked": ["2020-4", "2021-1", "2021-3", "2022-1", "2023-2", "2024-1"]
+      "asked": [
+        "2020-4",
+        "2021-1",
+        "2021-3",
+        "2022-1",
+        "2023-2",
+        "2024-1"
+      ]
     },
     {
       "title": "탐색과 해싱",
@@ -398,25 +902,80 @@
         "충돌(Collision) 해결: 개방 주소법(Open Addressing - 선형 조사 Linear Probing, 이차 조사 Quadratic Probing, 이중 해싱 Double Hashing), 체이닝(Chaining, 연결 리스트), 오버플로 영역"
       ],
       "terms": [
-        {"term": "이진 탐색 (Binary Search)", "desc": "정렬된 자료의 중간값과 비교하며 범위를 절반씩 줄여 탐색. O(log n)"},
-        {"term": "선형 탐색 (Linear Search, Sequential Search)", "desc": "처음부터 끝까지 순서대로 비교. O(n)"},
-        {"term": "해싱 (Hashing)", "desc": "해시 함수로 키 값을 저장 주소로 직접 계산하는 탐색 방법"},
-        {"term": "해시 함수 (Hash Function)", "desc": "키 값을 해시 테이블의 주소로 변환하는 함수"},
-        {"term": "제산법 (Division Method)", "desc": "키를 테이블 크기(소수)로 나눈 나머지를 주소로 사용. h(k)=k mod m"},
-        {"term": "제곱법 (Mid-Square Method)", "desc": "키를 제곱한 후 중간 자릿수를 주소로 사용"},
-        {"term": "폴딩법 (Folding Method)", "desc": "키를 여러 부분으로 나누어 더하거나 XOR한 값을 주소로 사용"},
-        {"term": "기수 변환법 (Radix Conversion Method)", "desc": "키의 진법을 다른 진법으로 변환하여 주소 생성"},
-        {"term": "숫자 분석법 (Digit Analysis Method)", "desc": "키 값의 자릿수 분포를 분석하여 고른 자릿수를 선택. 계수 분석법"},
-        {"term": "무작위법 (Random Method)", "desc": "난수를 발생시켜 주소로 사용"},
-        {"term": "충돌 (Collision)", "desc": "서로 다른 키가 같은 해시 주소로 변환되는 현상"},
-        {"term": "동거자 (Synonym)", "desc": "같은 홈 주소(해시 값)를 갖는 레코드 집합"},
-        {"term": "오버플로 (Overflow)", "desc": "버킷 내 슬롯이 모두 차서 더 저장할 수 없는 상태"},
-        {"term": "버킷 (Bucket)", "desc": "하나의 주소를 갖는 저장 공간. 여러 슬롯으로 구성"},
-        {"term": "슬롯 (Slot)", "desc": "한 개의 레코드를 저장할 수 있는 공간"},
-        {"term": "체이닝 (Chaining)", "desc": "충돌 시 같은 주소의 레코드들을 연결 리스트로 연결"},
-        {"term": "선형 조사 (Linear Probing)", "desc": "충돌 시 다음 빈 버킷을 순차적으로 탐색하는 개방 주소법"}
+        {
+          "term": "이진 탐색 (Binary Search)",
+          "desc": "정렬된 자료의 중간값과 비교하며 범위를 절반씩 줄여 탐색. O(log n)"
+        },
+        {
+          "term": "선형 탐색 (Linear Search, Sequential Search)",
+          "desc": "처음부터 끝까지 순서대로 비교. O(n)"
+        },
+        {
+          "term": "해싱 (Hashing)",
+          "desc": "해시 함수로 키 값을 저장 주소로 직접 계산하는 탐색 방법"
+        },
+        {
+          "term": "해시 함수 (Hash Function)",
+          "desc": "키 값을 해시 테이블의 주소로 변환하는 함수"
+        },
+        {
+          "term": "제산법 (Division Method)",
+          "desc": "키를 테이블 크기(소수)로 나눈 나머지를 주소로 사용. h(k)=k mod m"
+        },
+        {
+          "term": "제곱법 (Mid-Square Method)",
+          "desc": "키를 제곱한 후 중간 자릿수를 주소로 사용"
+        },
+        {
+          "term": "폴딩법 (Folding Method)",
+          "desc": "키를 여러 부분으로 나누어 더하거나 XOR한 값을 주소로 사용"
+        },
+        {
+          "term": "기수 변환법 (Radix Conversion Method)",
+          "desc": "키의 진법을 다른 진법으로 변환하여 주소 생성"
+        },
+        {
+          "term": "숫자 분석법 (Digit Analysis Method)",
+          "desc": "키 값의 자릿수 분포를 분석하여 고른 자릿수를 선택. 계수 분석법"
+        },
+        {
+          "term": "무작위법 (Random Method)",
+          "desc": "난수를 발생시켜 주소로 사용"
+        },
+        {
+          "term": "충돌 (Collision)",
+          "desc": "서로 다른 키가 같은 해시 주소로 변환되는 현상"
+        },
+        {
+          "term": "동거자 (Synonym)",
+          "desc": "같은 홈 주소(해시 값)를 갖는 레코드 집합"
+        },
+        {
+          "term": "오버플로 (Overflow)",
+          "desc": "버킷 내 슬롯이 모두 차서 더 저장할 수 없는 상태"
+        },
+        {
+          "term": "버킷 (Bucket)",
+          "desc": "하나의 주소를 갖는 저장 공간. 여러 슬롯으로 구성"
+        },
+        {
+          "term": "슬롯 (Slot)",
+          "desc": "한 개의 레코드를 저장할 수 있는 공간"
+        },
+        {
+          "term": "체이닝 (Chaining)",
+          "desc": "충돌 시 같은 주소의 레코드들을 연결 리스트로 연결"
+        },
+        {
+          "term": "선형 조사 (Linear Probing)",
+          "desc": "충돌 시 다음 빈 버킷을 순차적으로 탐색하는 개방 주소법"
+        }
       ],
-      "asked": ["2021-3", "2023-2", "2024-3"]
+      "asked": [
+        "2021-3",
+        "2023-2",
+        "2024-3"
+      ]
     }
   ]
 }

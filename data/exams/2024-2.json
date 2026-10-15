@@ -1,0 +1,400 @@
+{
+  "year": 2024,
+  "round": 2,
+  "date": "2024-07-28",
+  "questions": [
+    {
+      "no": 1,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "class Main {\n    public static void main(String[] args) {\n        int[] a = new int[]{1, 2, 3, 4};\n        int[] b = new int[]{1, 2, 3, 4};\n        int[] c = new int[]{1, 2, 3};\n        check(a, b);\n        check(a, c);\n        check(b, c);\n    }\n    public static void check(int[] a, int[] b) {\n        if (a == b) {\n            System.out.print(\"O\");\n        } else {\n            System.out.print(\"N\");\n        }\n    }\n}",
+      "answer": [
+        "NNN"
+      ],
+      "explanation": "배열은 참조형이므로 == 연산자는 요소 값이 아니라 참조(주소)를 비교한다.\na, b, c는 각각 new로 생성된 서로 다른 객체이므로 a와 b의 내용이 같아도 a == b는 false이다.\n세 번의 check 호출 모두 N을 출력하여 NNN이 된다. (값 비교는 Arrays.equals 사용)",
+      "keywords": [
+        "배열",
+        "참조 비교",
+        "=="
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    },
+    {
+      "no": 2,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "다음 내용이 설명하는 용어를 쓰시오.\n\n시스템의 성능을 향상시키고 개발 및 운영의 편의성 등을 높이기 위해 정규화된 데이터 모델을 의도적으로 통합, 중복, 분리하여 정규화 원칙을 위배하는 행위. 데이터를 중복 저장하거나 테이블을 합치는 등으로 성능을 향상시키지만 데이터 무결성이 저하될 수 있다.",
+      "answer": [
+        "반정규화",
+        "비정규화",
+        "역정규화",
+        "Denormalization",
+        "De-normalization"
+      ],
+      "explanation": "정규화로 분해된 테이블을 조회 성능 향상을 위해 의도적으로 다시 통합하거나 중복 속성을 추가하는 기법은 반정규화(Denormalization)이다.\n조인 비용이 줄어 조회 성능은 좋아지지만 데이터 중복으로 무결성 유지 비용이 늘어난다.\n2021년 1회 기출 재출제 문제이다.",
+      "keywords": [
+        "반정규화",
+        "역정규화",
+        "성능"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 3,
+      "subject": "SQL 응용",
+      "type": "빈칸",
+      "lang": "SQL",
+      "question": "다음 조건을 만족하도록 괄호에 알맞은 SQL 명령어를 넣어 SQL문을 완성하시오.\n\n[테이블]\n사원 [사원번호(PK), 이름, 나이, 부서]\n부서 [사원번호(PK), 이름, 주소, 나이]\n\n① 신입사원이 들어와서 부서 테이블에 새로운 사람을 추가\n② 부서 테이블에서 추가한 사원을 검색한 후 사원 테이블에 추가\n③ 전체 사원 테이블 조회\n④ 사원의 퇴사로 인해 부서에 해당하는 값을 '퇴사'로 변경",
+      "code": "INSERT INTO 부서 (사원번호, 이름, 주소, 나이) (  ①  ) (240728, '홍길동', '서울', 30);\n\nINSERT INTO 사원 (사원번호, 이름, 나이, 부서)\n(  ②  ) 사원번호, 이름, 나이, '영업' FROM 부서 WHERE 이름 = '홍길동';\n\nSELECT * (  ③  ) 사원;\n\nUPDATE 사원 (  ④  ) 부서 = '퇴사' WHERE 사원번호 = 240728;",
+      "answer": [
+        "① VALUES, ② SELECT, ③ FROM, ④ SET",
+        "VALUES, SELECT, FROM, SET"
+      ],
+      "blanks": [
+        "VALUES",
+        "SELECT",
+        "FROM",
+        "SET"
+      ],
+      "explanation": "① 값을 직접 지정해 한 행을 삽입하는 INSERT INTO ... VALUES 구문이다.\n② 다른 테이블의 조회 결과를 삽입하는 INSERT INTO ... SELECT ... FROM 구문이므로 SELECT이다.\n③ 조회 대상 테이블을 지정하는 FROM, ④ UPDATE에서 변경할 컬럼 값을 지정하는 SET이다.\n(복원 문제로 표현 차이 있음 — DELETE FROM 빈칸이 추가된 5칸 복원본도 있음)",
+      "keywords": [
+        "INSERT",
+        "VALUES",
+        "UPDATE SET",
+        "DML"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 4,
+      "subject": "데이터 입출력 구현",
+      "type": "단답",
+      "question": "다음 릴레이션의 카디널리티(Cardinality)와 디그리(Degree)를 구하시오.\n\n이름 | 나이 | A | B\n김ㅇㅇ | 23 | 1 | 5\n박ㅇㅇ | 25 | 2 | 3\n고ㅇㅇ | 42 | 3 | 8\n최ㅇㅇ | 20 | 2 | 9\n이ㅇㅇ | 25 | 1 | 5\n\n① 카디널리티 : (   )\n② 디그리 : (   )",
+      "answer": [
+        "① 5, ② 4",
+        "카디널리티 5, 디그리 4",
+        "5, 4"
+      ],
+      "blanks": [
+        "5",
+        "4"
+      ],
+      "explanation": "카디널리티(Cardinality)는 릴레이션의 튜플(행) 수이므로 5이다.\n디그리(Degree, 차수)는 속성(열) 수이므로 이름·나이·A·B의 4이다.\n헤더 행은 튜플에 포함하지 않는다. 2021년 1회 기출 재출제 문제이다. (복원 문제로 표현 차이 있음 — 표 데이터는 복원본마다 다름)",
+      "keywords": [
+        "카디널리티",
+        "디그리",
+        "차수",
+        "튜플"
+      ],
+      "source": "https://www.sqldpass.com/blog/past-exam/engineer-2024-2"
+    },
+    {
+      "no": 5,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "다음 설명에 해당하는 프로토콜을 쓰시오.\n\n- Network layer에서 IP 패킷을 암호화하고 인증하는 등의 보안을 위한 표준이다.\n- 기업에서 사설 인터넷망으로 사용할 수 있는 VPN을 구현하는 데 사용되는 프로토콜이다.\n- AH(Authentication Header)와 ESP(Encapsulating Security Payload)라는 두 가지 보안 프로토콜을 사용한다.",
+      "answer": [
+        "IPsec",
+        "IPSec",
+        "IPSEC",
+        "IP Security"
+      ],
+      "explanation": "네트워크 계층(3계층)에서 IP 패킷 단위로 암호화·인증을 제공하는 보안 표준은 IPsec이다.\nAH는 인증·무결성, ESP는 기밀성(암호화)+인증을 제공하며, 전송 모드와 터널 모드로 동작한다.\nVPN 구현에 널리 사용되며 2020년 2회 기출 재출제 문제이다.",
+      "keywords": [
+        "IPsec",
+        "AH",
+        "ESP",
+        "VPN"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 6,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Python",
+      "question": "다음 Python 코드의 출력 결과를 쓰시오.",
+      "code": "def cnt(str, p):\n    result = 0\n    for i in range(len(str) - len(p) + 1):\n        sub = str[i:i+len(p)]\n        if sub == p:\n            result += 1\n    return result\n\nstr = \"abdcabcabca\"\np1 = \"ab\"\np2 = \"ca\"\nprint(f'ab{cnt(str, p1)}ca{cnt(str, p2)}')",
+      "answer": [
+        "ab3ca3",
+        "ab3 ca3"
+      ],
+      "explanation": "cnt는 문자열 str에서 패턴 p가 등장하는 횟수를 슬라이싱 비교로 센다.\n\"abdcabcabca\"에서 \"ab\"는 인덱스 0, 4, 7에서 3번, \"ca\"는 인덱스 3, 6, 9에서 3번 등장한다.\nf-string으로 'ab' + 3 + 'ca' + 3이 조합되어 ab3ca3이 출력된다.\n(복원 문제로 표현 차이 있음 — 함수명/변수명과 중괄호 사이 공백 유무가 복원본마다 다름)",
+      "keywords": [
+        "f-string",
+        "슬라이싱",
+        "문자열 패턴"
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    },
+    {
+      "no": 7,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "아래 설명하는 내용을 확인하여 알맞은 알고리즘을 작성하시오.\n\n- 대칭키 알고리즘으로 DES를 대체하기 위해 NIST(미국 국립표준기술연구소)의 차세대 암호 표준 공모를 통해 선정되었다.\n- 128비트, 192비트 또는 256비트의 가변 키 크기와 128비트의 고정 블록 크기를 사용한다.\n- 높은 안전성과 효율성, 속도 등으로 인해 DES 대신 전 세계적으로 많이 사용되고 있다.",
+      "answer": [
+        "AES",
+        "Advanced Encryption Standard"
+      ],
+      "explanation": "DES를 대체하기 위해 NIST가 2001년 표준으로 채택한 대칭키 블록 암호는 AES(Advanced Encryption Standard)이다.\nRijndael 알고리즘 기반으로 블록 크기 128비트, 키 길이 128/192/256비트를 지원한다.\n2021년 2회 기출 재출제 문제이다.",
+      "keywords": [
+        "AES",
+        "대칭키",
+        "블록 암호",
+        "DES"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 8,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "데이터(패킷) 교환 방식에 대한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 쓰시오.\n\n( ① ) : 연결형 통신에서 주로 사용되는 방식으로, 출발지와 목적지의 전송 경로를 미리 연결하여 논리적으로 고정한 후 통신하는 방식이다.\n( ② ) : 비연결형 통신에서 주로 사용되는 방식으로, 사전에 접속 절차를 수행하지 않고 헤더에 출발지에서 목적지까지의 경로 지정을 위한 충분한 정보를 붙여서 개별적으로 전달하는 방식이다.",
+      "answer": [
+        "① 가상 회선 방식, ② 데이터그램 방식",
+        "가상회선, 데이터그램",
+        "Virtual Circuit, Datagram"
+      ],
+      "blanks": [
+        "가상 회선",
+        "데이터그램"
+      ],
+      "explanation": "가상 회선(Virtual Circuit) 방식은 통신 전에 논리적 경로를 설정하여 모든 패킷이 같은 경로로 순서대로 전달되는 연결형 방식이다.\n데이터그램(Datagram) 방식은 경로를 미리 정하지 않고 각 패킷이 헤더의 목적지 정보로 독립적으로 전달되는 비연결형 방식이다.\n2021년 2회, 2023년 1회 기출 재출제 문제이다.",
+      "keywords": [
+        "가상 회선",
+        "데이터그램",
+        "패킷 교환"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 9,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "모듈에 대한 다음 설명에 해당하는 응집도(Cohesion)를 <보기>에서 찾아 쓰시오.\n\n실행 순서가 밀접한 관계를 갖는 기능을 모아 모듈로 구성하며, 한 모듈 내부의 한 기능 요소에 의한 출력 자료가 다음 기능 요소의 입력 자료로서 제공되는 형태이다.\n\n<보기>\nㄱ. 기능적(Functional)   ㄴ. 우연적(Coincidental)   ㄷ. 통신적(Communication)   ㄹ. 절차적(Procedural)   ㅁ. 시간적(Temporal)   ㅂ. 순차적(Sequential)   ㅅ. 논리적(Logical)",
+      "answer": [
+        "ㅂ",
+        "ㅂ. 순차적",
+        "순차적 응집도",
+        "순차적",
+        "Sequential Cohesion",
+        "Sequential"
+      ],
+      "explanation": "한 기능 요소의 출력 자료가 다음 기능 요소의 입력 자료로 이어지는 형태는 순차적 응집도(Sequential Cohesion)이다.\n단순히 실행 순서만 관련되면 절차적 응집도이고, 같은 입출력 자료를 사용하면 교환적(통신적) 응집도이다.\n'출력이 다음 입력으로 제공된다'는 문장이 결정적 단서이다.",
+      "keywords": [
+        "응집도",
+        "순차적 응집도",
+        "모듈"
+      ],
+      "source": "https://www.sqldpass.com/blog/past-exam/engineer-2024-2"
+    },
+    {
+      "no": 10,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "디자인 패턴에 대한 다음 설명에서 알맞은 패턴을 <보기>에서 찾아 쓰시오.\n\n- 컬렉션 객체의 내부 구조를 노출하지 않고 순차적으로 접근할 수 있게 하는 패턴이다.\n- 객체의 내부 표현 방식에 독립적으로 요소에 접근할 수 있다.\n- 반복 프로세스를 캡슐화하여 클라이언트 코드에서는 컬렉션의 구체적인 구현에 종속되지 않게 한다.\n- Cursor라고도 한다.\n\n<보기>\n생성 패턴: Singleton, Factory Method, Abstract Factory\n구조 패턴: Adapter, Bridge, Composite\n행위 패턴: Iterator, Visitor, Observer",
+      "answer": [
+        "Iterator",
+        "반복자",
+        "반복자 패턴",
+        "Iterator 패턴",
+        "이터레이터"
+      ],
+      "explanation": "컬렉션의 내부 구조를 감추고 요소에 순차적으로 접근하는 방법을 제공하는 행위 패턴은 반복자(Iterator) 패턴이다.\n순회 책임을 별도 객체(Iterator)에 분리하여 컬렉션 구현과 클라이언트 코드의 결합을 낮춘다.\n'Cursor'라는 별칭이 결정적 단서이다.",
+      "keywords": [
+        "Iterator",
+        "디자인 패턴",
+        "행위 패턴",
+        "GoF"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 11,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "다음 라우터 A에서 라우터 F까지 경로를 설정하기 위해 RIP 방식을 사용한다고 할 때, 패킷이 지나가는 경로를 순서대로 쓰시오. (단, 간선 위의 숫자는 라우터 간의 거리(비용)를 의미한다.)\n\n[네트워크 그림의 간선] A-B: 2, B-D: 2, A-D: 1, D-C: 2, C-E: 1, C-F: 5, E-F: 2\n\n답 : A →",
+      "answer": [
+        "A → D → C → F",
+        "A-D-C-F",
+        "ADCF",
+        "A, D, C, F",
+        "A->D->C->F"
+      ],
+      "explanation": "RIP은 거리 벡터 방식으로, 간선의 비용이 아니라 홉 수(거치는 라우터 수)가 가장 적은 경로를 선택한다.\nA → D → C → F는 3홉, A → D → C → E → F는 4홉이므로 RIP은 A → D → C → F를 택한다.\n간선 비용 합(8 vs 6)으로 계산하면 C-E-F 경로를 고르는 함정에 빠지므로 주의한다.\n(복원 문제로 표현 차이 있음 — 간선 비용 수치는 복원본마다 다름)",
+      "keywords": [
+        "RIP",
+        "홉 수",
+        "거리 벡터",
+        "라우팅"
+      ],
+      "source": "https://www.sqldpass.com/blog/past-exam/engineer-2024-2"
+    },
+    {
+      "no": 12,
+      "subject": "응용 SW 기초 기술 활용",
+      "type": "단답",
+      "question": "아래 표를 확인하여 SRT 스케줄링의 평균 대기시간을 계산하여 작성하시오.\n\n프로세스 | 도착 시간 | 서비스 시간\nA | 0 | 8\nB | 1 | 4\nC | 2 | 9\nD | 3 | 5",
+      "answer": [
+        "6.5"
+      ],
+      "explanation": "SRT(Shortest Remaining Time)는 남은 실행 시간이 가장 짧은 프로세스를 선점 방식으로 실행한다.\n실행 순서: 0~1 A, 1~5 B(완료), 5~10 D(완료), 10~17 A(완료), 17~26 C(완료).\n대기시간은 A=9(17-8), B=0, C=15(26-2-9), D=2(10-3-5)이고 평균은 (9+0+15+2)/4 = 6.5이다.\n실기에서 처음 출제된 스케줄링 문제이다.",
+      "keywords": [
+        "SRT",
+        "스케줄링",
+        "평균 대기시간",
+        "선점"
+      ],
+      "source": "https://www.sqldpass.com/blog/past-exam/engineer-2024-2"
+    },
+    {
+      "no": 13,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nint main() {\n    int arr[3][3] = {1, 2, 3, 4, 5, 6, 7, 8, 9};\n    int* parr[2] = {arr[1], arr[2]};\n    printf(\"%d\", parr[1][1] + *(parr[1] + 2) + **parr);\n    return 0;\n}",
+      "answer": [
+        "21"
+      ],
+      "explanation": "arr은 {{1,2,3},{4,5,6},{7,8,9}}이고 parr[0]은 arr[1](2행), parr[1]은 arr[2](3행)의 시작 주소를 가리킨다.\nparr[1][1] = arr[2][1] = 8, *(parr[1]+2) = arr[2][2] = 9, **parr = parr[0][0] = arr[1][0] = 4이다.\n따라서 8 + 9 + 4 = 21이 출력된다.",
+      "keywords": [
+        "포인터 배열",
+        "2차원 배열",
+        "포인터 연산"
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    },
+    {
+      "no": 14,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "class Main {\n    public static void main(String[] args) {\n        int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};\n        ODDNumber OE = new ODDNumber();\n        System.out.print(OE.sum(a, true) + \", \" + OE.sum(a, false));\n    }\n}\ninterface Number {\n    int sum(int[] a, boolean odd);\n}\nclass ODDNumber implements Number {\n    public int sum(int[] a, boolean odd) {\n        int result = 0;\n        for(int i = 0; i < a.length; i++) {\n            if((odd && a[i] % 2 != 0) || (!odd && a[i] % 2 == 0))\n                result += a[i];\n        }\n        return result;\n    }\n}",
+      "answer": [
+        "25, 20",
+        "25,20"
+      ],
+      "explanation": "sum(a, true)는 odd가 true이므로 홀수만 더해 1+3+5+7+9 = 25이다.\nsum(a, false)는 짝수만 더해 2+4+6+8 = 20이다.\n문자열 연결로 \"25, 20\"이 출력된다.",
+      "keywords": [
+        "인터페이스",
+        "implements",
+        "논리 연산"
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    },
+    {
+      "no": 15,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\n#include <string.h>\nvoid func(char *d, char *s) {\n    while (*s) {\n        *d = *s;\n        d++;\n        s++;\n    }\n    *d = '\\0';\n}\nint main() {\n    char* str1 = \"first\";\n    char str2[50] = \"teststring\";\n    int result = 0;\n    func(str2, str1);\n    for (int i = 0; str2[i] != '\\0'; i++) {\n        result += i;\n    }\n    printf(\"%d\", result);\n    return 0;\n}",
+      "answer": [
+        "10"
+      ],
+      "explanation": "func는 str1(\"first\")을 str2에 한 글자씩 복사하고 끝에 '\\0'을 붙이므로 str2는 \"first\"(길이 5)가 된다.\n이후 반복문은 i = 0~4 동안 result에 인덱스를 누적한다.\n0+1+2+3+4 = 10이 출력된다.",
+      "keywords": [
+        "포인터",
+        "문자열 복사",
+        "널 문자"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 16,
+      "subject": "서버 프로그램 구현",
+      "type": "단답",
+      "question": "소프트웨어 설계에 대한 다음 설명에서 괄호에 들어갈 알맞은 용어를 쓰시오.\n\n- 어떤 모듈이 다른 모듈 내부의 논리적인 흐름을 제어하기 위해, 제어를 통신하거나 제어 요소를 전달하는 결합도이다.\n- 한 모듈이 다른 모듈의 상세한 처리 절차를 알고 있어 이를 통제하는 경우나 처리 기능이 두 모듈에 분리되어 설계된 경우에 발생한다.\n\n답 : (          ) Coupling",
+      "answer": [
+        "제어",
+        "Control",
+        "제어 결합도",
+        "Control Coupling"
+      ],
+      "explanation": "다른 모듈의 내부 논리 흐름을 제어하기 위해 플래그·명령 코드 같은 제어 신호를 전달하는 결합도는 제어 결합도(Control Coupling)이다.\n자료 결합도는 단순 데이터만 전달하고, 제어 결합도는 상대 모듈의 실행 방향을 조종한다는 점에서 구분된다.\n2021년 3회 기출 재출제 문제이다.",
+      "keywords": [
+        "결합도",
+        "제어 결합도",
+        "모듈"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 17,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static String rf(String str, int index, boolean[] seen) {\n        if(index < 0) return \"\";\n        char c = str.charAt(index);\n        String result = rf(str, index - 1, seen);\n        if(!seen[c]) {\n            seen[c] = true;\n            return c + result;\n        }\n        return result;\n    }\n    public static void main(String[] args) {\n        String str = \"abacabcd\";\n        int length = str.length();\n        boolean[] seen = new boolean[256];\n        System.out.print(rf(str, length - 1, seen));\n    }\n}",
+      "answer": [
+        "dcba"
+      ],
+      "explanation": "재귀가 index 0까지 먼저 내려간 뒤 되돌아오면서(앞 글자부터) 처음 보는 문자만 result 앞에 붙인다.\n\"abacabcd\"를 앞에서부터 처음 등장하는 문자만 남기면 a, b, c, d 순이다.\n각 문자가 result의 앞에 붙으므로 최종 문자열은 역순인 dcba가 된다.",
+      "keywords": [
+        "재귀",
+        "문자열 중복 제거",
+        "boolean 배열"
+      ],
+      "source": "https://newbt.kr/%EC%8B%9C%ED%97%98/%EC%A0%95%EB%B3%B4%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%82%AC%20%EC%8B%A4%EA%B8%B0/2024%EB%85%84%202%ED%9A%8C/%EB%91%A5%EB%91%A5"
+    },
+    {
+      "no": 18,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nvoid swap(int a, int b) {\n    int t = a;\n    a = b;\n    b = t;\n}\nint main() {\n    int a = 11;\n    int b = 19;\n    swap(a, b);\n    switch(a) {\n        case 1:\n            b += 1;\n        case 11:\n            b += 2;\n        default:\n            b += 3;\n            break;\n    }\n    printf(\"%d\", a - b);\n}",
+      "answer": [
+        "-13"
+      ],
+      "explanation": "swap은 값 전달(call by value)이므로 main의 a, b는 바뀌지 않아 a=11, b=19 그대로이다.\nswitch(11)은 case 11로 진입해 b += 2 (21)가 되고, break가 없어 default로 흘러 b += 3 (24)이 된다.\n따라서 a - b = 11 - 24 = -13이 출력된다.\n(복원 문제로 표현 차이 있음 — swap()이 인자 없이 지역변수를 교환하는 복원본도 있으나 결과 동일)",
+      "keywords": [
+        "switch",
+        "fall-through",
+        "call by value",
+        "swap"
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    },
+    {
+      "no": 19,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "C",
+      "question": "다음 C 코드의 출력 결과를 쓰시오.",
+      "code": "#include <stdio.h>\nstruct node {\n    int n1;\n    struct node *n2;\n};\nint main() {\n    struct node *head = NULL;\n    struct node a = {10, 0};\n    struct node b = {20, 0};\n    struct node c = {30, 0};\n    head = &a;\n    a.n2 = &b;\n    b.n2 = &c;\n    printf(\"%d\", head->n2->n1);\n    return 0;\n}",
+      "answer": [
+        "20"
+      ],
+      "explanation": "head는 a를 가리키고, a.n2는 b, b.n2는 c를 가리키는 연결 리스트(a → b → c)가 만들어진다.\nhead->n2는 b의 주소이고, head->n2->n1은 b.n1 = 20이다.\n따라서 20이 출력된다. (2024년 3회에 변형 재출제)",
+      "keywords": [
+        "구조체",
+        "연결 리스트",
+        "포인터"
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    },
+    {
+      "no": 20,
+      "subject": "프로그래밍 언어 활용",
+      "type": "코드",
+      "lang": "Java",
+      "question": "다음 Java 코드의 출력 결과를 쓰시오.",
+      "code": "public class Main {\n    public static void main(String[] args) {\n        String str = \"ITISTESTSTRING\";\n        String[] result = str.split(\"T\");\n        System.out.print(result[3]);\n    }\n}",
+      "answer": [
+        "S"
+      ],
+      "explanation": "split(\"T\")는 문자열을 T 기준으로 나눈다: I|T|IS|T|ES|T|S|T|RING → [\"I\", \"IS\", \"ES\", \"S\", \"RING\"].\n인덱스는 0부터 시작하므로 result[3]은 \"S\"이다.\n연속된 구분자가 아니므로 빈 문자열은 생기지 않는다.",
+      "keywords": [
+        "split",
+        "문자열 분할",
+        "배열 인덱스"
+      ],
+      "source": "https://august-jhy.tistory.com/231"
+    }
+  ]
+}
