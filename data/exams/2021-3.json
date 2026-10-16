@@ -30,7 +30,10 @@
       "answer": [
         "① Authentication, ② Authorization, ③ Accounting",
         "① 인증, ② 인가, ③ 계정 관리",
-        "① 인증, ② 권한 부여, ③ 과금"
+        "① 인증, ② 권한 부여, ③ 과금",
+        "① 인증, ② 인가, ③ 회계",
+        "① 인증, ② 권한 부여, ③ 계정 관리",
+        "① 인증, ② 인가, ③ 계정"
       ],
       "blanks": [
         "Authentication",
@@ -248,12 +251,12 @@
       "subject": "SQL 응용",
       "type": "SQL",
       "lang": "SQL",
-      "question": "다음 두 테이블에 대해 SQL문을 실행한 결과를 쓰시오.\n\n[A]\nNAME\nSmith\nAllen\nScott\n\n[B]\nRULE\nS%\n%T%",
+      "question": "다음 두 테이블 [T1], [T2]에 대해 SQL문을 실행한 결과를 쓰시오.\n\n[T1]\nCODE | NAME\n1 | smith\n2 | allen\n3 | scott\n\n[T2]\nNO | RULE\n1 | s%\n2 | %t%",
       "code": "SELECT COUNT(*) CNT\nFROM A CROSS JOIN B\nWHERE A.NAME LIKE B.RULE;",
       "answer": [
         "4"
       ],
-      "explanation": "CROSS JOIN은 A(3행)×B(2행)=6개 조합을 만들고, WHERE로 NAME이 RULE 패턴에 맞는 행만 남긴다.\n'S%': Smith, Scott 일치(2). '%T%': Smith, Scott 일치(2, 대소문자 미구분 기준). Allen은 둘 다 불일치.\n따라서 COUNT = 4. (복원 문제로 표현 차이 있음)",
+      "explanation": "CROSS JOIN은 T1(3행)×T2(2행)=6개 조합을 만들고, WHERE로 NAME이 RULE 패턴에 맞는 행만 남긴다.\n's%'(s로 시작): smith, scott 일치(2). '%t%'(t 포함): smith, scott 일치(2). allen은 둘 다 불일치.\n따라서 COUNT(*) = 4. (복원 문제로 표현 차이 있음)",
       "keywords": [
         "SQL",
         "CROSS JOIN",

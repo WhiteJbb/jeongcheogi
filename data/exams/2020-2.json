@@ -12,7 +12,9 @@
         "RTO",
         "목표 복구 시간",
         "복구 목표 시간",
-        "Recovery Time Objective"
+        "Recovery Time Objective",
+        "목표복구시간",
+        "RTO(Recovery Time Objective)"
       ],
       "explanation": "RTO(Recovery Time Objective): 장애 발생 후 업무가 복구되어 정상 가동되기까지 허용되는 목표 시간.\nRPO(Recovery Point Objective): 데이터 손실을 허용할 수 있는 복구 기준 시점.\n둘은 BCP/DRP 수립 시 백업·복구 솔루션 선정의 핵심 지표다.",
       "keywords": [
@@ -168,7 +170,12 @@
         "정적 분석 도구",
         "정적 분석",
         "정적 테스트 도구",
-        "Static Analysis Tool"
+        "Static Analysis Tool",
+        "정적 테스팅 도구",
+        "코드 검사 도구",
+        "코드 인스펙션",
+        "코드 인스펙션 도구",
+        "코드 인스펙션 툴"
       ],
       "explanation": "정적 분석 도구는 프로그램을 실행하지 않고 소스 코드를 분석해 코딩 표준 위반, 복잡도, 잠재 결함을 찾는다.\n동적 분석 도구는 실행 중 메모리 누수·스레드 결함 등을 찾는다는 점에서 구분된다.\npmd, cppcheck, SonarQube, checkstyle 등이 대표적이다.",
       "keywords": [
@@ -223,7 +230,8 @@
       "question": "다음 student 테이블의 name 속성에 idx_name을 인덱스 명으로 하는 인덱스를 생성하는 SQL문을 작성하시오.\n\n[student]\nid | name | grade\n1111 | 홍길동 | 1\n2222 | 임꺽정 | 2\n3333 | 유관순 | 3\n4444 | 안중근 | 3\n5555 | 홍범도 | 4",
       "answer": [
         "CREATE INDEX idx_name ON student(name);",
-        "CREATE INDEX idx_name ON student(name)"
+        "CREATE INDEX idx_name ON student(name)",
+        "CREATE INDEX idx_name ON student(name ASC);"
       ],
       "explanation": "인덱스 생성 구문은 CREATE INDEX 인덱스명 ON 테이블명(컬럼명); 이다.\n인덱스명 idx_name, 테이블 student, 컬럼 name을 대입한다.\n중복을 막으려면 CREATE UNIQUE INDEX를 쓴다.",
       "keywords": [
@@ -333,7 +341,9 @@
       "answer": [
         "① 개념적 설계, ② 논리적 설계, ③ 물리적 설계",
         "개념적 설계, 논리적 설계, 물리적 설계",
-        "개념 설계, 논리 설계, 물리 설계"
+        "개념 설계, 논리 설계, 물리 설계",
+        "개념적 모델링, 논리적 모델링, 물리적 모델링",
+        "개념 모델링, 논리 모델링, 물리 모델링"
       ],
       "blanks": [
         "개념적 설계",
@@ -376,7 +386,9 @@
         "형상 관리",
         "형상관리",
         "Configuration Management",
-        "SCM"
+        "SCM",
+        "Software Configuration Management",
+        "소프트웨어 형상 관리"
       ],
       "explanation": "형상 관리(SCM)는 개발 과정에서 발생하는 산출물의 변경 사항을 체계적으로 관리하는 활동이다.\n절차는 형상 식별 → 형상 통제 → 형상 감사 → 형상 기록(상태 보고) 순이다.\nCVS, SVN, Git, Clear Case 등이 형상 관리 도구다.",
       "keywords": [
