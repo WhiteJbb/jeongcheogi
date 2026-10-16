@@ -44,12 +44,12 @@
       "subject": "SQL 응용",
       "type": "SQL",
       "lang": "SQL",
-      "question": "아래 employee 테이블과 project 테이블을 참고하여 SQL 명령의 출력 결과를 작성하시오.\n\n[employee]\nno | first_name | last_name | project_id\n1 | John | Doe | 10\n2 | Jim | Carry | 20\n3 | Rachel | Redmond | 10\n\n[project]\nproject_id | name\n10 | Alpha\n20 | Beta\n10 | Gamma",
+      "question": "아래 employee 테이블과 project 테이블을 참고하여 SQL 명령의 출력 결과를 작성하시오.\n\n[employee]\nno | first_name | last_name | project_id\n1 | John | Doe | 10\n2 | Jim | Carry | 20\n3 | Rachel | Redmond | 10\n\n[project]\nproject_id | name\n10 | Alpha\n20 | Beta\n30 | Gamma",
       "code": "SELECT count(*)\nFROM employee AS e JOIN project AS p ON e.project_id = p.project_id\nWHERE p.name IN (\n    SELECT name FROM project p WHERE p.project_id IN (\n        SELECT project_id FROM employee GROUP BY project_id HAVING count(*) < 2\n    )\n);",
       "answer": [
         "1"
       ],
-      "explanation": "가장 안쪽 서브쿼리는 employee를 project_id로 묶어 직원 수가 2 미만인 project_id를 찾는다 → 10은 2명, 20은 1명이므로 20.\n중간 서브쿼리는 project_id가 20인 프로젝트의 name → 'Beta'.\n바깥 쿼리는 employee와 project를 조인한 뒤 p.name이 'Beta'인 행을 세는데, project_id 20인 직원(Jim)과 Beta 1행만 조인되어 count(*) = 1이다.\n(실기 최초의 3중 중첩 쿼리. 복원 문제로 표현 차이 있음 — 테이블 데이터는 복원본마다 다름)",
+      "explanation": "가장 안쪽 서브쿼리는 employee를 project_id로 묶어 직원 수가 2 미만인 project_id를 찾는다 → 10은 2명(John, Rachel), 20은 1명(Jim)이므로 20.\n중간 서브쿼리는 project_id가 20인 프로젝트의 name → 'Beta'.\n바깥 쿼리는 employee와 project를 조인한 뒤 p.name이 'Beta'인 행을 세는데, Jim(project_id 20)과 Beta 1행만 조인되어 count(*) = 1이다.\n(실기 최초의 3중 중첩 쿼리. 테이블 데이터는 복원본마다 다르지만(그랜드라이프·허쌤 복원은 직원 5명/프로젝트 3개) 모두 '직원 1명짜리 프로젝트 하나'라 정답은 1로 같다)",
       "keywords": [
         "서브쿼리",
         "JOIN",
@@ -109,7 +109,9 @@
         "행위 패턴",
         "Behavioral",
         "행동",
-        "행위(Behavioral)"
+        "행위(Behavioral)",
+        "Behavioral Pattern",
+        "행위 패턴(Behavioral)"
       ],
       "explanation": "GoF 디자인 패턴은 생성(Creational), 구조(Structural), 행위(Behavioral) 세 분류로 나뉜다.\n객체 간 상호작용·책임 분배·통신 방법을 다루고 Command, Observer, Iterator, Visitor 등을 포함하는 분류는 행위 패턴이다.\n생성 패턴(Singleton, Factory 등)은 객체 생성, 구조 패턴(Adapter, Composite 등)은 클래스·객체 조합을 다룬다.",
       "keywords": [
@@ -147,7 +149,9 @@
         "개체 무결성",
         "Entity",
         "Entity Integrity",
-        "엔티티"
+        "엔티티",
+        "개체무결성",
+        "Entity 무결성"
       ],
       "explanation": "개체 무결성은 기본키를 구성하는 속성이 NULL이거나 중복될 수 없다는 규칙이다.\n표에서 기본키 StudentID가 101로 중복되고 NULL인 행도 있으므로 개체 무결성을 위반했다.\n참조 무결성은 외래키가 참조하는 기본키 값의 존재 여부에 관한 규칙으로 이 문제와 무관하다.\n(복원 문제로 표현 차이 있음 — 표 데이터는 복원본마다 다름)",
       "keywords": [
@@ -166,7 +170,11 @@
         "④, ③, ①, ②, ⑤",
         "4, 3, 1, 2, 5",
         "43125",
-        "query ④, path ③, scheme ①, authority ②, fragment ⑤"
+        "query ④, path ③, scheme ①, authority ②, fragment ⑤",
+        "④ ③ ① ② ⑤",
+        "④③①②⑤",
+        "4 3 1 2 5",
+        "query 4, path 3, scheme 1, authority 2, fragment 5"
       ],
       "blanks": [
         "④",
@@ -258,7 +266,7 @@
         "ㄷ",
         "ㄱ"
       ],
-      "explanation": "모든 문장을 한 번 이상 실행하는 것은 문장(구문) 커버리지(ㅁ)이다.\n조건문 전체 결과가 참/거짓을 각각 한 번 이상 갖도록 하는 것은 분기(결정) 커버리지(ㄷ)이다.\n조건문 안의 개별 조건식이 각각 참/거짓을 갖도록 하는 것은 조건 커버리지(ㄱ)이다.\n(복원 문제로 표현 차이 있음 — 보기의 기호 순서는 복원본마다 다름)",
+      "explanation": "모든 문장을 한 번 이상 실행하는 것은 문장(구문) 커버리지(ㅁ)이다.\n조건문 전체 결과가 참/거짓을 각각 한 번 이상 갖도록 하는 것은 분기(결정) 커버리지(ㄷ)이다.\n조건문 안의 개별 조건식이 각각 참/거짓을 갖도록 하는 것은 조건 커버리지(ㄱ)이다.\n(복원본마다 보기 순서가 다름. sqldpass·문어CBT 복원은 위와 같이 ㅁ, ㄷ, ㄱ이고, newbt·august-jhy 복원은 'ㄱ 선택, ㄴ 경로, ㄷ 조건, ㄹ 분기, ㅁ 함수, ㅂ 문장, ㅅ 루프' 순이라 ㅂ, ㄹ, ㄷ이다. 용어 자체는 문장·분기·조건으로 동일)",
       "keywords": [
         "테스트 커버리지",
         "문장 커버리지",
@@ -276,14 +284,17 @@
         "① 연관, ② 일반화, ③ 의존",
         "ㄴ, ㄷ, ㄱ",
         "연관, 일반화, 의존",
-        "Association, Generalization, Dependency"
+        "Association, Generalization, Dependency",
+        "(1) ㄴ, (2) ㄷ, (3) ㄱ",
+        "① ㄴ, ② ㄷ, ③ ㄱ",
+        "(1) 연관, (2) 일반화, (3) 의존"
       ],
       "blanks": [
         "연관",
         "일반화",
         "의존"
       ],
-      "explanation": "실선으로 연결된 클래스 간의 구조적 관계는 연관(Association)이다.\n자식에서 부모로 향하는 속이 빈 삼각형 실선 화살표는 상속을 나타내는 일반화(Generalization)이다.\n한 클래스가 다른 클래스를 매개변수·지역변수 등으로 일시적으로 사용하는 점선 화살표는 의존(Dependency)이다.",
+      "explanation": "실선으로 연결된 클래스 간의 구조적 관계는 연관(Association)이다.\n자식에서 부모로 향하는 속이 빈 삼각형 실선 화살표는 상속을 나타내는 일반화(Generalization)이다.\n한 클래스가 다른 클래스를 매개변수·지역변수 등으로 일시적으로 사용하는 점선 화살표는 의존(Dependency)이다.\n(복원본에 따라 보기가 'ㄱ 의존, ㄴ 연관, ㄷ 일반화, ㄹ 집합, ㅁ 포함, ㅂ 실체화' 6개로 나오기도 하나 정답 기호 ㄴ, ㄷ, ㄱ은 같다)",
       "keywords": [
         "UML",
         "연관",
@@ -301,7 +312,9 @@
       "answer": [
         "① ㄴ, ② ㄹ, ③ ㄷ, ④ ㄱ",
         "ㄴ, ㄹ, ㄷ, ㄱ",
-        "외래키, 후보키, 대체키, 슈퍼키"
+        "외래키, 후보키, 대체키, 슈퍼키",
+        "(1) ㄴ, (2) ㄹ, (3) ㄷ, (4) ㄱ",
+        "ㄴㄹㄷㄱ"
       ],
       "blanks": [
         "ㄴ",
@@ -404,7 +417,10 @@
         "애드혹 네트워크",
         "애드혹",
         "Ad hoc Network",
-        "Ad-hoc"
+        "Ad-hoc",
+        "Ad hoc",
+        "Ad-hoc network",
+        "애드혹 네트워크(Ad-hoc Network)"
       ],
       "explanation": "고정된 인프라(AP, 기지국)나 중앙 관리 없이 무선 노드들이 직접 연결하여 임시로 구성하는 자율 네트워크는 애드혹 네트워크(Ad-hoc Network)이다.\n노드가 라우터 역할도 하므로 멀티 홉 라우팅을 지원하며, 재난·군사 상황에서 활용된다.\nInfrastructure Network는 AP 등 중앙 장비를 사용한다는 점에서 반대 개념이다.",
       "keywords": [

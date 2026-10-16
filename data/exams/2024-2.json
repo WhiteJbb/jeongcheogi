@@ -58,7 +58,7 @@
         "FROM",
         "SET"
       ],
-      "explanation": "① 값을 직접 지정해 한 행을 삽입하는 INSERT INTO ... VALUES 구문이다.\n② 다른 테이블의 조회 결과를 삽입하는 INSERT INTO ... SELECT ... FROM 구문이므로 SELECT이다.\n③ 조회 대상 테이블을 지정하는 FROM, ④ UPDATE에서 변경할 컬럼 값을 지정하는 SET이다.\n(복원 문제로 표현 차이 있음 — DELETE FROM 빈칸이 추가된 5칸 복원본도 있음)",
+      "explanation": "① 값을 직접 지정해 한 행을 삽입하는 INSERT INTO ... VALUES 구문이다.\n② 다른 테이블의 조회 결과를 삽입하는 INSERT INTO ... SELECT ... FROM 구문이므로 SELECT이다.\n③ 조회 대상 테이블을 지정하는 FROM, ④ UPDATE에서 변경할 컬럼 값을 지정하는 SET이다.\n(복원 문제로 표현 차이 있음 — DELETE FROM 빈칸이 추가된 5칸 복원본, 사원 테이블에 먼저 INSERT하는 복원본도 있으나 정답은 동일)",
       "keywords": [
         "INSERT",
         "VALUES",
@@ -116,12 +116,12 @@
       "type": "코드",
       "lang": "Python",
       "question": "다음 Python 코드의 출력 결과를 쓰시오.",
-      "code": "def cnt(str, p):\n    result = 0\n    for i in range(len(str) - len(p) + 1):\n        sub = str[i:i+len(p)]\n        if sub == p:\n            result += 1\n    return result\n\nstr = \"abdcabcabca\"\np1 = \"ab\"\np2 = \"ca\"\nprint(f'ab{cnt(str, p1)}ca{cnt(str, p2)}')",
+      "code": "def cnt(str, p):\n    result = 0\n    for i in range(len(str) - len(p) + 1):\n        sub = str[i:i+len(p)]\n        if sub == p:\n            result += 1\n    return result\n\nstr = \"abdcabcabca\"\np1 = \"ca\"\np2 = \"ab\"\nprint(f'ab{cnt(str, p2)}ca{cnt(str, p1)}')",
       "answer": [
         "ab3ca3",
         "ab3 ca3"
       ],
-      "explanation": "cnt는 문자열 str에서 패턴 p가 등장하는 횟수를 슬라이싱 비교로 센다.\n\"abdcabcabca\"에서 \"ab\"는 인덱스 0, 4, 7에서 3번, \"ca\"는 인덱스 3, 6, 9에서 3번 등장한다.\nf-string으로 'ab' + 3 + 'ca' + 3이 조합되어 ab3ca3이 출력된다.\n(복원 문제로 표현 차이 있음 — 함수명/변수명과 중괄호 사이 공백 유무가 복원본마다 다름)",
+      "explanation": "cnt는 문자열 str에서 패턴 p가 등장하는 횟수를 슬라이싱 비교로 센다.\n\"abdcabcabca\"에서 \"ab\"는 인덱스 0, 4, 7에서 3번, \"ca\"는 인덱스 3, 6, 9에서 3번 등장한다.\nf-string으로 'ab' + 3 + 'ca' + 3이 조합되어 ab3ca3이 출력된다.\n(복원 문제로 표현 차이 있음 — 함수명이 fnCalculation인 복원본, 출력에 공백이 있는 \"ab3 ca3\" 복원본(newbt)도 있으며 정답 논리는 동일)",
       "keywords": [
         "f-string",
         "슬라이싱",
@@ -240,7 +240,7 @@
       "answer": [
         "6.5"
       ],
-      "explanation": "SRT(Shortest Remaining Time)는 남은 실행 시간이 가장 짧은 프로세스를 선점 방식으로 실행한다.\n실행 순서: 0~1 A, 1~5 B(완료), 5~10 D(완료), 10~17 A(완료), 17~26 C(완료).\n대기시간은 A=9(17-8), B=0, C=15(26-2-9), D=2(10-3-5)이고 평균은 (9+0+15+2)/4 = 6.5이다.\n실기에서 처음 출제된 스케줄링 문제이다.",
+      "explanation": "SRT(Shortest Remaining Time)는 남은 실행 시간이 가장 짧은 프로세스를 선점 방식으로 실행한다.\n실행 순서: 0~1 A, 1~5 B(완료), 5~10 D(완료), 10~17 A(완료), 17~26 C(완료).\n대기시간은 A=9(17-8), B=0, C=15(26-2-9), D=2(10-3-5)이고 평균은 (9+0+15+2)/4 = 6.5이다.",
       "keywords": [
         "SRT",
         "스케줄링",
