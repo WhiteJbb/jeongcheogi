@@ -111,7 +111,7 @@
         "4 3 2 1",
         "A\n4\n3\n2\n1"
       ],
-      "explanation": "UNION은 두 SELECT 결과를 합치면서 중복 행을 제거한다(중복을 남기려면 UNION ALL).\nT1의 {3, 1, 4}와 T2의 {2, 4, 3}의 합집합은 {1, 2, 3, 4}이고, ORDER BY A DESC로 내림차순 정렬하면 4, 3, 2, 1이다. (복원 문제로 표현 차이 있음)",
+      "explanation": "UNION은 두 SELECT 결과를 합치면서 중복 행을 제거한다(중복을 남기려면 UNION ALL).\nT1의 {3, 1, 4}와 T2의 {2, 4, 3}의 합집합은 {1, 2, 3, 4}이고, ORDER BY A DESC로 내림차순 정렬하면 4, 3, 2, 1이다.\n복원본에 따라 테이블 값이 달라 4, 3, 1로 제시된 자료도 있으며, 응시자 후기에 따르면 실제 시험에서는 문제 오류로 두 가지 답이 모두 정답 처리되었다는 언급이 있다. (복원 문제로 표현 차이 있음)",
       "keywords": [
         "UNION",
         "집합 연산",
@@ -297,7 +297,7 @@
       "no": 16,
       "subject": "애플리케이션 테스트 관리",
       "type": "단답",
-      "question": "다음 설명에 알맞은 답을 보기에서 골라 기호를 쓰시오.\n\n- 시스템이나 시스템 구성요소 또는 소프트웨어 프로그램의 입력값과 출력값이 특정 그룹으로 분류되며, 분류된 그룹 내의 값들이 시스템에 의해 동일하게 취급된다는 특성을 이용하여 시험하는 기법\n- 하나의 값은 그 분할 내 모든 값을 대표하는 것으로 간주하는 기법\n- 모든 입력값을 시험할 필요가 없게 하여 시험을 효율적으로 수행하도록 지원\n- 일반적으로 경계값 분석기법(boundary value analysis)과 함께 테스트 케이스 도출하는 데 사용\n\n[보기]\nㄱ. Equivalence Partitioning  ㄴ. Statement Coverage  ㄷ. Boundary Value Analysis  ㄹ. Branch Coverage\nㅁ. Error Guessing  ㅂ. Condition Coverage  ㅅ. Cause Effect Graph",
+      "question": "다음 설명에 알맞은 답을 보기에서 골라 쓰시오.\n\n- 시스템이나 시스템 구성요소 또는 소프트웨어 프로그램의 입력값과 출력값이 특정 그룹으로 분류되며, 분류된 그룹 내의 값들이 시스템에 의해 동일하게 취급된다는 특성을 이용하여 시험하는 기법\n- 하나의 값은 그 분할 내 모든 값을 대표하는 것으로 간주하는 기법\n- 모든 입력값을 시험할 필요가 없게 하여 시험을 효율적으로 수행하도록 지원\n- 일반적으로 경계값 분석기법(boundary value analysis)과 함께 테스트 케이스 도출하는 데 사용\n\n[보기]\nㄱ. Equivalence Partitioning  ㄴ. Statement Coverage  ㄷ. Boundary Value Analysis  ㄹ. Branch Coverage\nㅁ. Error Guessing  ㅂ. Condition Coverage  ㅅ. Cause Effect Graph",
       "answer": [
         "ㄱ",
         "Equivalence Partitioning",
@@ -306,7 +306,7 @@
         "동등 분할",
         "ㄱ (Equivalence Partitioning)"
       ],
-      "explanation": "입력값을 동일하게 처리되는 그룹(동치 클래스)으로 나누고 각 그룹의 대표값 하나만 시험하는 블랙박스 기법이 동치(동등) 분할 검사(Equivalence Partitioning)다.\n경계값 분석(Boundary Value Analysis)은 동치 분할의 경계 부분을 집중 시험하는 보완 기법이다.",
+      "explanation": "입력값을 동일하게 처리되는 그룹(동치 클래스)으로 나누고 각 그룹의 대표값 하나만 시험하는 블랙박스 기법이 동치(동등) 분할 검사(Equivalence Partitioning)다.\n경계값 분석(Boundary Value Analysis)은 동치 분할의 경계 부분을 집중 시험하는 보완 기법이다.\n복원본에 따라 기호(ㄱ)를 쓰는 형태와 영문 명칭(Equivalence Partitioning)을 쓰는 형태가 있어 둘 다 정답으로 둔다. (복원 문제로 표현 차이 있음)",
       "keywords": [
         "동치 분할",
         "블랙박스 테스트",

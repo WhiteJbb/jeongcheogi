@@ -395,7 +395,7 @@
       "answer": [
         "500"
       ],
-      "explanation": "new Child()는 Child()→this(5000)→Child(int)로 이어지고, Child(int) 실행 전 암묵적으로 super() 즉 Parent()가 호출된다.\nParent()는 this(500)으로 Parent(int)를 호출해 Parent의 x를 500으로 만든다. 이후 Child의 x는 5000이 된다.\ngetX()는 Parent에만 정의되어 Parent의 x를 반환하므로(필드는 오버라이딩되지 않고 은닉됨) 500이 출력된다. (복원 문제로 표현 차이 있음)",
+      "explanation": "new Child()는 Child()→this(5000)→Child(int)로 이어지고, Child(int) 실행 전 암묵적으로 super() 즉 Parent()가 호출된다.\nParent()는 this(500)으로 Parent(int)를 호출해 Parent의 x를 500으로 만든다. 이후 Child의 x는 5000이 된다.\ngetX()는 Parent에만 정의되어 Parent의 x를 반환하므로(필드는 오버라이딩되지 않고 은닉됨) 500이 출력된다. Child의 x(5000)를 답으로 쓰면 오답이며, 일부 복원본은 getX()를 Child에도 둔 변형으로 5000을 제시하나 다수 복원(chobopark, sqldpass 등)은 500이다.",
       "keywords": [
         "생성자 체이닝",
         "this()",
