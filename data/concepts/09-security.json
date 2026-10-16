@@ -155,7 +155,10 @@
         "행위 기반(Something you do): 서명, 걸음걸이, 키 입력 패턴",
         "위치 기반(Somewhere you are): GPS, IP 주소",
         "2팩터 인증: 서로 다른 유형 2개 조합",
-        "AAA: Authentication(인증) → Authorization(인가/권한부여) → Accounting(계정관리/과금)"
+        "AAA: Authentication(인증) → Authorization(인가/권한부여) → Accounting(계정관리/과금)",
+        "OTP(일회용 비밀번호): 한 번 쓰면 폐기되는 비밀번호. 시간 동기(TOTP, 30~60초마다 변경)·이벤트 동기(HOTP, 카운터 증가)·질의응답(Challenge-Response) 방식. 같은 값을 다시 쓸 수 없어 재전송 공격을 막는다",
+        "OAuth 2.0: 비밀번호를 넘기지 않고 제3자 서비스(Client)가 사용자(Resource Owner) 자원에 접근할 권한(Access Token)을 위임받는 개방형 인가(Authorization) 표준. 소셜 로그인의 기반. 인증(Authentication) 계층은 OpenID Connect가 담당",
+        "OAuth 2.0 역할 4가지: Resource Owner(사용자) / Client(제3자 앱) / Authorization Server(토큰 발급) / Resource Server(API 서버). 대표 흐름: Authorization Code Grant"
       ],
       "terms": [
         {"term": "AAA (Authentication, Authorization, Accounting)", "desc": "인증·권한부여·계정관리(과금). RADIUS, Diameter, TACACS+가 구현 프로토콜"},
@@ -168,9 +171,19 @@
         {"term": "i-PIN (Internet Personal Identification Number)", "desc": "주민번호 대체 인터넷 개인식별 번호"},
         {"term": "다요소 인증 (MFA, Multi-Factor Authentication)", "desc": "서로 다른 인증 유형 2개 이상 결합"},
         {"term": "커버로스 (Kerberos)", "desc": "MIT 개발 티켓 기반 인증 프로토콜. KDC(AS+TGS), 대칭키, SSO"},
-        {"term": "FIDO (Fast IDentity Online)", "desc": "비밀번호 없는 생체·공개키 기반 인증 표준"}
+        {"term": "FIDO (Fast IDentity Online)", "desc": "비밀번호 없는 생체·공개키 기반 인증 표준"},
+        {"term": "일회용 비밀번호 (OTP, One-Time Password)", "desc": "한 번 사용하면 폐기되는 비밀번호. 시간 동기·이벤트 동기·질의응답 방식. 재전송 공격 방지"},
+        {"term": "TOTP (Time-based One-Time Password, 시간 동기 OTP)", "desc": "현재 시각과 비밀키를 HMAC으로 결합해 일정 주기마다 새 비밀번호 생성. RFC 6238"},
+        {"term": "HOTP (HMAC-based One-Time Password, 이벤트 동기 OTP)", "desc": "사용 횟수(카운터)와 비밀키를 HMAC으로 결합해 생성. 버튼을 누를 때마다 카운터 증가. RFC 4226"},
+        {"term": "재전송 공격 (Replay Attack)", "desc": "가로챈 인증 정보를 그대로 다시 보내 인증을 통과하려는 공격. OTP·타임스탬프·논스(Nonce)로 방어"},
+        {"term": "챌린지-리스폰스 (Challenge-Response, 질의응답 인증)", "desc": "서버가 보낸 임의의 질의(Challenge)를 비밀키로 계산한 응답(Response)으로 인증. 비밀번호 자체는 전송되지 않음"},
+        {"term": "OAuth 2.0 (Open Authorization)", "desc": "비밀번호 공유 없이 제3자 애플리케이션에 사용자 자원 접근 권한을 토큰으로 위임하는 개방형 인가 표준. RFC 6749"},
+        {"term": "액세스 토큰 (Access Token)", "desc": "OAuth에서 인가 서버가 발급하는 자원 접근 권한 증표. 유효 기간이 짧고 Refresh Token으로 재발급"},
+        {"term": "인가 코드 승인 (Authorization Code Grant)", "desc": "OAuth 2.0 대표 흐름. 사용자 동의 후 받은 인가 코드를 클라이언트가 액세스 토큰으로 교환"},
+        {"term": "OAuth 역할 (Resource Owner · Client · Authorization Server · Resource Server)", "desc": "자원 소유자(사용자) / 제3자 앱 / 토큰 발급 서버 / 보호 자원을 제공하는 API 서버"},
+        {"term": "OpenID Connect (OIDC)", "desc": "OAuth 2.0 위에 얹은 인증(Authentication) 계층. ID 토큰(JWT)으로 사용자 신원을 전달. 소셜 로그인"}
       ],
-      "asked": ["2021-3"]
+      "asked": ["2021-3", "2025-3"]
     },
     {
       "title": "서비스 거부 공격 (DoS/DDoS/DRDoS)",
@@ -186,7 +199,9 @@
         "UDP Flooding: 대량의 UDP 패킷 → ICMP Unreachable 응답으로 자원 고갈",
         "Ping Flooding: ICMP Echo Request 대량 전송",
         "HTTP GET Flooding: 정상적인 HTTP 요청을 대량 반복. 7계층 공격. Slowloris, RUDY도 7계층",
-        "DDoS 공격 도구: Trinoo, TFN, TFN2K, Stacheldraht"
+        "DDoS 공격 도구: Trinoo, TFN, TFN2K, Stacheldraht",
+        "스머핑(Smurfing) = 스머프 공격. ICMP Echo Request를 브로드캐스트 주소로 보내 네트워크 전체의 Echo Reply가 피해자에게 쏟아지는 ICMP 증폭(Amplification) 공격. 방어: 라우터에서 직접 브로드캐스트(Directed Broadcast) 차단",
+        "SYN Flooding 세부: 3-way 핸드셰이크(SYN → SYN-ACK → ACK)에서 마지막 ACK를 보내지 않아 반열림(Half-open) 연결이 쌓임 → 백로그 큐 고갈로 정상 연결 거부. 방어: SYN Cookie, 백로그 큐 확대, 타임아웃 단축"
       ],
       "terms": [
         {"term": "DoS (Denial of Service, 서비스 거부 공격)", "desc": "대량 데이터로 시스템 자원 고갈, 정상 서비스 방해"},
@@ -204,9 +219,15 @@
         {"term": "C&C 서버 (Command and Control)", "desc": "봇넷에 명령을 내리는 제어 서버"},
         {"term": "트리누 (Trinoo)", "desc": "최초의 DDoS 도구. UDP Flooding"},
         {"term": "TFN (Tribe Flood Network)", "desc": "DDoS 도구. UDP·TCP SYN·ICMP·Smurf 공격 지원"},
-        {"term": "Stacheldraht (슈타첼드라트)", "desc": "TFN + Trinoo 특성, 암호화 통신 DDoS 도구"}
+        {"term": "Stacheldraht (슈타첼드라트)", "desc": "TFN + Trinoo 특성, 암호화 통신 DDoS 도구"},
+        {"term": "스머핑 (Smurfing, Smurf Attack)", "desc": "출발지 IP를 피해자로 위조한 ICMP Echo Request를 브로드캐스트해 다수의 응답이 피해자에게 집중되는 DoS. 스머프와 동일"},
+        {"term": "ICMP Echo Request / Echo Reply", "desc": "ping이 쓰는 ICMP 메시지(타입 8 요청 / 타입 0 응답). 스머프·Ping of Death·Ping Flooding에 악용"},
+        {"term": "브로드캐스트 증폭 (Amplification)", "desc": "요청 1개가 네트워크 전체 호스트의 응답으로 증폭되어 피해자에게 전달되는 공격 원리. 스머프·DRDoS"},
+        {"term": "반열림 연결 (Half-open Connection)", "desc": "SYN을 받아 SYN-ACK를 보냈으나 ACK를 받지 못해 완료되지 않은 TCP 연결. SYN Flooding이 대량 생성"},
+        {"term": "백로그 큐 (Backlog Queue)", "desc": "연결 요청을 대기시키는 서버 큐. 반열림 연결로 꽉 차면 새 연결 거부"},
+        {"term": "SYN 쿠키 (SYN Cookie)", "desc": "연결 상태를 저장하지 않고 시퀀스 번호에 암호화된 정보를 담아 ACK 도착 시 검증하는 SYN Flooding 방어 기법"}
       ],
-      "asked": []
+      "asked": ["2024-3", "2025-1", "2025-2"]
     },
     {
       "title": "스니핑·스푸핑·세션 하이재킹",
@@ -218,7 +239,8 @@
         "ARP 스푸핑: 위조된 ARP Reply로 피해자의 ARP 캐시에 공격자 MAC을 게이트웨이 MAC으로 등록 → 중간자 공격",
         "세션 하이재킹: TCP 시퀀스 넘버를 예측해 인증된 세션을 가로챔. 비동기화 상태 이용. 대응: 암호화, 지속적 인증, 재전송·ACK 스톰 탐지",
         "스위치 재밍(MAC Flooding): 스위치 MAC 테이블을 넘치게 해 허브처럼 동작시킴 → 스니핑",
-        "중간자 공격(MITM): 송·수신자 사이에 끼어 통신 가로채기·변조"
+        "중간자 공격(MITM): 송·수신자 사이에 끼어 통신 가로채기·변조",
+        "세션 하이재킹 세부: TCP는 3-way 핸드셰이크(SYN·SYN-ACK·ACK)로 교환한 시퀀스 번호로 패킷 순서를 검증한다. 공격자가 다음 시퀀스 번호를 추측(예측)해 정상 패킷처럼 끼워 넣으면 인증된 세션을 가로챌 수 있다"
       ],
       "terms": [
         {"term": "스니핑 (Sniffing)", "desc": "네트워크상의 패킷을 도청. 수동적 공격. 암호화로 대응"},
@@ -232,9 +254,11 @@
         {"term": "스위치 재밍 (Switch Jamming)", "desc": "스위치 MAC 테이블을 넘치게 해 모든 포트로 패킷 전달(허브화). MAC Flooding"},
         {"term": "ICMP 리다이렉트 (ICMP Redirect)", "desc": "위조 ICMP Redirect로 라우팅 경로를 공격자로 변경"},
         {"term": "리플레이 공격 (Replay Attack)", "desc": "가로챈 인증 데이터를 재전송. 타임스탬프·난수(nonce)로 대응"},
-        {"term": "ACK 스톰 (ACK Storm)", "desc": "세션 하이재킹 시 양측이 ACK를 계속 주고받는 현상. 탐지 지표"}
+        {"term": "ACK 스톰 (ACK Storm)", "desc": "세션 하이재킹 시 양측이 ACK를 계속 주고받는 현상. 탐지 지표"},
+        {"term": "TCP 시퀀스 번호 예측 (Sequence Number Prediction)", "desc": "다음 순서 번호를 추측해 위조 패킷을 정상 세션에 끼워 넣는 기법. 세션 하이재킹·IP 스푸핑의 핵심"},
+        {"term": "3-way 핸드셰이크 (SYN · SYN-ACK · ACK)", "desc": "TCP 연결 설정 절차. 세션 하이재킹은 이 과정에서 교환된 시퀀스 번호를 노린다"}
       ],
-      "asked": ["2021-3"]
+      "asked": ["2021-3", "2025-1"]
     },
     {
       "title": "웹 애플리케이션 공격 (SQL Injection/XSS/CSRF)",
@@ -278,7 +302,8 @@
         "루트킷: 공격자 흔적·악성코드를 숨기는 도구 모음. 관리자(root) 권한 은닉",
         "백도어: 인증 우회해 시스템에 접근하는 비밀 통로. 트랩도어",
         "논리 폭탄: 특정 조건(날짜 등) 충족 시 실행",
-        "크립토재킹: 피해자 컴퓨터로 암호화폐 채굴"
+        "크립토재킹: 피해자 컴퓨터로 암호화폐 채굴",
+        "스케어웨어(Scareware): '바이러스에 감염되었습니다' 같은 가짜 경고로 공포를 조성해 가짜 백신(Rogue AV) 구매·설치를 유도하는 사회공학형 악성코드. 랜섬웨어(파일 암호화 후 금전 요구)·애드웨어(광고 노출)와 구분"
       ],
       "terms": [
         {"term": "바이러스 (Virus)", "desc": "다른 프로그램에 기생해 자기복제. 숙주 필요"},
@@ -296,9 +321,11 @@
         {"term": "매크로 바이러스 (Macro Virus)", "desc": "문서 파일(Word, Excel) 매크로에 숨은 바이러스"},
         {"term": "다형성 바이러스 (Polymorphic Virus)", "desc": "탐지를 피하려고 코드를 매번 변형"},
         {"term": "익스플로잇 (Exploit)", "desc": "취약점을 이용해 공격하는 코드·기법"},
-        {"term": "셸코드 (Shell Code)", "desc": "취약점 공격 성공 후 셸을 띄우는 작은 기계어 코드"}
+        {"term": "셸코드 (Shell Code)", "desc": "취약점 공격 성공 후 셸을 띄우는 작은 기계어 코드"},
+        {"term": "스케어웨어 (Scareware)", "desc": "가짜 감염 경고로 공포를 조성해 가짜 백신 구매·설치를 유도하는 악성코드"},
+        {"term": "로그 안티바이러스 (Rogue AV, 가짜 백신)", "desc": "백신으로 위장한 악성 프로그램. 스케어웨어가 설치를 유도하는 대상"}
       ],
-      "asked": []
+      "asked": ["2025-1"]
     },
     {
       "title": "사회공학·피싱 계열 공격",
@@ -313,7 +340,8 @@
         "사회공학: 기술이 아닌 사람의 심리·신뢰를 이용해 정보 획득",
         "타이포스쿼팅: URL 오타를 노린 유사 도메인 등록 (URL 하이재킹)",
         "워터링 홀: 표적이 자주 방문하는 사이트에 악성코드를 심어 기다림",
-        "이블 트윈: 정상 Wi-Fi AP로 위장한 가짜 AP"
+        "이블 트윈: 정상 Wi-Fi AP로 위장한 가짜 AP",
+        "표적 공격(Targeted Attack): 불특정 다수가 아닌 특정 조직·개인을 노린 공격 묶음. 스피어 피싱·워터링 홀·APT가 대표. 워터링 홀은 표적이 자주 가는 사이트를 미끼로, APT는 장기간 은밀하게 침투한다"
       ],
       "terms": [
         {"term": "사회공학 (Social Engineering)", "desc": "사람의 심리적 취약점을 이용해 비밀 정보를 획득하는 비기술적 공격"},
@@ -332,9 +360,10 @@
         {"term": "테일게이팅 (Tailgating, Piggybacking)", "desc": "인가자 뒤에 붙어 출입통제 구역에 침입"},
         {"term": "프리텍스팅 (Pretexting)", "desc": "그럴듯한 상황을 꾸며 정보를 요구"},
         {"term": "비즈니스 스캠 (Business Scam, BEC)", "desc": "거래처·경영진을 사칭한 이메일로 송금 유도"},
-        {"term": "사이버 킬체인 (Cyber Kill Chain)", "desc": "록히드마틴의 공격 7단계 모델: 정찰-무기화-전달-익스플로잇-설치-C&C-목표달성"}
+        {"term": "사이버 킬체인 (Cyber Kill Chain)", "desc": "록히드마틴의 공격 7단계 모델: 정찰-무기화-전달-익스플로잇-설치-C&C-목표달성"},
+        {"term": "표적 공격 (Targeted Attack)", "desc": "특정 조직·개인을 겨냥한 공격. 스피어 피싱·워터링 홀·APT(지능형 지속 위협)가 해당"}
       ],
-      "asked": ["2023-2"]
+      "asked": ["2023-2", "2026-1"]
     },
     {
       "title": "기타 공격 기법·보안 용어 (APT/제로데이/무차별대입 등)",

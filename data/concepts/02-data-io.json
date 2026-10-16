@@ -494,7 +494,8 @@
         "도메인 무결성(Domain Integrity): 속성 값은 정의된 도메인 범위 내의 값",
         "키 무결성(Key Integrity): 키로 지정된 속성(집합)의 값은 튜플 간에 중복될 수 없음 / 사용자 정의 무결성: 사용자가 정의한 업무 규칙 / NULL 무결성: 특정 속성은 NULL 불가",
         "SQL 제약 조건: PRIMARY KEY, FOREIGN KEY, UNIQUE, NOT NULL, CHECK, DEFAULT",
-        "참조 무결성 옵션(ON DELETE/UPDATE): CASCADE(연쇄 삭제·갱신), SET NULL, SET DEFAULT, RESTRICT/NO ACTION(거부)"
+        "참조 무결성 옵션(ON DELETE/UPDATE): CASCADE(연쇄 삭제·갱신), SET NULL, SET DEFAULT, RESTRICT/NO ACTION(거부)",
+        "무결성 제약조건(Integrity Constraint): 데이터의 정확성·일관성을 지키기 위해 DBMS가 강제하는 규칙의 통칭. 개체·참조·도메인·키·NULL·사용자 정의 무결성이 모두 여기에 속한다"
       ],
       "terms": [
         {
@@ -536,12 +537,53 @@
         {
           "term": "UNIQUE",
           "desc": "속성 값의 중복을 허용하지 않음(NULL은 허용)"
+        },
+        {
+          "term": "무결성 제약조건 (Integrity Constraint)",
+          "desc": "데이터 정확성·일관성을 보장하기 위해 릴레이션에 부여하는 규칙. 개체·참조·도메인 무결성 등의 상위 개념"
         }
       ],
       "asked": [
         "2021-1",
         "2022-3",
-        "2024-2"
+        "2024-2",
+        "2024-3"
+      ]
+    },
+    {
+      "title": "파일 구조와 접근 방식",
+      "importance": 2,
+      "summary": "물리 설계 단계에서 레코드 접근 방식을 결정하는 파일 구조. 순차 파일, 색인(인덱스) 파일, 해싱 기반 직접 파일로 나눈다.",
+      "points": [
+        "순차 파일(Sequential): 레코드를 키 순서대로 물리적으로 연속 저장. 기억 공간 효율↑, 전체 일괄 처리에 유리. 삽입·삭제·특정 레코드 검색은 느림. 테이프 매체",
+        "색인 순차 파일(Indexed Sequential, ISAM): 순차 데이터 영역 + 색인(인덱스) 영역 + 오버플로 영역. 순차·직접 접근 모두 가능. 인덱스 공간이 추가로 필요하고 삽입·삭제 시 오버플로 처리",
+        "직접 파일(Direct, 해싱): 키 값을 해시 함수로 변환한 주소에 레코드 저장. 접근 속도 가장 빠름. 충돌(Collision)·오버플로 처리 필요, 기억 공간 효율↓, 순차 처리에 부적합",
+        "암기: 순차(일괄·테이프) / 색인(인덱스+순차, ISAM·VSAM) / 직접(해시·랜덤)"
+      ],
+      "terms": [
+        {
+          "term": "순차 파일 (Sequential File)",
+          "desc": "레코드를 물리적 순서대로 연속 저장. 일괄 처리에 유리, 검색·삽입 느림"
+        },
+        {
+          "term": "색인 순차 파일 (ISAM, Indexed Sequential Access Method)",
+          "desc": "기본 데이터 영역·색인 영역·오버플로 영역으로 구성. 순차·직접 접근 모두 지원"
+        },
+        {
+          "term": "직접 파일 (Direct File, 해싱 파일)",
+          "desc": "해시 함수로 계산한 주소에 레코드 저장. 접근 가장 빠름, 충돌 처리 필요"
+        },
+        {
+          "term": "인덱스 (Index, 색인)",
+          "desc": "키 값과 레코드 주소를 대응시킨 보조 자료구조. 검색 속도 향상"
+        },
+        {
+          "term": "VSAM (Virtual Storage Access Method)",
+          "desc": "IBM의 가상 기억 접근 방식. ISAM을 개선해 오버플로 영역 없이 동적 재구성. 순차·직접·키 접근 지원"
+        }
+      ],
+      "asked": [
+        "2025-2"
       ]
     },
     {
