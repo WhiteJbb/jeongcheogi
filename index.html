@@ -72,6 +72,13 @@ const $=s=>document.querySelector(s);const app=$('#app');
 function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function shuffle(arr,seed){const r=rng(seed),a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const go=h=>location.hash=h;
+// 실제 시험 분포(2024~2026 평균)로 20문항 추출: 코드 C3·Java3·Python2, SQL 2, 나머지 단답·빈칸 10. 2023년 이후 문항에 가중치.
+function stratified(seed){const r=rng(seed);const rnd=arr=>arr.map(q=>[r(),q]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
+  const pick=(arr,n)=>{const k=Math.round(n*0.65);const re=rnd(arr.filter(q=>q.year>=2023)).slice(0,k);return [...re,...rnd(arr.filter(q=>!re.includes(q))).slice(0,n-re.length)]};
+  const code=l=>Q.filter(q=>q.type==='코드'&&q.lang===l);const sql=Q.filter(q=>q.subject==='SQL 응용');
+  const used=new Set();const take=(arr,n)=>{const t=pick(arr.filter(q=>!used.has(q.id)),n);t.forEach(q=>used.add(q.id));return t};
+  const out=[...take(code('C'),3),...take(code('Java'),3),...take(code('Python'),2),...take(sql,2)];
+  return shuffle([...out,...take(Q.filter(q=>q.type!=='코드'&&q.type!=='서술'&&q.subject!=='SQL 응용'),20-out.length)],seed)}
 const ix=v=>(Math.floor(+v)||1)-1;const dec=v=>{try{return decodeURIComponent(v)}catch{return v}};
 let WRONG=null;
 
@@ -82,6 +89,7 @@ function route(){
   window.scrollTo(0,0);document.onkeydown=null;
   if(p[0]==='exams')return home(true);
   if(p[0]==='exam'){const e=examOf(p[1]);if(!e)return home();return quiz(Q.filter(q=>q.exam===p[1]),ix(p[2]),roundName(e),`/exam/${p[1]}`)}
+  if(p[0]==='lang'){const L=dec(p[1]);const l=L==='SQL'?Q.filter(q=>q.subject==='SQL 응용'):Q.filter(q=>q.type==='코드'&&q.lang===L);return quiz(l,ix(p[2]),`${L} 집중 풀이`,`/lang/${p[1]}`)}
   if(p[0]==='subject'){const s=dec(p[1]);return quiz(Q.filter(q=>q.subject===s),ix(p[2]),s,`/subject/${p[1]}`)}
   if(p[0]==='random'){const seed=+p[1]||Date.now()%1e9;if(!p[1])return go(`/random/${seed}/1`);return quiz(shuffle(Q,seed).slice(0,20),ix(p[2]),`랜덤 모의고사 #${seed}`,`/random/${seed}`)}
   if(p[0]==='wrong'){if(!WRONG||ix(p[1])===0)WRONG=Q.filter(q=>P[q.id]&&P[q.id].ok===false);const l=WRONG;if(!l.length)return app.innerHTML='<h1>오답노트</h1><div class="card">틀린 문제가 없습니다. 기출을 풀면 틀린 문제가 여기에 모입니다.</div>';return quiz(l,ix(p[1]),`오답노트 (${l.length}문항)`,'/wrong')}
@@ -113,7 +121,8 @@ function home(onlyExams){
   const kw={};Q.forEach(q=>(q.keywords||[]).forEach(k=>{k=k.trim();kw[k]=(kw[k]||0)+1}));
   const top=Object.entries(kw).filter(([,n])=>n>=3).sort((a,b)=>b[1]-a[1]).slice(0,40);
   const topHtml=top.length?`<h2>빈출 키워드 <span class="muted" style="font-size:.85rem;font-weight:400">3회 이상 출제 · 클릭하면 관련 문제·개념 검색</span></h2><div class="card">${top.map(([k,n])=>`<a class="chip" href="#/search?q=${encodeURIComponent(k)}">${esc(k)} <b>${n}</b></a>`).join('')}</div>`:'';
-  app.innerHTML=`${stats}${onlyExams?'':mockHtml+weakHtml}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>과목별 기출</h2><div class="grid">${subj}</div>${onlyExams?'':topHtml}`;
+  app.innerHTML=`${stats}${onlyExams?'':mockHtml+weakHtml}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>코드 집중 풀이 <span class="muted" style="font-size:.85rem;font-weight:400">매회 8문항 40점 — 언어별로 몰아서 패턴을 익히세요</span></h2><div class="grid">${['C','Java','Python','SQL'].map(L=>{const l=L==='SQL'?Q.filter(q=>q.subject==='SQL 응용'):Q.filter(q=>q.type==='코드'&&q.lang===L),d=l.filter(q=>P[q.id]),o=d.filter(q=>P[q.id].ok);return `<div class="card" onclick="go('/lang/${L}/1')"><h3>${L}</h3><div class="muted">${l.length}문항 · ${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'}</div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('')}</div>
+<h2>과목별 기출</h2><div class="grid">${subj}</div>${onlyExams?'':topHtml}`;
 }
 
 /* ---------- 문제 풀이 ---------- */
@@ -169,14 +178,14 @@ function check(skip){
 let MOCK=null;
 function mock(id){
   const seed=id.startsWith('r')?+id.slice(1):null;const e=seed===null?examOf(id):null;
-  const list=seed!==null?shuffle(Q,seed).slice(0,20):e?Q.filter(q=>q.exam===id):null;
+  const list=seed!==null?stratified(seed):e?Q.filter(q=>q.exam===id):null;
   if(!list||!list.length)return go('/mock');
   const title=seed!==null?`실전 모의고사 #${seed}`:`${roundName(e)} 실전`;
   if(MOCK&&MOCK.id===id&&MOCK.done)return mockResult();
   MOCK={id,list,title,start:Date.now(),done:false,ans:{},self:{}};
   const lab=q=>blankLabels(q);
   app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(title)}</div><h1>${esc(title)}</h1>
-  <div class="timer"><b id="clock">150:00</b><span class="muted">실제 시험: 20문항 × 5점, 150분, 60점 합격. 모르면 비워 두세요.</span><button class="pri" id="submit" style="margin-left:auto">제출·채점</button></div>
+  <div class="timer"><b id="clock">150:00</b><span class="muted">실제 시험: 20문항 × 5점, 150분, 60점 합격. ${seed!==null?'실제 출제 비율(코드 8·SQL 2·용어 10)로 추출. ':''}모르면 비워 두세요.</span><button class="pri" id="submit" style="margin-left:auto">제출·채점</button></div>
   ${list.map((q,i)=>`<div class="card" id="q${i}"><div><b>${i+1}.</b> <span class="chip">${esc(q.subject)}</span><span class="chip">${esc(q.type)}${q.lang?' · '+esc(q.lang):''}</span></div>
   <p class="q">${esc(q.question)}</p>${q.code?`<pre><code>${esc(q.code)}</code></pre>`:''}
   ${q.blanks&&q.blanks.length>1?q.blanks.map((_,j)=>`<div class="row"><span style="min-width:2em">${lab(q)[j]}</span><input class="ans" data-q="${i}" data-i="${j}" autocomplete="off"></div>`).join(''):`<textarea data-q="${i}" rows="2"></textarea>`}</div>`).join('')}
@@ -214,7 +223,7 @@ const stars=n=>`<span class="star" title="중요도 ${n}">${'★'.repeat(n)}${'�
 function concepts(ord){
   const nav=`<div class="topic-nav">${D.concepts.map(c=>`<a class="chip" href="#/concepts/${c.order}" ${String(c.order)===ord?'style="outline:2px solid var(--accent)"':''}>${c.order}. ${esc(c.chapter)}</a>`).join('')}</div>`;
   if(!ord){
-    app.innerHTML=`<h1>핵심 개념</h1><p class="muted">실기에 실제로 출제되는 것만 뽑았습니다. ★★★ = 거의 매년 출제.</p>${nav}<div class="grid">${D.concepts.map(c=>`<div class="card" onclick="go('/concepts/${c.order}')"><h3>${c.order}. ${esc(c.chapter)}</h3><div class="muted">${c.topics.length}개 토픽 · ★★★ ${c.topics.filter(t=>t.importance===3).length}개</div></div>`).join('')}</div>`;return;
+    app.innerHTML=`<h1>핵심 개념</h1><p class="muted">실기에 실제로 출제되는 것만 뽑았습니다. ★★★ = 거의 매년 출제.</p>${nav}<div class="grid">${D.concepts.map(c=>`<div class="card" onclick="go('/concepts/${c.order}')"><h3>${c.order}. ${esc(c.chapter)}</h3><div class="muted">${c.topics.length}개 토픽 · ★★★ ${c.topics.filter(t=>t.importance===3).length}개</div><div class="muted">기출 연결 ${c.topics.reduce((a,t)=>a+(t.asked||[]).length,0)}회</div></div>`).join('')}</div>`;return;
   }
   const c=D.concepts.find(c=>String(c.order)===ord);if(!c)return concepts();
   app.innerHTML=`<div class="muted"><a href="#/concepts">← 개념 목록</a></div><h1>${c.order}. ${esc(c.chapter)}</h1>${nav}
@@ -223,10 +232,11 @@ function concepts(ord){
   $('#tf').oninput=e=>{const v=e.target.value.trim().toLowerCase();app.querySelectorAll('#topics .card').forEach(el=>el.style.display=!v||el.textContent.toLowerCase().includes(v)?'':'none')};
 }
 function topicCard(t){
-  return `<div class="card"><h3>${esc(t.title)} ${stars(t.importance||1)}</h3><div>${esc(t.summary)}</div>
+  const recent=(t.asked||[]).filter(a=>+a.slice(0,4)>=2024).length;
+  return `<div class="card"><h3>${esc(t.title)} ${stars(t.importance||1)}${recent?` <span class="chip" style="color:var(--bad)">최근 ${recent}회 출제</span>`:''}</h3><div>${esc(t.summary)}</div>
   ${t.points&&t.points.length?`<ul>${t.points.map(p=>`<li>${fmt(p)}</li>`).join('')}</ul>`:''}
   ${t.terms&&t.terms.length?`<table>${t.terms.map(x=>`<tr><th>${esc(x.term)}</th><td>${fmt(x.desc)}</td></tr>`).join('')}</table>`:''}
-  ${t.asked&&t.asked.length?`<div class="muted" style="margin-top:6px">출제: ${t.asked.map(a=>`<a href="#/exam/${a}/1">${a}</a>`).join(', ')}</div>`:''}</div>`;
+  ${t.asked&&t.asked.length?`<div class="muted" style="margin-top:6px">출제 ${t.asked.length}회: ${t.asked.map(a=>`<a href="#/exam/${a}/1">${a}</a>`).join(', ')}</div>`:''}</div>`;
 }
 const fmt=s=>esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
 

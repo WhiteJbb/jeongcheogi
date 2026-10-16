@@ -25,6 +25,28 @@ for e in exams:
     if len(nos) != len(set(nos)): errs.append(f'{e["year"]}-{e["round"]}: no 중복')
 if errs: print("\n".join(errs))
 concepts = sorted(load("data/concepts/*.json"), key=lambda c: c.get("order", 99))
+# 개념 토픽 ↔ 기출 자동 연결: 문항 keywords/answer 가 토픽 제목·용어와 정확히 일치하면 asked 에 회차 추가
+import re
+nk = lambda t: re.sub(r"[\s\-_/·.,()]", "", t).lower()
+def names(t):
+    out = {nk(t["title"])}
+    for term in t.get("terms", []):
+        for part in re.split(r"\s*[()]\s*", term["term"]):
+            if len(nk(part)) >= 2: out.add(nk(part))
+    return out
+linked = 0
+for c in concepts:
+    for t in c["topics"]:
+        ns = names(t); asked = set(t.get("asked", []))
+        for e in exams:
+            rid = f'{e["year"]}-{e["round"]}'
+            for q in e["questions"]:
+                cands = [nk(k) for k in q.get("keywords", [])] + [nk(a) for a in q.get("answer", []) if q.get("type") != "코드"]
+                if any(x in ns for x in cands if len(x) >= 2):
+                    if rid not in asked: linked += 1
+                    asked.add(rid)
+        t["asked"] = sorted(asked, key=lambda r: tuple(map(int, r.split("-"))))
+print(f"auto-linked {linked} topic↔round pairs")
 data = {"exams": exams, "concepts": concepts}
 with open(os.path.join(root, "data.js"), "w", encoding="utf-8") as fp:
     fp.write("window.DATA=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n")
