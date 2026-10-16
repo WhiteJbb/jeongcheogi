@@ -649,6 +649,254 @@
         {"term": "시간 복잡도 빅오 (Big-O)", "desc": "O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2^n). 중첩 루프 2개 = O(n²)"}
       ],
       "asked": ["2020-3", "2021-2", "2022-3", "2023-1", "2024-2"]
+    },
+    {
+      "title": "C 구조체·연결 리스트·동적 할당",
+      "importance": 3,
+      "summary": "struct Node { int data; struct Node *next; }를 malloc으로 만들어 head부터 p = p->next로 순회한다. 삽입은 새 노드의 next를 먼저 잇고, 역순은 prev/cur/next 세 포인터로 뒤집는다. 출력 문제는 노드 그림을 그려 next 화살표를 따라가면 끝난다. 2024년 이후 5회차 연속 출제, 배점 최대.",
+      "points": [
+        "자기 참조 구조체 + 앞 삽입(push_front): 새 노드의 next가 기존 head를 가리키고 새 노드가 head가 된다 → 삽입 순서의 역순으로 출력\ntypedef struct Node { int data; struct Node *next; } Node;\nNode *push_front(Node *head, int v) {\n    Node *n = malloc(sizeof(Node));\n    n->data = v; n->next = head;\n    return n;\n}\nfor (int i = 1; i <= 3; i++) head = push_front(head, i);\nfor (Node *p = head; p; p = p->next) printf(\"%d \", p->data);  // 3 2 1",
+        "순회 관용구: for (p = head; p != NULL; p = p->next). while (p->next) p = p->next 는 마지막 노드에서 멈춤(tail 찾기, 뒤 삽입용). p->data 는 (*p).data",
+        "중간 삽입은 순서가 생명: 새 노드 next를 먼저 잇고 그 다음 앞 노드 next를 바꾼다. 반대로 하면 뒤쪽 리스트를 잃는다\nNode *p = head->next;          // 리스트 3 2 1 에서 2\nNode *n = malloc(sizeof(Node)); n->data = 9;\nn->next = p->next;             // 9 → 1\np->next = n;                   // 2 → 9\n// 출력: 3 2 9 1",
+        "삭제: 앞 노드 next를 삭제 대상의 next로 건너뛰고 free\nNode *del = head->next;        // 3 2 9 1 에서 2\nhead->next = del->next;        // 3 → 9\nfree(del);\n// 출력: 3 9 1",
+        "역순(reverse): prev=NULL, cur=head로 시작해 nxt 저장 → cur->next=prev → 둘 다 전진. 끝나면 prev가 새 head\nNode *prev = NULL, *cur = head, *nxt;\nwhile (cur) { nxt = cur->next; cur->next = prev; prev = cur; cur = nxt; }\nhead = prev;\n// 3 9 1 → 출력: 1 9 3",
+        "뒤 삽입(append): tail까지 간 뒤 tail->next = 새 노드, 새 노드 next = NULL 필수(안 하면 쓰레기 값으로 무한 순회)\nNode *tail = head; while (tail->next) tail = tail->next;\ntail->next = malloc(sizeof(Node)); tail->next->data = 7; tail->next->next = NULL;\n// 1 9 3 → 출력: 1 9 3 7",
+        "malloc(sizeof(struct Node)) 는 void* 를 돌려주므로 C에서는 캐스팅 없이 대입 가능((Node*) 캐스팅은 선택). 노드 개수 세기: for(cnt=0,p=head;p;p=p->next) cnt++. 합: sum += p->data",
+        "함정: 함수 안에서 head = n 처럼 지역 포인터만 바꾸면 호출자의 head는 안 바뀐다 → 새 head를 return하거나 Node **head(이중 포인터)로 받아 *head = n. 문제 코드에 `Node **` 가 보이면 원본 head가 바뀐다고 보면 됨",
+        "head 자체를 삭제·삽입하는 경계 처리: if (head == NULL) 첫 노드, if (pos == 0) head 교체. 문제의 insert(head, pos, v) 꼴은 pos-1번째 노드까지 이동 후 끼워 넣는다"
+      ],
+      "terms": [
+        {"term": "자기 참조 구조체 (Self-referential Struct)", "desc": "자기 자신 타입의 포인터 멤버(struct Node *next)를 가진 구조체. 연결 리스트·트리의 노드"},
+        {"term": "typedef struct", "desc": "struct Node를 Node 한 단어로 쓰게 하는 별칭. typedef struct Node {...} Node;"},
+        {"term": "malloc / free", "desc": "힙에 sizeof(struct Node) 바이트 동적 할당·해제. 반환형 void*, 실패 시 NULL. stdlib.h"},
+        {"term": "head · next · NULL 종료", "desc": "head는 첫 노드 포인터, 마지막 노드 next는 NULL. 순회 종료 조건 p != NULL"},
+        {"term": "노드 삽입 (Insert)", "desc": "앞: n->next=head; head=n. 중간: n->next=p->next; p->next=n (순서 고정). 뒤: tail->next=n; n->next=NULL"},
+        {"term": "노드 삭제 (Delete)", "desc": "prev->next = del->next 로 건너뛴 후 free(del). head 삭제는 head = head->next"},
+        {"term": "역순 (Reverse)", "desc": "prev/cur/nxt 세 포인터. nxt=cur->next; cur->next=prev; prev=cur; cur=nxt; 끝나면 head=prev"},
+        {"term": "이중 포인터 매개변수 (Node **head)", "desc": "함수 안에서 호출자의 head를 바꾸려면 포인터의 주소를 넘겨 *head = n"},
+        {"term": "화살표 연산자 (->)", "desc": "p->data 는 (*p).data. 구조체 포인터로 멤버 접근"}
+      ],
+      "asked": ["2024-2", "2024-3", "2025-1", "2025-2", "2025-3"]
+    },
+    {
+      "title": "트리 순회 코드 (C 재귀·Python 클래스 트리)",
+      "importance": 3,
+      "summary": "left/right 포인터를 가진 노드에 전위(VLR)·중위(LVR)·후위(LRV) 재귀를 적용한 출력 순서, 그리고 합·높이·리프 수 재귀. 호출 트리를 그려 printf 위치(재귀 호출 앞/사이/뒤)만 보면 순서가 나온다.",
+      "points": [
+        "세 순회는 printf 위치만 다르다. 트리 1(2(4,5),3) 기준\ntypedef struct N { int d; struct N *l, *r; } N;\nvoid pre(N *n)  { if (!n) return; printf(\"%d \", n->d); pre(n->l); pre(n->r); }   // 1 2 4 5 3\nvoid in(N *n)   { if (!n) return; in(n->l); printf(\"%d \", n->d); in(n->r); }     // 4 2 5 1 3\nvoid post(N *n) { if (!n) return; post(n->l); post(n->r); printf(\"%d \", n->d); } // 4 5 2 3 1",
+        "손으로 풀 때: 전위 = 루트 먼저 적고 왼쪽 서브트리 전체, 오른쪽 서브트리 전체. 중위 = 왼쪽 끝까지 내려가서 올라오며 적음(BST면 오름차순). 후위 = 자식 다 적고 부모(루트가 마지막). 수식 트리 후위 순회 = 후위 표기식",
+        "합·높이·리프 개수 재귀는 같은 틀: NULL이면 0, 아니면 자신 + 왼쪽 결과 + 오른쪽 결과\nint sum(N *n)  { return n ? n->d + sum(n->l) + sum(n->r) : 0; }\nint h(N *n)    { if (!n) return 0; int a = h(n->l), b = h(n->r); return 1 + (a > b ? a : b); }\nint leaf(N *n) { if (!n) return 0; if (!n->l && !n->r) return 1; return leaf(n->l) + leaf(n->r); }\nprintf(\"%d %d %d\", sum(root), h(root), leaf(root));  // 15 3 3",
+        "리프 판정은 left==NULL && right==NULL. 높이는 1 + max(h(l), h(r)) (NULL을 0으로 두면 노드 수 기준 높이, 루트만 있으면 1). 노드 수: 1 + cnt(l) + cnt(r)",
+        "Python 클래스 트리: __init__(self, v, left=None, right=None). 리스트 결합으로 순회 결과를 만든다\nclass Node:\n    def __init__(self, v, left=None, right=None):\n        self.v, self.left, self.right = v, left, right\ndef inorder(n):\n    return inorder(n.left) + [n.v] + inorder(n.right) if n else []\nroot = Node(1, Node(2, Node(4), Node(5)), Node(3))\nprint(inorder(root))  # [4, 2, 5, 1, 3]",
+        "트리 생성 코드 읽기: mk(1, mk(2, mk(4,0,0), mk(5,0,0)), mk(3,0,0)) 처럼 중첩 호출은 안쪽(자식)이 먼저 만들어진다. 배열로 주는 완전 이진 트리는 a[i]의 자식이 a[2i+1], a[2i+2] (0-based) 또는 a[2i], a[2i+1] (1-based)",
+        "함정: 재귀 안에서 printf를 두 번(들어갈 때·나올 때) 하면 전위+후위가 섞인 출력. 전역 변수 cnt++ 를 재귀 앞에 두면 방문 순서대로 번호가 매겨진다"
+      ],
+      "terms": [
+        {"term": "전위 순회 (Preorder, VLR)", "desc": "루트 → 왼쪽 → 오른쪽. printf가 재귀 호출 앞. 복사·접두 표기식"},
+        {"term": "중위 순회 (Inorder, LVR)", "desc": "왼쪽 → 루트 → 오른쪽. printf가 두 재귀 호출 사이. 이진 탐색 트리면 정렬 순서"},
+        {"term": "후위 순회 (Postorder, LRV)", "desc": "왼쪽 → 오른쪽 → 루트. printf가 재귀 호출 뒤. 삭제·후위 표기식·디렉터리 크기 계산"},
+        {"term": "리프 노드 (Leaf Node)", "desc": "자식이 없는 노드. left == NULL && right == NULL"},
+        {"term": "트리 높이 (Height)", "desc": "1 + max(height(left), height(right)). NULL은 0"},
+        {"term": "이진 탐색 트리 (BST)", "desc": "왼쪽 < 루트 < 오른쪽. 삽입 재귀 insert(n, v): v < n->d 이면 왼쪽. 중위 순회가 오름차순"},
+        {"term": "레벨 순회 (Level-order)", "desc": "큐를 써서 깊이 순서로 방문. 재귀가 아닌 유일한 기본 순회"}
+      ],
+      "asked": ["2025-1", "2026-2"]
+    },
+    {
+      "title": "C 함수 포인터·배열 포인터·sizeof 함정",
+      "importance": 3,
+      "summary": "함수 포인터는 반환형 (*이름)(매개변수)로 선언해 f(x) 또는 (*f)(x)로 호출한다. 배열 매개변수는 포인터로 바뀌어 sizeof가 8(64비트)이고, int (*p)[N]은 배열 전체 크기를 유지한다. 선언문을 안에서 바깥으로 읽는 연습이 핵심.",
+      "points": [
+        "함수 포인터 선언·호출: 괄호 없이 int *f(int) 는 '포인터를 반환하는 함수', int (*f)(int) 가 '함수를 가리키는 포인터'. 호출은 fp(2,3) 과 (*fp)(2,3) 둘 다 같다\nint add(int a, int b) { return a + b; }\nint mul(int a, int b) { return a * b; }\nint (*fp)(int, int) = add;            // = &add 와 같음\nprintf(\"%d %d\\n\", fp(2, 3), (*fp)(2, 3));  // 5 5\nint (*ops[2])(int, int) = {add, mul}; // 함수 포인터 배열\nprintf(\"%d\\n\", ops[1](4, 5));          // 20",
+        "int *(*f)(int *) 읽기: f는 포인터 → (int*)를 받는 함수 → int* 를 반환. 포인터를 받아 포인터를 주는 함수에 쓰면 *f(&x) 로 값 접근\nint *inc(int *p) { (*p)++; return p; }\nint x = 10;\nint *(*pf)(int *) = inc;\nprintf(\"%d\\n\", *pf(&x));  // 11",
+        "sizeof 함정(64비트 전제): 배열 매개변수 int arr[] 는 int *arr 로 바뀌어 sizeof(arr)=8. 배열 포인터 int (*arr)[8] 로 받으면 sizeof(*arr)=32 유지\nvoid f(int arr[])    { printf(\"%zu \", sizeof(arr)); }   // 8\nvoid g(int (*arr)[8]) { printf(\"%zu\\n\", sizeof(*arr)); } // 32\nint a[8];\nf(a); g(&a);\nprintf(\"%zu %zu\\n\", sizeof(a), sizeof(a) / sizeof(a[0])); // 32 8",
+        "포인터 배열 vs 배열 포인터: int *pa[8] 은 int* 8개(=64바이트), int (*ap)[8] 은 int[8]을 가리키는 포인터 하나(=8바이트). [] 가 * 보다 우선순위 높아 괄호가 없으면 배열이 먼저\nint *pa[8]; int (*ap)[8] = &a;\nprintf(\"%zu %zu\\n\", sizeof(pa), sizeof(ap));  // 64 8",
+        "배열 포인터 산술: ap+1 은 32바이트(int 8개) 뒤로 이동. 2차원 배열 int m[3][4] 에서 m 의 타입은 int (*)[4], m+1 은 다음 행, *(m+1)+2 = &m[1][2]. sizeof(m)=48, sizeof(m[0])=16",
+        "콜백: 정렬·순회 함수에 비교 함수 포인터를 넘기는 패턴. void each(int *a, int n, void (*cb)(int)) { for(...) cb(a[i]); }. qsort(a, n, sizeof(int), cmp) 의 cmp는 int (*)(const void*, const void*)",
+        "전제 암기: sizeof(char)=1, short=2, int=4, long=8(리눅스/맥 64비트), long long=8, float=4, double=8, 모든 포인터=8. 문제가 \"32비트\"라고 하면 포인터 4. 구조체는 패딩으로 멤버 합보다 클 수 있음(char+int = 8)"
+      ],
+      "terms": [
+        {"term": "함수 포인터 (Function Pointer)", "desc": "반환형 (*이름)(매개변수 목록). 함수 이름 자체가 주소. fp(x) 와 (*fp)(x) 동일"},
+        {"term": "함수 포인터 배열", "desc": "int (*ops[N])(int, int). ops[i](a, b) 로 i번째 함수 호출. switch 대체 패턴"},
+        {"term": "배열 포인터 (Pointer to Array, int (*p)[N])", "desc": "N개짜리 배열 하나를 가리키는 포인터. sizeof(*p)=4N. 2차원 배열 행 포인터"},
+        {"term": "포인터 배열 (Array of Pointers, int *p[N])", "desc": "포인터 N개를 담는 배열. sizeof=8N. 문자열 배열 char *s[]"},
+        {"term": "배열 매개변수의 포인터 붕괴 (Array Decay)", "desc": "int a[] 매개변수는 int *a. 함수 안 sizeof(a)=8. 원소 수는 따로 n 으로 받아야 함"},
+        {"term": "sizeof 연산자", "desc": "컴파일 시점 바이트 크기. 배열이면 전체, 포인터면 8(64비트). 원소 수 = sizeof(a)/sizeof(a[0])"},
+        {"term": "콜백 (Callback)", "desc": "함수 포인터로 넘겨져 나중에 호출되는 함수. qsort 비교 함수, 이벤트 핸들러"}
+      ],
+      "asked": ["2026-1", "2026-2"]
+    },
+    {
+      "title": "C typedef 구조체 배열·비트 마스크 누적",
+      "importance": 3,
+      "summary": "typedef struct {...} T; T arr[3] = {{...},{...}}; 로 초기화한 구조체 배열을 순회하며 arr[i].v & 0x0F, acc ^= p->val 처럼 비트 연산을 누적하는 유형. 16진수를 4비트씩 2진수로 펴서 손으로 계산하고, unsigned는 음수 없이 wrap-around 한다.",
+      "points": [
+        "구조체 배열 초기화·순회·마스크 누적: & 0x0F 는 하위 4비트만 남김(16진 마지막 자리), XOR 누적은 자리별로 홀수 번 등장한 1만 남음\ntypedef struct { char name[10]; int v; } T;\nT arr[3] = {{\"a\", 0x1F}, {\"b\", 0xA5}, {\"c\", 0x3C}};\nint sum = 0; unsigned char acc = 0;\nfor (int i = 0; i < 3; i++) { sum += arr[i].v & 0x0F; acc ^= arr[i].v; }\nprintf(\"%d %d\\n\", sum, acc);  // 32 134\n// sum = 0xF + 0x5 + 0xC = 15+5+12. acc = 0x1F ^ 0xA5 = 0xBA, 0xBA ^ 0x3C = 0x86 = 134",
+        "16진수 계산 요령: 한 자리 = 4비트. 0xA5 = 1010 0101. AND는 두 수를 세로로 놓고 둘 다 1인 자리만, XOR은 다른 자리만. 결과를 다시 4비트씩 묶어 16진→10진(%d 출력)으로",
+        "unsigned 오버플로: unsigned char 범위 0~255, 넘치면 256으로 나눈 나머지(wrap-around). 음수가 될 수 없어 while(u >= 0) 는 무한 루프\nunsigned char u = 250; u += 10;\nprintf(\"%d\\n\", u);  // 4",
+        "구조체 포인터로 배열 순회: p = arr; (p+1)->name 은 arr[1].name, p[2].v 는 arr[2].v. 문자열 멤버는 %s\nT *p = arr;\nprintf(\"%s %d\\n\", (p + 1)->name, p[2].v >> 2);  // b 15   (0x3C=60, 60>>2=15)",
+        "typedef 구조체 + 반복 계산(복리 등): 멤버를 루프 횟수·비율로 쓰는 유형. 실수는 %.0f, %.2f 자리수 확인\ntypedef struct { int y; double r; } Acc;\nAcc a = {3, 0.1}; double m = 1000;\nfor (int i = 0; i < a.y; i++) m *= 1 + a.r;\nprintf(\"%.0f\\n\", m);  // 1331",
+        "typedef 없는 struct는 선언마다 struct 키워드 필요(struct T arr[3]). 익명 구조체 typedef struct {...} T; 는 T 로만 접근. 중첩 초기화 중괄호는 생략 가능(T a[2] = {\"a\",1,\"b\",2}) 하지만 출제는 보통 {{...},{...}}",
+        "비트 플래그 패턴: 설정 f |= 0x04, 해제 f &= ~0x04, 토글 f ^= 0x04, 검사 if (f & 0x04). 하위 n비트 추출 x & ((1<<n)-1), 상위 4비트 (x >> 4) & 0x0F. 부분 초기화 {0} 은 나머지 멤버 0"
+      ],
+      "terms": [
+        {"term": "typedef 별칭", "desc": "typedef struct {...} T; 로 struct 키워드 없이 T 사용. typedef unsigned char u8; 도 같은 문법"},
+        {"term": "구조체 배열 초기화 {{...},{...}}", "desc": "바깥 중괄호가 배열, 안쪽이 각 구조체. 멤버 순서대로 대입, 모자라면 0"},
+        {"term": "16진수 마스크 (0xFF, 0x0F)", "desc": "0xFF 하위 8비트, 0x0F 하위 4비트, 0xF0 상위 4비트(니블). & 로 추출"},
+        {"term": "XOR 누적 (a ^= b)", "desc": "같은 값을 두 번 XOR하면 0 → 짝수 번 등장한 값은 사라지고 홀수 번만 남음. 체크섬·단일 홀수 원소 찾기"},
+        {"term": "unsigned 정수", "desc": "부호 없음. char 0~255, int 0~4294967295. 음수 대입 시 2^n 더한 값. 오버플로는 wrap-around"},
+        {"term": "니블 (Nibble)", "desc": "4비트 = 16진수 한 자리. 바이트는 상위 니블·하위 니블 2개"},
+        {"term": "구조체 멤버 접근 (. vs ->)", "desc": "변수·배열 원소는 arr[i].v, 포인터는 p->v. (p+1)->v 는 p[1].v"}
+      ],
+      "asked": ["2024-1", "2025-1", "2025-3"]
+    },
+    {
+      "title": "원형 큐·스택의 배열 구현",
+      "importance": 2,
+      "summary": "원형 큐는 rear = (rear+1) % SIZE 로 돌고, 공백은 front == rear, 포화는 (rear+1)%SIZE == front(한 칸 비워 둠). 스택은 top=-1에서 a[++top]=x, a[top--]. 문제는 enq/deq 호출을 순서대로 따라가며 front·rear·top 값과 배열 내용을 표로 적는다.",
+      "points": [
+        "원형 큐(SIZE 4, 한 칸 비움 방식): 최대 SIZE-1 = 3개 저장. 4번째 enq는 포화라 실패\n#define SIZE 4\nint q[SIZE], front = 0, rear = 0;\nint enq(int x) { if ((rear + 1) % SIZE == front) return 0; rear = (rear + 1) % SIZE; q[rear] = x; return 1; }\nint deq() { if (front == rear) return -1; front = (front + 1) % SIZE; return q[front]; }\nprintf(\"%d %d %d %d\\n\", enq(1), enq(2), enq(3), enq(4));  // 1 1 1 0\nprintf(\"%d %d\\n\", deq(), deq());                          // 1 2",
+        "wrap-around 추적: 비운 자리에 다시 넣으면 rear가 0으로 돌아간다. 꺼낼 때도 front가 % SIZE 로 돈다\nenq(5); enq(6);                       // rear 3→0→1, q[0]=5, q[1]=6\nprintf(\"front=%d rear=%d\\n\", front, rear);  // front=2 rear=1\nwhile (front != rear) printf(\"%d \", deq());   // 3 5 6",
+        "이 구현은 먼저 index를 움직인 뒤 그 자리에 쓴다(rear = (rear+1)%SIZE; q[rear] = x). 반대로 q[rear] = x; rear = (rear+1)%SIZE 로 쓰는 변형도 있으니 코드의 순서를 그대로 따를 것. front가 '비어 있는 앞 칸'을 가리키는지 '첫 원소'를 가리키는지 먼저 확정",
+        "원소 개수 = (rear - front + SIZE) % SIZE. 공백 front == rear. 포화 (rear+1) % SIZE == front. count 변수를 따로 두는 변형은 공백 count==0, 포화 count==SIZE 로 SIZE개 꽉 채움",
+        "스택: top = -1 시작. push a[++top] = x (증가 후 저장), pop return a[top--] (반환 후 감소). 두 번 pop 후 push 하면 그 자리에 덮어씀\nint st[10], top = -1;\nvoid push(int x) { st[++top] = x; }\nint pop() { return st[top--]; }\npush(1); push(2); push(3);\nprintf(\"%d %d\", pop(), pop());  // 3 2\npush(4);\nprintf(\" %d %d top=%d\\n\", pop(), pop(), top);  // 4 1 top=-1",
+        "스택 변형: top = 0 시작이면 push a[top++] = x, pop a[--top]. 포화 top == SIZE-1 (top=-1 방식). 비면 pop 못 하므로 if (top < 0) 언더플로. 괄호 검사·후위 표기식 계산·재귀 호출 추적이 스택 응용",
+        "함정: printf 인자 평가 순서는 C에서 미정의지만 출제는 왼→오 가정. 큐에서 deq 반환값이 아닌 front 위치 값을 묻는 경우가 있으니 \"무엇을 출력하는지\" 문장 확인"
+      ],
+      "terms": [
+        {"term": "원형 큐 (Circular Queue)", "desc": "배열 끝에서 0으로 되돌아가는 큐. index = (index+1) % SIZE"},
+        {"term": "front · rear", "desc": "front는 삭제 위치(또는 그 앞 칸), rear는 마지막 삽입 위치. 초기 front=rear=0"},
+        {"term": "공백·포화 판정", "desc": "공백 front==rear, 포화 (rear+1)%SIZE==front. 한 칸 비워 둬 둘을 구분"},
+        {"term": "enqueue / dequeue", "desc": "rear 쪽 삽입 / front 쪽 삭제. 선입선출(FIFO)"},
+        {"term": "push / pop / top", "desc": "top 증가 후 저장 a[++top]=x, 반환 후 감소 a[top--]. 후입선출(LIFO). 초기 top=-1"},
+        {"term": "오버플로·언더플로 (Overflow / Underflow)", "desc": "포화 상태 push·enqueue / 공백 상태 pop·dequeue. 보통 -1 또는 0 반환"},
+        {"term": "선형 큐 (Linear Queue)", "desc": "rear만 증가해 앞이 비어도 포화. 원형 큐로 해결"}
+      ],
+      "asked": ["2023-2", "2025-2"]
+    },
+    {
+      "title": "Java enum (열거형)",
+      "importance": 2,
+      "summary": "enum 상수는 선언 순서대로 ordinal() 0,1,2…, name()은 상수 이름 문자열, values()는 전체 배열. 생성자·필드를 가진 enum은 클래스가 처음 쓰일 때 상수마다 생성자가 한 번씩(선언 순) 실행된다. switch(enum)은 case에 상수 이름만 쓴다.",
+      "points": [
+        "기본 메서드: ordinal() 0부터 선언 순서, name() 이름 문자열(toString 기본값도 같음), values() 모든 상수 배열, valueOf(\"X\") 문자열→상수(없으면 IllegalArgumentException), compareTo 는 ordinal 차\nenum Color { RED, GREEN, BLUE }\nColor c = Color.GREEN;\nSystem.out.println(c.ordinal() + \" \" + c.name() + \" \" + Color.values().length);  // 1 GREEN 3\nSystem.out.println(Color.valueOf(\"BLUE\") + \" \" + (c == Color.GREEN) + \" \" + c.compareTo(Color.BLUE));  // BLUE true -1",
+        "switch(enum): case 에 Color.RED 가 아니라 RED 만 쓴다(자격 이름 쓰면 컴파일 에러). break 빠지면 fall-through\nswitch (c) {\n    case RED:   System.out.println(\"r\"); break;\n    case GREEN: System.out.println(\"g\"); break;\n    default:    System.out.println(\"b\");\n}  // g",
+        "생성자·필드 enum: 상수 뒤 괄호가 생성자 인자. 클래스 로딩 시 상수 순서대로 생성자가 한 번씩 돌아 출력문이 먼저 찍힌다. 생성자는 private(생략 가능), new 불가\nenum Coin {\n    TEN(10), FIFTY(50);\n    final int v;\n    Coin(int v) { this.v = v; System.out.print(\"c\" + v + \" \"); }\n}\nint s = 0;\nfor (Coin k : Coin.values()) s += k.v;\nSystem.out.println(s);  // c10 c50 60",
+        "비교는 == 로 충분(싱글턴, equals 와 동일). 상수마다 메서드 오버라이드 가능: PLUS { int apply(int a, int b) { return a + b; } } 처럼 상수 본문에 재정의 → 전략 패턴. enum은 암묵적으로 java.lang.Enum 상속·final 이라 extends 불가, interface 구현은 가능",
+        "함정: ordinal()은 선언 순서가 바뀌면 함께 바뀌므로 필드로 값을 따로 둠(TEN(10)). 상수 목록 뒤에 필드·생성자가 오면 목록 끝에 세미콜론 필수. 다른 클래스 안에 선언된 enum은 static 중첩(Outer.Color.RED)",
+        "EnumMap·EnumSet·values()로 순회하며 합·개수·최댓값 구하는 유형. 출력 순서는 항상 선언 순(값 크기 순이 아님)"
+      ],
+      "terms": [
+        {"term": "enum (열거형)", "desc": "상수 집합을 타입으로 정의. 각 상수는 그 타입의 유일한 객체(싱글턴). java.lang.Enum 상속"},
+        {"term": "values()", "desc": "모든 상수를 선언 순서대로 담은 배열 반환. for-each 순회용"},
+        {"term": "name() · toString()", "desc": "상수 이름 문자열. toString은 재정의 가능, name은 final"},
+        {"term": "ordinal()", "desc": "선언 순서 인덱스(0부터). 순서 바꾸면 값도 바뀌어 저장용으로 부적합"},
+        {"term": "valueOf(String)", "desc": "이름으로 상수 찾기. 대소문자 틀리거나 없으면 IllegalArgumentException"},
+        {"term": "enum 생성자·필드", "desc": "상수(인자) 로 호출, private. 클래스 로딩 시 상수마다 한 번 실행. 필드로 고정 값 보관"},
+        {"term": "switch(enum)", "desc": "case 에 상수 이름만(자격 이름 불가). Java 14+ 화살표 case 도 동일"},
+        {"term": "상수별 메서드 재정의 (Constant-specific Body)", "desc": "PLUS { ... } 처럼 상수마다 추상 메서드 구현. 전략 패턴 대체"}
+      ],
+      "asked": ["2025-3"]
+    },
+    {
+      "title": "Java 제네릭 메서드 오버로딩과 타입 소거",
+      "importance": 2,
+      "summary": "오버로딩은 컴파일 시점에 참조 변수의 선언 타입으로 결정되므로 <T> void f(T x)와 void f(String x)가 있으면 Object o=\"a\"; f(o)는 제네릭 쪽을 부른다. 제네릭은 런타임에 Object(또는 바운드 타입)로 지워져 Box<String>과 Box<Integer>는 같은 클래스다.",
+      "points": [
+        "오버로딩 해석 규칙: ① 선언 타입으로 정확히 맞는 메서드 → ② 기본형 승격(int→long→double) → ③ 박싱(int→Integer) → ④ 가변 인자. 제네릭 <T> 는 모든 타입에 맞지만 정확히 맞는 String·Integer 가 있으면 그쪽이 우선. Object 로 선언된 변수는 실제 객체가 String 이어도 String 버전을 못 고른다\nstatic <T> void f(T x)       { System.out.print(\"T \"); }\nstatic void f(String x)      { System.out.print(\"S \"); }\nstatic void f(Integer x)     { System.out.print(\"I \"); }\nObject o = \"a\"; String s = \"b\"; int i = 1; double d = 1.0;\nf(o); f(s); f(i); f(d);  // T S I T",
+        "타입 소거: Box<String> 과 Box<Integer> 는 런타임에 같은 Box.class. 그래서 T 로 new T(), instanceof T, static T 필드가 불가하고 제네릭 배열 new T[n] 도 불가(Object[] 캐스팅)\nstatic class Box<T> { T v; Box(T v) { this.v = v; } T get() { return v; } }\nBox<String> b1 = new Box<>(\"A\"); Box<Integer> b2 = new Box<>(0);\nSystem.out.println(b1.get() + b2.get() + \" \" + (b1.getClass() == b2.getClass()));  // A0 true",
+        "바운드 타입 <T extends Number>: T 는 Number 로 소거되어 doubleValue() 등 Number 메서드 사용 가능. 인자가 int 와 double 이면 T 는 둘의 공통 상위(Number)로 추론\nstatic <T extends Number> double sum(T a, T b) { return a.doubleValue() + b.doubleValue(); }\nSystem.out.println(sum(1, 2.5));  // 3.5",
+        "와일드카드: List<?> 는 읽기만(Object 로 꺼냄), List<? extends Number> 읽기 전용 상한, List<? super Integer> 쓰기 가능 하한(PECS: Producer-extends, Consumer-super). List<Object> 에 List<String> 대입 불가(제네릭은 불공변)\nList<?> w = List.of(1, \"x\"); System.out.println(w.size());  // 2",
+        "제네릭 메서드 호출 시 타입 추론: f(\"a\") 는 T=String, 명시하려면 Main.<String>f(\"a\"). 제네릭 클래스의 타입 매개변수와 제네릭 메서드의 <T> 는 별개(섀도잉 주의). 다이아몬드 new Box<>() 는 왼쪽 선언에서 추론",
+        "함정: 오버라이딩은 런타임 객체 타입(동적), 오버로딩은 컴파일 선언 타입(정적). Object o = \"a\" 에서 o.toString() 은 String 의 것(오버라이딩)이지만 f(o) 는 f(Object)/f(T)(오버로딩). 소거 때문에 void f(List<String>) 과 void f(List<Integer>) 는 같은 시그니처 → 컴파일 에러"
+      ],
+      "terms": [
+        {"term": "제네릭 메서드 (<T> 반환형 이름(T x))", "desc": "반환형 앞에 <T> 를 쓴 메서드. 호출 시 인자 타입으로 T 추론"},
+        {"term": "타입 소거 (Type Erasure)", "desc": "컴파일 후 T 가 Object(또는 바운드)로 바뀌고 캐스팅이 삽입됨. 런타임에 타입 인자 정보 없음"},
+        {"term": "오버로딩 해석 시점 (정적 바인딩)", "desc": "컴파일 시 참조 변수의 선언 타입으로 메서드 선택. 실제 객체 타입은 무시"},
+        {"term": "바운드 타입 (<T extends Number>)", "desc": "T 를 Number 와 그 자식으로 제한. T 변수에서 Number 메서드 호출 가능"},
+        {"term": "와일드카드 (<?>, <? extends T>, <? super T>)", "desc": "미지 타입. extends 는 읽기(상한), super 는 쓰기(하한). PECS"},
+        {"term": "불공변 (Invariance)", "desc": "List<String> 은 List<Object> 의 자식이 아님. 배열(String[]→Object[])은 공변"},
+        {"term": "오토박싱·언박싱 (Autoboxing)", "desc": "int↔Integer 자동 변환. 오버로딩 우선순위에서 기본형 승격보다 뒤"}
+      ],
+      "asked": ["2024-3"]
+    },
+    {
+      "title": "Java static 중첩 클래스·객체 참조 교환·람다 함수형 인터페이스",
+      "importance": 3,
+      "summary": "객체 배열의 swap(arr[0], arr[1])은 참조 값 복사라 원본 배열이 안 바뀌지만 arr[0].v = … 처럼 필드를 바꾸면 원본이 바뀐다. 함수형 인터페이스를 람다로 구현하고, 람다 안에서 던진 예외가 호출한 곳의 catch로 전파되는 순서를 추적한다.",
+      "points": [
+        "참조 복사 vs 필드 변경: Java 는 항상 값 전달. 참조 변수를 넘기면 '주소 값'이 복사되므로 매개변수를 다른 객체로 바꿔도(a = b) 호출자는 모름. 그 주소로 필드를 바꾸면(a.v = 99) 원본 객체가 바뀜. 진짜 교환은 배열 원소 자체를 바꿔야 함\nstatic class P { int v; P(int v) { this.v = v; } }\nstatic void swap(P a, P b) { P t = a; a = b; b = t; }   // 효과 없음\nstatic void setV(P a) { a.v = 99; }                     // 원본 변경\nP[] arr = { new P(1), new P(2) };\nswap(arr[0], arr[1]);\nSystem.out.print(arr[0].v + \"\" + arr[1].v + \" \");   // 12\nsetV(arr[0]);\nSystem.out.print(arr[0].v + \" \");                    // 99\nP t = arr[0]; arr[0] = arr[1]; arr[1] = t;\nSystem.out.println(arr[0].v + \"\" + arr[1].v);        // 299",
+        "static 중첩 클래스는 바깥 인스턴스 없이 new Outer.Nested() 또는 같은 파일 안에서 new Nested(). 바깥 클래스의 static 멤버만 접근. 문제 코드의 'class 안의 static class' 는 사실상 별도 클래스로 읽으면 됨. 비-static 내부 클래스는 바깥 객체 필요: outer.new Inner(), 바깥 인스턴스 필드 접근 가능(Outer.this.x)\nclass Inner { int k = 5; }   // static 없음\nB8 outer = new B8(); B8.Inner in = outer.new Inner();\nSystem.out.println(in.k);  // 5",
+        "함수형 인터페이스 = 추상 메서드가 정확히 1개인 interface(@FunctionalInterface 는 검사용, 생략 가능). 람다 (a, b) -> a + b 가 그 메서드의 구현체. 호출은 변수.메서드명(인자)\n@FunctionalInterface interface Op { int apply(int a, int b); }\nOp add = (a, b) -> a + b;\nOp div = (a, b) -> a / b;\nSystem.out.println(add.apply(3, 4) + \" \" + div.apply(8, 2));  // 7 4",
+        "람다 안 예외는 람다를 '호출한 줄'에서 터진 것과 같다 → 그 줄 이후 try 블록은 건너뛰고 catch → finally. 람다 정의 시점엔 아무 일도 안 일어남\ntry {\n    System.out.print(\"1\");\n    div.apply(1, 0);        // ArithmeticException\n    System.out.print(\"2\");  // 건너뜀\n} catch (ArithmeticException e) { System.out.print(\"9\"); }\nfinally { System.out.println(\"f\"); }\n// 19f",
+        "람다 문법: 매개변수 1개면 괄호 생략 x -> x * 2, 본문이 여러 줄이면 { ...; return v; }. 바깥 지역 변수는 사실상 final 만 캡처. 메서드 참조 System.out::println, Integer::parseInt 는 람다의 축약. 표준 인터페이스: Runnable run(), Supplier<T> get(), Consumer<T> accept(), Function<T,R> apply(), Predicate<T> test(), BiFunction apply(a,b)",
+        "interface 구현 객체를 배열·리스트에 섞어 넣고 for-each 로 같은 메서드를 호출하면 각 구현이 실행(다형성). default 메서드는 구현 생략 가능, static 메서드는 Interface.m() 으로만 호출. 익명 클래스 new Op() { public int apply(...) {...} } 는 람다와 같은 결과이지만 this 가 익명 객체 자신",
+        "함정: 문자열 결합 arr[0].v + \"\" + arr[1].v 는 \"1\"+\"2\"=\"12\" 지만 arr[0].v + arr[1].v + \"\" 는 3. 객체 배열 new P[2] 는 원소가 null 이라 arr[0].v 는 NullPointerException"
+      ],
+      "terms": [
+        {"term": "static 중첩 클래스 (Static Nested Class)", "desc": "바깥 인스턴스 없이 생성. new Outer.Nested(). 바깥 static 멤버만 접근"},
+        {"term": "내부 클래스 (Inner Class, 비-static)", "desc": "바깥 객체에 종속. outer.new Inner(). 바깥 인스턴스 필드 접근 가능"},
+        {"term": "참조 값 전달 (Pass by Value of Reference)", "desc": "매개변수에 주소가 복사됨. 필드 변경은 원본에 반영, 매개변수 재대입은 반영 안 됨"},
+        {"term": "함수형 인터페이스 (@FunctionalInterface)", "desc": "추상 메서드 1개짜리 인터페이스. 람다·메서드 참조의 타입. default/static 메서드는 개수 무관"},
+        {"term": "람다식 (Lambda, (a, b) -> a + b)", "desc": "익명 함수. 함수형 인터페이스 변수에 대입해 메서드명으로 호출"},
+        {"term": "메서드 참조 (Method Reference, ::)", "desc": "System.out::println, String::length. 람다 x -> f(x) 의 축약"},
+        {"term": "익명 클래스 (Anonymous Class)", "desc": "new Interface() { 구현 } 로 즉석 구현. 람다 이전 방식, this 가 자기 자신"},
+        {"term": "사실상 final (Effectively Final)", "desc": "람다·익명 클래스가 캡처하는 지역 변수는 재대입 불가"}
+      ],
+      "asked": ["2024-2", "2025-2"]
+    },
+    {
+      "title": "Python 컴프리헨션·enumerate·중첩 리스트 공유 참조·dict 순회",
+      "importance": 3,
+      "summary": "{k: v for …}·{x for …} 컴프리헨션, enumerate(seq, start) 의 (index, value) 튜플, {i: (sum(r), len(r)) for i, r in enumerate(rows)} 꼴을 손으로 계산한다. [[0]*3]*3 은 같은 내부 리스트를 공유해 한 칸만 바꿔도 모든 행이 바뀐다. dict 는 3.7+ 에서 삽입 순서 유지, items() 로 (key, value) 순회. 2025년 이후 매회 출제.",
+      "points": [
+        "딕셔너리 컴프리헨션 + enumerate(start): enumerate 두 번째 인자가 시작 번호. 값이 튜플이면 괄호째로 적는다\nrows = [[1, 2], [3, 4, 5]]\nprint({i: (sum(r), len(r)) for i, r in enumerate(rows, 1)})  # {1: (3, 2), 2: (12, 3)}\nprint(list(enumerate(\"ab\", 1)))                                # [(1, 'a'), (2, 'b')]",
+        "셋 컴프리헨션은 중복 제거 + 정렬된 듯 보이는 출력(정수는 작은 수부터 해시 순서, 문자열은 순서 보장 없음)\nprint({x % 3 for x in range(10)})  # {0, 1, 2}",
+        "중첩 리스트 공유 참조 함정: [[0]*3]*2 는 내부 리스트 객체 1개를 2번 참조 → 한 칸 바꾸면 전 행이 바뀜. 행마다 새로 만들려면 컴프리헨션\ng = [[0] * 3] * 2\ng[0][0] = 1\nprint(g)  # [[1, 0, 0], [1, 0, 0]]\nh = [[0] * 3 for _ in range(2)]\nh[0][0] = 1\nprint(h)  # [[1, 0, 0], [0, 0, 0]]",
+        "얕은 복사 a[:] · list(a) · a.copy() 는 바깥 리스트만 새로 만들고 내부 리스트는 공유. copy.deepcopy 만 완전 분리\nimport copy\na = [[1], [2]]; b = a[:]; c = copy.deepcopy(a)\nb[0].append(9)\nprint(a, c)  # [[1, 9], [2]] [[1], [2]]",
+        "클래스 변수 dict 순회: 3.7+ 삽입 순서 유지(키 정렬 아님). items() 는 (key, value) 튜플, keys()/values() 단독도 같은 순서. 클래스 변수는 Class.m 과 인스턴스.m 둘 다 같은 객체(인스턴스에서 대입하면 그때 인스턴스 변수가 새로 생김)\nclass K:\n    m = {'b': 2, 'a': 1}\nfor k, v in K.m.items(): print(k, v, end=' ')  # b 2 a 1",
+        "문자열 메서드 체인은 왼쪽부터 순서대로 적용. 반전은 s[::-1] 또는 ''.join(reversed(s))(reversed 는 이터레이터라 join 필수)\ns = \"Hello World\"\nprint(s[::-1], ''.join(reversed(s)))     # dlroW olleH dlroW olleH\nprint(s.lower().replace('l', '').split())  # ['heo', 'word']",
+        "정렬 패턴: sorted(set(s)) 는 중복 제거 후 정렬 리스트. 값 기준 정렬은 key=lambda t: t[1], 내림차순 reverse=True 또는 -t[1]\nprint(sorted(set(\"banana\")))                                           # ['a', 'b', 'n']\nprint([k for k, v in sorted({'x': 3, 'y': 1}.items(), key=lambda t: t[1])])  # ['y', 'x']",
+        "컴프리헨션 읽는 순서: [식 for 변수 in 반복 if 조건] → for 먼저, if 로 걸러, 식 적용. 중첩 [x for r in rows for x in r] 은 바깥 for 가 앞. 조건부 식 [a if c else b for …] 는 if 가 식 안쪽(필터 아님). 제너레이터 (x for …) 는 sum()·max() 에 바로 넣어 쓰고 list() 전엔 출력 안 됨",
+        "dict 조작: d.get(k, 0) + 1 빈도 세기, d.setdefault(k, []).append(v), d.pop(k), k in d 는 키 검사. zip(keys, vals) → dict(zip(...)). 두 dict 병합 {**a, **b} 또는 a | b (3.9+), 뒤쪽 값이 이김"
+      ],
+      "terms": [
+        {"term": "딕셔너리 컴프리헨션 ({k: v for ...})", "desc": "반복하며 키:값 쌍 생성. 중복 키는 마지막 값으로 덮어씀"},
+        {"term": "셋 컴프리헨션 ({x for ...})", "desc": "중복 제거된 집합 생성. 출력 순서는 해시 순(정수는 보통 오름차순처럼 보임)"},
+        {"term": "enumerate(iterable, start=0)", "desc": "(인덱스, 값) 튜플을 내는 이터레이터. start 로 시작 번호 지정"},
+        {"term": "중첩 리스트 공유 참조 ([[0]*n]*m 함정)", "desc": "바깥 * 는 같은 내부 리스트 참조를 복제. 행마다 독립이면 [[0]*n for _ in range(m)]"},
+        {"term": "얕은 복사 vs 깊은 복사 (copy vs deepcopy)", "desc": "a[:], list(a), a.copy() 는 1단계만 복사. copy.deepcopy(a) 는 내부까지 재귀 복사"},
+        {"term": "dict 삽입 순서 보장 (3.7+)", "desc": "키를 넣은 순서대로 items()/keys()/values() 순회. 정렬이 아님"},
+        {"term": "items() / keys() / values()", "desc": "(키, 값) 튜플 / 키 / 값 뷰 객체. for k, v in d.items() 로 언패킹"},
+        {"term": "reversed(s) · s[::-1]", "desc": "reversed 는 이터레이터(join 필요), 슬라이싱은 바로 문자열. 둘 다 반전"},
+        {"term": "클래스 변수 (Class Variable)", "desc": "클래스 본문에 직접 정의. 모든 인스턴스가 공유. 가변 객체(dict/list)면 한쪽 변경이 전체에 보임"}
+      ],
+      "asked": ["2025-2", "2025-3", "2026-1", "2026-2"]
+    },
+    {
+      "title": "알고리즘 패턴: 그리디 거스름돈·분할 정복·시저 암호·방문 배열",
+      "importance": 3,
+      "summary": "거스름돈은 큰 단위부터 m/1000, (m%1000)/500 … 로 개수 누적, 분할 정복은 max(f(l,mid), f(mid+1,r)) 재귀, 시저 암호는 (c - 'A' + k) % 26 + 'A' (isupper/islower 로 분기), 중복 제거는 boolean seen[26] 으로 첫 등장만 출력한다.",
+      "points": [
+        "그리디 거스름돈: 단위 배열을 큰 것부터 돌며 몫은 개수에 더하고 나머지로 갱신. 2780 → 1000×2, 500×1, 100×2, 50×1, 10×3 = 9개\nint m = 2780, u[] = {1000, 500, 100, 50, 10}, cnt = 0;\nfor (int i = 0; i < 5; i++) { cnt += m / u[i]; m %= u[i]; }\nprintf(\"%d\\n\", cnt);  // 9",
+        "분할 정복 최댓값: 구간이 하나면 그 값, 아니면 반으로 나눠 각각 구한 뒤 큰 쪽. 호출 횟수는 2n-1, 깊이 log n\nint mx(int a[], int l, int r) {\n    if (l == r) return a[l];\n    int m = (l + r) / 2, x = mx(a, l, m), y = mx(a, m + 1, r);\n    return x > y ? x : y;\n}\nint a[] = {3, 9, 2, 7, 5};\nprintf(\"%d\\n\", mx(a, 0, 4));  // 9",
+        "시저 암호: 대문자·소문자 각각 기준 문자('A'/'a')를 빼서 0~25 로 만든 뒤 k 더하고 % 26, 다시 기준을 더함. 알파벳 아닌 문자는 그대로. 복호화는 (c - 'A' - k + 26) % 26 + 'A'\nchar s[] = \"Hello, Zz!\"; int k = 3;\nfor (int i = 0; s[i]; i++) {\n    if (isupper(s[i]))      s[i] = (s[i] - 'A' + k) % 26 + 'A';\n    else if (islower(s[i])) s[i] = (s[i] - 'a' + k) % 26 + 'a';\n}\nprintf(\"%s\\n\", s);  // Khoor, Cc!",
+        "방문 배열로 중복 제거(첫 등장만 출력): seen[c-'a'] 가 0일 때만 출력하고 1로. 후위 ++ 라 검사는 0, 이후 1 이 됨\nchar t[] = \"programming\"; int seen[26] = {0};\nfor (int i = 0; t[i]; i++) if (!seen[t[i] - 'a']++) printf(\"%c\", t[i]);\n// progamin",
+        "문자 빈도 배열: cnt[c-'a']++ 로 세고 'a'+i 로 문자 복원. 출력 순서는 알파벳 순(등장 순이 아님)\nint c[26] = {0};\nfor (int i = 0; t[i]; i++) c[t[i] - 'a']++;\nfor (int i = 0; i < 26; i++) if (c[i] > 1) printf(\"%c%d \", 'a' + i, c[i]);  // g2 m2 r2",
+        "Java/Python 대응: 시저 (char)((c - 'A' + k) % 26 + 'A') 캐스팅 필수(int→char), Character.isUpperCase. Python chr((ord(c) - 65 + k) % 26 + 65), c.isupper(). 방문 배열은 Java boolean[] seen = new boolean[26](기본 false), Python set() 에 in 검사. 분할 정복은 Math.max(f(l,mid), f(mid+1,r))",
+        "그리디 함정: 단위 배열이 작은 것부터면 역순 인덱스(i = n-1 → 0). 거스름돈이 단위의 배수가 아닌 조합(예: 1·3·4 로 6)이면 그리디가 최적이 아니지만 기출은 항상 배수 단위. 분할 정복 mid = (l+r)/2 는 내림, 홀수 길이면 왼쪽이 한 개 더"
+      ],
+      "terms": [
+        {"term": "그리디 거스름돈 (Greedy Change)", "desc": "큰 단위부터 몫을 취함. cnt += m / unit; m %= unit. 단위가 서로 배수일 때 최적"},
+        {"term": "분할 정복 (Divide and Conquer)", "desc": "반으로 나눠 재귀로 풀고 합침. 최댓값 max(f(l,m), f(m+1,r)), 병합 정렬, 이진 탐색"},
+        {"term": "시저 암호 (Caesar Cipher)", "desc": "알파벳을 k 칸 이동. (c - 'A' + k) % 26 + 'A'. 대소문자 분기, 비알파벳 유지"},
+        {"term": "isupper / islower / isalpha (ctype.h)", "desc": "문자 분류 함수. 0 또는 0 아닌 값 반환. Java Character.isUpperCase, Python str.isupper()"},
+        {"term": "방문 배열 (visited / boolean seen[])", "desc": "본 적 있는지 표시. seen[c-'a'] 로 중복 제거, 그래프 탐색 재방문 방지"},
+        {"term": "문자 빈도 배열 (cnt[c-'a'])", "desc": "26칸 정수 배열에 등장 횟수 누적. 출력은 알파벳 순 'a'+i"},
+        {"term": "재귀 호출 횟수", "desc": "분할 정복 최댓값·합은 노드 2n-1회, 깊이 ⌈log2 n⌉+1. 문제에서 호출 횟수 묻는 유형"}
+      ],
+      "asked": ["2023-2", "2024-1", "2024-2", "2025-1"]
     }
   ]
 }
