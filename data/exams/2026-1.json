@@ -81,7 +81,7 @@
         "자원",
         "성능"
       ],
-      "explanation": "운영 요구사항: 운영 환경(OS, 플랫폼) 제약.\n자원 요구사항: 메모리·하드웨어 등 사용 자원 제약.\n성능 요구사항: 응답 시간·처리량.\n(복원 자료에서 ①을 품질(이식성)로 본 의견도 있었으나 다수설은 운영) (복원 문제로 표현 차이 있음)",
+      "explanation": "운영 요구사항: 운영 환경(OS, 플랫폼) 제약.\n자원 요구사항: 메모리·하드웨어 등 사용 자원 제약.\n성능 요구사항: 응답 시간·처리량.\n①을 품질(이식성)로 본 수험생도 있었으나 흥달쌤 시트·grandlife·edugamja 복원 모두 운영. 큐넷 확정답안은 미공개. (복원 문제로 표현 차이 있음)",
       "keywords": [
         "비기능적 요구사항",
         "운영",
@@ -92,6 +92,22 @@
     },
     {
       "no": 5,
+      "subject": "소프트웨어 개발 보안 구축",
+      "type": "단답",
+      "question": "정부에서 정한 인증기관이, 기업이 주요 정보자산을 보호하기 위해 수립·관리·운영하는 정보보호 관리체계가 인증 기준에 적합한지 심사하여 인증을 부여하는 제도를 영문 약자로 쓰시오.",
+      "answer": [
+        "ISMS",
+        "정보보호 관리체계"
+      ],
+      "explanation": "ISMS(Information Security Management System): 정보보호 관리체계 인증.\nKISA 등 인증기관이 기준 적합성을 심사해 인증 부여.\n2022년 1회 이후 재출제. (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
+      "keywords": [
+        "ISMS",
+        "정보보호 관리체계"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 6,
       "subject": "응용 SW 기초 기술 활용",
       "type": "빈칸",
       "question": "다음은 HDLC(High-level Data Link Control) 프로토콜에 대한 설명이다. 괄호에 알맞은 용어를 [보기]에서 골라 쓰시오.\n( ① ) 프레임은 사용자 데이터 전달에 사용된다.\n( ② ) 프레임은 흐름 제어와 오류 제어에 사용된다.\n( ③ ) 프레임은 순서 번호가 없는 프레임으로 링크 설정·해제 등 관리에 사용된다.\n( ④ )은/는 두 호스트가 모두 혼합국으로 동작하며 양쪽에서 명령과 응답을 전송할 수 있다.\n( ⑤ )은/는 불균형 모드이며 주국의 허락 없이 종국에서 데이터를 전송할 수 있다.",
@@ -107,7 +123,7 @@
         "비동기 균형 모드(ABM)",
         "비동기 응답 모드(ARM)"
       ],
-      "explanation": "HDLC 프레임: I(정보), S(감독: 흐름·오류 제어), U(비번호: 링크 관리).\n전송 모드: NRM(정규 응답: 주국 허락 필요), ARM(비동기 응답: 종국이 허락 없이 전송), ABM(비동기 균형: 모두 혼합국).\n보기에서 골라 쓰는 형태였음. (복원 문제로 표현 차이 있음)",
+      "explanation": "HDLC 프레임: I(정보), S(감독: 흐름·오류 제어), U(비번호: 링크 관리).\n전송 모드: NRM(정규 응답: 주국 허락 필요), ARM(비동기 응답: 종국이 허락 없이 전송), ABM(비동기 균형: 모두 혼합국).\n보기(I/S/U/NRM/ABM/ARM)에서 골라 쓰는 형태였고 한글·약어 모두 허용될 것으로 봄. (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
       "keywords": [
         "HDLC",
         "I 프레임",
@@ -116,22 +132,6 @@
         "ABM",
         "ARM",
         "NRM"
-      ],
-      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
-    },
-    {
-      "no": 6,
-      "subject": "소프트웨어 개발 보안 구축",
-      "type": "단답",
-      "question": "정부에서 정한 인증기관이, 기업이 주요 정보자산을 보호하기 위해 수립·관리·운영하는 정보보호 관리체계가 인증 기준에 적합한지 심사하여 인증을 부여하는 제도를 영문 약자로 쓰시오.",
-      "answer": [
-        "ISMS",
-        "정보보호 관리체계"
-      ],
-      "explanation": "ISMS(Information Security Management System): 정보보호 관리체계 인증.\nKISA 등 인증기관이 기준 적합성을 심사해 인증 부여.\n2022년 1회 이후 재출제. (복원 문제로 표현 차이 있음)",
-      "keywords": [
-        "ISMS",
-        "정보보호 관리체계"
       ],
       "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
     },
@@ -145,7 +145,7 @@
       "answer": [
         "2"
       ],
-      "explanation": "g()는 A에 정의되어 있고 그 안의 f(\"a\")는 컴파일 시점에 A의 f(Object)로 결정됨(오버로딩은 컴파일 타임 바인딩).\n실행 시점에는 실제 객체 B의 오버라이딩된 f(Object)가 호출 → \"2\".\nB.f(String)은 A에 없으므로 선택 대상이 아님(3이 아님). (복원 문제로 표현 차이 있음)",
+      "explanation": "g()는 A에 정의되어 있고 그 안의 f(\"a\")는 컴파일 시점에 A의 f(Object)로 결정됨(오버로딩은 컴파일 타임 바인딩).\n실행 시점에는 실제 객체 B의 오버라이딩된 f(Object)가 호출 → \"2\".\nB.f(String)은 A에 없으므로 선택 대상이 아님(3이 아님). (복원 문제로 표현 차이 있음)\n시험 직후 수험생 사이에서 2 vs 3 논란이 있었으나(f(String) 오버로딩을 고른 쪽이 3), 흥달쌤 시트·grandlife·brunch 복기·edugamja 모두 2로 확정.",
       "keywords": [
         "상속",
         "오버라이딩",
@@ -198,6 +198,32 @@
     },
     {
       "no": 10,
+      "subject": "SQL 응용",
+      "type": "SQL",
+      "lang": "SQL",
+      "question": "다음은 테이블을 생성하면서 외래키 제약조건을 정의하는 SQL문이다. 괄호에 알맞은 용어를 쓰시오. (TEAM_TF는 제약조건 이름, TEAM_ID는 외래키 컬럼, 참조 테이블의 기본키는 TEAM_ID2이다.)",
+      "code": "CREATE TABLE PLAYER (\n    ...\n    ( ① ) TEAM_TF ( ② ) KEY ( ③ ) ( ④ ) TEAM( ⑤ )\n);",
+      "answer": [
+        "① CONSTRAINT, ② FOREIGN, ③ TEAM_ID, ④ REFERENCES, ⑤ TEAM_ID2"
+      ],
+      "blanks": [
+        "CONSTRAINT",
+        "FOREIGN",
+        "TEAM_ID",
+        "REFERENCES",
+        "TEAM_ID2"
+      ],
+      "explanation": "제약조건 이름 지정: CONSTRAINT 이름.\n외래키 선언: FOREIGN KEY(컬럼) REFERENCES 참조테이블(참조컬럼).\n→ CONSTRAINT TEAM_TF FOREIGN KEY (TEAM_ID) REFERENCES TEAM(TEAM_ID2) (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
+      "keywords": [
+        "CREATE TABLE",
+        "CONSTRAINT",
+        "FOREIGN KEY",
+        "REFERENCES"
+      ],
+      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
+    },
+    {
+      "no": 11,
       "subject": "응용 SW 기초 기술 활용",
       "type": "단답",
       "question": "서브넷 마스크가 255.255.254.0일 때, 다음 IP 주소가 속한 네트워크 주소를 CIDR 표기법으로 쓰시오.\n① 192.168.11.20\n② 192.168.12.200",
@@ -208,30 +234,11 @@
         "192.168.10.0/23",
         "192.168.12.0/23"
       ],
-      "explanation": "255.255.254.0 = 1이 23개 → /23. 3번째 옥텟은 2 단위로 묶임(짝수 시작).\n192.168.11.x → 10~11 블록 → 192.168.10.0/23.\n192.168.12.x → 12~13 블록 → 192.168.12.0/23. (복원 문제로 표현 차이 있음)",
+      "explanation": "255.255.254.0 = 1이 23개 → /23. 3번째 옥텟은 2 단위로 묶임(짝수 시작).\n192.168.11.x → 10~11 블록 → 192.168.10.0/23.\n192.168.12.x → 12~13 블록 → 192.168.12.0/23. (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
       "keywords": [
         "서브넷 마스크",
         "CIDR",
         "네트워크 주소"
-      ],
-      "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
-    },
-    {
-      "no": 11,
-      "subject": "SQL 응용",
-      "type": "SQL",
-      "lang": "SQL",
-      "question": "다음 두 테이블에 대해 SQL문을 실행했을 때 출력되는 값을 쓰시오.\n[EMPLOYEE] (name, dept_id): 3개 행, dept_id = 10, 20, 20\n[DEPT] (dept_id, budget): (10, 100), (20, 300), (30, 200)",
-      "code": "SELECT COUNT(*) FROM EMPLOYEE E JOIN DEPT D\n    ON E.dept_id = D.dept_id\nWHERE D.budget > (SELECT AVG(budget) FROM DEPT);",
-      "answer": [
-        "2"
-      ],
-      "explanation": "DEPT 평균 budget = (100+300+200)/3 = 200.\nbudget > 200인 부서는 20 하나.\nEMPLOYEE에서 dept_id=20인 행이 2개이므로 조인 결과 2행 → 2.\n(복원 자료에서 테이블명 표기 오류 논란이 있었음) (복원 문제로 표현 차이 있음)",
-      "keywords": [
-        "JOIN",
-        "서브쿼리",
-        "AVG",
-        "COUNT"
       ],
       "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
     },
@@ -293,26 +300,21 @@
     },
     {
       "no": 15,
-      "subject": "애플리케이션 테스트 관리",
+      "subject": "소프트웨어 개발 보안 구축",
       "type": "단답",
-      "question": "통합 테스트에서 사용하는 더미 모듈에 대한 설명이다. 괄호에 알맞은 용어를 쓰시오.\n① 하향식 통합 테스트에서 아직 구현되지 않은 하위 모듈을 대체하는 모듈\n② 상향식 통합 테스트에서 상위 모듈 역할을 대신하여 하위 모듈을 호출·테스트하는 모듈",
+      "question": "다음 설명에 해당하는 용어를 [보기]에서 골라 쓰시오.\n원본 데이터 파일은 따로 존재하고, 이 파일은 원본 파일의 경로를 가리키기만 한다. 레이스 컨디션 공격에서 프로그램이 사용하는 임시 파일을 공격자가 만든 이 링크로 바꿔 놓아 원본 파일을 조작하는 데 악용된다.\n[보기] 하이퍼링크, 가상 패스 링크, 스태커 링크, 심볼릭 링크, 하드 링크",
       "answer": [
-        "① 스텁, ② 드라이버",
-        "① 테스트 스텁, ② 테스트 드라이버",
-        "① Stub, ② Driver",
-        "① Test Stub, ② Test Driver"
+        "심볼릭 링크",
+        "심볼릭링크",
+        "Symbolic Link",
+        "Symlink",
+        "소프트 링크"
       ],
-      "blanks": [
-        "스텁",
-        "드라이버"
-      ],
-      "explanation": "하향식: 상위부터 통합, 하위 모듈 대신 스텁(Stub) 사용.\n상향식: 하위부터 통합, 상위 모듈 대신 드라이버(Driver) 사용. (복원 문제로 표현 차이 있음)",
+      "explanation": "심볼릭 링크(소프트 링크): 원본 파일의 경로를 담은 별도의 파일(inode 다름).\n레이스 컨디션(TOCTOU) 공격에서 임시 파일을 심볼릭 링크로 바꿔 원본 파일을 덮어쓰게 함.\n하드 링크는 같은 inode를 공유하므로 설명과 다름. (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
       "keywords": [
-        "통합 테스트",
-        "스텁",
-        "드라이버",
-        "하향식",
-        "상향식"
+        "심볼릭 링크",
+        "레이스 컨디션",
+        "하드 링크"
       ],
       "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
     },
@@ -359,44 +361,42 @@
       "subject": "SQL 응용",
       "type": "SQL",
       "lang": "SQL",
-      "question": "다음은 테이블을 생성하면서 외래키 제약조건을 정의하는 SQL문이다. 괄호에 알맞은 용어를 쓰시오. (TEAM_TF는 제약조건 이름, TEAM_ID는 외래키 컬럼, 참조 테이블의 기본키는 TEAM_ID2이다.)",
-      "code": "CREATE TABLE PLAYER (\n    ...\n    ( ① ) TEAM_TF ( ② ) KEY ( ③ ) ( ④ ) TEAM( ⑤ )\n);",
+      "question": "다음 두 테이블에 대해 SQL문을 실행했을 때 출력되는 값을 쓰시오.\n[EMPLOYEE] (name, dept_id): 3개 행, dept_id = 10, 20, 20\n[DEPT] (dept_id, budget): (10, 100), (20, 300), (30, 200)",
+      "code": "SELECT COUNT(*) FROM EMPLOYEE E JOIN DEPT D\n    ON E.dept_id = D.dept_id\nWHERE D.budget > (SELECT AVG(budget) FROM DEPT);",
       "answer": [
-        "① CONSTRAINT, ② FOREIGN, ③ TEAM_ID, ④ REFERENCES, ⑤ TEAM_ID2"
+        "2"
       ],
-      "blanks": [
-        "CONSTRAINT",
-        "FOREIGN",
-        "TEAM_ID",
-        "REFERENCES",
-        "TEAM_ID2"
-      ],
-      "explanation": "제약조건 이름 지정: CONSTRAINT 이름.\n외래키 선언: FOREIGN KEY(컬럼) REFERENCES 참조테이블(참조컬럼).\n→ CONSTRAINT TEAM_TF FOREIGN KEY (TEAM_ID) REFERENCES TEAM(TEAM_ID2) (복원 문제로 표현 차이 있음)",
+      "explanation": "DEPT 평균 budget = (100+300+200)/3 = 200.\nbudget > 200인 부서는 20 하나.\nEMPLOYEE에서 dept_id=20인 행이 2개이므로 조인 결과 2행 → 2.\n부서가 하나라 1로 쓴 수험생이 많았으나 사원 2명이 조인되므로 2(복원 소스 모두 2). 시험지 테이블명 오타(employess/employees) 주장이 있었으나 전원정답 처리는 확인되지 않음. (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
       "keywords": [
-        "CREATE TABLE",
-        "CONSTRAINT",
-        "FOREIGN KEY",
-        "REFERENCES"
+        "JOIN",
+        "서브쿼리",
+        "AVG",
+        "COUNT"
       ],
       "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
     },
     {
       "no": 19,
-      "subject": "소프트웨어 개발 보안 구축",
+      "subject": "애플리케이션 테스트 관리",
       "type": "단답",
-      "question": "다음 설명에 해당하는 용어를 [보기]에서 골라 쓰시오.\n원본 데이터 파일은 따로 존재하고, 이 파일은 원본 파일의 경로를 가리키기만 한다. 레이스 컨디션 공격에서 프로그램이 사용하는 임시 파일을 공격자가 만든 이 링크로 바꿔 놓아 원본 파일을 조작하는 데 악용된다.\n[보기] 하이퍼링크, 가상 패스 링크, 스태커 링크, 심볼릭 링크, 하드 링크",
+      "question": "통합 테스트에서 사용하는 더미 모듈에 대한 설명이다. 괄호에 알맞은 용어를 쓰시오.\n① 하향식 통합 테스트에서 아직 구현되지 않은 하위 모듈을 대체하는 모듈\n② 상향식 통합 테스트에서 상위 모듈 역할을 대신하여 하위 모듈을 호출·테스트하는 모듈",
       "answer": [
-        "심볼릭 링크",
-        "심볼릭링크",
-        "Symbolic Link",
-        "Symlink",
-        "소프트 링크"
+        "① 스텁, ② 드라이버",
+        "① 테스트 스텁, ② 테스트 드라이버",
+        "① Stub, ② Driver",
+        "① Test Stub, ② Test Driver"
       ],
-      "explanation": "심볼릭 링크(소프트 링크): 원본 파일의 경로를 담은 별도의 파일(inode 다름).\n레이스 컨디션(TOCTOU) 공격에서 임시 파일을 심볼릭 링크로 바꿔 원본 파일을 덮어쓰게 함.\n하드 링크는 같은 inode를 공유하므로 설명과 다름. (복원 문제로 표현 차이 있음)",
+      "blanks": [
+        "스텁",
+        "드라이버"
+      ],
+      "explanation": "하향식: 상위부터 통합, 하위 모듈 대신 스텁(Stub) 사용.\n상향식: 하위부터 통합, 상위 모듈 대신 드라이버(Driver) 사용. (복원 문제로 표현 차이 있음)\n문항 번호는 grandlife·k-bigdata-portal 교차검증 복원 기준(흥달쌤 시트에는 번호 없음).",
       "keywords": [
-        "심볼릭 링크",
-        "레이스 컨디션",
-        "하드 링크"
+        "통합 테스트",
+        "스텁",
+        "드라이버",
+        "하향식",
+        "상향식"
       ],
       "source": "https://docs.google.com/spreadsheets/d/1BRWr-6JLwuW3LQs35ZTemBdd23oYx6T4lhapYACcVbA/htmlview"
     },
@@ -416,7 +416,7 @@
         "교환적(통신적)",
         "기능적"
       ],
-      "explanation": "응집도 (약→강): 우연적 < 논리적 < 시간적 < 절차적 < 교환적(통신적) < 순차적 < 기능적.\n절차적: 순서대로 수행. 교환적(통신적): 동일 입출력 공유. 기능적: 단일 기능.\n순차적은 출력이 다음 입력이 되는 경우로 구분. (복원 문제로 표현 차이 있음)",
+      "explanation": "응집도 (약→강): 우연적 < 논리적 < 시간적 < 절차적 < 교환적(통신적) < 순차적 < 기능적.\n절차적: 순서대로 수행. 교환적(통신적): 동일 입출력 공유. 기능적: 단일 기능.\n순차적은 출력이 다음 입력이 되는 경우로 구분. (복원 문제로 표현 차이 있음)\n①을 순차적·시간적으로 본 의견도 있었으나 복원 소스(흥달쌤 시트·grandlife·edugamja) 모두 절차적.",
       "keywords": [
         "응집도",
         "절차적",
