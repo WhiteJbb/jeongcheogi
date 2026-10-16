@@ -42,6 +42,11 @@ table{border-collapse:collapse;width:100%;font-size:.93rem}td,th{border-bottom:1
 ul{margin:6px 0;padding-left:20px}
 .topic-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 details summary{cursor:pointer;color:var(--accent)}
+.strip{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}.strip a{width:30px;height:30px;line-height:30px;text-align:center;border-radius:6px;border:1px solid var(--line);font-size:.8rem;color:var(--fg)}
+.strip a.on{outline:2px solid var(--accent)}.strip a.ok{background:var(--okbg);color:var(--ok)}.strip a.bad{background:var(--badbg);color:var(--bad)}
+.timer{position:sticky;top:56px;z-index:8;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 14px;display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.score{font-size:2.4rem;font-weight:800}
+.hint{font-size:.8rem;color:var(--muted);margin-top:4px}
 .hl{background:#fde68a;color:#000;border-radius:2px}
 </style>
 </head>
@@ -80,6 +85,7 @@ function route(){
   if(p[0]==='subject'){const s=dec(p[1]);return quiz(Q.filter(q=>q.subject===s),ix(p[2]),s,`/subject/${p[1]}`)}
   if(p[0]==='random'){const seed=+p[1]||Date.now()%1e9;if(!p[1])return go(`/random/${seed}/1`);return quiz(shuffle(Q,seed).slice(0,20),ix(p[2]),`랜덤 모의고사 #${seed}`,`/random/${seed}`)}
   if(p[0]==='wrong'){if(!WRONG||ix(p[1])===0)WRONG=Q.filter(q=>P[q.id]&&P[q.id].ok===false);const l=WRONG;if(!l.length)return app.innerHTML='<h1>오답노트</h1><div class="card">틀린 문제가 없습니다. 기출을 풀면 틀린 문제가 여기에 모입니다.</div>';return quiz(l,ix(p[1]),`오답노트 (${l.length}문항)`,'/wrong')}
+  if(p[0]==='mock'){if(!p[1])return go(`/mock/r${Date.now()%1e9}`);return mock(p[1])}
   if(p[0]==='concepts')return concepts(p[1]);
   if(p[0]==='cards')return cards(p[1]);
   if(p[0]==='search')return search(dec((qs||'').replace(/^q=/,'')));
@@ -93,14 +99,21 @@ function home(onlyExams){
     <div><b>${Q.length}</b><span class="muted">기출 문항</span></div><div><b>${done.length}</b><span class="muted">풀어본 문항</span></div>
     <div><b>${done.length?Math.round(ok/done.length*100):0}%</b><span class="muted">정답률</span></div>
     <div><b>${done.length-ok}</b><span class="muted">오답노트</span></div></div>
-    <div class="row"><button class="pri" onclick="go('/random')">랜덤 모의고사 20문항</button><button onclick="go('/wrong')">오답 다시 풀기</button><button onclick="go('/cards')">용어 암기카드</button>
+    <div class="row"><button class="pri" onclick="go('/mock')">실전 모의고사 (20문항·150분·채점)</button><button onclick="go('/random')">랜덤 연습 20문항</button><button onclick="go('/wrong')">오답 다시 풀기</button><button onclick="go('/cards')">용어 암기카드</button>
     <button onclick="if(confirm('풀이 기록을 모두 지울까요?')){localStorage.removeItem('jcg.progress');P={};route()}" class="muted" style="margin-left:auto">기록 초기화</button></div></div>`;
   const exams=[...D.exams].sort((a,b)=>b.year-a.year||b.round-a.round).map(e=>{
     const l=Q.filter(q=>q.exam===`${e.year}-${e.round}`),d=l.filter(q=>P[q.id]),o=d.filter(q=>P[q.id].ok);
     return `<div class="card" onclick="go('/exam/${e.year}-${e.round}/1')"><h3>${roundName(e)}</h3><div class="muted">${l.length}문항 · ${e.date||''}</div>
-    <div class="muted">${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'}</div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('');
+    <div class="muted">${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'} · <a href="#/mock/${e.year}-${e.round}" onclick="event.stopPropagation()">실전</a></div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('');
   const subj=SUBJECTS.map(s=>{const l=Q.filter(q=>q.subject===s),d=l.filter(q=>P[q.id]);return `<div class="card" onclick="go('/subject/${encodeURIComponent(s)}/1')"><h3>${esc(s)}</h3><div class="muted">${l.length}문항 · 풀이 ${d.length}</div></div>`}).join('');
-  app.innerHTML=`${stats}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>과목별 기출</h2><div class="grid">${subj}</div>`;
+  const mocks=(ls('jcg.mocks').list||[]).slice(-8);
+  const mockHtml=mocks.length?`<h2>최근 실전 모의고사</h2><div class="card"><div class="row">${mocks.map(m=>`<a href="#/mock/${m.id}" class="chip" style="font-size:1rem;color:${m.score>=60?'var(--ok)':'var(--bad)'}">${m.score}점</a>`).join('')}<span class="muted" style="margin-left:auto">60점 이상 합격 · 최근 ${mocks.length}회 평균 ${Math.round(mocks.reduce((a,m)=>a+m.score,0)/mocks.length)}점</span></div></div>`:'';
+  const weak=SUBJECTS.map(s=>{const l=Q.filter(q=>q.subject===s&&P[q.id]);return {s,n:l.length,ok:l.filter(q=>P[q.id].ok).length}}).filter(x=>x.n>=3).sort((a,b)=>a.ok/a.n-b.ok/b.n);
+  const weakHtml=weak.length?`<h2>과목별 정답률</h2><div class="card">${weak.map(x=>`<div class="row" style="margin:4px 0"><span style="min-width:200px">${esc(x.s)}</span><div class="bar" style="flex:1;margin:0"><i style="width:${x.ok/x.n*100}%;background:${x.ok/x.n<.6?'var(--bad)':'var(--ok)'}"></i></div><span class="muted" style="min-width:90px;text-align:right">${Math.round(x.ok/x.n*100)}% (${x.ok}/${x.n})</span></div>`).join('')}<div class="hint">3문항 이상 푼 과목만. 빨간색이 약점 과목 → 과목별 기출로 보강</div></div>`:'';
+  const kw={};Q.forEach(q=>(q.keywords||[]).forEach(k=>{k=k.trim();kw[k]=(kw[k]||0)+1}));
+  const top=Object.entries(kw).filter(([,n])=>n>=3).sort((a,b)=>b[1]-a[1]).slice(0,40);
+  const topHtml=top.length?`<h2>빈출 키워드 <span class="muted" style="font-size:.85rem;font-weight:400">3회 이상 출제 · 클릭하면 관련 문제·개념 검색</span></h2><div class="card">${top.map(([k,n])=>`<a class="chip" href="#/search?q=${encodeURIComponent(k)}">${esc(k)} <b>${n}</b></a>`).join('')}</div>`:'';
+  app.innerHTML=`${stats}${onlyExams?'':mockHtml+weakHtml}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>과목별 기출</h2><div class="grid">${subj}</div>${onlyExams?'':topHtml}`;
 }
 
 /* ---------- 문제 풀이 ---------- */
@@ -111,14 +124,14 @@ function quiz(list,idx,title,base){
   idx=Math.max(0,Math.min(idx,list.length-1));const q=list[idx];cur={list,idx,base,q};
   const st=P[q.id];const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;const lab=blankLabels(q);
   const inputs=blanks?blanks.map((_,i)=>`<div class="row"><span style="min-width:2em">${lab[i]}</span><input class="ans" data-i="${i}" autocomplete="off"></div>`).join('')
-    :`<textarea id="ans" placeholder="${q.type==='서술'?'서술형: 답을 작성 후 정답과 비교해 스스로 채점하세요':'답 입력 후 Enter'}"></textarea>`;
+    :`<textarea id="ans" placeholder="${q.type==='서술'?'서술형: 답을 작성 후 정답과 비교해 스스로 채점하세요':'답 입력'}"></textarea><div class="hint">Enter 제출 · Shift+Enter 줄바꿈 (채점은 공백·대소문자 무시)</div>`;
   app.innerHTML=`<div class="muted"><a href="#${base.startsWith('/exam')?'/exams':'/'}">← 목록</a> · ${esc(title)}</div>
   <h1>${idx+1} / ${list.length} <span class="muted" style="font-size:.9rem;font-weight:400">${q.exam} ${q.no}번</span></h1>
-  <div class="bar"><i style="width:${(idx+1)/list.length*100}%"></i></div>
-  <div class="card" style="margin-top:14px"><div><span class="chip">${esc(q.subject)}</span><span class="chip">${esc(q.type)}${q.lang?' · '+esc(q.lang):''}</span>${st?`<span class="chip" style="color:${st.ok?'var(--ok)':'var(--bad)'}">이전 풀이: ${st.ok?'정답':'오답'}</span>`:''}</div>
+  <div class="strip">${list.map((x,i)=>`<a href="#${base}/${i+1}" class="${i===idx?'on ':''}${P[x.id]?P[x.id].ok?'ok':'bad':''}" title="${x.exam} ${x.no}번">${i+1}</a>`).join('')}</div>
+  <div class="card"><div><span class="chip">${esc(q.subject)}</span><span class="chip">${esc(q.type)}${q.lang?' · '+esc(q.lang):''}</span>${st?`<span class="chip" style="color:${st.ok?'var(--ok)':'var(--bad)'}">이전 풀이: ${st.ok?'정답':'오답'}</span>`:''}</div>
   <p class="q">${esc(q.question)}</p>${q.code?`<pre><code>${esc(q.code)}</code></pre>`:''}
   <div id="in">${inputs}</div>
-  <div class="row"><button class="pri" id="check">정답 확인</button><button id="skip">모르겠음 (정답 보기)</button></div>
+  <div class="row"><button class="pri" id="check">정답 확인</button><button id="skip">모르겠음 (정답 보기 · 오답 기록)</button></div>
   <div id="out"></div></div>
   <div class="row"><button id="prev" ${idx===0?'disabled':''}>← 이전</button><button id="next" ${idx===list.length-1?'disabled':''}>다음 →</button>
   <span class="muted" style="margin-left:auto">${q.source?`<a href="${esc(q.source)}" target="_blank" rel="noopener">출처</a>`:''}</span></div>`;
@@ -140,7 +153,7 @@ function check(skip){
     if(q.type==='서술'&&!skip)ok=null;
   }
   const auto=ok!==null;
-  $('#out').innerHTML=`${auto?`<div class="res ${ok?'ok':'bad'}">${ok?'정답입니다!':skip?'정답을 확인하세요':'오답입니다'}</div>`:`<div class="res" style="background:var(--chip)">서술형 — 정답과 비교해 스스로 채점하세요</div>`}
+  $('#out').innerHTML=`${auto?`<div class="res ${ok?'ok':'bad'}">${ok?'정답입니다!':skip?'정답 공개 — 오답으로 기록됨':'오답입니다'}</div>`:`<div class="res" style="background:var(--chip)">서술형 — 정답과 비교해 스스로 채점하세요</div>`}
   <div class="ans-box"><div class="muted">정답</div>${detail||`<div class="q"><b>${esc(q.answer.join('  /  '))}</b></div>`}
   ${q.explanation?`<div class="muted" style="margin-top:8px">해설</div><div class="q">${esc(q.explanation)}</div>`:''}
   ${q.keywords&&q.keywords.length?`<div style="margin-top:8px">${q.keywords.map(k=>`<a class="chip" href="#/search?q=${encodeURIComponent(k)}">${esc(k)}</a>`).join('')}</div>`:''}</div>
@@ -150,6 +163,50 @@ function check(skip){
   $('#mok').onclick=()=>{mark(true);$('#out .res').className='res ok';$('#out .res').textContent='정답으로 기록'};
   $('#mbad').onclick=()=>{mark(false);$('#out .res').className='res bad';$('#out .res').textContent='오답으로 기록'};
   const n=$('#go-next');if(n){n.onclick=()=>go(`${cur.base}/${idx+2}`);setTimeout(()=>n.focus(),0)}
+}
+
+/* ---------- 실전 모의고사 ---------- */
+let MOCK=null;
+function mock(id){
+  const seed=id.startsWith('r')?+id.slice(1):null;const e=seed===null?examOf(id):null;
+  const list=seed!==null?shuffle(Q,seed).slice(0,20):e?Q.filter(q=>q.exam===id):null;
+  if(!list||!list.length)return go('/mock');
+  const title=seed!==null?`실전 모의고사 #${seed}`:`${roundName(e)} 실전`;
+  if(MOCK&&MOCK.id===id&&MOCK.done)return mockResult();
+  MOCK={id,list,title,start:Date.now(),done:false,ans:{},self:{}};
+  const lab=q=>blankLabels(q);
+  app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(title)}</div><h1>${esc(title)}</h1>
+  <div class="timer"><b id="clock">150:00</b><span class="muted">실제 시험: 20문항 × 5점, 150분, 60점 합격. 모르면 비워 두세요.</span><button class="pri" id="submit" style="margin-left:auto">제출·채점</button></div>
+  ${list.map((q,i)=>`<div class="card" id="q${i}"><div><b>${i+1}.</b> <span class="chip">${esc(q.subject)}</span><span class="chip">${esc(q.type)}${q.lang?' · '+esc(q.lang):''}</span></div>
+  <p class="q">${esc(q.question)}</p>${q.code?`<pre><code>${esc(q.code)}</code></pre>`:''}
+  ${q.blanks&&q.blanks.length>1?q.blanks.map((_,j)=>`<div class="row"><span style="min-width:2em">${lab(q)[j]}</span><input class="ans" data-q="${i}" data-i="${j}" autocomplete="off"></div>`).join(''):`<textarea data-q="${i}" rows="2"></textarea>`}</div>`).join('')}
+  <div class="row"><button class="pri" id="submit2">제출·채점</button></div>`;
+  const tick=()=>{if(!MOCK||MOCK.done)return;const left=150*60-Math.floor((Date.now()-MOCK.start)/1000);const c=$('#clock');if(!c)return;c.textContent=`${String(Math.max(0,Math.floor(left/60))).padStart(3,'0')}:${String(Math.max(0,left%60)).padStart(2,'0')}`;if(left<=0)return submit(true);setTimeout(tick,1000)};tick();
+  const submit=force=>{if(MOCK.done)return;if(force!==true&&!confirm('제출하고 채점할까요?'))return;
+    app.querySelectorAll('[data-q]').forEach(el=>{const i=+el.dataset.q;if(el.dataset.i!==undefined){(MOCK.ans[i]=MOCK.ans[i]||[])[+el.dataset.i]=el.value}else MOCK.ans[i]=el.value});
+    MOCK.done=true;mockResult()};
+  $('#submit').onclick=submit;$('#submit2').onclick=submit;
+}
+function mockScore(q,i){
+  const a=MOCK.ans[i];
+  if(q.type==='서술')return MOCK.self[i]?5:0;
+  if(q.blanks&&q.blanks.length>1){const got=a||[];const n=q.blanks.filter((b,j)=>b.split('|').some(alt=>norm(alt)===norm(got[j]||''))).length;return Math.round(5*n/q.blanks.length*10)/10}
+  return q.answer.some(x=>norm(x)===norm(a||''))?5:0;
+}
+function mockResult(){
+  const {list,title,id}=MOCK;const scores=list.map(mockScore);const total=Math.round(scores.reduce((a,b)=>a+b,0)*10)/10;
+  list.forEach((q,i)=>{if(q.type!=='서술'||MOCK.self[i]!==undefined)P[q.id]={ok:scores[i]>=5,at:Date.now(),tries:((P[q.id]||{}).tries||0)+1}});ls('jcg.progress',P);
+  const M=ls('jcg.mocks');M.list=(M.list||[]).filter(m=>m.id!==id||m.at!==MOCK.start);M.list.push({id,at:MOCK.start,score:total});ls('jcg.mocks',M);
+  const lab=q=>blankLabels(q);
+  app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(title)}</div><h1>${esc(title)} 결과</h1>
+  <div class="card" style="text-align:center"><div class="score" style="color:${total>=60?'var(--ok)':'var(--bad)'}">${total}점</div><div>${total>=60?'합격권입니다':'불합격 — 60점까지 '+Math.round((60-total)*10)/10+'점 부족'}</div>
+  <div class="hint">서술형은 아래에서 직접 채점하면 점수에 반영됩니다. 틀린 문제는 오답노트에 들어갑니다.</div><div class="row" style="justify-content:center"><button onclick="MOCK=null;go('/mock')">새 랜덤 모의고사</button><button onclick="go('/wrong')">오답노트</button></div></div>
+  ${list.map((q,i)=>{const a=MOCK.ans[i];const mine=Array.isArray(a)?a.map((v,j)=>`${lab(q)[j]} ${v||'—'}`).join('  '):(a||'—');const s=scores[i];
+    return `<div class="card ${s>=5?'':s>0?'':''}" style="border-left:4px solid ${s>=5?'var(--ok)':s>0?'#f59e0b':'var(--bad)'}"><div><b>${i+1}.</b> <span class="chip">${esc(q.subject)}</span> <b style="float:right">${s}점</b></div>
+    <p class="q">${esc(q.question)}</p>${q.code?`<details><summary>코드 보기</summary><pre><code>${esc(q.code)}</code></pre></details>`:''}
+    <div class="ans-box"><div><span class="muted">내 답</span> <span class="q">${esc(mine)}</span></div><div style="margin-top:6px"><span class="muted">정답</span> <b class="q">${esc(q.blanks&&q.blanks.length>1?q.blanks.map((b,j)=>`${lab(q)[j]} ${b.split('|')[0]}`).join('  '):q.answer.join(' / '))}</b></div>
+    ${q.explanation?`<div class="muted" style="margin-top:6px">해설</div><div class="q">${esc(q.explanation)}</div>`:''}
+    ${q.type==='서술'?`<div class="row"><span class="muted">서술형 자기 채점:</span><button onclick="MOCK.self[${i}]=true;mockResult()" ${MOCK.self[i]?'class="pri"':''}>맞았어요 (5점)</button><button onclick="MOCK.self[${i}]=false;mockResult()" ${MOCK.self[i]===false?'class="pri"':''}>틀렸어요</button></div>`:''}</div></div>`}).join('')}`;
 }
 
 /* ---------- 개념 ---------- */
