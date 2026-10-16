@@ -75,10 +75,10 @@ const go=h=>location.hash=h;
 // 실제 시험 분포(2024~2026 평균)로 20문항 추출: 코드 C3·Java3·Python2, SQL 2, 나머지 단답·빈칸 10. 2023년 이후 문항에 가중치.
 function stratified(seed){const r=rng(seed);const rnd=arr=>arr.map(q=>[r(),q]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
   const pick=(arr,n)=>{const k=Math.round(n*0.65);const re=rnd(arr.filter(q=>q.year>=2023)).slice(0,k);return [...re,...rnd(arr.filter(q=>!re.includes(q))).slice(0,n-re.length)]};
-  const code=l=>Q.filter(q=>q.type==='코드'&&q.lang===l);const sql=Q.filter(q=>q.subject==='SQL 응용');
+  const code=l=>Q.filter(q=>q.lang===l);const sql=Q.filter(q=>q.subject==='SQL 응용');
   const used=new Set();const take=(arr,n)=>{const t=pick(arr.filter(q=>!used.has(q.id)),n);t.forEach(q=>used.add(q.id));return t};
   const out=[...take(code('C'),3),...take(code('Java'),3),...take(code('Python'),2),...take(sql,2)];
-  return shuffle([...out,...take(Q.filter(q=>q.type!=='코드'&&q.type!=='서술'&&q.subject!=='SQL 응용'),20-out.length)],seed)}
+  return shuffle([...out,...take(Q.filter(q=>!q.lang&&q.type!=='서술'&&q.subject!=='SQL 응용'),20-out.length)],seed)}
 const ix=v=>(Math.floor(+v)||1)-1;const dec=v=>{try{return decodeURIComponent(v)}catch{return v}};
 let WRONG=null;
 
@@ -86,14 +86,15 @@ let WRONG=null;
 function route(){
   const h=location.hash.replace(/^#/,'')||'/';const [path,qs]=h.split('?');const p=path.split('/').filter(Boolean);
   document.querySelectorAll('nav a[data-nav]').forEach(a=>a.classList.toggle('on',path===a.dataset.nav||(a.dataset.nav!=='/'&&path.startsWith(a.dataset.nav))));
-  window.scrollTo(0,0);document.onkeydown=null;
+  window.scrollTo(0,0);document.onkeydown=null;app.oninput=null;
   if(p[0]==='exams')return home(true);
   if(p[0]==='exam'){const e=examOf(p[1]);if(!e)return home();return quiz(Q.filter(q=>q.exam===p[1]),ix(p[2]),roundName(e),`/exam/${p[1]}`)}
-  if(p[0]==='lang'){const L=dec(p[1]);const l=L==='SQL'?Q.filter(q=>q.subject==='SQL 응용'):Q.filter(q=>q.type==='코드'&&q.lang===L);return quiz(l,ix(p[2]),`${L} 집중 풀이`,`/lang/${p[1]}`)}
+  if(p[0]==='lang'){const L=dec(p[1]);const l=L==='SQL'?Q.filter(q=>q.subject==='SQL 응용'):Q.filter(q=>q.lang===L);return quiz(l,ix(p[2]),`${L} 집중 풀이`,`/lang/${p[1]}`)}
   if(p[0]==='subject'){const s=dec(p[1]);return quiz(Q.filter(q=>q.subject===s),ix(p[2]),s,`/subject/${p[1]}`)}
   if(p[0]==='random'){const seed=+p[1]||Date.now()%1e9;if(!p[1])return go(`/random/${seed}/1`);return quiz(shuffle(Q,seed).slice(0,20),ix(p[2]),`랜덤 모의고사 #${seed}`,`/random/${seed}`)}
   if(p[0]==='wrong'){if(!WRONG||ix(p[1])===0)WRONG=Q.filter(q=>P[q.id]&&P[q.id].ok===false);const l=WRONG;if(!l.length)return app.innerHTML='<h1>오답노트</h1><div class="card">틀린 문제가 없습니다. 기출을 풀면 틀린 문제가 여기에 모입니다.</div>';return quiz(l,ix(p[1]),`오답노트 (${l.length}문항)`,'/wrong')}
   if(p[0]==='mock'){if(!p[1])return go(`/mock/r${Date.now()%1e9}`);return mock(p[1])}
+  if(p[0]==='mockr'){const rec=(ls('jcg.mocks').list||[]).find(m=>String(m.at)===p[1]);return rec?mockResult(rec):go('/')}
   if(p[0]==='concepts')return concepts(p[1]);
   if(p[0]==='cards')return cards(p[1]);
   if(p[0]==='search')return search(dec((qs||'').replace(/^q=/,'')));
@@ -115,19 +116,24 @@ function home(onlyExams){
     <div class="muted">${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'} · <a href="#/mock/${e.year}-${e.round}" onclick="event.stopPropagation()">실전</a></div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('');
   const subj=SUBJECTS.map(s=>{const l=Q.filter(q=>q.subject===s),d=l.filter(q=>P[q.id]);return `<div class="card" onclick="go('/subject/${encodeURIComponent(s)}/1')"><h3>${esc(s)}</h3><div class="muted">${l.length}문항 · 풀이 ${d.length}</div></div>`}).join('');
   const mocks=(ls('jcg.mocks').list||[]).slice(-8);
-  const mockHtml=mocks.length?`<h2>최근 실전 모의고사</h2><div class="card"><div class="row">${mocks.map(m=>`<a href="#/mock/${m.id}" class="chip" style="font-size:1rem;color:${m.score>=60?'var(--ok)':'var(--bad)'}">${m.score}점</a>`).join('')}<span class="muted" style="margin-left:auto">60점 이상 합격 · 최근 ${mocks.length}회 평균 ${Math.round(mocks.reduce((a,m)=>a+m.score,0)/mocks.length)}점</span></div></div>`:'';
+  const mockHtml=mocks.length?`<h2>최근 실전 모의고사</h2><div class="card"><div class="row">${mocks.map(m=>`<a href="#/mockr/${m.at}" class="chip" style="font-size:1rem;color:${m.score>=60?'var(--ok)':'var(--bad)'}">${m.score}점</a>`).join('')}<span class="muted" style="margin-left:auto">60점 이상 합격 · 최근 ${mocks.length}회 평균 ${Math.round(mocks.reduce((a,m)=>a+m.score,0)/mocks.length)}점</span></div></div>`:'';
   const weak=SUBJECTS.map(s=>{const l=Q.filter(q=>q.subject===s&&P[q.id]);return {s,n:l.length,ok:l.filter(q=>P[q.id].ok).length}}).filter(x=>x.n>=3).sort((a,b)=>a.ok/a.n-b.ok/b.n);
   const weakHtml=weak.length?`<h2>과목별 정답률</h2><div class="card">${weak.map(x=>`<div class="row" style="margin:4px 0"><span style="min-width:200px">${esc(x.s)}</span><div class="bar" style="flex:1;margin:0"><i style="width:${x.ok/x.n*100}%;background:${x.ok/x.n<.6?'var(--bad)':'var(--ok)'}"></i></div><span class="muted" style="min-width:90px;text-align:right">${Math.round(x.ok/x.n*100)}% (${x.ok}/${x.n})</span></div>`).join('')}<div class="hint">3문항 이상 푼 과목만. 빨간색이 약점 과목 → 과목별 기출로 보강</div></div>`:'';
   const kw={};Q.forEach(q=>(q.keywords||[]).forEach(k=>{k=k.trim();kw[k]=(kw[k]||0)+1}));
   const top=Object.entries(kw).filter(([,n])=>n>=3).sort((a,b)=>b[1]-a[1]).slice(0,40);
   const topHtml=top.length?`<h2>빈출 키워드 <span class="muted" style="font-size:.85rem;font-weight:400">3회 이상 출제 · 클릭하면 관련 문제·개념 검색</span></h2><div class="card">${top.map(([k,n])=>`<a class="chip" href="#/search?q=${encodeURIComponent(k)}">${esc(k)} <b>${n}</b></a>`).join('')}</div>`:'';
-  app.innerHTML=`${stats}${onlyExams?'':mockHtml+weakHtml}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>코드 집중 풀이 <span class="muted" style="font-size:.85rem;font-weight:400">매회 8문항 40점 — 언어별로 몰아서 패턴을 익히세요</span></h2><div class="grid">${['C','Java','Python','SQL'].map(L=>{const l=L==='SQL'?Q.filter(q=>q.subject==='SQL 응용'):Q.filter(q=>q.type==='코드'&&q.lang===L),d=l.filter(q=>P[q.id]),o=d.filter(q=>P[q.id].ok);return `<div class="card" onclick="go('/lang/${L}/1')"><h3>${L}</h3><div class="muted">${l.length}문항 · ${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'}</div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('')}</div>
+  app.innerHTML=`${stats}${onlyExams?'':mockHtml+weakHtml}<h2>회차별 기출</h2><div class="grid">${exams||'<div class="muted">기출 데이터가 없습니다. data/exams/*.json 추가 후 build.py 실행</div>'}</div><h2>코드 집중 풀이 <span class="muted" style="font-size:.85rem;font-weight:400">매회 8문항 40점 — 언어별로 몰아서 패턴을 익히세요</span></h2><div class="grid">${['C','Java','Python','SQL'].map(L=>{const l=L==='SQL'?Q.filter(q=>q.subject==='SQL 응용'):Q.filter(q=>q.lang===L),d=l.filter(q=>P[q.id]),o=d.filter(q=>P[q.id].ok);return `<div class="card" onclick="go('/lang/${L}/1')"><h3>${L}</h3><div class="muted">${l.length}문항 · ${d.length?`풀이 ${d.length} · 정답 ${o.length}`:'미시작'}</div><div class="bar"><i style="width:${l.length?d.length/l.length*100:0}%"></i></div></div>`}).join('')}</div>
 <h2>과목별 기출</h2><div class="grid">${subj}</div>${onlyExams?'':topHtml}`;
 }
 
 /* ---------- 문제 풀이 ---------- */
 let cur=null;
-function blankLabels(q){const m=(q.answer[0]||'').match(/[①-⑳]/g)||[];return (q.blanks||[]).map((_,i)=>m.length===q.blanks.length?m[i]:'①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮'[i]||i+1)}
+const LAB=/[①-⑳]|\([가-힣a-zA-Z0-9]\)|(?<![^\s,，])[ㄱ-ㅎA-Z](?=\s*[:：\s])/g;
+function blankLabels(q){const m=(q.answer[0]||'').match(LAB)||[];const asc=m.every((c,i)=>!i||c.length>1||c.charCodeAt(0)>m[i-1].charCodeAt(0));return (q.blanks||[]).map((_,i)=>asc&&m.length===q.blanks.length?m[i]:'①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮'[i]||i+1)}
+function blankAlts(q,i){const b=q.blanks[i];const alts=b.includes('||')||!b.includes('|')?[b]:b.split('|');
+  q.answer.forEach(a=>{const parts=a.split(LAB).slice(1);if(parts.length===q.blanks.length&&parts[i])alts.push(parts[i].replace(/^[\s:：]+/,'').replace(/[,，]\s*$/,'').trim())});
+  return alts.filter(x=>x.trim())}
+const blankOk=(q,i,got)=>!!(got&&got.trim())&&blankAlts(q,i).some(alt=>norm(alt)===norm(got));
 function quiz(list,idx,title,base){
   if(!list.length)return app.innerHTML=`<h1>${esc(title)}</h1><div class="card">문제가 없습니다.</div>`;
   idx=Math.max(0,Math.min(idx,list.length-1));const q=list[idx];cur={list,idx,base,q};
@@ -154,9 +160,9 @@ function check(skip){
   const blanks=q.blanks&&q.blanks.length>1?q.blanks:null;const lab=blankLabels(q);let ok,detail='';
   if(blanks){
     const got=[...app.querySelectorAll('input.ans')].map(i=>i.value);
-    const each=blanks.map((b,i)=>b.split('|').some(alt=>norm(alt)===norm(got[i])));
+    const each=blanks.map((b,i)=>blankOk(q,i,got[i]));
     ok=!skip&&each.every(Boolean);
-    detail=blanks.map((b,i)=>`<div>${lab[i]} <b>${esc(b.split('|')[0])}</b> ${skip?'':each[i]?'✅':`❌ <s>${esc(got[i])}</s>`}</div>`).join('');
+    detail=blanks.map((b,i)=>`<div>${lab[i]} <b>${esc(blankAlts(q,i)[0])}</b> ${skip?'':each[i]?'✅':`❌ <s>${esc(got[i])}</s>`}</div>`).join('');
   }else{
     const got=$('#ans').value;ok=!skip&&q.type!=='서술'&&q.answer.some(a=>norm(a)===norm(got));
     if(q.type==='서술'&&!skip)ok=null;
@@ -167,55 +173,58 @@ function check(skip){
   ${q.explanation?`<div class="muted" style="margin-top:8px">해설</div><div class="q">${esc(q.explanation)}</div>`:''}
   ${q.keywords&&q.keywords.length?`<div style="margin-top:8px">${q.keywords.map(k=>`<a class="chip" href="#/search?q=${encodeURIComponent(k)}">${esc(k)}</a>`).join('')}</div>`:''}</div>
   <div class="row"><span class="muted">채점 수정:</span><button id="mok">맞았어요</button><button id="mbad">틀렸어요</button>${idx<list.length-1?'<button class="pri" id="go-next" style="margin-left:auto">다음 문제 →</button>':''}</div>`;
-  const mark=v=>{P[q.id]={ok:v,at:Date.now(),tries:((P[q.id]||{}).tries||0)+1};ls('jcg.progress',P)};
+  const mark=(v,fix)=>{P[q.id]={ok:v,at:Date.now(),tries:((P[q.id]||{}).tries||0)+(fix?0:1)};ls('jcg.progress',P);const sa=app.querySelector('.strip a.on');if(sa)sa.className='on '+(v?'ok':'bad')};
   if(auto)mark(ok);
-  $('#mok').onclick=()=>{mark(true);$('#out .res').className='res ok';$('#out .res').textContent='정답으로 기록'};
-  $('#mbad').onclick=()=>{mark(false);$('#out .res').className='res bad';$('#out .res').textContent='오답으로 기록'};
+  $('#mok').onclick=()=>{mark(true,true);$('#out .res').className='res ok';$('#out .res').textContent='정답으로 기록'};
+  $('#mbad').onclick=()=>{mark(false,true);$('#out .res').className='res bad';$('#out .res').textContent='오답으로 기록'};
   const n=$('#go-next');if(n){n.onclick=()=>go(`${cur.base}/${idx+2}`);setTimeout(()=>n.focus(),0)}
 }
 
 /* ---------- 실전 모의고사 ---------- */
+// MOCK = {id,title,qids,start,ans:{i:string|string[]},self:{i:bool},done,score,at}. 제출 후 jcg.mocks.list 에 저장, #/mockr/<at> 로 재조회.
 let MOCK=null;
+const saveMock=rec=>{const M=ls('jcg.mocks');M.list=(M.list||[]).filter(m=>m.at!==rec.at);M.list.push(rec);ls('jcg.mocks',M)};
 function mock(id){
   const seed=id.startsWith('r')?+id.slice(1):null;const e=seed===null?examOf(id):null;
-  const list=seed!==null?stratified(seed):e?Q.filter(q=>q.exam===id):null;
-  if(!list||!list.length)return go('/mock');
-  const title=seed!==null?`실전 모의고사 #${seed}`:`${roundName(e)} 실전`;
-  if(MOCK&&MOCK.id===id&&MOCK.done)return mockResult();
-  MOCK={id,list,title,start:Date.now(),done:false,ans:{},self:{}};
-  const lab=q=>blankLabels(q);
-  app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(title)}</div><h1>${esc(title)}</h1>
-  <div class="timer"><b id="clock">150:00</b><span class="muted">실제 시험: 20문항 × 5점, 150분, 60점 합격. ${seed!==null?'실제 출제 비율(코드 8·SQL 2·용어 10)로 추출. ':''}모르면 비워 두세요.</span><button class="pri" id="submit" style="margin-left:auto">제출·채점</button></div>
+  if(!(MOCK&&MOCK.id===id&&!MOCK.done)){
+    const list=seed!==null?stratified(seed):e?Q.filter(q=>q.exam===id):null;if(!list||!list.length)return go('/mock');
+    MOCK={id,title:seed!==null?`실전 모의고사 #${seed}`:`${roundName(e)} 실전`,qids:list.map(q=>q.id),start:Date.now(),at:Date.now(),ans:{},self:{},done:false};
+  }
+  const list=MOCK.qids.map(i=>Q.find(q=>q.id===i));const lab=q=>blankLabels(q);const A=MOCK.ans;
+  app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(MOCK.title)}</div><h1>${esc(MOCK.title)}</h1>
+  <div class="timer"><b id="clock">150:00</b><span class="muted">실제 시험: 20문항 × 5점, 150분, 60점 합격. ${seed!==null?'실제 출제 비율(코드 8·SQL 2·용어 10)로 추출. ':''}모르면 비워 두세요. 다른 화면에 다녀와도 답안은 유지됩니다.</span><button class="pri" id="submit" style="margin-left:auto">제출·채점</button></div>
   ${list.map((q,i)=>`<div class="card" id="q${i}"><div><b>${i+1}.</b> <span class="chip">${esc(q.subject)}</span><span class="chip">${esc(q.type)}${q.lang?' · '+esc(q.lang):''}</span></div>
   <p class="q">${esc(q.question)}</p>${q.code?`<pre><code>${esc(q.code)}</code></pre>`:''}
-  ${q.blanks&&q.blanks.length>1?q.blanks.map((_,j)=>`<div class="row"><span style="min-width:2em">${lab(q)[j]}</span><input class="ans" data-q="${i}" data-i="${j}" autocomplete="off"></div>`).join(''):`<textarea data-q="${i}" rows="2"></textarea>`}</div>`).join('')}
+  ${q.blanks&&q.blanks.length>1?q.blanks.map((_,j)=>`<div class="row"><span style="min-width:2em">${lab(q)[j]}</span><input class="ans" data-q="${i}" data-i="${j}" autocomplete="off" value="${esc((A[i]||[])[j]||'')}"></div>`).join(''):`<textarea data-q="${i}" rows="2">${esc(A[i]||'')}</textarea>`}</div>`).join('')}
   <div class="row"><button class="pri" id="submit2">제출·채점</button></div>`;
+  app.oninput=ev=>{const el=ev.target;if(el.dataset.q===undefined)return;const i=+el.dataset.q;if(el.dataset.i!==undefined)(A[i]=A[i]||[])[+el.dataset.i]=el.value;else A[i]=el.value};
   const tick=()=>{if(!MOCK||MOCK.done)return;const left=150*60-Math.floor((Date.now()-MOCK.start)/1000);const c=$('#clock');if(!c)return;c.textContent=`${String(Math.max(0,Math.floor(left/60))).padStart(3,'0')}:${String(Math.max(0,left%60)).padStart(2,'0')}`;if(left<=0)return submit(true);setTimeout(tick,1000)};tick();
   const submit=force=>{if(MOCK.done)return;if(force!==true&&!confirm('제출하고 채점할까요?'))return;
-    app.querySelectorAll('[data-q]').forEach(el=>{const i=+el.dataset.q;if(el.dataset.i!==undefined){(MOCK.ans[i]=MOCK.ans[i]||[])[+el.dataset.i]=el.value}else MOCK.ans[i]=el.value});
-    MOCK.done=true;mockResult()};
+    MOCK.done=true;app.oninput=null;const scores=list.map((q,i)=>mockScore(MOCK,q,i));MOCK.score=Math.round(scores.reduce((a,b)=>a+b,0)*10)/10;
+    list.forEach((q,i)=>{if(q.type!=='서술')P[q.id]={ok:scores[i]>=5,at:Date.now(),tries:((P[q.id]||{}).tries||0)+1}});ls('jcg.progress',P);
+    saveMock(MOCK);go(`/mockr/${MOCK.at}`)};
   $('#submit').onclick=submit;$('#submit2').onclick=submit;
 }
-function mockScore(q,i){
-  const a=MOCK.ans[i];
-  if(q.type==='서술')return MOCK.self[i]?5:0;
-  if(q.blanks&&q.blanks.length>1){const got=a||[];const n=q.blanks.filter((b,j)=>b.split('|').some(alt=>norm(alt)===norm(got[j]||''))).length;return Math.round(5*n/q.blanks.length*10)/10}
-  return q.answer.some(x=>norm(x)===norm(a||''))?5:0;
+function mockScore(rec,q,i){
+  const a=rec.ans[i];
+  if(q.type==='서술')return rec.self[i]?5:0;
+  if(q.blanks&&q.blanks.length>1){const got=a||[];const n=q.blanks.filter((b,j)=>blankOk(q,j,got[j])).length;return Math.round(5*n/q.blanks.length*10)/10}
+  return a&&a.trim()&&q.answer.some(x=>norm(x)===norm(a))?5:0;
 }
-function mockResult(){
-  const {list,title,id}=MOCK;const scores=list.map(mockScore);const total=Math.round(scores.reduce((a,b)=>a+b,0)*10)/10;
-  list.forEach((q,i)=>{if(q.type!=='서술'||MOCK.self[i]!==undefined)P[q.id]={ok:scores[i]>=5,at:Date.now(),tries:((P[q.id]||{}).tries||0)+1}});ls('jcg.progress',P);
-  const M=ls('jcg.mocks');M.list=(M.list||[]).filter(m=>m.id!==id||m.at!==MOCK.start);M.list.push({id,at:MOCK.start,score:total});ls('jcg.mocks',M);
+function mockResult(rec){
+  const list=rec.qids.map(i=>Q.find(q=>q.id===i)).filter(Boolean);const scores=list.map((q,i)=>mockScore(rec,q,i));const total=Math.round(scores.reduce((a,b)=>a+b,0)*10)/10;
+  if(rec.score!==total){rec.score=total;saveMock(rec)}
   const lab=q=>blankLabels(q);
-  app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(title)}</div><h1>${esc(title)} 결과</h1>
+  app.innerHTML=`<div class="muted"><a href="#/">← 홈</a> · ${esc(rec.title)} · ${new Date(rec.at).toLocaleString('ko-KR')}</div><h1>${esc(rec.title)} 결과</h1>
   <div class="card" style="text-align:center"><div class="score" style="color:${total>=60?'var(--ok)':'var(--bad)'}">${total}점</div><div>${total>=60?'합격권입니다':'불합격 — 60점까지 '+Math.round((60-total)*10)/10+'점 부족'}</div>
-  <div class="hint">서술형은 아래에서 직접 채점하면 점수에 반영됩니다. 틀린 문제는 오답노트에 들어갑니다.</div><div class="row" style="justify-content:center"><button onclick="MOCK=null;go('/mock')">새 랜덤 모의고사</button><button onclick="go('/wrong')">오답노트</button></div></div>
-  ${list.map((q,i)=>{const a=MOCK.ans[i];const mine=Array.isArray(a)?a.map((v,j)=>`${lab(q)[j]} ${v||'—'}`).join('  '):(a||'—');const s=scores[i];
-    return `<div class="card ${s>=5?'':s>0?'':''}" style="border-left:4px solid ${s>=5?'var(--ok)':s>0?'#f59e0b':'var(--bad)'}"><div><b>${i+1}.</b> <span class="chip">${esc(q.subject)}</span> <b style="float:right">${s}점</b></div>
+  <div class="hint">서술형은 아래에서 직접 채점하면 점수에 반영됩니다. 틀린 문제는 오답노트에 들어갑니다.</div><div class="row" style="justify-content:center"><button onclick="go('/mock')">새 랜덤 모의고사</button><button onclick="go('/wrong')">오답노트</button></div></div>
+  ${list.map((q,i)=>{const a=rec.ans[i];const mine=Array.isArray(a)?a.map((v,j)=>`${lab(q)[j]} ${v||'—'}`).join('  '):(a||'—');const s=scores[i];
+    return `<div class="card" style="border-left:4px solid ${s>=5?'var(--ok)':s>0?'#f59e0b':'var(--bad)'}"><div><b>${i+1}.</b> <span class="chip">${esc(q.subject)}</span> <b style="float:right">${s}점</b></div>
     <p class="q">${esc(q.question)}</p>${q.code?`<details><summary>코드 보기</summary><pre><code>${esc(q.code)}</code></pre></details>`:''}
-    <div class="ans-box"><div><span class="muted">내 답</span> <span class="q">${esc(mine)}</span></div><div style="margin-top:6px"><span class="muted">정답</span> <b class="q">${esc(q.blanks&&q.blanks.length>1?q.blanks.map((b,j)=>`${lab(q)[j]} ${b.split('|')[0]}`).join('  '):q.answer.join(' / '))}</b></div>
+    <div class="ans-box"><div><span class="muted">내 답</span> <span class="q">${esc(mine)}</span></div><div style="margin-top:6px"><span class="muted">정답</span> <b class="q">${esc(q.blanks&&q.blanks.length>1?q.blanks.map((b,j)=>`${lab(q)[j]} ${blankAlts(q,j)[0]}`).join('  '):q.answer.join(' / '))}</b></div>
     ${q.explanation?`<div class="muted" style="margin-top:6px">해설</div><div class="q">${esc(q.explanation)}</div>`:''}
-    ${q.type==='서술'?`<div class="row"><span class="muted">서술형 자기 채점:</span><button onclick="MOCK.self[${i}]=true;mockResult()" ${MOCK.self[i]?'class="pri"':''}>맞았어요 (5점)</button><button onclick="MOCK.self[${i}]=false;mockResult()" ${MOCK.self[i]===false?'class="pri"':''}>틀렸어요</button></div>`:''}</div></div>`}).join('')}`;
+    ${q.type==='서술'?`<div class="row"><span class="muted">서술형 자기 채점:</span><button data-self="${i}" data-v="1" ${rec.self[i]?'class="pri"':''}>맞았어요 (5점)</button><button data-self="${i}" data-v="0" ${rec.self[i]===false?'class="pri"':''}>틀렸어요</button></div>`:''}</div></div>`}).join('')}`;
+  app.querySelectorAll('[data-self]').forEach(b=>b.onclick=()=>{const i=+b.dataset.self,v=b.dataset.v==='1';rec.self[i]=v;const q=list[i];P[q.id]={ok:v,at:Date.now(),tries:((P[q.id]||{}).tries||0)+(P[q.id]&&P[q.id].at>rec.at?0:1)};ls('jcg.progress',P);saveMock(rec);mockResult(rec)});
 }
 
 /* ---------- 개념 ---------- */
